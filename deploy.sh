@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# DocuSeal Deployment Script (Non-Docker)
+# This script deploys DocuSeal without using Docker
+
 set -e  # Exit on any error
 
 # Colors for output
@@ -8,242 +11,124 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Configuration
-APP_DIR=$(pwd)
-
-# Use environment variables (can be set via .env file or export command)
-# Rails will automatically load .env file when it runs, so we just use what's available
-RAILS_ENV=${RAILS_ENV:-production}
-PORT=${PORT:-9090}
-DATABASE_URL=${DATABASE_URL:-""}
-WORKDIR=${WORKDIR:-"$APP_DIR"}
-HOST=${HOST:-"localhost"}
-
-git checkout master
-git pull origin master
-
-echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN}DocuSeal Manual Deployment Script${NC}"
-echo -e "${GREEN}========================================${NC}"
-echo -e "RAILS_ENV: ${RAILS_ENV}"
-echo -e "PORT: ${PORT}"
-echo -e "HOST: ${HOST}"
-echo -e "WORKDIR: ${WORKDIR}"
-if [ -n "$DATABASE_URL" ]; then
-    echo -e "DATABASE_URL: ${DATABASE_URL:0:30}..."
-else
-    echo -e "DATABASE_URL: (not set, will use SQLite)"
-fi
-echo -e "${GREEN}========================================${NC}"
-
-# Function to check if command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
+# Function to print colored output
+print_info() {
+    echo -e "${GREEN}[INFO]${NC} $1"
 }
 
-# Function to check system dependencies
-check_dependencies() {
-    echo -e "\n${YELLOW}Checking system dependencies...${NC}"
-    
-    local missing_deps=()
-    
-    # Check PostgreSQL client
-    if ! command_exists psql; then
-        missing_deps+=("postgresql-client")
-    fi
-    
-    # Check required system packages
-    if command_exists apt-get; then
-        # Debian/Ubuntu
-        echo "Detected Debian/Ubuntu system"
-        if ! dpkg -l | grep -q libpq-dev; then
-            missing_deps+=("libpq-dev")
-        fi
-        if ! dpkg -l | grep -q build-essential; then
-            missing_deps+=("build-essential")
-        fi
-        if ! dpkg -l | grep -q libvips-dev; then
-            missing_deps+=("libvips-dev")
-        fi
-        if ! dpkg -l | grep -q libsqlite3-dev; then
-            missing_deps+=("libsqlite3-dev")
-        fi
-        if ! dpkg -l | grep -q libyaml-dev; then
-            missing_deps+=("libyaml-dev")
-        fi
-    elif command_exists yum; then
-        # RHEL/CentOS
-        echo "Detected RHEL/CentOS system"
-        if ! rpm -q postgresql-devel >/dev/null 2>&1; then
-            missing_deps+=("postgresql-devel")
-        fi
-        if ! rpm -q gcc gcc-c++ make >/dev/null 2>&1; then
-            missing_deps+=("gcc gcc-c++ make")
-        fi
-        if ! rpm -q vips-devel >/dev/null 2>&1; then
-            missing_deps+=("vips-devel")
-        fi
-    fi
-    
-    if [ ${#missing_deps[@]} -gt 0 ]; then
-        echo -e "${RED}Missing dependencies: ${missing_deps[*]}${NC}"
-        echo "Please install them manually:"
-        if command_exists apt-get; then
-            echo "  sudo apt-get update && sudo apt-get install -y ${missing_deps[*]}"
-        elif command_exists yum; then
-            echo "  sudo yum install -y ${missing_deps[*]}"
-        fi
+print_warn() {
+    echo -e "${YELLOW}[WARN]${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
+
+# Check if running as root
+if [ "$EUID" -eq 0 ]; then 
+    print_warn "It's not recommended to run this script as root"
+fi
+
+print_info "Starting DocuSeal deployment..."
+
+# Check for required commands
+print_info "Checking for required dependencies..."
+
+check_command() {
+    if ! command -v $1 &> /dev/null; then
+        print_error "$1 is not installed. Please install it first."
         exit 1
     fi
-    
-    echo -e "${GREEN}✓ All system dependencies are installed${NC}"
 }
+
+check_command ruby
+check_command bundle
+check_command node
+check_command yarn
 
 # Check Ruby version
-check_ruby() {
-    echo -e "\n${YELLOW}Checking Ruby installation...${NC}"
-    
-    if ! command_exists ruby; then
-        echo -e "${RED}Ruby is not installed!${NC}"
-        echo "Please install Ruby 4.0.1 using rbenv, rvm, or system package manager"
-        exit 1
-    fi
-    
-    RUBY_VERSION=$(ruby -v | cut -d' ' -f2 | cut -d'p' -f1)
-    REQUIRED_VERSION="4.0.1"
-    
-    if [ "$RUBY_VERSION" != "$REQUIRED_VERSION" ]; then
-        echo -e "${YELLOW}Warning: Ruby version is $RUBY_VERSION, recommended is $REQUIRED_VERSION${NC}"
-        read -p "Continue anyway? (y/n) " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            exit 1
-        fi
-    fi
-    
-    echo -e "${GREEN}✓ Ruby $RUBY_VERSION is installed${NC}"
-}
+RUBY_VERSION=$(ruby -v | awk '{print $2}' | cut -d'p' -f1)
+REQUIRED_RUBY="4.0.1"
+if [ "$(printf '%s\n' "$REQUIRED_RUBY" "$RUBY_VERSION" | sort -V | head -n1)" != "$REQUIRED_RUBY" ]; then
+    print_warn "Ruby version $RUBY_VERSION detected. Recommended: $REQUIRED_RUBY"
+fi
 
-# Check Node.js
-check_node() {
-    echo -e "\n${YELLOW}Checking Node.js installation...${NC}"
-    
-    if ! command_exists node; then
-        echo -e "${RED}Node.js is not installed!${NC}"
-        echo "Please install Node.js (version 18 or higher recommended)"
-        exit 1
-    fi
-    
-    NODE_VERSION=$(node -v)
-    echo -e "${GREEN}✓ Node.js $NODE_VERSION is installed${NC}"
-    
-    # Check Yarn
-    if ! command_exists yarn; then
-        echo -e "${YELLOW}Yarn is not installed, installing...${NC}"
-        npm install -g yarn
-    fi
-    
-    echo -e "${GREEN}✓ Yarn is installed${NC}"
-}
+print_info "All dependencies found ✓"
 
-# Install Ruby gems
-install_gems() {
-    echo -e "\n${YELLOW}Installing Ruby gems...${NC}"
-    
-    if ! command_exists bundle; then
-        echo "Installing Bundler..."
-        gem install bundler
-    fi
-    
-    bundle install --without development test --jobs $(nproc)
-    echo -e "${GREEN}✓ Ruby gems installed${NC}"
-}
+# Set environment
+export RAILS_ENV=${RAILS_ENV:-production}
+export NODE_ENV=${NODE_ENV:-production}
 
-# Install Node.js packages
-install_node_packages() {
-    echo -e "\n${YELLOW}Installing Node.js packages...${NC}"
-    
-    yarn install --frozen-lockfile --network-timeout 1000000
-    echo -e "${GREEN}✓ Node.js packages installed${NC}"
-}
+print_info "Environment: $RAILS_ENV"
+
+# Install Ruby dependencies
+print_info "Installing Ruby dependencies..."
+bundle install --deployment --without development test
+
+# Install Node dependencies
+print_info "Installing Node dependencies..."
+yarn install --frozen-lockfile --production
+
+# Check for database configuration
+if [ -z "$DATABASE_URL" ] && [ -z "$DATABASE_HOST" ]; then
+    print_warn "No DATABASE_URL or DATABASE_HOST set. Will use SQLite (not recommended for production)"
+    print_warn "To use PostgreSQL, set DATABASE_URL or DATABASE_HOST environment variables"
+fi
 
 # Setup database
-setup_database() {
-    echo -e "\n${YELLOW}Setting up database...${NC}"
-    
-    if [ -z "$DATABASE_URL" ]; then
-        echo -e "${YELLOW}DATABASE_URL not set in .env file. Using default SQLite database.${NC}"
-        echo "To use PostgreSQL, add DATABASE_URL to your .env file:"
-        echo "  DATABASE_URL=postgresql://user:password@localhost:5432/docuseal"
-    else
-        echo "Using DATABASE_URL from .env file"
-        # Mask password in output
-        DB_DISPLAY=$(echo "$DATABASE_URL" | sed 's/:[^:@]*@/:***@/')
-        echo "  $DB_DISPLAY"
-    fi
-    
-    # Export DATABASE_URL for Rails commands
-    export DATABASE_URL
-    
-    # Run database migrations
-    bundle exec rails db:create db:migrate RAILS_ENV=$RAILS_ENV || true
-    echo -e "${GREEN}✓ Database setup complete${NC}"
-}
+print_info "Setting up database..."
+if [ "$RAILS_ENV" = "production" ]; then
+    bundle exec rails db:create db:migrate
+else
+    bundle exec rails db:create db:migrate db:seed
+fi
 
-# Compile assets
-compile_assets() {
-    echo -e "\n${YELLOW}Compiling assets...${NC}"
-    
-    # Compile webpack assets
-    bundle exec rails shakapacker:compile RAILS_ENV=$RAILS_ENV
-    
-    # Precompile other assets
-    bundle exec rails assets:precompile RAILS_ENV=$RAILS_ENV
-    
-    echo -e "${GREEN}✓ Assets compiled${NC}"
-}
+# Precompile assets
+print_info "Precompiling assets..."
+bundle exec rails assets:precompile
+
+# Clear old assets
+print_info "Clearing old assets..."
+bundle exec rails tmp:clear
 
 # Create necessary directories
-create_directories() {
-    echo -e "\n${YELLOW}Creating necessary directories...${NC}"
-    
-    mkdir -p tmp/pids
-    mkdir -p tmp/cache
-    mkdir -p log
-    mkdir -p public/packs
-    
-    echo -e "${GREEN}✓ Directories created${NC}"
-}
+print_info "Creating necessary directories..."
+mkdir -p tmp/pids
+mkdir -p log
+mkdir -p storage
+mkdir -p public/uploads
 
-# Start the server
-start_server() {
-    echo -e "\n${YELLOW}Starting application server...${NC}"
+# Set permissions
+print_info "Setting permissions..."
+chmod -R 755 tmp log storage public/uploads
+
+# Check if we should start the server
+if [ "$1" = "--start" ]; then
+    print_info "Starting application server..."
     
-    echo -e "${GREEN}========================================${NC}"
-    echo -e "${GREEN}Deployment completed successfully!${NC}"
-    echo -e "${GREEN}========================================${NC}"
-    echo ""
-    echo "To start the server, run:"
-    echo "  bundle exec puma -p $PORT -C ./config/puma.rb -e $RAILS_ENV"
-    echo ""
-    echo "Or use systemd/service manager to run it as a service."
-    echo ""
-    echo "Application will be available at: http://localhost:$PORT"
-    echo ""
-}
-
-# Main deployment flow
-main() {
-#    check_dependencies
-    check_ruby
-    check_node
-    create_directories
-    install_gems
-    install_node_packages
-    setup_database
-    compile_assets
-    start_server
-}
-
-# Run main function
-main
+    # Check if PORT is set
+    if [ -z "$PORT" ]; then
+        export PORT=3000
+        print_warn "PORT not set, using default: $PORT"
+    fi
+    
+    # Start using Procfile
+    if command -v foreman &> /dev/null; then
+        print_info "Starting with Foreman..."
+        foreman start web
+    else
+        print_info "Starting with Puma directly..."
+        bundle exec puma -p $PORT -C ./config/puma.rb
+    fi
+else
+    print_info "Deployment completed successfully!"
+    print_info "To start the server, run: ./deploy.sh --start"
+    print_info "Or use: bundle exec puma -p \$PORT -C ./config/puma.rb"
+    print_info ""
+    print_info "Make sure to set the following environment variables:"
+    print_info "  - RAILS_ENV (default: production)"
+    print_info "  - PORT (default: 3000)"
+    print_info "  - DATABASE_URL or DATABASE_HOST/DATABASE_NAME/DATABASE_USER/DATABASE_PASSWORD"
+    print_info "  - SECRET_KEY_BASE (run: bundle exec rails secret)"
+    print_info "  - Any other required environment variables for your setup"
+fi
