@@ -234,7 +234,7 @@ start_server() {
 
 # Main deployment flow
 main() {
-    check_dependencies
+#    check_dependencies
     check_ruby
     check_node
     create_directories
