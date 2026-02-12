@@ -24,10 +24,18 @@ module Templates
 
     module_function
 
-    def call(template, params, extract_fields: false)
-      extract_zip_files(params[:files].presence || params[:file]).flat_map do |file|
-        handle_file_types(template, file, params, extract_fields:)
+    def call(template, params, extract_fields: false, dynamic: false)
+      documents = []
+      dynamic_documents = []
+
+      extract_zip_files(params[:files].presence || params[:file]).each do |file|
+        docs, dynamic_docs = handle_file_types(template, file, params, extract_fields:, dynamic:)
+
+        documents.push(*docs)
+        dynamic_documents.push(*dynamic_docs)
       end
+
+      [documents, dynamic_documents]
     end
 
     def handle_pdf_or_image(template, file, document_data = nil, params = {}, extract_fields: false,
@@ -111,73 +119,12 @@ module Templates
       extracted_files
     end
 
-    def handle_file_types(template, file, params, extract_fields:)
+    def handle_file_types(template, file, params, extract_fields:, dynamic: false)
       if file.content_type.include?('image') || file.content_type == PDF_CONTENT_TYPE
-        return handle_pdf_or_image(template, file, file.read, params, extract_fields:)
+        return [handle_pdf_or_image(template, file, file.read, params, extract_fields:), []]
       end
 
-      # Handle document types (DOCX, DOC, XLSX, etc.) by converting to PDF
-      if DOCUMENT_CONTENT_TYPES.include?(file.content_type)
-        pdf_data = convert_document_to_pdf(file)
-        if pdf_data
-          # Process the converted PDF with PDF content type and filename
-          pdf_filename = "#{File.basename(file.original_filename, '.*')}.pdf"
-          return handle_pdf_or_image(template, file, pdf_data, params, extract_fields: extract_fields,
-                                                                       content_type_override: PDF_CONTENT_TYPE, filename_override: pdf_filename)
-        else
-          raise InvalidFileType,
-                "Unable to convert #{file.content_type} to PDF. Please install LibreOffice (brew install --cask libreoffice on macOS or apt-get install libreoffice on Linux) or convert the document to PDF manually."
-        end
-      end
-
-      raise InvalidFileType, file.content_type
-    end
-
-    def convert_document_to_pdf(file)
-      # Try to use LibreOffice to convert document to PDF
-      libreoffice_path = find_libreoffice
-      return nil unless libreoffice_path
-
-      # Create a temporary file for the input document
-      input_temp = Tempfile.new(['input', File.extname(file.original_filename)])
-      input_temp.binmode
-      file.rewind
-      input_temp.write(file.read)
-      input_temp.close
-
-      output_dir = Dir.mktmpdir
-      File.join(output_dir, "#{File.basename(file.original_filename, '.*')}.pdf")
-
-      begin
-        # Use LibreOffice headless mode to convert to PDF
-        success = system(libreoffice_path, '--headless', '--convert-to', 'pdf', '--outdir', output_dir,
-                         input_temp.path, out: File::NULL, err: File::NULL)
-
-        if success
-          generated_pdf = Dir.glob(File.join(output_dir, '*.pdf')).first
-          return File.binread(generated_pdf) if generated_pdf && File.exist?(generated_pdf)
-        end
-      rescue StandardError => e
-        Rails.logger.warn("Document conversion failed: #{e.message}")
-      ensure
-        input_temp&.unlink
-        FileUtils.rm_rf(output_dir)
-      end
-
-      nil
-    end
-
-    def find_libreoffice
-      # Check common LibreOffice installation paths
-      paths = [
-        '/Applications/LibreOffice.app/Contents/MacOS/soffice', # macOS
-        '/usr/bin/libreoffice', # Linux
-        '/usr/local/bin/libreoffice', # Linux alternative
-        `which libreoffice`.strip, # System PATH
-        `which soffice`.strip # Alternative command name
-      ].compact.reject(&:empty?)
-
-      paths.find { |path| File.executable?(path) }
+      raise InvalidFileType, "#{file.content_type}/#{dynamic}"
     end
   end
 end
