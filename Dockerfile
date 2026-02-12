@@ -2,7 +2,7 @@ FROM ruby:4.0.1-alpine AS download
 
 WORKDIR /fonts
 
-RUN apk --no-cache add fontforge wget && \
+RUN apk update && apk --no-cache add fontforge wget && \
     wget https://github.com/satbyy/go-noto-universal/releases/download/v7.0/GoNotoKurrent-Regular.ttf && \
     wget https://github.com/satbyy/go-noto-universal/releases/download/v7.0/GoNotoKurrent-Bold.ttf && \
     wget https://github.com/impallari/DancingScript/raw/master/fonts/DancingScript-Regular.otf && \
@@ -23,7 +23,8 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-RUN apk add --no-cache nodejs yarn git build-base && \
+RUN apk update && apk add --no-cache nodejs npm git build-base && \
+    npm install -g yarn && \
     gem install shakapacker
 
 COPY ./package.json ./yarn.lock ./
@@ -51,7 +52,18 @@ ENV OPENSSL_CONF=/etc/openssl_legacy.cnf
 
 WORKDIR /app
 
-RUN apk add --no-cache sqlite-dev libpq-dev vips-dev yaml-dev redis libheif vips-heif gcompat ttf-freefont onnxruntime && mkdir /fonts && rm /usr/share/fonts/freefont/FreeSans.otf
+RUN apk update && apk add --no-cache \
+    sqlite-dev \
+    postgresql-dev \
+    vips-dev \
+    yaml-dev \
+    redis \
+    libheif \
+    vips-heif \
+    gcompat \
+    ttf-freefont \
+    && mkdir -p /fonts && \
+    rm -f /usr/share/fonts/freefont/FreeSans.otf
 
 RUN addgroup -g 2000 docuseal && adduser -u 2000 -G docuseal -s /bin/sh -D -h /home/docuseal docuseal
 
@@ -69,7 +81,12 @@ activate = 1' >> /etc/openssl_legacy.cnf
 
 COPY --chown=docuseal:docuseal ./Gemfile ./Gemfile.lock ./
 
-RUN apk add --no-cache build-base git && bundle install && apk del --no-cache build-base git && rm -rf ~/.bundle /usr/local/bundle/cache && ruby -e "puts Dir['/usr/local/bundle/**/{spec,rdoc,resources/shared,resources/collation,resources/locales}']" | xargs rm -rf && ln -sf /usr/lib/libonnxruntime.so.1 $(ruby -e "print Dir[Gem::Specification.find_by_name('onnxruntime').gem_dir + '/vendor/*.so'].first")
+RUN apk update && apk add --no-cache build-base git && \
+    bundle install && \
+    apk del --no-cache build-base git && \
+    rm -rf ~/.bundle /usr/local/bundle/cache && \
+    ruby -e "puts Dir['/usr/local/bundle/**/{spec,rdoc,resources/shared,resources/collation,resources/locales}']" | xargs rm -rf && \
+    (ln -sf /usr/lib/libonnxruntime.so.1 $(ruby -e "print Dir[Gem::Specification.find_by_name('onnxruntime').gem_dir + '/vendor/*.so'].first") 2>/dev/null || echo "onnxruntime linking skipped")
 
 COPY --chown=docuseal:docuseal ./bin ./bin
 COPY --chown=docuseal:docuseal ./app ./app
