@@ -11,7 +11,7 @@ services:
       network: host
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "9090:3000"
     volumes:
       - docuseal_data:/data/docuseal
     env_file:
