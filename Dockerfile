@@ -2,6 +2,9 @@ FROM ruby:4.0.1-alpine AS download
 
 WORKDIR /fonts
 
+# Use alternative mirror if default Alpine CDN has DNS issues (e.g. in some VPCs)
+RUN sed -i 's|https://dl-cdn.alpinelinux.org|https://alpine.global.ssl.fastly.net|g' /etc/apk/repositories 2>/dev/null || true
+
 RUN apk update && apk --no-cache add fontforge wget && \
     wget https://github.com/satbyy/go-noto-universal/releases/download/v7.0/GoNotoKurrent-Regular.ttf && \
     wget https://github.com/satbyy/go-noto-universal/releases/download/v7.0/GoNotoKurrent-Bold.ttf && \
@@ -17,6 +20,8 @@ RUN apk update && apk --no-cache add fontforge wget && \
 RUN fontforge -lang=py -c 'font1 = fontforge.open("FreeSans.ttf"); font2 = fontforge.open("NotoSansSymbols2-Regular.ttf"); font1.mergeFonts(font2); font1.generate("FreeSans.ttf")'
 
 FROM ruby:4.0.1-alpine AS webpack
+
+RUN sed -i 's|https://dl-cdn.alpinelinux.org|https://alpine.global.ssl.fastly.net|g' /etc/apk/repositories 2>/dev/null || true
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
@@ -44,6 +49,8 @@ COPY ./app/views ./app/views
 RUN echo "gem 'shakapacker'" > Gemfile && ./bin/shakapacker
 
 FROM ruby:4.0.1-alpine AS app
+
+RUN sed -i 's|https://dl-cdn.alpinelinux.org|https://alpine.global.ssl.fastly.net|g' /etc/apk/repositories 2>/dev/null || true
 
 ENV RAILS_ENV=production
 ENV BUNDLE_WITHOUT="development:test"
