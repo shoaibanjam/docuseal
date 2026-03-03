@@ -86,7 +86,9 @@ Rails.application.configure do
       user_name: ENV.fetch('SMTP_USERNAME', nil),
       password: ENV.fetch('SMTP_PASSWORD', nil),
       authentication: ENV.fetch('SMTP_PASSWORD', nil).present? ? ENV.fetch('SMTP_AUTHENTICATION', 'plain') : nil,
-      enable_starttls: ENV['SMTP_ENABLE_STARTTLS'] != 'false'
+      enable_starttls: ENV['SMTP_ENABLE_STARTTLS'] != 'false',
+      open_timeout: ENV.fetch('SMTP_OPEN_TIMEOUT', '15').to_i,
+      read_timeout: ENV.fetch('SMTP_READ_TIMEOUT', '25').to_i
     }.compact
   end
 
