@@ -39,38 +39,48 @@ jobs:
         with:
           payload: |
             {
-              "text": "DocuSeal deployment started",
-              "attachments": [
+              "text": ":rocket: Deploying DocuSeal to Production",
+              "blocks": [
                 {
-                  "color": "#4a90e2",
-                  "title": "🚀 DocuSeal Deployment Started",
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":rocket: *Deploying DocuSeal to Production*"
+                  }
+                },
+                {
+                  "type": "section",
                   "fields": [
                     {
-                      "title": "Environment",
-                      "value": "Production",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Environment:*\nProduction"
                     },
                     {
-                      "title": "Branch",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n`${{ github.ref_name }}`"
                     },
                     {
-                      "title": "Triggered by",
-                      "value": "${{ github.actor }}",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Triggered by:*\n`${{ github.actor }}`"
                     },
                     {
-                      "title": "Repository",
-                      "value": "${{ github.repository }}",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n`${{ github.repository }}`"
                     }
-                  ],
-                  "actions": [
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
                     {
                       "type": "button",
-                      "text": "View Workflow Run",
-                      "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View workflow run",
+                        "emoji": true
+                      },
+                      "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                      "style": "primary"
                     }
                   ]
                 }
@@ -90,38 +100,48 @@ jobs:
         with:
           payload: |
             {
-              "text": "DocuSeal deployment succeeded",
-              "attachments": [
+              "text": ":white_check_mark: DocuSeal deployment to Production succeeded",
+              "blocks": [
                 {
-                  "color": "#36a64f",
-                  "title": "✅ DocuSeal Deployment Successful",
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":white_check_mark: *DocuSeal deployment to Production succeeded!* :tada:"
+                  }
+                },
+                {
+                  "type": "section",
                   "fields": [
                     {
-                      "title": "Environment",
-                      "value": "Production",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Environment:*\nProduction"
                     },
                     {
-                      "title": "Branch",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n`${{ github.ref_name }}`"
                     },
                     {
-                      "title": "Triggered by",
-                      "value": "${{ github.actor }}",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Triggered by:*\n`${{ github.actor }}`"
                     },
                     {
-                      "title": "Repository",
-                      "value": "${{ github.repository }}",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n`${{ github.repository }}`"
                     }
-                  ],
-                  "actions": [
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
                     {
                       "type": "button",
-                      "text": "View Workflow Run",
-                      "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View workflow run",
+                        "emoji": true
+                      },
+                      "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                      "style": "primary"
                     }
                   ]
                 }
@@ -136,38 +156,48 @@ jobs:
         with:
           payload: |
             {
-              "text": "DocuSeal deployment failed",
-              "attachments": [
+              "text": ":x: DocuSeal deployment to Production failed",
+              "blocks": [
                 {
-                  "color": "#ff0000",
-                  "title": "❌ DocuSeal Deployment Failed",
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":x: *DocuSeal deployment to Production failed!* :warning:\nPlease review the workflow logs."
+                  }
+                },
+                {
+                  "type": "section",
                   "fields": [
                     {
-                      "title": "Environment",
-                      "value": "Production",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Environment:*\nProduction"
                     },
                     {
-                      "title": "Branch",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n`${{ github.ref_name }}`"
                     },
                     {
-                      "title": "Triggered by",
-                      "value": "${{ github.actor }}",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Triggered by:*\n`${{ github.actor }}`"
                     },
                     {
-                      "title": "Repository",
-                      "value": "${{ github.repository }}",
-                      "short": true
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n`${{ github.repository }}`"
                     }
-                  ],
-                  "actions": [
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
                     {
                       "type": "button",
-                      "text": "View Workflow Run",
-                      "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View workflow run",
+                        "emoji": true
+                      },
+                      "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                      "style": "danger"
                     }
                   ]
                 }
