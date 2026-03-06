@@ -1,0 +1,81 @@
+name: Deploy (master)
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-master
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  DEPLOY_HOST: 182.191.78.202
+  DEPLOY_USER: cybros
+  DEPLOY_PATH: /var/www/docuseal
+  DEPLOY_COMPOSE_FILE: docker-compose.yml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+
+      - name: Trust host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+
+      - name: Slack notification (started)
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          MESSAGE="*DocuSeal Deployment Notification*\n"
+          MESSAGE+="🚀 *Status:* Deployment started\n"
+          MESSAGE+="*Environment:* Production\n"
+          MESSAGE+="*Branch:* ${GITHUB_REF_NAME}\n"
+          MESSAGE+="*Triggered by:* ${GITHUB_ACTOR}\n"
+          MESSAGE+="*Workflow:* ${GITHUB_WORKFLOW}\n"
+          MESSAGE+="<${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}|View GitHub Actions run>"
+
+          PAYLOAD=$(jq -nc --arg text "$MESSAGE" '{text: $text}')
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK_URL"
+
+      - name: Deploy via SSH
+        run: |
+          set -e
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "cd \"$DEPLOY_PATH\" && docker compose -f \"$DEPLOY_COMPOSE_FILE\" up -d --force-recreate && docker volume prune -f"
+
+      - name: Slack notification
+        if: ${{ always() && secrets.SLACK_WEBHOOK_URL != '' }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          if [ "$JOB_STATUS" = "success" ]; then
+            STATUS_EMOJI="✅"
+            STATUS_TEXT="Successful"
+          else
+            STATUS_EMOJI="❌"
+            STATUS_TEXT="Failed"
+          fi
+
+          MESSAGE="*DocuSeal Deployment Notification*\n"
+          MESSAGE+="${STATUS_EMOJI} *Status:* ${STATUS_TEXT}\n"
+          MESSAGE+="*Environment:* Production\n"
+          MESSAGE+="*Branch:* ${GITHUB_REF_NAME}\n"
+          MESSAGE+="*Triggered by:* ${GITHUB_ACTOR}\n"
+          MESSAGE+="*Workflow:* ${GITHUB_WORKFLOW}\n"
+          MESSAGE+="<${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}|View GitHub Actions run>"
+
+          PAYLOAD=$(jq -nc --arg text "$MESSAGE" '{text: $text}')
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK_URL"
