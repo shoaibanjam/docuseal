@@ -35,10 +35,14 @@ jobs:
           ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
 
       - name: Slack notification (started)
-        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "SLACK_WEBHOOK_URL is not configured; skipping Slack notification."
+            exit 0
+          fi
+
           MESSAGE="*DocuSeal Deployment Notification*\n"
           MESSAGE+="🚀 *Status:* Deployment started\n"
           MESSAGE+="*Environment:* Production\n"
@@ -55,12 +59,17 @@ jobs:
           set -e
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "cd \"$DEPLOY_PATH\" && docker compose -f \"$DEPLOY_COMPOSE_FILE\" up -d --force-recreate && docker volume prune -f"
 
-      - name: Slack notification
-        if: ${{ always() && secrets.SLACK_WEBHOOK_URL != '' }}
+      - name: Slack notification (completed)
+        if: ${{ always() }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           JOB_STATUS: ${{ job.status }}
         run: |
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "SLACK_WEBHOOK_URL is not configured; skipping Slack notification."
+            exit 0
+          fi
+
           if [ "$JOB_STATUS" = "success" ]; then
             STATUS_EMOJI="✅"
             STATUS_TEXT="Successful"
