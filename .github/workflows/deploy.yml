@@ -39,6 +39,7 @@ jobs:
         with:
           payload: |
             {
+              "text": "DocuSeal deployment started",
               "attachments": [
                 {
                   "color": "#4a90e2",
@@ -89,6 +90,7 @@ jobs:
         with:
           payload: |
             {
+              "text": "DocuSeal deployment succeeded",
               "attachments": [
                 {
                   "color": "#36a64f",
@@ -134,6 +136,7 @@ jobs:
         with:
           payload: |
             {
+              "text": "DocuSeal deployment failed",
               "attachments": [
                 {
                   "color": "#ff0000",
