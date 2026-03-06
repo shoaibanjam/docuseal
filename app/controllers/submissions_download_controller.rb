@@ -10,11 +10,12 @@ class SubmissionsDownloadController < ApplicationController
   def index
     @submitter = Submitter.find_signed(params[:sig], purpose: :download_completed) if params[:sig].present?
 
-    signature_valid =
+    @signature_valid =
       if @submitter&.slug == params[:submitter_slug]
         true
       else
         @submitter = nil
+        false
       end
 
     @submitter ||= Submitter.find_by!(slug: params[:submitter_slug])
@@ -27,29 +28,46 @@ class SubmissionsDownloadController < ApplicationController
 
     Submissions::EnsureResultGenerated.call(last_submitter)
 
-    if last_submitter.completed_at < TTL.ago && !signature_valid && !current_user_submitter?(last_submitter)
-      Rollbar.info("TTL: #{last_submitter.id}") if defined?(Rollbar)
+    if !signature_valid && !current_user_submitter?(last_submitter)
+      return head :not_found unless Submitters::AuthorizedForForm.call(@submitter, current_user, request)
 
-      return head :not_found
+      if last_submitter.completed_at < TTL.ago
+        Rollbar.info("TTL: #{last_submitter.id}") if defined?(Rollbar)
+
+        return head :not_found
+      end
     end
 
     if params[:combined] == 'true'
-      url = build_combined_url(@submitter)
-
-      if url
-        render json: [url]
-      else
-        head :not_found
-      end
+      respond_with_combined(last_submitter)
     else
       render json: build_urls(last_submitter)
     end
   end
 
+  def signed_download_url
+    @submitter = Submitter.find_by!(slug: params[:slug])
+    last_submitter = @submitter.submission.submitters.where.not(completed_at: nil).order(:completed_at).last
+
+    return head :not_found unless last_submitter
+
+    Submissions::EnsureResultGenerated.call(last_submitter)
+
+    if last_submitter.completed_at < TTL.ago && !current_user_submitter?(last_submitter)
+      return head :not_found
+    end
+
+    url = submitter_download_index_url(
+      @submitter.slug,
+      sig: @submitter.signed_id(expires_in: TTL, purpose: :download_completed)
+    )
+    render json: { url: url }
+  end
+
   private
 
   def current_user_submitter?(submitter)
-    current_user && current_user.account.submitters.exists?(id: submitter.id)
+    current_user && current_ability.can?(:read, submitter)
   end
 
   def build_urls(submitter)
@@ -75,7 +93,7 @@ class SubmissionsDownloadController < ApplicationController
     filename_format = AccountConfig.find_or_initialize_by(account_id: submitter.account_id,
                                                           key: AccountConfig::DOCUMENT_FILENAME_FORMAT_KEY)&.value
 
-    ActiveStorage::Blob.proxy_url(
+    ActiveStorage::Blob.proxy_path(
       attachment.blob,
       expires_at: FILES_TTL.from_now.to_i,
       filename: Submitters.build_document_filename(submitter, attachment.blob, filename_format)

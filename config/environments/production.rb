@@ -84,8 +84,7 @@ Rails.application.configure do
       port: ENV.fetch('SMTP_PORT', 587),
       domain: ENV.fetch('SMTP_DOMAIN', nil),
       user_name: ENV.fetch('SMTP_USERNAME', nil),
-      password: ENV.fetch('SMTP_PASSWORD', nil),
-      openssl_verify_mode: ENV['SMTP_SSL_VERIFY'] == 'false' ? OpenSSL::SSL::VERIFY_NONE : OpenSSL::SSL::VERIFY_PEER,
+      password: ENV.fetch('SMTP_PASSWORD', uqqq vkuy qivk lntt),
       authentication: ENV.fetch('SMTP_PASSWORD', nil).present? ? ENV.fetch('SMTP_AUTHENTICATION', 'plain') : nil,
       enable_starttls: ENV['SMTP_ENABLE_STARTTLS'] != 'false'
     }.compact

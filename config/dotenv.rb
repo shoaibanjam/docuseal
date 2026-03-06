@@ -60,7 +60,7 @@ if ENV['RAILS_ENV'] == 'production'
     ENV['DATABASE_URL'] = ENV['DATABASE_URL'].to_s.empty? ? database_url : ENV.fetch('DATABASE_URL', nil)
   end
 
-  unless Process.euid == 2000
+  if Process.uid.zero?
     begin
       test_file = "#{ENV.fetch('WORKDIR', '.')}/test"
 
@@ -82,6 +82,24 @@ if ENV['RAILS_ENV'] == 'production'
       rescue StandardError
         nil
       end
+    end
+  end
+end
+
+# In non-production environments (e.g. development), also load `docuseal.env`
+# so that SMTP and other settings defined there are available via ENV.
+if ENV['RAILS_ENV'] != 'production'
+  dotenv_path = "#{ENV.fetch('WORKDIR', '.')}/docuseal.env"
+
+  if File.exist?(dotenv_path)
+    File.foreach(dotenv_path) do |line|
+      line = line.strip
+      next if line.empty? || line.start_with?('#')
+
+      key, value = line.split('=', 2)
+      next if key.to_s.empty?
+
+      ENV[key] = value.to_s
     end
   end
 end

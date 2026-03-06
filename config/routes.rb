@@ -56,7 +56,7 @@ Rails.application.routes.draw do
   resources :account_custom_fields, only: %i[create]
   resources :user_configs, only: %i[create]
   resources :encrypted_user_configs, only: %i[destroy]
-  resources :timestamp_server, only: %i[create]
+  resources :timestamp_server, only: %i[create] unless Docuseal.multitenant?
   resources :dashboard, only: %i[index]
   resources :setup, only: %i[index create]
   resource :newsletter, only: %i[show update]
@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   end
   resource :user_signature, only: %i[edit update destroy]
   resource :user_initials, only: %i[edit update destroy]
+  resource :account_logo, only: %i[update destroy], controller: 'account_logos'
   resources :submissions_archived, only: %i[index], path: 'submissions/archived'
   resources :submissions, only: %i[index], controller: 'submissions_dashboard'
   resources :submissions, only: %i[show destroy] do
@@ -76,6 +77,7 @@ Rails.application.routes.draw do
   resources :console_redirect, only: %i[index]
   resources :upgrade, only: %i[index], controller: 'console_redirect'
   resources :manage, only: %i[index], controller: 'console_redirect'
+  get 'sign_up' => 'console_redirect#index'
   resource :testing_account, only: %i[show destroy]
   resources :testing_api_settings, only: %i[index]
   resources :submitters_autocomplete, only: %i[index]
@@ -158,6 +160,7 @@ Rails.application.routes.draw do
   resources :send_submission_email, only: %i[create]
 
   resources :submitters, only: %i[], param: 'slug' do
+    get :signed_download_url, on: :member, to: 'submissions_download#signed_download_url'
     resources :download, only: %i[index], controller: 'submissions_download'
     resources :send_email, only: %i[create], controller: 'submitters_send_email'
     resources :debug, only: %i[index], controller: 'submissions_debug' if Rails.env.development?

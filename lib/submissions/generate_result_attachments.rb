@@ -81,10 +81,10 @@ module Submissions
     module_function
 
     # rubocop:disable Metrics
-    def call(submitter)
+    def call(submitter, for_admin: false)
       return generate_detached_signature_attachments(submitter) if detached_signature?(submitter)
 
-      pdfs_index = generate_pdfs(submitter)
+      pdfs_index = generate_pdfs(submitter, for_admin:)
 
       account = submitter.account
       submission = submitter.submission
@@ -97,6 +97,8 @@ module Submissions
 
       result_attachments =
         submission.template_schema.filter_map do |item|
+          next if item.blank? || !item.is_a?(Hash)
+
           pdf = pdfs_index[item['attachment_uuid']]
 
           next if pdf.nil?
@@ -109,9 +111,11 @@ module Submissions
 
           build_pdf_attachment(pdf:, submitter:, pkcs:, tsa_url:,
                                uuid: item['attachment_uuid'],
-                               name: item['name'])
+                               name: item['name'],
+                               for_admin:, submission:)
         end
 
+      submission.admin_result_documents.purge if for_admin
       return ApplicationRecord.no_touching { result_attachments.map { |e| e.tap(&:save!) } } if image_pdfs.size < 2
 
       images_pdf =
@@ -128,23 +132,28 @@ module Submissions
           tsa_url:,
           pkcs:,
           uuid: images_pdf_uuid(original_documents.select(&:image?)),
-          name: submission.name || submission.template.name
+          name: submission.name || submission.template.name,
+          for_admin:,
+          submission:
         )
 
+      submission.admin_result_documents.purge if for_admin
       ApplicationRecord.no_touching do
         (result_attachments + [images_pdf_attachment]).map { |e| e.tap(&:save!) }
       end
     end
 
-    def generate_pdfs(submitter)
+    def generate_pdfs(submitter, for_admin: false)
       configs = submitter.account.account_configs.where(key: [AccountConfig::FLATTEN_RESULT_PDF_KEY,
                                                               AccountConfig::WITH_SIGNATURE_ID,
                                                               AccountConfig::WITH_FILE_LINKS_KEY,
+                                                              AccountConfig::WITH_TIMESTAMP_SECONDS_KEY,
                                                               AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY,
                                                               AccountConfig::WITH_SIGNATURE_ID_REASON_KEY])
 
       with_signature_id = configs.find { |c| c.key == AccountConfig::WITH_SIGNATURE_ID }&.value == true
       is_flatten = configs.find { |c| c.key == AccountConfig::FLATTEN_RESULT_PDF_KEY }&.value != false
+      with_timestamp_seconds = configs.find { |c| c.key == AccountConfig::WITH_TIMESTAMP_SECONDS_KEY }&.value == true
       with_submitter_timezone = configs.find { |c| c.key == AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY }&.value == true
       with_file_links = configs.find { |c| c.key == AccountConfig::WITH_FILE_LINKS_KEY }&.value == true
       with_signature_id_reason =
@@ -162,7 +171,7 @@ module Submissions
 
           pdf.trailer.info[:DocumentID] = document_id
           pdf.pages.each do |page|
-            font_size = (([page.box.width, page.box.height].min / A4_SIZE[0].to_f) * 9).to_i
+            font_size = [(([page.box.width, page.box.height].min / A4_SIZE[0].to_f) * 9).to_i, 4].max
             cnv = page.canvas(type: :overlay)
 
             text =
@@ -195,14 +204,31 @@ module Submissions
       fill_submitter_fields(submitter, submitter.account, pdfs_index, with_signature_id:, is_flatten:,
                                                                       with_submitter_timezone:,
                                                                       with_file_links:,
+<<<<<<< HEAD
+                                                                      with_signature_id_reason:,
+                                                                      for_admin:)
+
+      rasterize_redacted_pages(submitter.submission, pdfs_index) unless for_admin
+
+      pdfs_index
+    end
+
+    def fill_submitter_fields(submitter, account, pdfs_index, with_signature_id:, is_flatten:, with_headings: nil,
+                              with_submitter_timezone: false, with_signature_id_reason: true, with_file_links: nil,
+                              for_admin: false)
+      cell_layouter = HexaPDF::Layout::TextLayouter.new(text_valign: :center, text_align: :center)
+=======
+                                                                      with_timestamp_seconds:,
                                                                       with_signature_id_reason:)
     end
 
     def fill_submitter_fields(submitter, account, pdfs_index, with_signature_id:, is_flatten:, with_headings: nil,
-                              with_submitter_timezone: false, with_signature_id_reason: true, with_file_links: nil)
+                              with_submitter_timezone: false, with_signature_id_reason: true,
+                              with_timestamp_seconds: false, with_file_links: nil)
       cell_layouters = Hash.new do |hash, valign|
         hash[valign] = HexaPDF::Layout::TextLayouter.new(text_valign: valign.to_sym, text_align: :center)
       end
+>>>>>>> master
 
       attachments_data_cache = {}
 
@@ -271,7 +297,7 @@ module Submissions
 
           layouter = HexaPDF::Layout::TextLayouter.new(text_valign:, text_align:, font:, font_size:)
 
-          next if Array.wrap(value).compact_blank.blank?
+          next if Array.wrap(value).compact_blank.blank? && field['type'] != 'redact'
 
           if is_flatten
             begin
@@ -320,13 +346,15 @@ module Submissions
                 timezone = submitter.account.timezone
                 timezone = submitter.timezone || submitter.account.timezone if with_submitter_timezone
 
+                time_format = with_timestamp_seconds ? :detailed : :long
+
                 if with_signature_id_reason || field.dig('preferences', 'reasons').present?
                   "#{"#{I18n.t('reason')}: " if reason_value}#{reason_value || I18n.t('digitally_signed_by')} " \
                     "#{submitter.name}#{" <#{submitter.email}>" if submitter.email.present?}\n" \
-                    "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: :long)} " \
+                    "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: time_format)} " \
                     "#{TimeUtils.timezone_abbr(timezone, attachment.created_at)}"
                 else
-                  "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: :long)} " \
+                  "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: time_format)} " \
                     "#{TimeUtils.timezone_abbr(timezone, attachment.created_at)}"
                 end
               end
@@ -569,7 +597,11 @@ module Submissions
                                                                 fill_color:,
                                                                 font_size:)
 
-              line_height = layouter.fit([text], cell_width, height).lines.first.height
+              line = layouter.fit([text], width, height).lines.first
+
+              line_height = line.height
+
+              cell_width = [line.width, cell_width].max
 
               if preferences_font_size.blank? && line_height > (area['h'] * height)
                 text = HexaPDF::Layout::TextFragment.create(char,
@@ -636,6 +668,17 @@ module Submissions
                 c.stroke
               end
             end
+          when 'redact'
+            next if for_admin
+
+            area_x = area['x'] * width
+            area_y = area['y'] * height
+            area_w = area['w'] * width
+            area_h = area['h'] * height
+
+            canvas.fill_color('black')
+                  .rectangle(area_x, height - area_y - area_h, area_w, area_h)
+                  .fill
           else
             if field['type'] == 'date'
               value = TimeUtils.format_date_string(value, field.dig('preferences', 'format'), locale)
@@ -708,7 +751,7 @@ module Submissions
       pdfs_index
     end
 
-    def build_pdf_attachment(pdf:, submitter:, pkcs:, tsa_url:, uuid:, name:)
+    def build_pdf_attachment(pdf:, submitter:, pkcs:, tsa_url:, uuid:, name:, for_admin: false, submission: nil)
       io = StringIO.new
 
       pdf.trailer.info[:Creator] = info_creator
@@ -757,13 +800,16 @@ module Submissions
         end
       end
 
+      record = for_admin ? submission : submitter
+      attachment_name = for_admin ? 'admin_result_documents' : 'documents'
+
       ActiveStorage::Attachment.new(
         blob: ActiveStorage::Blob.create_and_upload!(io: io.tap(&:rewind), filename: "#{name}.pdf"),
         metadata: { original_uuid: uuid,
                     analyzed: true,
                     sha256: Base64.urlsafe_encode64(Digest::SHA256.digest(io.string)) },
-        name: 'documents',
-        record: submitter
+        name: attachment_name,
+        record:
       )
     end
     # rubocop:enable Metrics
@@ -799,12 +845,21 @@ module Submissions
 
       ActiveRecord::Associations::Preloader.new(records: documents, associations: [:blob]).call
 
-      attachment_uuids = Submissions.filtered_conditions_schema(submission).pluck('attachment_uuid')
+      schema_documents = submission.schema_documents.preload(:blob)
+      schema_items = submission.template_schema || submission.template.schema
+
+      attachment_uuids =
+        schema_items.filter_map do |item|
+          next unless item.is_a?(Hash)
+
+          item['attachment_uuid']
+        end.uniq
+
       attachments_index = documents.index_by { |a| a.metadata['original_uuid'] || a.uuid }
 
       attachment_uuids.each_with_object({}) do |uuid, acc|
         attachment = attachments_index[uuid]
-        attachment ||= submission.schema_documents.preload(:blob).find { |a| a.uuid == uuid }
+        attachment ||= schema_documents.find { |a| a.uuid == uuid || a.metadata['original_uuid'] == uuid }
 
         next unless attachment
 
@@ -907,6 +962,81 @@ module Submissions
       io.rewind
 
       HexaPDF::Document.new(io:)
+    end
+
+    REDACT_RENDER_SCALE = 2
+
+    def pages_with_redactions(submission)
+      fields = submission.template_fields || submission.template.fields
+      acc = Hash.new { |h, k| h[k] = [] }
+      fields.each do |field|
+        next unless field['type'] == 'redact'
+
+        field.fetch('areas', []).each do |area|
+          next unless area['attachment_uuid'].present? && area['page'].present?
+
+          acc[area['attachment_uuid']] << area['page']
+        end
+      end
+      acc.transform_values { |a| a.uniq.sort.reverse }
+    end
+
+    def rasterize_redacted_pages(submission, pdfs_index)
+      redacted_by_uuid = pages_with_redactions(submission)
+
+      pdfs_index.each_key do |attachment_uuid|
+        page_indices = redacted_by_uuid[attachment_uuid]
+        next if page_indices.blank?
+
+        pdf = pdfs_index[attachment_uuid]
+        next unless pdf.is_a?(HexaPDF::Document)
+
+        pdfs_index[attachment_uuid] = build_pdf_with_rasterized_redactions(pdf, page_indices)
+      end
+    end
+
+    def build_pdf_with_rasterized_redactions(original_pdf, redacted_page_indices)
+      redacted_set = redacted_page_indices.to_set
+      io = StringIO.new
+      original_pdf.write(io, incremental: false, validate: false)
+      pdf_bytes = io.string
+
+      result = HexaPDF::Document.new
+      original_pdf.pages.each_with_index do |page, page_index|
+        page_to_add = if redacted_set.include?(page_index)
+                        rasterized_page_from_pdf_bytes(pdf_bytes, page_index, page.box.width, page.box.height)
+                      end
+        page_to_add ||= page
+        result.pages.insert(page_index, result.import(page_to_add))
+      end
+      result
+    rescue Pdfium::PdfiumError, Vips::Error => e
+      Rollbar.error(e) if defined?(Rollbar)
+      original_pdf
+    end
+
+    def rasterized_page_from_pdf_bytes(pdf_bytes, page_index, page_width_pt, page_height_pt)
+      pdfium_doc = Pdfium::Document.open_bytes(pdf_bytes)
+      pdfium_page = pdfium_doc.get_page(page_index)
+      data, render_width, render_height = pdfium_page.render_to_bitmap(scale: REDACT_RENDER_SCALE)
+      pdfium_page.close
+      pdfium_doc.close
+
+      vips_image = Vips::Image.new_from_memory(data, render_width, render_height, 4, :uchar)
+      vips_image = vips_image.copy(interpretation: :srgb)
+      png_data = vips_image.write_to_buffer('.png')
+
+      new_doc = HexaPDF::Document.new
+      new_page = new_doc.pages.add
+      new_page.box.width = page_width_pt
+      new_page.box.height = page_height_pt
+      new_page.canvas.image(
+        StringIO.new(png_data),
+        at: [0, 0],
+        width: page_width_pt,
+        height: page_height_pt
+      )
+      new_page
     end
 
     def sign_reason(name)

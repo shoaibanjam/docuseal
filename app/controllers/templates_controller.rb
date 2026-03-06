@@ -19,7 +19,7 @@ class TemplatesController < ApplicationController
                     submissions.order(id: :desc)
                   end
 
-    @pagy, @submissions = pagy_auto(submissions.preload(:template_accesses, submitters: :start_form_submission_events))
+    @pagy, @submissions = pagy_auto(submissions.preload(submitters: :start_form_submission_events))
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path
   end
@@ -97,7 +97,8 @@ class TemplatesController < ApplicationController
       :name,
       { schema: [[:attachment_uuid, :google_drive_file_id, :name,
                   { conditions: [%i[field_uuid value action operation]] }]],
-        submitters: [%i[name uuid is_requester linked_to_uuid invite_by_uuid optional_invite_by_uuid email order]],
+        submitters: [%i[name uuid is_requester linked_to_uuid invite_via_field_uuid
+                        invite_by_uuid optional_invite_by_uuid email order]],
         fields: [[:uuid, :submitter_uuid, :name, :type,
                   :required, :readonly, :default_value,
                   :title, :description, :prefillable,

@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '4.0.1'
+ruby '~> 3.2.2'
 
 gem 'arabic-letter-connector', require: false
 gem 'aws-sdk-s3', require: false
@@ -33,7 +33,6 @@ gem 'pretender'
 gem 'puma', require: false
 gem 'rack'
 gem 'rails'
-gem 'rails_autolink'
 gem 'rails-i18n'
 gem 'rotp'
 gem 'rouge', require: false
