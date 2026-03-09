@@ -144,16 +144,21 @@ module Submissions
     end
 
     def generate_pdfs(submitter, for_admin: false)
-      configs = submitter.account.account_configs.where(key: [AccountConfig::FLATTEN_RESULT_PDF_KEY,
-                                                              AccountConfig::WITH_SIGNATURE_ID,
-                                                              AccountConfig::WITH_FILE_LINKS_KEY,
-                                                              AccountConfig::WITH_TIMESTAMP_SECONDS_KEY,
-                                                              AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY,
-                                                              AccountConfig::WITH_SIGNATURE_ID_REASON_KEY])
+      configs = submitter.account.account_configs.where(key: [
+                                                          AccountConfig::FLATTEN_RESULT_PDF_KEY,
+                                                          AccountConfig::WITH_SIGNATURE_ID,
+                                                          AccountConfig::WITH_FILE_LINKS_KEY,
+                                                          # Use string key here to avoid depending on newer
+                                                          # AccountConfig constants that may not exist in
+                                                          # older Docker images.
+                                                          'with_timestamp_seconds',
+                                                          AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY,
+                                                          AccountConfig::WITH_SIGNATURE_ID_REASON_KEY
+                                                        ])
 
       with_signature_id = configs.find { |c| c.key == AccountConfig::WITH_SIGNATURE_ID }&.value == true
       is_flatten = configs.find { |c| c.key == AccountConfig::FLATTEN_RESULT_PDF_KEY }&.value != false
-      configs.find { |c| c.key == AccountConfig::WITH_TIMESTAMP_SECONDS_KEY }&.value
+      with_timestamp_seconds = configs.find { |c| c.key == 'with_timestamp_seconds' }&.value == true
       with_submitter_timezone = configs.find { |c| c.key == AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY }&.value == true
       with_file_links = configs.find { |c| c.key == AccountConfig::WITH_FILE_LINKS_KEY }&.value == true
       with_signature_id_reason =
