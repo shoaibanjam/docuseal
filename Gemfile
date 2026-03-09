@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 3.2.2'
+ruby '>= 3.2.2'
 
 gem 'arabic-letter-connector', require: false
 gem 'aws-sdk-s3', require: false

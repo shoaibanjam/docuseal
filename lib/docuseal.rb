@@ -62,7 +62,11 @@ module Docuseal
   end
 
   def advanced_formats?
-    # Enable advanced formats (DOCX, etc.) in development or if multitenant
+    # Enable advanced formats (DOCX, DOC, XLSX, etc.).
+    # For self-hosted Docker we allow turning these on explicitly
+    # via ADVANCED_FORMATS=true to avoid depending on environment.
+    return true if ENV['ADVANCED_FORMATS'] == 'true'
+
     Rails.env.development? || multitenant?
   end
 
