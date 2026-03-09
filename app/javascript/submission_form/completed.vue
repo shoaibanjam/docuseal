@@ -228,15 +228,15 @@ export default {
           const isMobileSafariIos = 'ontouchstart' in window && navigator.maxTouchPoints > 0 && /AppleWebKit/i.test(navigator.userAgent)
           const isSafariIos = isMobileSafariIos || /iPhone|iPad|iPod/i.test(navigator.userAgent)
 
-            if (isSafariIos && urls.length > 1) {
-              this.downloadSafariIos(urls)
-            } else {
-              this.downloadUrls(urls)
-            }
+          if (isSafariIos && urls.length > 1) {
+            this.downloadSafariIos(urls)
           } else {
-            alert(this.t('failed_to_download_files'))
+            this.downloadUrls(urls)
           }
-        })
+        } else {
+          alert(this.t('failed_to_download_files'))
+        }
+      })
         .catch(() => {
           alert(this.t('failed_to_download_files'))
           this.isDownloading = false

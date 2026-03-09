@@ -16,7 +16,7 @@ module ActionMailerConfigsInterceptor
     end
 
     if Rails.env.production? && Rails.application.config.action_mailer.delivery_method
-      from_candidates = ENV['SMTP_FROM'].to_s.split(',').map(&:strip).reject(&:blank?)
+      from_candidates = ENV['SMTP_FROM'].to_s.split(',').map(&:strip).compact_blank
       from = from_candidates.sample.presence || Array(message.from).first
 
       if from.present? && from.match?(User::FULL_EMAIL_REGEXP)

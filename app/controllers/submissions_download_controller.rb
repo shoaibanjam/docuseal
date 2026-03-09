@@ -53,9 +53,7 @@ class SubmissionsDownloadController < ApplicationController
 
     Submissions::EnsureResultGenerated.call(last_submitter)
 
-    if last_submitter.completed_at < TTL.ago && !current_user_submitter?(last_submitter)
-      return head :not_found
-    end
+    return head :not_found if last_submitter.completed_at < TTL.ago && !current_user_submitter?(last_submitter)
 
     url = submitter_download_index_url(
       @submitter.slug,

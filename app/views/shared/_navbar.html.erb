@@ -10,15 +10,15 @@
           <% is_templates = request.path == root_path || request.path.start_with?('/templates') || request.path.start_with?('/folders') %>
           <% is_submissions = request.path.start_with?('/submissions') %>
           <% is_settings = request.path.start_with?('/settings') %>
-          
+
           <%= link_to root_path, class: "font-medium text-base transition-colors duration-200 #{is_templates ? 'text-primary' : 'text-base-content hover:text-primary'}" do %>
             <%= t('templates') %>
           <% end %>
-          
+
           <%= link_to submissions_path, class: "font-medium text-base transition-colors duration-200 #{is_submissions ? 'text-primary' : 'text-base-content hover:text-primary'}" do %>
             <%= t('submissions') %>
           <% end %>
-          
+
           <div class="dropdown dropdown-hover">
             <label tabindex="0" class="font-medium text-base transition-colors duration-200 <%= is_settings ? 'text-primary' : 'text-base-content hover:text-primary' %> cursor-pointer">
               <%= t('settings') %>

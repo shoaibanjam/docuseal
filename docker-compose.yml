@@ -1,13 +1,50 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Build a local image so we can include additional
+    # system dependencies like LibreOffice for DOCX upload.
+    build: .
     ports:
       - 9090:3000
     volumes:
       - ./docuseal:/data/docuseal
+      - ./lib/docuseal.rb:/app/lib/docuseal.rb
+      - ./lib/accounts.rb:/app/lib/accounts.rb
+      - ./lib/submissions/generate_result_attachments.rb:/app/lib/submissions/generate_result_attachments.rb
+      - ./app/controllers/esign_settings_controller.rb:/app/app/controllers/esign_settings_controller.rb
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/docuseal
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
+      - RAILS_ENV=production
+      - FORCE_SSL=${HOST}
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
+      # Bypass corrupted EncryptedConfig; set to your public URL (e.g. https://yourhost.com)
+      - APP_URL=${APP_URL:-http://localhost:3000}
+      # Enable DOCX/DOC and other advanced formats in self-hosted Docker
+      - ADVANCED_FORMATS=true
+
+  postgres:
+    image: postgres:18
+    volumes:
+      - './pg_data:/var/lib/postgresql/18/docker'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: docuseal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  caddy:
+    image: caddy:latest
+    command: caddy reverse-proxy --from $HOST --to app:3000
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    volumes:
+      - ./caddy:/data/caddy
+    environment:
+      - HOST=${HOST}

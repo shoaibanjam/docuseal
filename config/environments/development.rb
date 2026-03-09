@@ -59,14 +59,14 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    address:              ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
-    port:                 ENV.fetch('SMTP_PORT', 587),
-    domain:               ENV.fetch('SMTP_DOMAIN', 'gmail.com'),
-    user_name:            ENV.fetch('SMTP_USERNAME', nil),
-    password:             ENV.fetch('SMTP_PASSWORD', nil),
-    authentication:       (ENV['SMTP_PASSWORD'].present? ? ENV.fetch('SMTP_AUTHENTICATION', 'plain') : nil),
+    address: ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
+    port: ENV.fetch('SMTP_PORT', 587),
+    domain: ENV.fetch('SMTP_DOMAIN', 'gmail.com'),
+    user_name: ENV.fetch('SMTP_USERNAME', nil),
+    password: ENV.fetch('SMTP_PASSWORD', nil),
+    authentication: (ENV['SMTP_PASSWORD'].present? ? ENV.fetch('SMTP_AUTHENTICATION', 'plain') : nil),
     enable_starttls_auto: ENV['SMTP_ENABLE_STARTTLS_AUTO'] != 'false',
-    openssl_verify_mode:  OpenSSL::SSL::VERIFY_NONE
+    openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
   }.compact
 
   config.action_mailer.perform_caching = false

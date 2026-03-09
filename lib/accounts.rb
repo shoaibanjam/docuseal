@@ -116,10 +116,23 @@ module Accounts
       else
         return Docuseal.default_pkcs if Docuseal::CERTS.present?
 
-        EncryptedConfig.find_by(account:, key: EncryptedConfig::ESIGN_CERTS_KEY)&.value ||
-          EncryptedConfig.find_by(key: EncryptedConfig::ESIGN_CERTS_KEY).value
+        data =
+          EncryptedConfig.find_by(account:, key: EncryptedConfig::ESIGN_CERTS_KEY)&.value ||
+          EncryptedConfig.find_by(key: EncryptedConfig::ESIGN_CERTS_KEY)&.value
+
+        # No e-sign certs configured for this account or globally.
+        # In this case we simply skip signing and return nil, allowing
+        # result PDFs to be generated without a digital signature.
+        return nil if data.blank?
+
+        data
       end
 
+    # At this point we either have explicit e-sign cert configuration
+    # (a Hash with certificate data) or a default PKCS#12 object.
+    return cert_data unless cert_data.is_a?(Hash)
+
+    # Prefer a custom default certificate entry when present.
     if (default_cert = cert_data['custom']&.find { |e| e['status'] == 'default' })
       if default_cert['name'] == Docuseal::AATL_CERT_NAME
         Docuseal.default_pkcs
@@ -157,6 +170,10 @@ module Accounts
       else
         EncryptedConfig.find_by(key: EncryptedConfig::ESIGN_CERTS_KEY)&.value || {}
       end
+
+    # If there is no base certificate data configured, fall back to any
+    # explicitly trusted certificates and skip building a PKCS bundle.
+    return Docuseal.trusted_certs if cert_data.blank? || cert_data['cert'].blank?
 
     default_pkcs = GenerateCertificate.load_pkcs(cert_data)
 

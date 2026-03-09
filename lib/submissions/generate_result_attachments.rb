@@ -144,16 +144,21 @@ module Submissions
     end
 
     def generate_pdfs(submitter, for_admin: false)
-      configs = submitter.account.account_configs.where(key: [AccountConfig::FLATTEN_RESULT_PDF_KEY,
-                                                              AccountConfig::WITH_SIGNATURE_ID,
-                                                              AccountConfig::WITH_FILE_LINKS_KEY,
-                                                              AccountConfig::WITH_TIMESTAMP_SECONDS_KEY,
-                                                              AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY,
-                                                              AccountConfig::WITH_SIGNATURE_ID_REASON_KEY])
+      configs = submitter.account.account_configs.where(key: [
+                                                          AccountConfig::FLATTEN_RESULT_PDF_KEY,
+                                                          AccountConfig::WITH_SIGNATURE_ID,
+                                                          AccountConfig::WITH_FILE_LINKS_KEY,
+                                                          # Use string key here to avoid depending on newer
+                                                          # AccountConfig constants that may not exist in
+                                                          # older Docker images.
+                                                          'with_timestamp_seconds',
+                                                          AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY,
+                                                          AccountConfig::WITH_SIGNATURE_ID_REASON_KEY
+                                                        ])
 
       with_signature_id = configs.find { |c| c.key == AccountConfig::WITH_SIGNATURE_ID }&.value == true
       is_flatten = configs.find { |c| c.key == AccountConfig::FLATTEN_RESULT_PDF_KEY }&.value != false
-      with_timestamp_seconds = configs.find { |c| c.key == AccountConfig::WITH_TIMESTAMP_SECONDS_KEY }&.value == true
+      with_timestamp_seconds = configs.find { |c| c.key == 'with_timestamp_seconds' }&.value == true
       with_submitter_timezone = configs.find { |c| c.key == AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY }&.value == true
       with_file_links = configs.find { |c| c.key == AccountConfig::WITH_FILE_LINKS_KEY }&.value == true
       with_signature_id_reason =
@@ -204,7 +209,6 @@ module Submissions
       fill_submitter_fields(submitter, submitter.account, pdfs_index, with_signature_id:, is_flatten:,
                                                                       with_submitter_timezone:,
                                                                       with_file_links:,
-<<<<<<< HEAD
                                                                       with_signature_id_reason:,
                                                                       for_admin:)
 
@@ -217,18 +221,6 @@ module Submissions
                               with_submitter_timezone: false, with_signature_id_reason: true, with_file_links: nil,
                               for_admin: false)
       cell_layouter = HexaPDF::Layout::TextLayouter.new(text_valign: :center, text_align: :center)
-=======
-                                                                      with_timestamp_seconds:,
-                                                                      with_signature_id_reason:)
-    end
-
-    def fill_submitter_fields(submitter, account, pdfs_index, with_signature_id:, is_flatten:, with_headings: nil,
-                              with_submitter_timezone: false, with_signature_id_reason: true,
-                              with_timestamp_seconds: false, with_file_links: nil)
-      cell_layouters = Hash.new do |hash, valign|
-        hash[valign] = HexaPDF::Layout::TextLayouter.new(text_valign: valign.to_sym, text_align: :center)
-      end
->>>>>>> master
 
       attachments_data_cache = {}
 
