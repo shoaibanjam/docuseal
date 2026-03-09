@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       boxShadow: {
-        'soft': '0 2px 8px rgba(38, 56, 84, 0.06)',
+        soft: '0 2px 8px rgba(38, 56, 84, 0.06)',
         'soft-lg': '0 4px 16px rgba(38, 56, 84, 0.08)',
         'soft-xl': '0 8px 24px rgba(38, 56, 84, 0.1)',
         'focus-ring': '0 0 0 3px rgba(31, 224, 179, 0.25)',

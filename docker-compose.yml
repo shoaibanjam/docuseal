@@ -8,9 +8,8 @@ services:
       - 3000:3000
     volumes:
       - ./docuseal:/data/docuseal
-      # Only override the one file we changed; do NOT replace all of /app/lib
-      # (the image ships Puma plugins under /app/lib).
       - ./lib/docuseal.rb:/app/lib/docuseal.rb
+      - ./app/controllers/esign_settings_controller.rb:/app/app/controllers/esign_settings_controller.rb
     environment:
       - RAILS_ENV=production
       - FORCE_SSL=${HOST}

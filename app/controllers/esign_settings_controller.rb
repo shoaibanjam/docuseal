@@ -18,7 +18,19 @@ class EsignSettingsController < ApplicationController
   authorize_resource :encrypted_config, only: %i[update destroy show]
 
   def show
-    cert_data = @encrypted_config.value || {}
+    cert_data =
+      begin
+        @encrypted_config.value || {}
+      rescue ActiveRecord::Encryption::Errors::Decryption, OpenSSL::Cipher::CipherError => e
+        Rollbar.error(e) if defined?(Rollbar)
+
+        # Reset corrupted e-sign certificate config and start from a clean state
+        @encrypted_config.destroy! if @encrypted_config.persisted?
+        @encrypted_config = EncryptedConfig.new(account: current_account,
+                                                key: EncryptedConfig::ESIGN_CERTS_KEY,
+                                                value: {})
+        {}
+      end
 
     default_pkcs = GenerateCertificate.load_pkcs(cert_data) if cert_data['cert'].present?
 
