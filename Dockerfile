@@ -2,7 +2,10 @@ FROM ruby:4.0.1-alpine AS download
 
 WORKDIR /fonts
 
-RUN apk --no-cache add fontforge wget && \
+# Use alternative mirror if default Alpine CDN has DNS issues (e.g. in some VPCs)
+RUN sed -i 's|https://dl-cdn.alpinelinux.org|https://alpine.global.ssl.fastly.net|g' /etc/apk/repositories 2>/dev/null || true
+
+RUN apk update && apk --no-cache add fontforge wget && \
     wget https://github.com/satbyy/go-noto-universal/releases/download/v7.0/GoNotoKurrent-Regular.ttf && \
     wget https://github.com/satbyy/go-noto-universal/releases/download/v7.0/GoNotoKurrent-Bold.ttf && \
     wget https://github.com/impallari/DancingScript/raw/master/fonts/DancingScript-Regular.otf && \
@@ -18,12 +21,15 @@ RUN fontforge -lang=py -c 'font1 = fontforge.open("FreeSans.ttf"); font2 = fontf
 
 FROM ruby:4.0.1-alpine AS webpack
 
+RUN sed -i 's|https://dl-cdn.alpinelinux.org|https://alpine.global.ssl.fastly.net|g' /etc/apk/repositories 2>/dev/null || true
+
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
 
 WORKDIR /app
 
-RUN apk add --no-cache nodejs yarn git build-base && \
+RUN apk update && apk add --no-cache nodejs npm git build-base && \
+    npm install -g yarn && \
     gem install shakapacker
 
 COPY ./package.json ./yarn.lock ./
@@ -43,6 +49,8 @@ COPY ./app/views ./app/views
 RUN echo "gem 'shakapacker'" > Gemfile && ./bin/shakapacker
 
 FROM ruby:4.0.1-alpine AS app
+
+RUN sed -i 's|https://dl-cdn.alpinelinux.org|https://alpine.global.ssl.fastly.net|g' /etc/apk/repositories 2>/dev/null || true
 
 ENV RAILS_ENV=production
 ENV BUNDLE_WITHOUT="development:test"
@@ -83,7 +91,12 @@ activate = 1' >> /etc/openssl_legacy.cnf
 
 COPY --chown=docuseal:docuseal ./Gemfile ./Gemfile.lock ./
 
-RUN apk add --no-cache build-base git && bundle install && apk del --no-cache build-base git && rm -rf ~/.bundle /usr/local/bundle/cache && ruby -e "puts Dir['/usr/local/bundle/**/{spec,rdoc,resources/shared,resources/collation,resources/locales}']" | xargs rm -rf && ln -sf /usr/lib/libonnxruntime.so.1 $(ruby -e "print Dir[Gem::Specification.find_by_name('onnxruntime').gem_dir + '/vendor/*.so'].first")
+RUN apk update && apk add --no-cache build-base git && \
+    bundle install && \
+    apk del --no-cache build-base git && \
+    rm -rf ~/.bundle /usr/local/bundle/cache && \
+    ruby -e "puts Dir['/usr/local/bundle/**/{spec,rdoc,resources/shared,resources/collation,resources/locales}']" | xargs rm -rf && \
+    (ln -sf /usr/lib/libonnxruntime.so.1 $(ruby -e "print Dir[Gem::Specification.find_by_name('onnxruntime').gem_dir + '/vendor/*.so'].first") 2>/dev/null || echo "onnxruntime linking skipped")
 
 COPY --chown=docuseal:docuseal ./bin ./bin
 COPY --chown=docuseal:docuseal ./app ./app

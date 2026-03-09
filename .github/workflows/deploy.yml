@@ -1,0 +1,72 @@
+name: Deploy (master)
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-master
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  DEPLOY_HOST: 182.191.78.202
+  DEPLOY_USER: cybros
+  DEPLOY_PATH: /var/www/docuseal
+  DEPLOY_COMPOSE_FILE: docker-compose.yml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+
+      - name: Trust host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+
+      - name: Notify Slack – Start Deployment
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": ":rocket: *Starting DocuSeal deployment to Production* on branch `${{ github.ref_name }}` by `${{ github.actor }}`"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Deploy via SSH
+        run: |
+          set -e
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "cd \"$DEPLOY_PATH\" && docker compose -f \"$DEPLOY_COMPOSE_FILE\" up -d --force-recreate && docker volume prune -f"
+
+      - name: Notify Slack – Deployment Succeeded
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": ":white_check_mark: *DocuSeal deployment to Production successful!* :tada:\nRepository: `${{ github.repository }}`\nBranch: `${{ github.ref_name }}`\nTriggered by: `${{ github.actor }}`\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View workflow run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack – Deployment Failed
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": ":x: *DocuSeal deployment to Production failed!* :warning:\nPlease review the workflow logs.\nRepository: `${{ github.repository }}`\nBranch: `${{ github.ref_name }}`\nTriggered by: `${{ github.actor }}`\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View workflow run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

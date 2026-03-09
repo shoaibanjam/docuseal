@@ -7,7 +7,7 @@ services:
     # system dependencies like LibreOffice for DOCX upload.
     build: .
     ports:
-      - 3000:3000
+      - 9090:3000
     volumes:
       - ./docuseal:/data/docuseal
       - ./lib/docuseal.rb:/app/lib/docuseal.rb
