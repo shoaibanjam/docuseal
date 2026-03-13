@@ -1,29 +1,35 @@
-FROM ruby:3.4.2-alpine AS download
+FROM ruby:4.0.1-alpine AS download
 
 WORKDIR /fonts
 
-RUN apk --no-cache add fontforge wget && \
+# Use alternative mirror if default Alpine CDN has DNS issues (e.g. in some VPCs)
+RUN sed -i 's|https://dl-cdn.alpinelinux.org|https://alpine.global.ssl.fastly.net|g' /etc/apk/repositories 2>/dev/null || true
+
+RUN apk update && apk --no-cache add fontforge wget && \
     wget https://github.com/satbyy/go-noto-universal/releases/download/v7.0/GoNotoKurrent-Regular.ttf && \
     wget https://github.com/satbyy/go-noto-universal/releases/download/v7.0/GoNotoKurrent-Bold.ttf && \
     wget https://github.com/impallari/DancingScript/raw/master/fonts/DancingScript-Regular.otf && \
     wget https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io/fonts/NotoSansSymbols2/hinted/ttf/NotoSansSymbols2-Regular.ttf && \
     wget https://github.com/Maxattax97/gnu-freefont/raw/master/ttf/FreeSans.ttf && \
     wget https://github.com/impallari/DancingScript/raw/master/OFL.txt && \
-    wget -O /model.onnx "https://github.com/docusealco/fields-detection/releases/download/2.1.0/model_704_int8.onnx" && \
+    wget -O /model.onnx "https://github.com/docusealco/fields-detection/releases/download/2.0.0/model_704_int8.onnx" && \
     wget -O pdfium-linux.tgz "https://github.com/docusealco/pdfium-binaries/releases/latest/download/pdfium-linux-$(uname -m | sed 's/x86_64/x64/;s/aarch64/arm64/').tgz" && \
     mkdir -p /pdfium-linux && \
     tar -xzf pdfium-linux.tgz -C /pdfium-linux
 
 RUN fontforge -lang=py -c 'font1 = fontforge.open("FreeSans.ttf"); font2 = fontforge.open("NotoSansSymbols2-Regular.ttf"); font1.mergeFonts(font2); font1.generate("FreeSans.ttf")'
 
-FROM ruby:3.4.2-alpine AS webpack
+FROM ruby:4.0.1-alpine AS webpack
+
+RUN sed -i 's|https://dl-cdn.alpinelinux.org|https://alpine.global.ssl.fastly.net|g' /etc/apk/repositories 2>/dev/null || true
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
 
 WORKDIR /app
 
-RUN apk add --no-cache nodejs yarn git build-base && \
+RUN apk update && apk add --no-cache nodejs npm git build-base && \
+    npm install -g yarn && \
     gem install shakapacker
 
 COPY ./package.json ./yarn.lock ./
@@ -42,16 +48,32 @@ COPY ./app/views ./app/views
 
 RUN echo "gem 'shakapacker'" > Gemfile && ./bin/shakapacker
 
-FROM ruby:3.4.2-alpine AS app
+FROM ruby:4.0.1-alpine AS app
+
+RUN sed -i 's|https://dl-cdn.alpinelinux.org|https://alpine.global.ssl.fastly.net|g' /etc/apk/repositories 2>/dev/null || true
 
 ENV RAILS_ENV=production
 ENV BUNDLE_WITHOUT="development:test"
 ENV LD_PRELOAD=/lib/libgcompat.so.0
 ENV OPENSSL_CONF=/etc/openssl_legacy.cnf
+ENV VIPS_MAX_COORD=15000
 
 WORKDIR /app
 
-RUN apk add --no-cache sqlite-dev libpq-dev mariadb-dev vips-dev yaml-dev redis libheif vips-heif gcompat ttf-freefont && mkdir /fonts && rm /usr/share/fonts/freefont/FreeSans.otf
+# Core runtime dependencies plus LibreOffice for DOCX/DOC/XLSX -> PDF conversion
+RUN apk add --no-cache \
+      sqlite-dev \
+      libpq-dev \
+      vips-dev \
+      yaml-dev \
+      redis \
+      libheif \
+      vips-heif \
+      gcompat \
+      ttf-freefont \
+      onnxruntime \
+      libreoffice \
+    && mkdir /fonts && rm /usr/share/fonts/freefont/FreeSans.otf
 
 RUN addgroup -g 2000 docuseal && adduser -u 2000 -G docuseal -s /bin/sh -D -h /home/docuseal docuseal
 
@@ -69,9 +91,12 @@ activate = 1' >> /etc/openssl_legacy.cnf
 
 COPY --chown=docuseal:docuseal ./Gemfile ./Gemfile.lock ./
 
-RUN apk add --no-cache build-base && bundle install && apk del --no-cache build-base && rm -rf ~/.bundle /usr/local/bundle/cache && ruby -e "puts Dir['/usr/local/bundle/**/{spec,rdoc,resources/shared,resources/collation,resources/locales}']" | xargs rm -rf && ln -sf /usr/lib/libonnxruntime.so.1 $(ruby -e "print Dir[Gem::Specification.find_by_name('onnxruntime').gem_dir + '/vendor/*.so'].first")
-
-RUN echo 'https://dl-cdn.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories && echo 'https://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories && apk add --no-cache onnxruntime
+RUN apk update && apk add --no-cache build-base git && \
+    bundle install && \
+    apk del --no-cache build-base git && \
+    rm -rf ~/.bundle /usr/local/bundle/cache && \
+    ruby -e "puts Dir['/usr/local/bundle/**/{spec,rdoc,resources/shared,resources/collation,resources/locales}']" | xargs rm -rf && \
+    (ln -sf /usr/lib/libonnxruntime.so.1 $(ruby -e "print Dir[Gem::Specification.find_by_name('onnxruntime').gem_dir + '/vendor/*.so'].first") 2>/dev/null || echo "onnxruntime linking skipped")
 
 COPY --chown=docuseal:docuseal ./bin ./bin
 COPY --chown=docuseal:docuseal ./app ./app
@@ -81,7 +106,7 @@ COPY --chown=docuseal:docuseal ./log ./log
 COPY --chown=docuseal:docuseal ./lib ./lib
 COPY --chown=docuseal:docuseal ./public ./public
 COPY --chown=docuseal:docuseal ./tmp ./tmp
-COPY --chown=docuseal:docuseal LICENSE README.md Rakefile config.ru .version ./
+COPY --chown=docuseal:docuseal LICENSE LICENSE_ADDITIONAL_TERMS README.md Rakefile config.ru .version ./
 COPY --chown=docuseal:docuseal .version ./public/version
 
 COPY --chown=docuseal:docuseal --from=download /fonts/GoNotoKurrent-Regular.ttf /fonts/GoNotoKurrent-Bold.ttf /fonts/DancingScript-Regular.otf /fonts/OFL.txt /fonts

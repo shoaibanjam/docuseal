@@ -62,7 +62,11 @@ module Docuseal
   end
 
   def advanced_formats?
-    # Enable advanced formats (DOCX, etc.) in development or if multitenant
+    # Enable advanced formats (DOCX, DOC, XLSX, etc.).
+    # For self-hosted Docker we allow turning these on explicitly
+    # via ADVANCED_FORMATS=true to avoid depending on environment.
+    return true if ENV['ADVANCED_FORMATS'] == 'true'
+
     Rails.env.development? || multitenant?
   end
 
@@ -110,9 +114,20 @@ module Docuseal
     return DEFAULT_URL_OPTIONS if multitenant?
 
     @default_url_options ||= begin
-      value = EncryptedConfig.find_by(key: EncryptedConfig::APP_URL_KEY)&.value if ENV['APP_URL'].blank?
+      value =
+        if ENV['APP_URL'].blank?
+          begin
+            EncryptedConfig.find_by(key: EncryptedConfig::APP_URL_KEY)&.value
+          rescue ActiveRecord::Encryption::Errors::Decryption, OpenSSL::Cipher::CipherError
+            nil
+          end
+        end
+
       value ||= DEFAULT_APP_URL
       url = Addressable::URI.parse(value)
+      { host: url.host, port: url.port, protocol: url.scheme }
+    rescue ActiveRecord::Encryption::Errors::Decryption, OpenSSL::Cipher::CipherError
+      url = Addressable::URI.parse(DEFAULT_APP_URL)
       { host: url.host, port: url.port, protocol: url.scheme }
     end
   end

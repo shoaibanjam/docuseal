@@ -3,9 +3,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    image: docuseal/docuseal:latest
+    build: .
     ports:
-      - 3000:3000
+      - 9090:3000
     volumes:
       - ./docuseal:/data/docuseal
       - ./lib/docuseal.rb:/app/lib/docuseal.rb

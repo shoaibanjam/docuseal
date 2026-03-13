@@ -144,14 +144,21 @@ module Submissions
     end
 
     def generate_pdfs(submitter, for_admin: false)
-      configs = submitter.account.account_configs.where(key: [AccountConfig::FLATTEN_RESULT_PDF_KEY,
-                                                              AccountConfig::WITH_SIGNATURE_ID,
-                                                              AccountConfig::WITH_FILE_LINKS_KEY,
-                                                              AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY,
-                                                              AccountConfig::WITH_SIGNATURE_ID_REASON_KEY])
+      configs = submitter.account.account_configs.where(key: [
+                                                          AccountConfig::FLATTEN_RESULT_PDF_KEY,
+                                                          AccountConfig::WITH_SIGNATURE_ID,
+                                                          AccountConfig::WITH_FILE_LINKS_KEY,
+                                                          # Use string key here to avoid depending on newer
+                                                          # AccountConfig constants that may not exist in
+                                                          # older Docker images.
+                                                          'with_timestamp_seconds',
+                                                          AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY,
+                                                          AccountConfig::WITH_SIGNATURE_ID_REASON_KEY
+                                                        ])
 
       with_signature_id = configs.find { |c| c.key == AccountConfig::WITH_SIGNATURE_ID }&.value == true
       is_flatten = configs.find { |c| c.key == AccountConfig::FLATTEN_RESULT_PDF_KEY }&.value != false
+      with_timestamp_seconds = configs.find { |c| c.key == 'with_timestamp_seconds' }&.value == true
       with_submitter_timezone = configs.find { |c| c.key == AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY }&.value == true
       with_file_links = configs.find { |c| c.key == AccountConfig::WITH_FILE_LINKS_KEY }&.value == true
       with_signature_id_reason =
@@ -169,7 +176,7 @@ module Submissions
 
           pdf.trailer.info[:DocumentID] = document_id
           pdf.pages.each do |page|
-            font_size = (([page.box.width, page.box.height].min / A4_SIZE[0].to_f) * 9).to_i
+            font_size = [(([page.box.width, page.box.height].min / A4_SIZE[0].to_f) * 9).to_i, 4].max
             cnv = page.canvas(type: :overlay)
 
             text =
@@ -251,7 +258,7 @@ module Submissions
           width = page.box.width
           height = page.box.height
 
-          preferences_font_size = field.dig('preferences', 'font_size').then { |num| num.present? ? num.to_i : nil }
+          preferences_font_size = field.dig('preferences', 'font_size').then { |num| num.presence&.to_i }
 
           font_size   = preferences_font_size
           font_size ||= (([page.box.width, page.box.height].min / A4_SIZE[0].to_f) * FONT_SIZE).to_i
@@ -331,13 +338,15 @@ module Submissions
                 timezone = submitter.account.timezone
                 timezone = submitter.timezone || submitter.account.timezone if with_submitter_timezone
 
+                time_format = with_timestamp_seconds ? :detailed : :long
+
                 if with_signature_id_reason || field.dig('preferences', 'reasons').present?
                   "#{"#{I18n.t('reason')}: " if reason_value}#{reason_value || I18n.t('digitally_signed_by')} " \
                     "#{submitter.name}#{" <#{submitter.email}>" if submitter.email.present?}\n" \
-                    "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: :long)} " \
+                    "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: time_format)} " \
                     "#{TimeUtils.timezone_abbr(timezone, attachment.created_at)}"
                 else
-                  "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: :long)} " \
+                  "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: time_format)} " \
                     "#{TimeUtils.timezone_abbr(timezone, attachment.created_at)}"
                 end
               end
@@ -563,6 +572,8 @@ module Submissions
             )
           when ->(type) { type == 'cells' && !area['cell_w'].to_f.zero? }
             cell_width = area['cell_w'] * width
+            cell_valign = field.dig('preferences', 'valign').to_s.presence || 'center'
+            cell_layouter = cell_layouters[cell_valign]
 
             if (mask = field.dig('preferences', 'mask').presence)
               value = TextUtils.mask_value(value, mask)
@@ -578,7 +589,11 @@ module Submissions
                                                                 fill_color:,
                                                                 font_size:)
 
-              line_height = layouter.fit([text], cell_width, height).lines.first.height
+              line = layouter.fit([text], width, height).lines.first
+
+              line_height = line.height
+
+              cell_width = [line.width, cell_width].max
 
               if preferences_font_size.blank? && line_height > (area['h'] * height)
                 text = HexaPDF::Layout::TextFragment.create(char,
@@ -817,10 +832,10 @@ module Submissions
     def build_pdfs_index(submission, submitter: nil, flatten: true)
       latest_submitter = find_last_submitter(submission, submitter:)
 
-      Submissions::EnsureResultGenerated.call(latest_submitter) if latest_submitter
+      documents   = Submissions::EnsureResultGenerated.call(latest_submitter) if latest_submitter
+      documents ||= submission.schema_documents
 
-      documents   = latest_submitter&.documents&.preload(:blob).to_a.presence
-      documents ||= submission.schema_documents.preload(:blob)
+      ActiveRecord::Associations::Preloader.new(records: documents, associations: [:blob]).call
 
       schema_documents = submission.schema_documents.preload(:blob)
       schema_items = submission.template_schema || submission.template.schema

@@ -18,6 +18,7 @@ module Templates
     ].freeze
 
     ANNOTATIONS_SIZE_LIMIT = 6.megabytes
+    MAX_ZIP_SIZE = 100.megabytes
     InvalidFileType = Class.new(StandardError)
     PdfEncrypted = Class.new(StandardError)
 
@@ -29,7 +30,8 @@ module Templates
       end
     end
 
-    def handle_pdf_or_image(template, file, document_data = nil, params = {}, extract_fields: false, content_type_override: nil, filename_override: nil)
+    def handle_pdf_or_image(template, file, document_data = nil, params = {}, extract_fields: false,
+                            content_type_override: nil, filename_override: nil)
       document_data ||= file.read
       content_type = content_type_override || file.content_type
       filename = filename_override || file.original_filename
@@ -74,8 +76,14 @@ module Templates
 
       Array.wrap(files).each do |file|
         if file.content_type == ZIP_CONTENT_TYPE || file.content_type == X_ZIP_CONTENT_TYPE
+          total_size = 0
+
           Zip::File.open(file.tempfile).each do |entry|
             next if entry.directory?
+
+            total_size += entry.size
+
+            raise InvalidFileType, 'zip_too_large' if total_size > MAX_ZIP_SIZE
 
             tempfile = Tempfile.new(entry.name)
             tempfile.binmode
@@ -113,10 +121,12 @@ module Templates
         pdf_data = convert_document_to_pdf(file)
         if pdf_data
           # Process the converted PDF with PDF content type and filename
-          pdf_filename = File.basename(file.original_filename, '.*') + '.pdf'
-          return handle_pdf_or_image(template, file, pdf_data, params, extract_fields: extract_fields, content_type_override: PDF_CONTENT_TYPE, filename_override: pdf_filename)
+          pdf_filename = "#{File.basename(file.original_filename, '.*')}.pdf"
+          return handle_pdf_or_image(template, file, pdf_data, params, extract_fields: extract_fields,
+                                                                       content_type_override: PDF_CONTENT_TYPE, filename_override: pdf_filename)
         else
-          raise InvalidFileType, "Unable to convert #{file.content_type} to PDF. Please install LibreOffice (brew install --cask libreoffice on macOS or apt-get install libreoffice on Linux) or convert the document to PDF manually."
+          raise InvalidFileType,
+                "Unable to convert #{file.content_type} to PDF. Please install LibreOffice (brew install --cask libreoffice on macOS or apt-get install libreoffice on Linux) or convert the document to PDF manually."
         end
       end
 
@@ -136,23 +146,22 @@ module Templates
       input_temp.close
 
       output_dir = Dir.mktmpdir
-      output_file = File.join(output_dir, File.basename(file.original_filename, '.*') + '.pdf')
+      File.join(output_dir, "#{File.basename(file.original_filename, '.*')}.pdf")
 
       begin
         # Use LibreOffice headless mode to convert to PDF
-        success = system(libreoffice_path, '--headless', '--convert-to', 'pdf', '--outdir', output_dir, input_temp.path, out: File::NULL, err: File::NULL)
-        
+        success = system(libreoffice_path, '--headless', '--convert-to', 'pdf', '--outdir', output_dir,
+                         input_temp.path, out: File::NULL, err: File::NULL)
+
         if success
           generated_pdf = Dir.glob(File.join(output_dir, '*.pdf')).first
-          if generated_pdf && File.exist?(generated_pdf)
-            return File.binread(generated_pdf)
-          end
+          return File.binread(generated_pdf) if generated_pdf && File.exist?(generated_pdf)
         end
       rescue StandardError => e
         Rails.logger.warn("Document conversion failed: #{e.message}")
       ensure
-        input_temp.unlink if input_temp
-        FileUtils.rm_rf(output_dir) if Dir.exist?(output_dir)
+        input_temp&.unlink
+        FileUtils.rm_rf(output_dir)
       end
 
       nil
