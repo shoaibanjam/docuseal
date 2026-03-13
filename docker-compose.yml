@@ -8,7 +8,11 @@ services:
       - 3000:3000
     volumes:
       - ./docuseal:/data/docuseal
+      - ./lib/docuseal.rb:/app/lib/docuseal.rb
+      - ./app/controllers/esign_settings_controller.rb:/app/app/controllers/esign_settings_controller.rb
+
     environment:
+      - RAILS_ENV=production
       - FORCE_SSL=${HOST}
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
 
