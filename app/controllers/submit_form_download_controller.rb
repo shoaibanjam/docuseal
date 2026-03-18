@@ -33,7 +33,32 @@ class SubmitFormDownloadController < ApplicationController
       if last_completed_submitter
         Submitters.select_attachments_for_download(last_completed_submitter)
       else
-        @submitter.submission.schema_documents.preload(:blob)
+        # Generate a "current state" preview PDF that includes overlay fields (e.g. redact/stamp)
+        # for the active submitter before completion.
+        submission = @submitter.submission
+
+        fields = submission.template_fields || submission.template.fields
+
+        fields.each do |field|
+          next unless field['submitter_uuid'] == @submitter.uuid
+          next unless field['type'] == 'stamp'
+
+          next if @submitter.values[field['uuid']].present?
+
+          attachment =
+            Submitters::CreateStampAttachment.call(
+              @submitter,
+              with_logo: field.dig('preferences', 'with_logo') != false
+            )
+
+          @submitter.values[field['uuid']] = attachment.uuid
+        end
+
+        @submitter.save! if @submitter.changed?
+
+        Submissions::GeneratePreviewAttachments.call(submission, submitter: @submitter)
+
+        @submitter.preview_documents.preload(:blob)
       end
 
     urls = attachments.map do |attachment|

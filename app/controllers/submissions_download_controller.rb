@@ -28,7 +28,7 @@ class SubmissionsDownloadController < ApplicationController
 
     Submissions::EnsureResultGenerated.call(last_submitter)
 
-    if !signature_valid && !current_user_submitter?(last_submitter)
+    if !@signature_valid && !current_user_submitter?(last_submitter)
       return head :not_found unless Submitters::AuthorizedForForm.call(@submitter, current_user, request)
 
       if last_submitter.completed_at < TTL.ago

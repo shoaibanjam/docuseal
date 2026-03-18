@@ -1,9 +1,18 @@
-<div class="max-w-4xl mx-auto space-y-8">
-    <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-base-content">
+<div class="settings-layout">
+  <aside class="settings-sidebar">
+    <%= render 'shared/settings_nav' %>
+  </aside>
+  <div class="settings-main">
+    <h1 class="ds-heading-2">
       <%= t('account') %>
     </h1>
-    <section class="bg-base-100 rounded-xl border border-base-300 p-6 md:p-8 shadow-soft">
-      <h2 class="text-lg font-semibold text-base-content mb-5"><%= t('company_name', default: 'Company') %></h2>
+    <section class="settings-card">
+      <div class="settings-card-header">
+        <h2 class="settings-card-title flex items-center gap-2">
+          <%= svg_icon('building', class: 'w-5 h-5') %>
+          <span><%= t('company_name', default: 'Company') %></span>
+        </h2>
+      </div>
     <%= form_for '', url: settings_account_path, method: :patch, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
       <%= fields_for current_account do |ff| %>
         <div class="form-control">

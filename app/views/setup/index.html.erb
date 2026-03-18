@@ -1,9 +1,15 @@
-<div class="max-w-xl mx-auto px-2">
-  <h1 class="flex text-4xl font-bold items-center justify-center my-8 space-x-2">
-    <span><%= t('initial_setup') %></span>
-    <%= svg_icon('waving_hand', class: 'h-10 w-10') %>
-  </h1>
-  <%= form_for '', html: { class: 'space-y-6' }, url: setup_index_path do |f| %>
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-header flex flex-col items-center space-y-2">
+      <div class="inline-flex items-center justify-center rounded-full bg-secondary/10 text-secondary w-11 h-11">
+        <%= svg_icon('waving_hand', class: 'h-6 w-6') %>
+      </div>
+      <h1 class="auth-title flex items-center space-x-2">
+        <span><%= t('initial_setup') %></span>
+      </h1>
+      <p class="auth-subtitle"><%= t('lets_get_your_workspace_ready_for_signing_', default: t('initial_setup')) %></p>
+    </div>
+    <%= form_for '', html: { class: 'space-y-6' }, url: setup_index_path do |f| %>
     <div class="space-y-2">
       <%= fields_for @user do |ff| %>
         <div class="grid gap-2 md:grid-cols-2 md:gap-4">
@@ -64,7 +70,8 @@
       <% end %>
     </div>
     <div class="form-control">
-      <%= f.button button_title, class: 'base-button' %>
+      <%= f.button button_title, class: 'base-button w-full' %>
     </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

@@ -1,8 +1,13 @@
-<div class="max-w-4xl mx-auto space-y-8">
-    <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-base-content">
-      <%= t('pdf_signature') %>
+<div class="settings-layout">
+  <aside class="settings-sidebar">
+    <%= render 'shared/settings_nav' %>
+  </aside>
+  <div class="settings-main">
+    <h1 class="ds-heading-2 flex items-center gap-2">
+      <%= svg_icon('certificate', class: 'w-5 h-5') %>
+      <span><%= t('pdf_signature') %></span>
     </h1>
-    <section class="bg-base-100 rounded-xl border border-base-300 p-6 md:p-8 shadow-soft">
+    <section class="settings-card">
     <div class="max-w-xl">
       <h2 class="text-lg font-semibold text-base-content mb-4"><%= t('verify_signed_pdf') %></h2>
       <div id="result">

@@ -60,7 +60,22 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .white-button {
-  @apply btn btn-outline text-base bg-white border-2 border-base-300 rounded-lg px-6 h-11 hover:bg-base-200 hover:border-base-content/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 transition-all duration-200;
+  @apply btn btn-outline text-base bg-white border-2 border-base-300 rounded-lg px-6 h-11 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 transition-all duration-200;
+}
+
+/* Completed modal secondary buttons (e.g. "Send copy via email") */
+.completed-form-send-copy-button {
+  @apply bg-white/90 border-base-300 text-slate-900 hover:bg-white hover:border-primary/40 hover:text-slate-900;
+}
+
+/* Completed screen "Resubmit" button */
+.completed-form-resubmit-button {
+  @apply bg-white/90 border-base-300 text-slate-900 hover:bg-white hover:border-primary/40 hover:text-slate-900;
+}
+
+.completed-form-resubmit-button[disabled],
+.completed-form-resubmit-button.btn-disabled {
+  @apply bg-white/60 border-base-300 text-slate-500;
 }
 
 .base-checkbox {
@@ -69,6 +84,37 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 
 .base-radio {
   @apply radio bg-white radio-sm;
+}
+
+/* Submission signing bottom form container (public signing pages only) */
+.form-container {
+  @apply border border-[#1f2937] rounded-t-xl text-primary-content;
+  background-color: #101827; /* slightly lighter than page background */
+}
+
+.form-container .base-input,
+.form-container .base-textarea {
+  @apply border border-[#1f2937];
+  background-color: #F9FAFB; /* light field background */
+  color: #020617;            /* darker text for maximum contrast */
+}
+
+.form-container .base-input::placeholder,
+.form-container .base-textarea::placeholder {
+  color: #6B7280;
+}
+
+/* Primary action button inside signing bar */
+.form-container .base-button,
+.form-container .btn-primary {
+  background-color: #00d5a4;   /* secondary brand color */
+  border-color: #00d5a4;
+  color: #02101f;              /* dark label text */
+}
+
+.form-container .base-button:hover,
+.form-container .btn-primary:hover {
+  background-color: #00c194;
 }
 
 .font-times {
