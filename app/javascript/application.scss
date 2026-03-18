@@ -5,8 +5,11 @@
 @import "tailwindcss/utilities";
 
 body {
-  @apply antialiased text-base-content;
+  @apply antialiased text-base-content bg-base-100;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  background: radial-gradient(circle at top left, rgba(0, 213, 164, 0.06), transparent 55%),
+              radial-gradient(circle at bottom right, rgba(10, 25, 44, 0.09), transparent 55%);
+  overflow-y: auto; /* ensure main app pages can always scroll */
 }
 
 a[href],
@@ -40,22 +43,22 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 .input-bordered,
 .select-bordered,
 .textarea-bordered {
-  @apply border-base-content/15 transition-all duration-200;
+  @apply border-base-content/15 bg-base-100 transition-all duration-200 shadow-sm;
 }
 
 .input-bordered:focus,
 .select-bordered:focus,
 .textarea-bordered:focus {
-  @apply border-primary outline-none ring-2 ring-primary/20;
+  @apply border-secondary outline-none ring-2 ring-secondary/20;
 }
 
 .input-bordered:hover:not(:focus):not(:disabled),
 .textarea-bordered:hover:not(:focus):not(:disabled) {
-  @apply border-base-content/25;
+  @apply border-base-content/25 bg-base-100;
 }
 
 .base-input {
-  @apply input input-bordered bg-white h-11 px-4 text-base rounded-lg font-normal transition-all duration-200;
+  @apply input input-bordered bg-base-100 h-11 px-4 text-base rounded-lg font-normal transition-all duration-200;
 }
 
 .base-input::placeholder {
@@ -68,7 +71,7 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-textarea {
-  @apply textarea textarea-bordered bg-white rounded-lg px-4 py-3 text-base font-normal transition-all duration-200 min-h-[100px];
+  @apply textarea textarea-bordered bg-base-100 rounded-lg px-4 py-3 text-base font-normal transition-all duration-200 min-h-[100px];
 }
 
 .base-select {
@@ -94,11 +97,11 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-button {
-  @apply btn btn-primary text-primary-content text-base px-6 h-11 rounded-lg hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2;
+  @apply btn btn-primary text-primary-content text-base px-6 h-11 rounded-lg hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:ring-offset-2;
 }
 
 .white-button {
-  @apply btn btn-outline text-base bg-white border-2 border-base-300 rounded-lg px-6 h-11 hover:bg-base-200 hover:border-base-content/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 transition-all duration-200;
+  @apply btn btn-outline text-base bg-base-100 border-2 border-base-300 rounded-lg px-6 h-11 hover:bg-base-200 hover:border-base-content/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-secondary/25 focus:ring-offset-2 transition-all duration-200;
 }
 
 .btn-neutral,
@@ -107,7 +110,13 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .btn-primary {
-  @apply focus:ring-primary/30;
+  @apply bg-secondary text-secondary-content border border-secondary/80 focus:ring-secondary/40;
+}
+
+/* Ensure primary buttons never turn black on hover in dark theme */
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  @apply bg-secondary/90 text-secondary-content border-secondary;
 }
 
 .btn-neutral {
@@ -115,11 +124,42 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-checkbox {
-  @apply checkbox rounded bg-white checkbox-sm no-animation transition-colors duration-200;
+  @apply checkbox rounded bg-base-100 checkbox-sm no-animation transition-colors duration-200 border-base-content/30 checked:border-secondary checked:bg-secondary;
 }
 
 .base-radio {
-  @apply radio bg-white radio-sm no-animation;
+  @apply radio bg-base-100 radio-sm no-animation border-base-content/30 checked:border-secondary checked:bg-secondary;
+}
+
+/* Toggles / switches */
+.toggle {
+  @apply bg-base-300 border-base-300 rounded-full transition-all duration-200 ease-out;
+}
+
+.toggle:focus-visible {
+  @apply outline-none ring-2 ring-secondary/40 ring-offset-2;
+}
+
+.toggle:checked,
+.toggle[aria-checked='true'] {
+  @apply bg-secondary border-secondary;
+}
+
+.toggle:disabled {
+  @apply opacity-40 cursor-not-allowed;
+}
+
+.toggle-sm {
+  @apply h-5 w-9;
+}
+
+.settings-card .toggle {
+  @apply bg-[#020617] border-[#1f2937];
+}
+
+.settings-card .toggle:checked,
+.settings-card .toggle[aria-checked='true'] {
+  @apply bg-secondary border-secondary shadow-focus-ring;
 }
 
 .tooltip-bottom-end:before {
@@ -188,6 +228,105 @@ button[disabled] .enabled, button.btn-disabled .enabled {
   cursor: pointer;
 }
 
+/* Page layout shell */
+.page-shell,
+.ds-page-shell {
+  @apply max-w-7xl mx-auto px-4 md:px-8 lg:px-10 py-8 md:py-10 lg:py-12;
+}
+
+.page-stack {
+  @apply space-y-6 md:space-y-8;
+}
+
+.page-header,
+.ds-page-header {
+  @apply flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6;
+}
+
+.page-title,
+.ds-page-title {
+  @apply text-3xl md:text-4xl font-semibold tracking-tight text-primary-content;
+}
+
+.page-subtitle,
+.ds-page-subtitle {
+  @apply text-base md:text-lg text-primary-content/70 max-w-2xl;
+}
+
+.page-grid {
+  @apply grid gap-5 md:gap-6;
+}
+
+.page-grid-2 {
+  @apply page-grid md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)];
+}
+
+.page-card,
+.ds-page {
+  @apply bg-[#020617] border border-[#111827] rounded-2xl shadow-soft-lg p-6 md:p-7;
+}
+
+.page-card-muted {
+  @apply bg-base-100/60 border border-base-300/50 rounded-2xl shadow-soft;
+}
+
+.page-section-title {
+  @apply text-sm font-semibold tracking-wide uppercase text-base-content/60;
+}
+
+.page-section {
+  @apply flex flex-col gap-4;
+}
+
+/* Auth / setup shells */
+.auth-shell {
+  @apply flex items-center justify-center min-h-[calc(100vh-4rem)];
+}
+
+.auth-card {
+  @apply w-full max-w-lg mx-auto bg-primary text-primary-content border border-primary/50 rounded-2xl shadow-soft-xl p-6 md:p-7;
+}
+
+/* Main top navbar */
+.main-navbar {
+  background-color: #0a1628;
+  color: theme('colors.primary-content');
+}
+
+/* Ensure dropdown menus have readable text on light surfaces */
+.dropdown-content {
+  color: theme('colors.base-content');
+}
+
+.auth-header {
+  @apply text-center mb-6;
+}
+
+.auth-title {
+  @apply text-3xl md:text-4xl font-semibold tracking-tight text-primary-content;
+}
+
+.auth-subtitle {
+  @apply mt-2 text-sm md:text-base text-primary-content/80;
+}
+
+/* Headings */
+h1, .prose h1, .ds-heading-1 {
+  @apply text-3xl md:text-4xl font-semibold tracking-tight text-primary-content;
+}
+
+h2, .prose h2, .ds-heading-2 {
+  @apply text-2xl md:text-3xl font-semibold tracking-tight text-primary-content;
+}
+
+h3, .prose h3, .ds-heading-3 {
+  @apply text-xl md:text-2xl font-semibold text-primary-content;
+}
+
+h4, .prose h4, .ds-heading-4 {
+  @apply text-lg font-semibold text-primary-content;
+}
+
 .input-outlined {
   outline-style: solid;
   outline-width: 1px;
@@ -205,4 +344,116 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 
 markdown-editor [contenteditable] p {
   margin-bottom: 18px;
+}
+
+/* Settings layout (profile & settings pages) */
+.settings-layout {
+  /* lighter shell, darker cards (both based on #0a1628) */
+  @apply grid gap-8 md:grid-cols-[260px,minmax(0,1fr)] items-start bg-[#111f3a] text-primary-content rounded-2xl shadow-soft-xl p-6 md:p-8;
+}
+
+.settings-sidebar {
+  @apply hidden md:block;
+}
+
+.settings-main {
+  @apply space-y-6;
+}
+
+.settings-card {
+  @apply bg-[#0a1628] text-primary-content border border-primary/40 rounded-2xl shadow-soft-lg p-6 md:p-8;
+}
+
+.settings-card-header {
+  @apply flex items-center justify-between mb-5;
+}
+
+.settings-card-title {
+  @apply text-lg font-semibold text-primary-content;
+}
+
+.settings-card-subtitle {
+  @apply text-sm text-primary-content/70;
+}
+
+.settings-card .label .label-text,
+.settings-card .label-text-alt {
+  @apply text-primary-content/80;
+}
+
+.settings-card .base-input,
+.settings-card .base-select {
+  /* subtle but visible border on dark background */
+  @apply bg-[#0a1628] border border-[#1f2937] placeholder:text-primary-content/40;
+  color: #E5E7EB;
+}
+
+/* Template builder controls (left thumbnails & right toolbar) */
+.document-control-button {
+  @apply bg-[#0b1a33] border-[#1f2937] text-primary-content;
+}
+
+.document-control-button:hover {
+  @apply bg-secondary border-secondary text-secondary-content;
+}
+
+.settings-card .base-input:hover:not(:focus),
+.settings-card .base-select:hover:not(:focus) {
+  @apply bg-[#0a1628] border-secondary/60;
+}
+
+.settings-card .base-input:focus,
+.settings-card .base-select:focus {
+  @apply bg-[#0a1628] border-secondary outline-none ring-2 ring-secondary/30;
+}
+
+/* Primary/secondary actions inside dark settings cards */
+.settings-card .base-button {
+  @apply border border-secondary/80 bg-secondary text-secondary-content font-medium rounded-lg px-5 h-11 hover:bg-secondary/90 active:scale-[0.98] transition-all duration-200;
+}
+
+.settings-card .white-button {
+  @apply border border-secondary/70 bg-transparent text-secondary-content font-medium rounded-lg px-5 h-11 hover:bg-secondary/10 active:scale-[0.98] transition-all duration-200;
+}
+
+/* Account dropdown in main navbar */
+.navbar-account-menu {
+  @apply text-primary-content;
+}
+
+.navbar-account-menu li a,
+.navbar-account-menu li button,
+.navbar-account-menu svg {
+  color: theme('colors.primary-content');
+}
+
+.navbar-account-menu svg {
+  stroke: theme('colors.primary-content');
+}
+
+/* Submission signing bottom form container */
+.form-container {
+  @apply bg-[#0b1a33] border border-[#1f2937] rounded-t-xl text-primary-content;
+}
+
+.form-container .base-input,
+.form-container .base-textarea {
+  @apply border border-[#1f2937];
+  background-color: #F9FAFB; /* light field background */
+  color: #111827;           /* dark text for strong contrast */
+}
+
+.form-container .base-input::placeholder,
+.form-container .base-textarea::placeholder {
+  color: #6B7280;           /* medium gray placeholder */
+}
+
+/* Templates dashboard - upload dropzone visibility */
+.templates-dropzone {
+  @apply bg-[#020617] border-2 border-dashed border-[#334155] rounded-2xl shadow-soft-lg transition-colors duration-200;
+}
+
+.templates-dropzone:hover,
+.templates-dropzone:focus-within {
+  @apply border-secondary/80 shadow-soft-xl;
 }

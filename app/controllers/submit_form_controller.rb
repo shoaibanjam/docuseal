@@ -31,6 +31,27 @@ class SubmitFormController < ApplicationController
 
     @attachments_index = build_attachments_index(submission)
 
+    # Ensure readonly stamp fields render on the signing page (and in generated PDFs)
+    # even when there are no other fields to complete.
+    fields = submission.template_fields || submission.template.fields
+
+    fields.each do |field|
+      next unless field['submitter_uuid'] == @submitter.uuid
+      next unless field['type'] == 'stamp'
+
+      @submitter.values[field['uuid']] ||=
+        Submitters::CreateStampAttachment.build_attachment(
+          @submitter,
+          with_logo: field.dig('preferences', 'with_logo') != false
+        ).uuid
+    end
+
+    @submitter.save! if @submitter.changed?
+
+    @submitter.attachments.each do |a|
+      @attachments_index[a.uuid] ||= a
+    end
+
     return unless @form_configs[:prefill_signature]
 
     if (user_signature = UserConfigs.load_signature(current_user))

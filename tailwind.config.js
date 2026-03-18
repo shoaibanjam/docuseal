@@ -35,19 +35,21 @@ module.exports = {
       {
         docuseal: {
           'color-scheme': 'light',
-          primary: '#1FE0B3',
-          'primary-content': '#263854',
-          secondary: '#54B0E8',
-          'secondary-content': '#FFFFFF',
-          accent: '#4E87C8',
+          // Brand palette (dark theme)
+          primary: '#0a1628',
+          'primary-content': '#E5E7EB',
+          secondary: '#00d5a4',
+          'secondary-content': '#021018',
+          accent: '#00b48a',
           'accent-content': '#FFFFFF',
-          neutral: '#263854',
-          'neutral-content': '#FFFFFF',
-          'base-100': '#FFFFFF',
-          'base-200': '#f0f4f8',
-          'base-300': '#e2e8f0',
-          'base-content': '#263854',
-          info: '#54B0E8',
+          neutral: '#020617',
+          'neutral-content': '#E5E7EB',
+          // Surface colors
+          'base-100': '#020617', // main app background
+          'base-200': '#020617',
+          'base-300': '#111827',
+          'base-content': '#E5E7EB',
+          info: '#00b0ff',
           'info-content': '#FFFFFF',
           '--rounded-btn': '0.5rem',
           '--tab-border': '2px',

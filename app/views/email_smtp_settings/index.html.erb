@@ -1,7 +1,16 @@
-<div class="max-w-4xl mx-auto space-y-8">
-    <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-base-content">Email SMTP</h1>
-    <section class="bg-base-100 rounded-xl border border-base-300 p-6 md:p-8 shadow-soft">
-      <h2 class="text-lg font-semibold text-base-content mb-5"><%= t('smtp_configuration', default: 'SMTP Configuration') %></h2>
+<div class="settings-layout">
+  <aside class="settings-sidebar">
+    <%= render 'shared/settings_nav' %>
+  </aside>
+  <div class="settings-main">
+    <h1 class="ds-heading-2 flex items-center gap-2">
+      <%= svg_icon('mail', class: 'w-5 h-5') %>
+      <span>Email SMTP</span>
+    </h1>
+    <section class="settings-card">
+      <h2 class="settings-card-title mb-5">
+        <%= t('smtp_configuration', default: 'SMTP Configuration') %>
+      </h2>
     <% value = @encrypted_config.value || {} %>
     <%= form_for @encrypted_config, url: settings_email_index_path, method: :post, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
       <%= f.fields_for :value do |ff| %>

@@ -29,9 +29,17 @@
     <turbo-frame id="drawer"></turbo-frame>
     <%= render 'shared/navbar' %>
     <% if flash.present? %><%= render 'shared/flash' %><% end %>
-    <div class="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-10">
-      <%= yield %>
-    </div>
+    <% if signed_in? %>
+      <main class="ds-page-shell">
+        <div class="ds-page page-stack">
+          <%= yield %>
+        </div>
+      </main>
+    <% else %>
+      <main class="page-shell page-stack">
+        <%= yield %>
+      </main>
+    <% end %>
     <%= render 'shared/body_scripts' %>
   </body>
 </html>

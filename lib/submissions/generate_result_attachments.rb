@@ -210,6 +210,7 @@ module Submissions
                                                                       with_submitter_timezone:,
                                                                       with_file_links:,
                                                                       with_signature_id_reason:,
+                                                                      with_timestamp_seconds:,
                                                                       for_admin:)
 
       rasterize_redacted_pages(submitter.submission, pdfs_index) unless for_admin
@@ -219,7 +220,7 @@ module Submissions
 
     def fill_submitter_fields(submitter, account, pdfs_index, with_signature_id:, is_flatten:, with_headings: nil,
                               with_submitter_timezone: false, with_signature_id_reason: true, with_file_links: nil,
-                              for_admin: false)
+                              with_timestamp_seconds: false, for_admin: false)
       cell_layouter = HexaPDF::Layout::TextLayouter.new(text_valign: :center, text_align: :center)
 
       attachments_data_cache = {}

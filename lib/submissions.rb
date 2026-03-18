@@ -206,7 +206,15 @@ module Submissions
     values = nil
 
     fields.filter_map do |field|
-      next if field['submitter_uuid'] != submitter.uuid && only_submitter_fields
+      # Always treat visual overlay fields as display-only in the signing UI.
+      if %w[redact stamp].include?(field['type'])
+        field = field.merge('readonly' => true, 'required' => false)
+      end
+
+      if only_submitter_fields && field['submitter_uuid'] != submitter.uuid
+        # Visual-only overlay fields should render for all submitters on the signing page.
+        next unless %w[redact stamp].include?(field['type'])
+      end
 
       if field['conditions'].present?
         values ||= submission.submitters.reduce({}) { |acc, sub| acc.merge(sub.values) }

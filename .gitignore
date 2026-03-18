@@ -41,3 +41,4 @@ dump.rdb
 
 # PostgreSQL data (local / Docker) — never commit
 **/pg_data/
+pg_data/

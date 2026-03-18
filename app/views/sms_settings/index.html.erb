@@ -1,6 +1,14 @@
-<div class="max-w-4xl mx-auto space-y-8">
-    <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-base-content">SMS</h1>
-    <section class="bg-base-100 rounded-xl border border-base-300 p-6 md:p-8 shadow-soft">
+<div class="settings-layout">
+  <aside class="settings-sidebar">
+    <%= render 'shared/settings_nav' %>
+  </aside>
+  <div class="settings-main">
+    <h1 class="ds-heading-2 flex items-center gap-2">
+      <%= svg_icon('phone', class: 'w-5 h-5') %>
+      <span>SMS</span>
+    </h1>
+    <section class="settings-card mt-4">
       <%= render 'placeholder' %>
     </section>
+  </div>
 </div>

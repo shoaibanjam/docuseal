@@ -11,7 +11,7 @@
     :with-label="withFieldLabels && !isAnonymousChecboxes && showFieldNames"
     :current-step="currentStepFields"
     :scroll-padding="scrollPadding"
-    @focus-step="[saveStep(), currentField.type !== 'checkbox' ? isFormVisible = true : '', goToStep($event, false, true)]"
+    @focus-step="[saveStep(), currentField && currentField.type !== 'checkbox' ? isFormVisible = true : '', goToStep($event, false, true)]"
   />
   <FieldAreas
     :steps="readonlyDisplaySteps"
@@ -31,7 +31,7 @@
     :to="completeButtonToRef"
   >
     <span
-      v-if="(emptyValueRequiredStep && ((stepFields.length - 1) !== currentStep || currentStepFields !== emptyValueRequiredStep)) || isCompleted"
+      v-if="currentField && ((emptyValueRequiredStep && ((stepFields.length - 1) !== currentStep || currentStepFields !== emptyValueRequiredStep)) || isCompleted)"
       class="tooltip-left"
       :class="{ tooltip: !isCompleted }"
       :data-tip="t('fill_all_required_fields_to_complete')"
@@ -44,7 +44,7 @@
       </button>
     </span>
     <button
-      v-else
+      v-else-if="currentField"
       id="complete_form_button"
       class="btn btn-sm btn-neutral text-white px-4 w-full flex justify-center"
       form="steps_form"
@@ -63,9 +63,26 @@
         </span>
       </span>
     </button>
+    <button
+      v-else
+      id="complete_form_button"
+      class="btn btn-sm btn-neutral text-white px-4 w-full flex justify-center"
+      :disabled="isSubmittingComplete"
+      @click.prevent="submitNoStepsComplete"
+    >
+      <span class="flex items-center">
+        <IconInnerShadowTop
+          v-if="isSubmittingComplete"
+          class="mr-1 animate-spin w-5 h-5"
+        />
+        <span>
+          {{ t('complete') }}
+        </span>
+      </span>
+    </button>
   </Teleport>
   <button
-    v-if="!isFormVisible"
+    v-if="currentField && !isFormVisible"
     id="expand_form_button"
     class="btn btn-neutral flex text-white absolute bottom-0 w-full mb-3 expand-form-button text-base"
     style="width: 96%; margin-left: 2%"
@@ -91,6 +108,7 @@
     />
   </button>
   <div
+    v-if="currentField"
     v-show="isFormVisible"
     id="form_container"
     class="shadow-md bg-base-100 absolute bottom-0 w-full border-base-200 border p-4 rounded form-container overflow-hidden"
@@ -1055,21 +1073,39 @@ export default {
     readonlyDisplaySteps () {
       const conditional = this.readonlyConditionalFields.map((e) => [e])
       const conditionalUuids = new Set(this.readonlyConditionalFields.flat().map((f) => f.uuid))
-      const redactOnly = this.readonlyFields
-        .filter((f) => f.type === 'redact' && !conditionalUuids.has(f.uuid))
+      // Always render visual overlay fields on the signing preview, even if they
+      // were saved without `readonly: true` or would otherwise be categorized
+      // as a "step" field.
+      const cache = {}
+      const displayOnly = this.fields
+        .filter((f) => ['redact', 'stamp'].includes(f.type))
+        .filter((f) => !conditionalUuids.has(f.uuid))
+        // Redact overlays must always be visible on the preview. If a redact field
+        // is present, render it regardless of conditions/doc visibility checks.
+        // (Those checks can incorrectly filter redact when there are no step fields.)
+        .filter((f) => f.type === 'redact' || (this.checkFieldConditions(f, cache) && this.checkFieldDocumentsConditions(f)))
         .map((f) => [f])
-      return [...conditional, ...redactOnly]
+      return [...conditional, ...displayOnly]
     },
     readonlyDisplayFieldValues () {
-      const redactValues = this.readonlyFields
+      const cache = {}
+      const overlays = this.fields.filter((f) => ['redact', 'stamp'].includes(f.type))
+        .filter((f) => f.type === 'redact' || (this.checkFieldConditions(f, cache) && this.checkFieldDocumentsConditions(f)))
+
+      const redactValues = overlays
         .filter((f) => f.type === 'redact')
         .reduce((acc, f) => { acc[f.uuid] = ''; return acc }, {})
-      return { ...this.readonlyConditionalFieldValues, ...redactValues }
+
+      const stampValues = overlays
+        .filter((f) => f.type === 'stamp')
+        .reduce((acc, f) => { acc[f.uuid] = this.readonlyFieldValues[f.uuid]; return acc }, {})
+
+      return { ...this.readonlyConditionalFieldValues, ...redactValues, ...stampValues }
     },
     readonlyFields () {
       const cache = {}
 
-      return this.fields.filter((f) => f.readonly && this.checkFieldConditions(f, cache) && this.checkFieldDocumentsConditions(f))
+      return this.fields.filter((f) => (f.readonly || ['redact', 'stamp'].includes(f.type)) && this.checkFieldConditions(f, cache) && this.checkFieldDocumentsConditions(f))
     },
     stepFields () {
       const verificationFields = []
@@ -1613,6 +1649,34 @@ export default {
         this.isSubmitting = false
         this.isSubmittingComplete = false
       })
+    },
+    async submitNoStepsComplete () {
+      if (this.isCompleted || this.isSubmittingComplete || this.dryRun) {
+        this.performComplete()
+        return
+      }
+
+      this.isSubmittingComplete = true
+
+      const formData = new FormData()
+      formData.append('authenticity_token', this.authenticityToken)
+      formData.append('_method', 'put')
+      formData.append('completed', 'true')
+      formData.append('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone)
+
+      try {
+        const resp = await fetch(this.baseUrl + this.submitPath, {
+          method: 'POST',
+          body: formData,
+          ...this.fetchOptions
+        })
+
+        this.performComplete(resp)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        this.isSubmittingComplete = false
+      }
     },
     minimizeForm () {
       this.isFormVisible = false

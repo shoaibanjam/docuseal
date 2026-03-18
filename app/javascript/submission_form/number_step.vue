@@ -43,6 +43,7 @@
       :min="field.validation?.min"
       :max="field.validation?.max"
       class="base-input !text-2xl w-full"
+      :style="{ backgroundColor: '#F9FAFB', color: '#0f172a' }"
       :required="field.required"
       :placeholder="`${t('type_here_')}${field.required ? '' : ` (${t('optional')})`}`"
       :name="`values[${field.uuid}]`"

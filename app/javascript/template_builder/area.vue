@@ -31,26 +31,144 @@
         />
       </div>
     </div>
-    <AreaTitle
-      ref="title"
-      :area="area"
-      :field="field"
-      :template="template"
-      :selected-areas-ref="selectedAreasRef"
-      :get-field-type-index="getFieldTypeIndex"
-      :default-field="defaultField"
-      :with-signature-id="withSignatureId"
-      :with-prefillable="withPrefillable"
-      :default-submitters="defaultSubmitters"
-      :editable="editable"
-      :is-mobile="isMobile"
-      :is-value-input="isValueInput"
-      :is-select-input="isSelectInput"
-      @change="save"
-      @remove="$emit('remove')"
-      @scroll-to="$emit('scroll-to', $event)"
-      @add-custom-field="$emit('add-custom-field')"
-    />
+    <div
+      v-if="field?.type && (isSelected || isNameFocus) && !isInMultiSelection"
+      class="absolute bg-[#0b1a33] border border-[#1f2937] rounded-t overflow-visible whitespace-nowrap flex z-10 field-area-controls text-primary-content"
+      style="top: -25px; height: 25px"
+      @mousedown.stop
+      @pointerdown.stop
+    >
+      <FieldSubmitter
+        v-if="field.type != 'heading' && field.type != 'strikethrough'"
+        v-model="field.submitter_uuid"
+        class="border-r roles-dropdown"
+        :compact="true"
+        :editable="editable && (!defaultField || defaultField.role !== submitter?.name)"
+        :allow-add-new="!defaultSubmitters.length"
+      :menu-classes="'dropdown-content bg-[#0b1a33] menu menu-xs p-2 shadow rounded-box w-52 rounded-t-none -left-[1px] mt-[1px] text-primary-content'"
+        :submitters="template.submitters"
+        @update:model-value="save"
+        @click="selectedAreasRef.value = [area]"
+      />
+      <FieldType
+        v-model="field.type"
+        :button-width="27"
+        :editable="editable && !defaultField"
+        :button-classes="'px-1'"
+      :menu-classes="'bg-[#0b1a33] rounded-t-none text-primary-content'"
+        @update:model-value="[maybeUpdateOptions(), save()]"
+        @click="selectedAreasRef.value = [area]"
+      />
+      <span
+        v-if="field.type !== 'checkbox' || field.name"
+        ref="name"
+        :contenteditable="editable && !defaultField && field.type !== 'heading'"
+        dir="auto"
+        class="pr-1 cursor-text outline-none block"
+        style="min-width: 2px"
+        @paste.prevent="onPaste"
+        @keydown.enter.prevent="onNameEnter"
+        @focus="onNameFocus"
+        @blur="onNameBlur"
+      >{{ optionIndexText }} {{ (defaultField ? (defaultField.title || field.title || field.name) : field.name) || defaultName }}</span>
+      <div
+        v-if="isSettingsFocus || isSelectInput || (isValueInput && field.type !== 'heading') || (isNameFocus && !['checkbox', 'phone'].includes(field.type))"
+        class="flex items-center ml-1.5"
+      >
+        <input
+          v-if="!isValueInput && !isSelectInput"
+          :id="`required-checkbox-${field.uuid}`"
+          v-model="field.required"
+          type="checkbox"
+          class="checkbox checkbox-xs no-animation rounded"
+          @mousedown.prevent
+        >
+        <label
+          v-if="!isValueInput && !isSelectInput"
+          :for="`required-checkbox-${field.uuid}`"
+          class="label text-xs"
+          @click.prevent="field.required = !field.required"
+          @mousedown.prevent
+        >{{ t('required') }}</label>
+        <input
+          v-if="isValueInput || isSelectInput"
+          :id="`readonly-checkbox-${field.uuid}`"
+          type="checkbox"
+          class="checkbox checkbox-xs no-animation rounded"
+          :checked="!(field.readonly ?? true)"
+          @change="field.readonly = !(field.readonly ?? true)"
+          @mousedown.prevent
+        >
+        <label
+          v-if="isValueInput || isSelectInput"
+          :for="`readonly-checkbox-${field.uuid}`"
+          class="label text-xs"
+          @click.prevent="field.readonly = !(field.readonly ?? true)"
+          @mousedown.prevent
+        >{{ t('editable') }}</label>
+        <span
+          v-if="field.type !== 'payment' && !isValueInput"
+          class="dropdown dropdown-end field-area-settings-dropdown"
+          @mouseenter="renderDropdown = true"
+          @touchstart="renderDropdown = true"
+        >
+          <label
+            ref="settingsButton"
+            tabindex="0"
+            :title="t('settings')"
+            class="cursor-pointer flex items-center"
+            style="height: 25px"
+            @focus="isSettingsFocus = true"
+            @blur="maybeBlurSettings"
+          >
+            <IconDotsVertical class="w-5 h-5" />
+          </label>
+          <ul
+            v-if="renderDropdown"
+            ref="settingsDropdown"
+            tabindex="0"
+            class="dropdown-content menu menu-xs px-2 pb-2 pt-1 shadow rounded-box w-52 z-10 rounded-t-none"
+            :style="{ backgroundColor: 'white' }"
+            @dragstart.prevent.stop
+            @click="closeDropdown"
+            @focusout="maybeBlurSettings"
+          >
+            <FieldSettings
+              v-if="isMobile"
+              :field="field"
+              :default-field="defaultField"
+              :editable="editable"
+              :background-color="'white'"
+              :with-required="false"
+              :with-areas="false"
+              :with-signature-id="withSignatureId"
+              :with-prefillable="withPrefillable"
+              @click-formula="isShowFormulaModal = true"
+              @click-font="isShowFontModal = true"
+              @click-description="isShowDescriptionModal = true"
+              @add-custom-field="$emit('add-custom-field')"
+              @click-condition="isShowConditionsModal = true"
+              @save="save"
+              @scroll-to="[selectedAreasRef.value = [$event], $emit('scroll-to', $event)]"
+            />
+            <div
+              v-else
+              class="whitespace-normal"
+            >
+              The dots menu is retired in favor of the field context menu. Right-click the field to access field settings. Double-click the field to set a default value.
+            </div>
+          </ul>
+        </span>
+      </div>
+      <button
+        v-else-if="editable"
+        class="pr-1"
+        :title="t('remove')"
+        @click.prevent="$emit('remove')"
+      >
+        <IconX width="14" />
+      </button>
+    </div>
     <div
       ref="touchValueTarget"
       class="flex h-full w-full field-area"
