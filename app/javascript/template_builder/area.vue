@@ -231,7 +231,7 @@
           <div
             ref="textContainer"
             class="flex items-center px-0.5"
-            :style="{ color: field.preferences?.color }"
+            :style="{ color: field.preferences?.color || 'black' }"
             :class="{ 'w-full h-full': isWFullType }"
           >
             <IconCheck
@@ -314,7 +314,7 @@
           v-else-if="!isCheckboxInput"
           width="100%"
           height="100%"
-          class="max-h-10 opacity-50"
+          class="max-h-10 text-black"
         />
       </span>
     </div>
