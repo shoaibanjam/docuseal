@@ -1,6 +1,6 @@
 <% align = field.dig('preferences', 'align') %>
 <% valign = field.dig('preferences', 'valign') %>
-<% color = field.dig('preferences', 'color') %>
+<% color = field.dig('preferences', 'color').presence || 'black' %>
 <% bg_color = field.dig('preferences', 'background') %>
 <% font = field.dig('preferences', 'font') %>
 <% font_type = field.dig('preferences', 'font_type') %>

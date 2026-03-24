@@ -576,9 +576,7 @@ export default {
         height: h * 100 + '%'
       }
 
-      if (this.field.preferences?.color) {
-        style.color = this.field.preferences.color
-      }
+      style.color = this.field.preferences?.color || 'black'
 
       if (this.field.preferences?.background) {
         style.background = this.field.preferences.background
