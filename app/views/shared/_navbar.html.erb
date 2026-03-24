@@ -24,9 +24,6 @@
           <% end %>
         </nav>
       <% end %>
-      <span class="hidden sm:inline">
-        <%= render 'shared/github' if request.path.starts_with?('/settings') %>
-      </span>
     </div>
     <% if signed_in? %>
       <div class="space-x-4 flex items-center">
@@ -55,7 +52,7 @@
           </li>
           <% if !Docuseal.demo? && can?(:manage, EncryptedConfig) %>
             <li>
-              <%= link_to Docuseal.multitenant? ? console_redirect_index_path : Docuseal::CONSOLE_URL, data: { prefetch: false }, class: 'flex items-center' do %>
+              <%= link_to(Docuseal.multitenant? ? console_redirect_index_path : console_redirect_index_path(redir: "#{Docuseal::CONSOLE_URL}/on_premises"), data: { prefetch: false }, class: 'flex items-center') do %>
               <%= svg_icon('terminal', class: 'w-5 h-5 flex-shrink-0 stroke-2 text-primary-content') %>
                 <%= t('console') %>
               <% end %>
