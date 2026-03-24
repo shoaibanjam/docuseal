@@ -154,12 +154,14 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .settings-card .toggle {
-  @apply bg-[#020617] border-[#1f2937];
+  @apply bg-[#1f2937] border-[#334155];
+  --tglbg: #e5e7eb;
 }
 
 .settings-card .toggle:checked,
 .settings-card .toggle[aria-checked='true'] {
-  @apply bg-secondary border-secondary shadow-focus-ring;
+  @apply bg-[#14b8a6] border-[#0d9488];
+  --tglbg: #f8fafc;
 }
 
 .tooltip-bottom-end:before {
@@ -384,7 +386,7 @@ markdown-editor [contenteditable] p {
 .settings-card .base-input,
 .settings-card .base-select {
   /* subtle but visible border on dark background */
-  @apply bg-[#0a1628] border border-[#1f2937] placeholder:text-primary-content/40;
+  @apply bg-[#0f1d34] border border-[#334155] placeholder:text-primary-content/40;
   color: #E5E7EB;
 }
 
