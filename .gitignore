@@ -38,4 +38,6 @@ yarn-debug.log*
 /ee
 dump.rdb
 *.onnx
-pg_data/
+
+# PostgreSQL data (local / Docker) — never commit
+**/pg_data/
