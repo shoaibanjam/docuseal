@@ -14,6 +14,7 @@ services:
     environment:
       - RAILS_ENV=production
       - FORCE_SSL=${HOST}
+      - ADVANCED_FORMATS=true
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
 
   postgres:
