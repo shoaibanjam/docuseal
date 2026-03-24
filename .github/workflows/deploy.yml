@@ -47,7 +47,7 @@ jobs:
       - name: Deploy via SSH
         run: |
           set -e
-          ssh "$DEPLOY_USER@$DEPLOY_HOST" "cd \"$DEPLOY_PATH\" && git fetch origin && git reset --hard origin/master && docker compose -f \"$DEPLOY_COMPOSE_FILE\" up --build -d && docker volume prune -f"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "cd \"$DEPLOY_PATH\" && sudo -n chown -R \"$DEPLOY_USER:$DEPLOY_USER\" \"$DEPLOY_PATH/pg_data\" 2>/dev/null || true && git fetch origin && git reset --hard origin/master && docker compose -f \"$DEPLOY_COMPOSE_FILE\" up --build -d && docker volume prune -f"
 
       - name: Notify Slack – Deployment Succeeded
         if: success()
