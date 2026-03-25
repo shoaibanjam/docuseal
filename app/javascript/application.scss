@@ -101,7 +101,16 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .white-button {
-  @apply btn btn-outline text-base bg-base-100 border-2 border-base-300 rounded-lg px-6 h-11 hover:bg-base-200 hover:border-base-content/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-secondary/25 focus:ring-offset-2 transition-all duration-200;
+  @apply btn btn-outline text-base-content bg-base-100 border-2 border-base-300 rounded-lg px-6 h-11 hover:bg-base-200 hover:border-base-content/20 hover:text-base-content active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-secondary/25 focus:ring-offset-2 transition-all duration-200;
+}
+
+.btn-ghost {
+  @apply text-base-content;
+}
+
+.btn-ghost:hover,
+.btn-ghost:focus-visible {
+  @apply text-base-content;
 }
 
 .btn-neutral,

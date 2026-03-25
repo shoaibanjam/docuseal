@@ -40,6 +40,7 @@ module Submissions
           io: io.tap(&:rewind), filename: "#{submission.name || submission.template.name}.pdf"
         ),
         name: with_audit ? 'combined_document' : 'merged_document',
+        metadata: { redaction_logic_version: GenerateResultAttachments::REDACTION_LOGIC_VERSION },
         record: submission
       )
     end

@@ -42,7 +42,7 @@
               </div>
             <% else %>
               <a href="<%= submission_path(submission) %>" class="flex z-[1]">
-                <span class="badge <%= status_badges[submitter.status] %> md:w-32 badge-lg bg-opacity-50 uppercase text-sm font-semibold text-white tooltip" data-tip="<%= l(submitter.status_event_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale) %>">
+                <span class="badge <%= status_badges[submitter.status] %> md:w-32 badge-lg <%= submitter.status == 'opened' ? 'bg-opacity-100' : 'bg-opacity-50' %> uppercase text-sm font-semibold text-white tooltip" data-tip="<%= l(submitter.status_event_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale) %>">
                   <%= t(submitter.status) %>
                 </span>
               </a>
@@ -118,7 +118,7 @@
           <% if is_submission_completed %>
             <% latest_submitter = submitters.select(&:completed_at?).max_by(&:completed_at) %>
             <a href="<%= submission_path(submission) %>" class="z-[1] tooltip flex" data-tip="<%= l(latest_submitter.status_event_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale) %>">
-              <span class="badge <%= status_badges[latest_submitter.status] %> md:w-32 bg-opacity-50 badge-lg uppercase text-sm font-semibold text-white">
+              <span class="badge <%= status_badges[latest_submitter.status] %> md:w-32 <%= latest_submitter.status == 'opened' ? 'bg-opacity-100' : 'bg-opacity-50' %> badge-lg uppercase text-sm font-semibold text-white">
                 <%= t(latest_submitter.status) %>
               </span>
             </a>
@@ -135,7 +135,7 @@
                 <span class="flex flex-col md:flex-row md:items-center gap-2">
                   <% if !is_submission_completed && !submission.expired? %>
                     <a href="<%= submission_path(submission) %>" class="z-[1] tooltip flex" data-tip="<%= l(submitter.status_event_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale) %>">
-                      <span class="badge md:w-24 <%= status_badges[submitter.status] %> bg-opacity-50 uppercase text-xs font-semibold text-white">
+                      <span class="badge md:w-24 <%= status_badges[submitter.status] %> <%= submitter.status == 'opened' ? 'bg-opacity-100' : 'bg-opacity-50' %> uppercase text-xs font-semibold text-white">
                         <%= t(submitter.status) %>
                       </span>
                     </a>

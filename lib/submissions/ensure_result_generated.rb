@@ -11,24 +11,48 @@ module Submissions
 
     module_function
 
-    def call(submitter)
+    def redaction_logic_version_matches?(submitter, apply_redactions:)
+      current_version = Submissions::GenerateResultAttachments::REDACTION_LOGIC_VERSION
+
+      return false if submitter.documents.empty?
+
+      submitter.documents.each do |attachment|
+        version =
+          attachment.metadata&.[]('redaction_logic_version') || attachment.metadata&.[](:redaction_logic_version)
+
+        return false if version != current_version
+
+        stored_apply_redactions =
+          attachment.metadata&.[]('apply_redactions') || attachment.metadata&.[](:apply_redactions)
+
+        return false if stored_apply_redactions != apply_redactions
+      end
+
+      true
+    end
+
+    def call(submitter, apply_redactions: true)
       return [] unless submitter
 
       raise NotCompletedYet unless submitter.completed_at?
 
       total_wait_time ||= 0
-      key = ['result_attachments', submitter.id].join(':')
+      key = ['result_attachments', submitter.id, apply_redactions ? 'with_redactions' : 'without_redactions'].join(':')
 
-      return submitter.documents.reload if ApplicationRecord.uncached { LockEvent.exists?(key:, event_name: :complete) }
+      if ApplicationRecord.uncached { LockEvent.exists?(key:, event_name: :complete) }
+        return submitter.documents.reload if redaction_logic_version_matches?(submitter, apply_redactions:)
+
+        submitter.documents.purge
+      end
 
       events = ApplicationRecord.uncached { LockEvent.where(key:).order(:id).to_a }
 
       if events.present? && events.last.event_name.in?(%w[start retry])
-        wait_for_complete_or_fail(submitter)
+        wait_for_complete_or_fail(submitter, apply_redactions:)
       else
         LockEvent.create!(key:, event_name: events.present? ? :retry : :start)
 
-        documents = GenerateResultAttachments.call(submitter)
+        documents = GenerateResultAttachments.call(submitter, apply_redactions:)
 
         LockEvent.create!(key:, event_name: :complete)
 
@@ -50,8 +74,9 @@ module Submissions
       raise
     end
 
-    def wait_for_complete_or_fail(submitter)
+    def wait_for_complete_or_fail(submitter, apply_redactions:)
       total_wait_time = 0
+      key = ['result_attachments', submitter.id, apply_redactions ? 'with_redactions' : 'without_redactions'].join(':')
 
       loop do
         sleep CHECK_EVENT_INTERVAL
@@ -59,10 +84,19 @@ module Submissions
 
         last_event =
           ApplicationRecord.uncached do
-            LockEvent.where(key: ['result_attachments', submitter.id].join(':')).order(:id).last
+            LockEvent.where(key:).order(:id).last
           end
 
-        break submitter.documents.reload if last_event.event_name.in?(%w[complete fail])
+        break submitter.documents.reload if last_event.event_name == 'fail'
+
+        if last_event.event_name == 'complete'
+          return submitter.documents.reload if redaction_logic_version_matches?(submitter, apply_redactions:)
+
+          submitter.documents.purge
+          documents = GenerateResultAttachments.call(submitter, apply_redactions:)
+          submitter.documents.reset
+          return documents
+        end
 
         raise WaitForCompleteTimeout if total_wait_time > CHECK_COMPLETE_TIMEOUT
       end

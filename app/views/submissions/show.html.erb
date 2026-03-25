@@ -115,6 +115,9 @@
                   <% value = values[field['uuid']].presence || (field['default_value'] != '{{date}}' && field['readonly'] == true && field['conditions'].blank? && field['default_value'].present? ? Submitters::SubmitValues.template_default_value_for_submitter(field['default_value'], @submission.submitters.find { |e| e.uuid == field['submitter_uuid'] }, with_time: false) : nil) %>
                   <% value ||= field['default_value'] if field['type'] == 'heading' %>
                   <% submitter = submitters_index[field['submitter_uuid']] %>
+                  <% if @submitter && field['type'] == 'redact' && field['submitter_uuid'] != @submitter.uuid %>
+                    <% next %>
+                  <% end %>
                   <% if value.present? %>
                     <% if (mask = field.dig('preferences', 'mask').presence) && signed_in? && can?(:read, @submission) %>
                       <span class="group">

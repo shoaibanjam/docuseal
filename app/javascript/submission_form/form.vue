@@ -1079,6 +1079,7 @@ export default {
       const cache = {}
       const displayOnly = this.fields
         .filter((f) => ['redact', 'stamp'].includes(f.type))
+        .filter((f) => f.type !== 'redact' || f.submitter_uuid === this.submitter.uuid)
         .filter((f) => !conditionalUuids.has(f.uuid))
         // Redact overlays must always be visible on the preview. If a redact field
         // is present, render it regardless of conditions/doc visibility checks.
@@ -1090,6 +1091,7 @@ export default {
     readonlyDisplayFieldValues () {
       const cache = {}
       const overlays = this.fields.filter((f) => ['redact', 'stamp'].includes(f.type))
+        .filter((f) => f.type !== 'redact' || f.submitter_uuid === this.submitter.uuid)
         .filter((f) => f.type === 'redact' || (this.checkFieldConditions(f, cache) && this.checkFieldDocumentsConditions(f)))
 
       const redactValues = overlays
@@ -1105,7 +1107,9 @@ export default {
     readonlyFields () {
       const cache = {}
 
-      return this.fields.filter((f) => (f.readonly || ['redact', 'stamp'].includes(f.type)) && this.checkFieldConditions(f, cache) && this.checkFieldDocumentsConditions(f))
+      return this.fields
+        .filter((f) => f.type !== 'redact' || f.submitter_uuid === this.submitter.uuid)
+        .filter((f) => (f.readonly || ['redact', 'stamp'].includes(f.type)) && this.checkFieldConditions(f, cache) && this.checkFieldDocumentsConditions(f))
     },
     stepFields () {
       const verificationFields = []
