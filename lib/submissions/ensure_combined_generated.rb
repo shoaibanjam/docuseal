@@ -12,6 +12,17 @@ module Submissions
 
     module_function
 
+    def redaction_logic_version_matches?(submission)
+      current_version = Submissions::GenerateResultAttachments::REDACTION_LOGIC_VERSION
+      attachment = submission.combined_document_attachment
+      return false unless attachment
+
+      version =
+        attachment.metadata&.[]('redaction_logic_version') || attachment.metadata&.[](:redaction_logic_version)
+
+      version == current_version
+    end
+
     def call(submitter)
       return nil unless submitter
 
@@ -21,7 +32,9 @@ module Submissions
       key = [KEY_PREFIX, submitter.id].join(':')
 
       if ApplicationRecord.uncached { LockEvent.exists?(key:, event_name: :complete) }
-        return submitter.submission.combined_document_attachment
+        return submitter.submission.combined_document_attachment if redaction_logic_version_matches?(submitter.submission)
+
+        submitter.submission.combined_document_attachment&.purge
       end
 
       events = ApplicationRecord.uncached { LockEvent.where(key:).order(:id).to_a }
@@ -64,8 +77,14 @@ module Submissions
           end
 
         if last_event.event_name.in?(%w[complete fail])
-          break ApplicationRecord.uncached do
-            ActiveStorage::Attachment.find_by(record: submitter.submission, name: 'combined_document')
+          return ApplicationRecord.uncached do
+            if last_event.event_name == 'complete' && !redaction_logic_version_matches?(submitter.submission)
+              submitter.submission.combined_document_attachment&.purge
+              result = Submissions::GenerateCombinedAttachment.call(submitter)
+              result
+            else
+              ActiveStorage::Attachment.find_by(record: submitter.submission, name: 'combined_document')
+            end
           end
         end
 

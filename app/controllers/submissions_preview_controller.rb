@@ -15,8 +15,10 @@ class SubmissionsPreviewController < ApplicationController
     signature_valid =
       if submitter && submitter.submission.slug == params[:slug]
         @submission = submitter.submission
-
+        @submitter = submitter
         true
+      else
+        @submitter = nil
       end
 
     @submission ||= Submission.find_by!(slug: params[:slug])

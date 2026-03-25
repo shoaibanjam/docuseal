@@ -2,6 +2,10 @@
 
 module Submissions
   module GenerateResultAttachments
+    # Bump this when redaction rendering logic changes so we can
+    # invalidate already-generated result PDFs.
+    REDACTION_LOGIC_VERSION = 4
+
     FONT_SIZE = 11
     FONT_PATH = '/fonts/GoNotoKurrent-Regular.ttf'
     FONT_BOLD_PATH = '/fonts/GoNotoKurrent-Bold.ttf'
@@ -81,10 +85,10 @@ module Submissions
     module_function
 
     # rubocop:disable Metrics
-    def call(submitter, for_admin: false)
+    def call(submitter, for_admin: false, apply_redactions: true)
       return generate_detached_signature_attachments(submitter) if detached_signature?(submitter)
 
-      pdfs_index = generate_pdfs(submitter, for_admin:)
+      pdfs_index = generate_pdfs(submitter, for_admin:, apply_redactions:)
 
       account = submitter.account
       submission = submitter.submission
@@ -112,7 +116,7 @@ module Submissions
           build_pdf_attachment(pdf:, submitter:, pkcs:, tsa_url:,
                                uuid: item['attachment_uuid'],
                                name: item['name'],
-                               for_admin:, submission:)
+                               for_admin:, submission:, apply_redactions:)
         end
 
       submission.admin_result_documents.purge if for_admin
@@ -134,7 +138,8 @@ module Submissions
           uuid: images_pdf_uuid(original_documents.select(&:image?)),
           name: submission.name || submission.template.name,
           for_admin:,
-          submission:
+          submission:,
+          apply_redactions:
         )
 
       submission.admin_result_documents.purge if for_admin
@@ -143,7 +148,7 @@ module Submissions
       end
     end
 
-    def generate_pdfs(submitter, for_admin: false)
+    def generate_pdfs(submitter, for_admin: false, apply_redactions: true)
       configs = submitter.account.account_configs.where(key: [
                                                           AccountConfig::FLATTEN_RESULT_PDF_KEY,
                                                           AccountConfig::WITH_SIGNATURE_ID,
@@ -211,16 +216,16 @@ module Submissions
                                                                       with_file_links:,
                                                                       with_signature_id_reason:,
                                                                       with_timestamp_seconds:,
-                                                                      for_admin:)
+                                                                      for_admin:, apply_redactions:)
 
-      rasterize_redacted_pages(submitter.submission, pdfs_index) unless for_admin
+      rasterize_redacted_pages(submitter.submission, pdfs_index, viewing_submitter: submitter) if apply_redactions && !for_admin
 
       pdfs_index
     end
 
     def fill_submitter_fields(submitter, account, pdfs_index, with_signature_id:, is_flatten:, with_headings: nil,
                               with_submitter_timezone: false, with_signature_id_reason: true, with_file_links: nil,
-                              with_timestamp_seconds: false, for_admin: false)
+                              with_timestamp_seconds: false, for_admin: false, apply_redactions: true)
       cell_layouter = HexaPDF::Layout::TextLayouter.new(text_valign: :center, text_align: :center)
 
       attachments_data_cache = {}
@@ -663,6 +668,10 @@ module Submissions
             end
           when 'redact'
             next if for_admin
+            next unless apply_redactions
+            # `redact` overlays are party-specific: draw only the overlays
+            # belonging to the viewing party.
+            next if field['submitter_uuid'] != submitter.uuid
 
             area_x = area['x'] * width
             area_y = area['y'] * height
@@ -744,7 +753,7 @@ module Submissions
       pdfs_index
     end
 
-    def build_pdf_attachment(pdf:, submitter:, pkcs:, tsa_url:, uuid:, name:, for_admin: false, submission: nil)
+    def build_pdf_attachment(pdf:, submitter:, pkcs:, tsa_url:, uuid:, name:, for_admin: false, submission: nil, apply_redactions: true)
       io = StringIO.new
 
       pdf.trailer.info[:Creator] = info_creator
@@ -800,6 +809,8 @@ module Submissions
         blob: ActiveStorage::Blob.create_and_upload!(io: io.tap(&:rewind), filename: "#{name}.pdf"),
         metadata: { original_uuid: uuid,
                     analyzed: true,
+                    redaction_logic_version: REDACTION_LOGIC_VERSION,
+                    apply_redactions:,
                     sha256: Base64.urlsafe_encode64(Digest::SHA256.digest(io.string)) },
         name: attachment_name,
         record:
@@ -833,7 +844,7 @@ module Submissions
     def build_pdfs_index(submission, submitter: nil, flatten: true)
       latest_submitter = find_last_submitter(submission, submitter:)
 
-      documents   = Submissions::EnsureResultGenerated.call(latest_submitter) if latest_submitter
+      documents   = Submissions::EnsureResultGenerated.call(latest_submitter, apply_redactions: false) if latest_submitter
       documents ||= submission.schema_documents
 
       ActiveRecord::Associations::Preloader.new(records: documents, associations: [:blob]).call
@@ -959,11 +970,14 @@ module Submissions
 
     REDACT_RENDER_SCALE = 2
 
-    def pages_with_redactions(submission)
+    def pages_with_redactions(submission, viewing_submitter: nil)
       fields = submission.template_fields || submission.template.fields
       acc = Hash.new { |h, k| h[k] = [] }
       fields.each do |field|
         next unless field['type'] == 'redact'
+        # Rasterize only the redaction overlays that belong to the
+        # viewing party.
+        next if viewing_submitter && field['submitter_uuid'] != viewing_submitter.uuid
 
         field.fetch('areas', []).each do |area|
           next unless area['attachment_uuid'].present? && area['page'].present?
@@ -974,8 +988,8 @@ module Submissions
       acc.transform_values { |a| a.uniq.sort.reverse }
     end
 
-    def rasterize_redacted_pages(submission, pdfs_index)
-      redacted_by_uuid = pages_with_redactions(submission)
+    def rasterize_redacted_pages(submission, pdfs_index, viewing_submitter:)
+      redacted_by_uuid = pages_with_redactions(submission, viewing_submitter:)
 
       pdfs_index.each_key do |attachment_uuid|
         page_indices = redacted_by_uuid[attachment_uuid]

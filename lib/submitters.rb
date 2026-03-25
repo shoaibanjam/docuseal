@@ -106,7 +106,10 @@ module Submitters
   def select_attachments_for_download(submitter)
     if submitter.submission.submitters.all?(&:completed_at?) &&
        submitter.submission.template_fields.none? { |f| f['type'] == 'verification' }
-      return [submitter.submission.combined_document_attachment || Submissions::EnsureCombinedGenerated.call(submitter)]
+      attachment =
+        submitter.submission.combined_document_attachment || Submissions::EnsureCombinedGenerated.call(submitter)
+
+      return attachment ? [attachment] : []
     end
 
     original_documents = submitter.submission.schema_documents.preload(:blob)

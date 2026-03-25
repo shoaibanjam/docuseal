@@ -148,6 +148,7 @@ module Submissions
         metadata: { original_uuid: uuid,
                     values_hash:,
                     analyzed: true,
+                    redaction_logic_version: GenerateResultAttachments::REDACTION_LOGIC_VERSION,
                     sha256: Base64.urlsafe_encode64(Digest::SHA256.digest(io.string)) }.compact,
         name: name,
         record: submitter || submission
