@@ -33,7 +33,7 @@
     </div>
     <div
       v-if="field?.type && (isSelected || isNameFocus) && !isInMultiSelection"
-      class="absolute bg-[#0b1a33] border border-[#1f2937] rounded-t overflow-visible whitespace-nowrap flex z-10 field-area-controls text-primary-content"
+      class="absolute bg-[#0d1c2f] border border-[#44474c] rounded-t overflow-visible whitespace-nowrap flex z-10 field-area-controls text-primary-content"
       style="top: -25px; height: 25px"
       @mousedown.stop
       @pointerdown.stop
@@ -45,7 +45,7 @@
         :compact="true"
         :editable="editable && (!defaultField || defaultField.role !== submitter?.name)"
         :allow-add-new="!defaultSubmitters.length"
-      :menu-classes="'dropdown-content bg-[#0b1a33] menu menu-xs p-2 shadow rounded-box w-52 rounded-t-none -left-[1px] mt-[1px] text-primary-content'"
+      :menu-classes="'dropdown-content bg-[#0d1c2f] menu menu-xs p-2 shadow rounded-box w-52 rounded-t-none -left-[1px] mt-[1px] text-primary-content'"
         :submitters="template.submitters"
         @update:model-value="save"
         @click="selectedAreasRef.value = [area]"
@@ -55,7 +55,7 @@
         :button-width="27"
         :editable="editable && !defaultField"
         :button-classes="'px-1'"
-      :menu-classes="'bg-[#0b1a33] rounded-t-none text-primary-content'"
+      :menu-classes="'bg-[#0d1c2f] rounded-t-none text-primary-content'"
         @update:model-value="[maybeUpdateOptions(), save()]"
         @click="selectedAreasRef.value = [area]"
       />

@@ -112,7 +112,7 @@
                   :data-tip="[0, 1, 2].map((i) => rows[i]?.[mapping.column_index] ?? '---').join('\n')"
                 >
                   <button
-                    class="btn btn-xs btn-circle bg-white border-0 border-gray-300"
+                    class="btn btn-xs btn-circle bg-[#0d1c2f] border border-white/5 text-[#d5e3fe] hover:border-[#04BE99]/30"
                     @click.prevent
                   >
                     <IconInfoCircle class="h-4 w-4" />
@@ -171,7 +171,7 @@
         @drop.prevent="onDropFiles"
       >
         <label
-          class="w-full relative bg-base-200/20  hover:bg-base-200/30 rounded-md border border-2 border-base-content/10 border-dashed"
+          class="w-full relative bg-[#051427]/40 hover:bg-[#0d1c2f]/50 rounded-md border border-2 border-white/10 border-dashed"
           for="import_list_file"
           :class="{ 'opacity-50': isLoading }"
         >

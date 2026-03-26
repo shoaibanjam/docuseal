@@ -98,7 +98,7 @@
               >
               <button
                 id="gdrive_oauth_button"
-                class="btn bg-white btn-outline w-full text-base font-medium mt-4"
+                class="btn w-full text-base font-medium mt-4 bg-[#0d1c2f] border border-white/5 text-[#d5e3fe] hover:border-[#04BE99]/30 hover:bg-[#1d2b3e]"
                 data-turbo="false"
                 type="submit"
                 :disabled="isConnectGoogleDriveClicked"
@@ -124,13 +124,13 @@
               class="relative"
             >
               <iframe
-                class="border border-base-300 rounded-lg"
-                style="width: 100%; height: 440px; background: white;"
+                class="border border-white/5 rounded-lg"
+                style="width: 100%; height: 440px; background: #010e21;"
                 src="/template_google_drive"
               />
               <div v-if="isLoadingGoogleDrive">
                 <div
-                  class="bg-white absolute top-0 bottom-0 left-0 right-0 opacity-80 rounded-lg"
+                  class="bg-[#010e21] absolute top-0 bottom-0 left-0 right-0 opacity-80 rounded-lg"
                   style="margin: 1px"
                 />
                 <div class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center">

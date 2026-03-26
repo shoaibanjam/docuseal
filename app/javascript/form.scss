@@ -44,11 +44,15 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-input {
-  @apply input input-bordered bg-white h-11 px-4 text-base rounded-lg font-normal transition-all duration-200;
+  @apply input h-11 px-4 text-sm rounded-lg font-normal transition-all duration-200;
+  @apply bg-[#010e21] border border-white/5 text-[#d5e3fe] placeholder:text-[#c5c6cd]/60;
+  @apply focus:border-[#04BE99] focus:ring-1 focus:ring-[#04BE99]/20 outline-none;
 }
 
 .base-textarea {
-  @apply textarea textarea-bordered bg-white rounded-lg px-4 py-3 text-base font-normal transition-all duration-200 min-h-[100px];
+  @apply textarea rounded-lg px-4 py-3 text-sm font-normal transition-all duration-200 min-h-[100px];
+  @apply bg-[#010e21] border border-white/5 text-[#d5e3fe] placeholder:text-[#c5c6cd]/60;
+  @apply focus:border-[#04BE99] focus:ring-1 focus:ring-[#04BE99]/20 outline-none;
 }
 
 .btn {
@@ -56,11 +60,17 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-button {
-  @apply btn btn-primary text-primary-content text-base px-6 h-11 rounded-lg hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2;
+  @apply btn bg-[#04BE99] text-[#00382b] border-none font-bold;
+  @apply h-10 px-6 rounded-lg text-sm;
+  @apply hover:shadow-[0_0_15px_rgba(4,190,153,0.4)] active:scale-95;
+  @apply focus:outline-none focus:ring-1 focus:ring-[#04BE99]/20;
 }
 
 .white-button {
-  @apply btn btn-outline text-slate-900 bg-white border-2 border-base-300 rounded-lg px-6 h-11 hover:bg-white hover:border-primary/40 hover:text-slate-900 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 transition-all duration-200;
+  @apply btn bg-transparent border border-[#44474c] text-[#d5e3fe] font-medium;
+  @apply h-10 px-6 rounded-lg text-sm;
+  @apply hover:border-[#04BE99] hover:text-[#04BE99] active:scale-95;
+  @apply focus:outline-none focus:ring-1 focus:ring-[#04BE99]/20;
 }
 
 .btn-ghost {
@@ -74,56 +84,56 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 
 /* Completed modal secondary buttons (e.g. "Send copy via email") */
 .completed-form-send-copy-button {
-  @apply bg-white/90 border-base-300 text-slate-900 hover:bg-white hover:border-primary/40 hover:text-slate-900;
+  @apply bg-[#0d1c2f] border border-white/5 text-[#d5e3fe] hover:border-[#04BE99]/40 hover:text-[#d5e3fe];
 }
 
 /* Completed screen "Resubmit" button */
 .completed-form-resubmit-button {
-  @apply bg-white/90 border-base-300 text-slate-900 hover:bg-white hover:border-primary/40 hover:text-slate-900;
+  @apply bg-[#0d1c2f] border border-white/5 text-[#d5e3fe] hover:border-[#04BE99]/40 hover:text-[#d5e3fe];
 }
 
 .completed-form-resubmit-button[disabled],
 .completed-form-resubmit-button.btn-disabled {
-  @apply bg-white/60 border-base-300 text-slate-500;
+  @apply bg-[#0d1c2f]/60 border border-white/5 text-[#c5c6cd];
 }
 
 .base-checkbox {
-  @apply checkbox rounded bg-white checkbox-sm;
+  @apply checkbox rounded bg-[#010e21] border border-white/5 checkbox-sm checked:border-[#04BE99] checked:bg-[#04BE99];
 }
 
 .base-radio {
-  @apply radio bg-white radio-sm;
+  @apply radio bg-[#010e21] border border-white/5 radio-sm checked:border-[#04BE99] checked:bg-[#04BE99];
 }
 
 /* Submission signing bottom form container (public signing pages only) */
 .form-container {
-  @apply border border-[#1f2937] rounded-t-xl text-primary-content;
-  background-color: #101827; /* slightly lighter than page background */
+  @apply border border-[#44474c] rounded-t-xl text-primary-content;
+  background-color: #0d1c2f; /* surface-container-low */
 }
 
 .form-container .base-input,
 .form-container .base-textarea {
-  @apply border border-[#1f2937];
-  background-color: #F9FAFB; /* light field background */
-  color: #020617;            /* darker text for maximum contrast */
+  @apply border border-[#44474c];
+  background-color: #010e21; /* surface-container-lowest */
+  color: #d5e3fe;
 }
 
 .form-container .base-input::placeholder,
 .form-container .base-textarea::placeholder {
-  color: #6B7280;
+  color: #c5c6cd;
 }
 
 /* Primary action button inside signing bar */
 .form-container .base-button,
 .form-container .btn-primary {
-  background-color: #00d5a4;   /* secondary brand color */
-  border-color: #00d5a4;
+  background-color: #04BE99;   /* secondary brand color */
+  border-color: #04BE99;
   color: #02101f;              /* dark label text */
 }
 
 .form-container .base-button:hover,
 .form-container .btn-primary:hover {
-  background-color: #00c194;
+  background-color: #03a684;
 }
 
 .font-times {

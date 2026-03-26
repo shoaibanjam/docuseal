@@ -160,7 +160,7 @@ safeRegisterElement('template-builder', class extends HTMLElement {
     this.app = createApp(TemplateBuilder, {
       template: reactive(JSON.parse(this.dataset.template)),
       // Use the global dark background to match the rest of the app
-      backgroundColor: '#020617',
+      backgroundColor: '#051427',
       template,
       customFields: reactive(JSON.parse(this.dataset.customFields || '[]')),
       locale: this.dataset.locale,
