@@ -53,7 +53,7 @@ module.exports = {
           'warning-content': '#1b1200',
           success: '#46ddb7',
           'success-content': '#002018',
-          base-100: '#051427',
+          'base-100': '#051427',
           'base-200': '#0d1c2f',
           'base-300': '#122033',
           'base-content': '#d5e3fe',
