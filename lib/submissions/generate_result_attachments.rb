@@ -6,10 +6,6 @@ module Submissions
     # invalidate already-generated result PDFs.
     REDACTION_LOGIC_VERSION = 4
 
-    # Bump this when redaction rendering logic changes so we can
-    # invalidate already-generated result PDFs.
-    REDACTION_LOGIC_VERSION = 4
-
     FONT_SIZE = 11
     FONT_PATH = '/fonts/GoNotoKurrent-Regular.ttf'
     FONT_BOLD_PATH = '/fonts/GoNotoKurrent-Bold.ttf'
@@ -144,8 +140,6 @@ module Submissions
           for_admin:,
           submission:,
           apply_redactions:
-          submission:,
-          apply_redactions:
         )
 
       submission.admin_result_documents.purge if for_admin
@@ -221,8 +215,6 @@ module Submissions
                                                                       with_submitter_timezone:,
                                                                       with_file_links:,
                                                                       with_signature_id_reason:,
-                                                                      with_timestamp_seconds:,
-                                                                      for_admin:, apply_redactions:)
                                                                       with_timestamp_seconds:,
                                                                       for_admin:, apply_redactions:)
 
@@ -828,8 +820,6 @@ module Submissions
                     analyzed: true,
                     redaction_logic_version: REDACTION_LOGIC_VERSION,
                     apply_redactions:,
-                    redaction_logic_version: REDACTION_LOGIC_VERSION,
-                    apply_redactions:,
                     sha256: Base64.urlsafe_encode64(Digest::SHA256.digest(io.string)) },
         name: attachment_name,
         record:
@@ -1010,8 +1000,6 @@ module Submissions
       acc.transform_values { |a| a.uniq.sort.reverse }
     end
 
-    def rasterize_redacted_pages(submission, pdfs_index, viewing_submitter:)
-      redacted_by_uuid = pages_with_redactions(submission, viewing_submitter:)
     def rasterize_redacted_pages(submission, pdfs_index, viewing_submitter:)
       redacted_by_uuid = pages_with_redactions(submission, viewing_submitter:)
 
