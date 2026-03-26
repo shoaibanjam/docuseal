@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="field?.type && (isSelected || isNameFocus) && !isInMultiSelection"
-    class="absolute bg-white rounded-t border overflow-visible whitespace-nowrap flex z-10 field-area-controls"
+    class="absolute bg-[#0d1c2f] rounded-t border border-white/10 overflow-visible whitespace-nowrap flex z-10 field-area-controls text-primary-content"
     style="top: -25px; height: 25px"
     @mousedown.stop
     @pointerdown.stop
@@ -13,7 +13,7 @@
       :compact="true"
       :editable="editable && (!defaultField || defaultField.role !== submitter?.name)"
       :allow-add-new="!defaultSubmitters.length"
-      :menu-classes="'dropdown-content bg-white menu menu-xs p-2 shadow rounded-box w-52 rounded-t-none -left-[1px] mt-[1px]'"
+      :menu-classes="'dropdown-content bg-[#0d1c2f] menu menu-xs p-2 shadow rounded-box w-52 rounded-t-none -left-[1px] mt-[1px] text-primary-content'"
       :submitters="template.submitters"
       @update:model-value="$emit('change')"
       @click="selectedAreasRef.value = [area]"
@@ -23,7 +23,7 @@
       :button-width="27"
       :editable="editable && !defaultField"
       :button-classes="'px-1'"
-      :menu-classes="'bg-white rounded-t-none'"
+      :menu-classes="'bg-[#0d1c2f] rounded-t-none text-primary-content'"
       @update:model-value="[maybeUpdateOptions(), $emit('change')]"
       @click="selectedAreasRef.value = [area]"
     />
@@ -96,7 +96,7 @@
           ref="settingsDropdown"
           tabindex="0"
           class="dropdown-content menu menu-xs px-2 pb-2 pt-1 shadow rounded-box w-52 z-10 rounded-t-none"
-          :style="{ backgroundColor: 'white' }"
+          :style="{ backgroundColor: '#0d1c2f' }"
           @dragstart.prevent.stop
           @click="closeDropdown"
           @focusout="maybeBlurSettings"
@@ -106,7 +106,7 @@
             :field="field"
             :default-field="defaultField"
             :editable="editable"
-            :background-color="'white'"
+            :background-color="'#0d1c2f'"
             :with-required="false"
             :with-areas="false"
             :with-signature-id="withSignatureId"

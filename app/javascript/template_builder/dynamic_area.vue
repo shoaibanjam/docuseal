@@ -37,7 +37,7 @@
       class="text-xs overflow-hidden text-ellipsis whitespace-nowrap pr-1 opacity-70 font-normal pl-0.5"
     >{{ displayLabel }}</span>
     <span
-      class="absolute rounded-full bg-white border border-gray-400 shadow-md cursor-nwse-resize z-10"
+      class="absolute rounded-full bg-[#d5e3fe] border border-[#44474c] shadow-md cursor-nwse-resize z-10"
       :style="{ width: resizeHandleSize + 'px', height: resizeHandleSize + 'px', right: (-4 / zoom) + 'px', bottom: (-4 / zoom) + 'px' }"
       @pointerdown.prevent.stop="onResizeStart"
     />

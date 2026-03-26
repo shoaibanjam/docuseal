@@ -25,7 +25,7 @@
       >
         <span
           v-if="index === 0 && editable && !isInMultiSelection"
-          class="h-2.5 w-2.5 rounded-full -bottom-1 border-gray-400 bg-white shadow-md border absolute cursor-ew-resize z-10"
+          class="h-2.5 w-2.5 rounded-full -bottom-1 border-[#44474c] bg-[#d5e3fe] shadow-md border absolute cursor-ew-resize z-10"
           style="left: -4px"
           @mousedown.stop="startResizeCell"
         />
@@ -33,7 +33,7 @@
     </div>
     <div
       v-if="field?.type && (isSelected || isNameFocus) && !isInMultiSelection"
-      class="absolute bg-[#0b1a33] border border-[#1f2937] rounded-t overflow-visible whitespace-nowrap flex z-10 field-area-controls text-primary-content"
+      class="absolute bg-[#0d1c2f] border border-[#44474c] rounded-t overflow-visible whitespace-nowrap flex z-10 field-area-controls text-primary-content"
       style="top: -25px; height: 25px"
       @mousedown.stop
       @pointerdown.stop
@@ -45,7 +45,7 @@
         :compact="true"
         :editable="editable && (!defaultField || defaultField.role !== submitter?.name)"
         :allow-add-new="!defaultSubmitters.length"
-      :menu-classes="'dropdown-content bg-[#0b1a33] menu menu-xs p-2 shadow rounded-box w-52 rounded-t-none -left-[1px] mt-[1px] text-primary-content'"
+      :menu-classes="'dropdown-content bg-[#0d1c2f] menu menu-xs p-2 shadow rounded-box w-52 rounded-t-none -left-[1px] mt-[1px] text-primary-content'"
         :submitters="template.submitters"
         @update:model-value="save"
         @click="selectedAreasRef.value = [area]"
@@ -55,7 +55,7 @@
         :button-width="27"
         :editable="editable && !defaultField"
         :button-classes="'px-1'"
-      :menu-classes="'bg-[#0b1a33] rounded-t-none text-primary-content'"
+      :menu-classes="'bg-[#0d1c2f] rounded-t-none text-primary-content'"
         @update:model-value="[maybeUpdateOptions(), save()]"
         @click="selectedAreasRef.value = [area]"
       />
@@ -128,7 +128,7 @@
             ref="settingsDropdown"
             tabindex="0"
             class="dropdown-content menu menu-xs px-2 pb-2 pt-1 shadow rounded-box w-52 z-10 rounded-t-none"
-            :style="{ backgroundColor: 'white' }"
+            :style="{ backgroundColor: '#0d1c2f' }"
             @dragstart.prevent.stop
             @click="closeDropdown"
             @focusout="maybeBlurSettings"
@@ -138,7 +138,7 @@
               :field="field"
               :default-field="defaultField"
               :editable="editable"
-              :background-color="'white'"
+              :background-color="'#0d1c2f'"
               :with-required="false"
               :with-areas="false"
               :with-signature-id="withSignatureId"
@@ -314,7 +314,7 @@
           v-else-if="!isCheckboxInput"
           width="100%"
           height="100%"
-          class="max-h-10 text-black"
+          class="max-h-10 text-primary-content"
         />
       </span>
     </div>
@@ -328,7 +328,7 @@
     />
     <span
       v-if="field?.type && editable"
-      class="h-4 w-4 lg:h-2.5 lg:w-2.5 -right-1 rounded-full -bottom-1 border-gray-400 bg-white shadow-md border absolute cursor-nwse-resize"
+      class="h-4 w-4 lg:h-2.5 lg:w-2.5 -right-1 rounded-full -bottom-1 border-[#44474c] bg-[#d5e3fe] shadow-md border absolute cursor-nwse-resize"
       :class="{ 'z-30': isInMultiSelection }"
       @mousedown.stop="startResize"
       @touchstart="startTouchResize"

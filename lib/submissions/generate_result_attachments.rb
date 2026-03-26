@@ -6,10 +6,6 @@ module Submissions
     # invalidate already-generated result PDFs.
     REDACTION_LOGIC_VERSION = 4
 
-    # Bump this when redaction rendering logic changes so we can
-    # invalidate already-generated result PDFs.
-    REDACTION_LOGIC_VERSION = 4
-
     FONT_SIZE = 11
     FONT_PATH = '/fonts/GoNotoKurrent-Regular.ttf'
     FONT_BOLD_PATH = '/fonts/GoNotoKurrent-Bold.ttf'
@@ -90,10 +86,8 @@ module Submissions
 
     # rubocop:disable Metrics
     def call(submitter, for_admin: false, apply_redactions: true)
-    def call(submitter, for_admin: false, apply_redactions: true)
       return generate_detached_signature_attachments(submitter) if detached_signature?(submitter)
 
-      pdfs_index = generate_pdfs(submitter, for_admin:, apply_redactions:)
       pdfs_index = generate_pdfs(submitter, for_admin:, apply_redactions:)
 
       account = submitter.account
@@ -123,7 +117,6 @@ module Submissions
                                uuid: item['attachment_uuid'],
                                name: item['name'],
                                for_admin:, submission:, apply_redactions:)
-                               for_admin:, submission:, apply_redactions:)
         end
 
       submission.admin_result_documents.purge if for_admin
@@ -147,8 +140,6 @@ module Submissions
           for_admin:,
           submission:,
           apply_redactions:
-          submission:,
-          apply_redactions:
         )
 
       submission.admin_result_documents.purge if for_admin
@@ -157,7 +148,6 @@ module Submissions
       end
     end
 
-    def generate_pdfs(submitter, for_admin: false, apply_redactions: true)
     def generate_pdfs(submitter, for_admin: false, apply_redactions: true)
       configs = submitter.account.account_configs.where(key: [
                                                           AccountConfig::FLATTEN_RESULT_PDF_KEY,
@@ -227,10 +217,7 @@ module Submissions
                                                                       with_signature_id_reason:,
                                                                       with_timestamp_seconds:,
                                                                       for_admin:, apply_redactions:)
-                                                                      with_timestamp_seconds:,
-                                                                      for_admin:, apply_redactions:)
 
-      rasterize_redacted_pages(submitter.submission, pdfs_index, viewing_submitter: submitter) if apply_redactions && !for_admin
       rasterize_redacted_pages(submitter.submission, pdfs_index, viewing_submitter: submitter) if apply_redactions && !for_admin
 
       pdfs_index
@@ -239,7 +226,11 @@ module Submissions
     def fill_submitter_fields(submitter, account, pdfs_index, with_signature_id:, is_flatten:, with_headings: nil,
                               with_submitter_timezone: false, with_signature_id_reason: true, with_file_links: nil,
                               with_timestamp_seconds: false, for_admin: false, apply_redactions: true)
-      cell_layouter = HexaPDF::Layout::TextLayouter.new(text_valign: :center, text_align: :center)
+      cell_layouters = {
+        'top' => HexaPDF::Layout::TextLayouter.new(text_valign: :top, text_align: :center),
+        'center' => HexaPDF::Layout::TextLayouter.new(text_valign: :center, text_align: :center),
+        'bottom' => HexaPDF::Layout::TextLayouter.new(text_valign: :bottom, text_align: :center)
+      }
 
       attachments_data_cache = {}
 
@@ -593,7 +584,7 @@ module Submissions
           when ->(type) { type == 'cells' && !area['cell_w'].to_f.zero? }
             cell_width = area['cell_w'] * width
             cell_valign = field.dig('preferences', 'valign').to_s.presence || 'center'
-            cell_layouter = cell_layouters[cell_valign]
+            cell_layouter = cell_layouters[cell_valign] || cell_layouters['center']
 
             if (mask = field.dig('preferences', 'mask').presence)
               value = TextUtils.mask_value(value, mask)
@@ -772,7 +763,6 @@ module Submissions
     end
 
     def build_pdf_attachment(pdf:, submitter:, pkcs:, tsa_url:, uuid:, name:, for_admin: false, submission: nil, apply_redactions: true)
-    def build_pdf_attachment(pdf:, submitter:, pkcs:, tsa_url:, uuid:, name:, for_admin: false, submission: nil, apply_redactions: true)
       io = StringIO.new
 
       pdf.trailer.info[:Creator] = info_creator
@@ -830,8 +820,6 @@ module Submissions
                     analyzed: true,
                     redaction_logic_version: REDACTION_LOGIC_VERSION,
                     apply_redactions:,
-                    redaction_logic_version: REDACTION_LOGIC_VERSION,
-                    apply_redactions:,
                     sha256: Base64.urlsafe_encode64(Digest::SHA256.digest(io.string)) },
         name: attachment_name,
         record:
@@ -865,7 +853,6 @@ module Submissions
     def build_pdfs_index(submission, submitter: nil, flatten: true)
       latest_submitter = find_last_submitter(submission, submitter:)
 
-      documents   = Submissions::EnsureResultGenerated.call(latest_submitter, apply_redactions: false) if latest_submitter
       documents   = Submissions::EnsureResultGenerated.call(latest_submitter, apply_redactions: false) if latest_submitter
       documents ||= submission.schema_documents
 
@@ -993,7 +980,6 @@ module Submissions
     REDACT_RENDER_SCALE = 2
 
     def pages_with_redactions(submission, viewing_submitter: nil)
-    def pages_with_redactions(submission, viewing_submitter: nil)
       fields = submission.template_fields || submission.template.fields
       acc = Hash.new { |h, k| h[k] = [] }
       fields.each do |field|
@@ -1014,8 +1000,6 @@ module Submissions
       acc.transform_values { |a| a.uniq.sort.reverse }
     end
 
-    def rasterize_redacted_pages(submission, pdfs_index, viewing_submitter:)
-      redacted_by_uuid = pages_with_redactions(submission, viewing_submitter:)
     def rasterize_redacted_pages(submission, pdfs_index, viewing_submitter:)
       redacted_by_uuid = pages_with_redactions(submission, viewing_submitter:)
 

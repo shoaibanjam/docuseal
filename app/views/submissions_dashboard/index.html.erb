@@ -3,7 +3,6 @@
 <% if Docuseal.demo? %><%= render 'shared/demo_alert' %><% end %>
 <div class="flex justify-between items-center w-full mb-4">
   <div class="flex items-center flex-grow min-w-0 text-primary-content">
-  <div class="flex items-center flex-grow min-w-0 text-primary-content">
     <div class="mr-2">
       <%= render 'dashboard/toggle_view', selected: 'submissions' %>
     </div>
@@ -36,19 +35,19 @@
 <% if is_show_tabs %>
   <div class="flex items-center flex-col md:flex-row md:flex-wrap gap-2 mb-4">
     <div class="flex items-center md:items-end flex-col md:flex-row gap-2 w-full md:w-fit">
-      <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="<%= params[:status].blank? ? 'border-secondary' : 'border-neutral-500' %> flex h-10 px-2 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-48 hover:border-secondary/70 bg-[#020617]">
+      <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="<%= params[:status].blank? ? 'border-secondary' : 'border-white/10' %> flex h-10 px-2 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-48 hover:border-secondary/70 bg-[#0d1c2f]">
         <div class="flex items-center space-x-1">
           <%= svg_icon('list', class: 'w-5 h-5') %>
           <span class="font-normal"><%= t('all') %></span>
         </div>
       </a>
-      <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="<%= params[:status] == 'pending' ? 'border-secondary' : 'border-neutral-500' %> flex h-10 px-2 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-48 hover:border-secondary/70 bg-[#020617]">
+      <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="<%= params[:status] == 'pending' ? 'border-secondary' : 'border-white/10' %> flex h-10 px-2 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-48 hover:border-secondary/70 bg-[#0d1c2f]">
         <div class="flex items-center space-x-1">
           <%= svg_icon('clock', class: 'w-5 h-5') %>
           <span class="font-normal"><%= t('pending') %></span>
         </div>
       </a>
-      <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="<%= params[:status] == 'completed' ? 'border-secondary' : 'border-neutral-500' %> flex h-10 px-2 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-48 hover:border-secondary/70 bg-[#020617]">
+      <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="<%= params[:status] == 'completed' ? 'border-secondary' : 'border-white/10' %> flex h-10 px-2 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-48 hover:border-secondary/70 bg-[#0d1c2f]">
         <div class="flex items-center space-x-1">
           <%= svg_icon('circle_check', class: 'w-5 h-5') %>
           <span class="font-normal"><%= t('completed') %></span>
