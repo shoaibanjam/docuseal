@@ -3,7 +3,7 @@
     <div
       v-if="!isShowFormulaModal && !isShowFontModal && !isShowConditionsModal && !isShowDescriptionModal && !isShowCustomValidationModal && !isShowLengthValidationModal && !isShowNumberRangeModal && !isShowPriceModal && !isShowPaymentLinkModal"
       ref="menu"
-      class="fixed z-50 p-1 bg-[#0d1c2f] shadow-2xl rounded-lg border border-white/5 cursor-default text-primary-content"
+      class="fixed z-50 p-1 bg-white shadow-lg rounded-lg border border-neutral-200 cursor-default"
       style="min-width: 170px"
       :style="menuStyle"
       @mousedown.stop
@@ -11,7 +11,7 @@
     >
       <label
         v-if="showRequired"
-        class="field-settings-required w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm cursor-pointer"
+        class="field-settings-required w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm cursor-pointer"
         @click.stop
       >
         <input
@@ -26,7 +26,7 @@
       </label>
       <label
         v-if="showReadOnly"
-        class="field-settings-read-only w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm cursor-pointer"
+        class="field-settings-read-only w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm cursor-pointer"
         @click.stop
       >
         <input
@@ -41,7 +41,7 @@
       </label>
       <label
         v-if="showPrefillable"
-        class="field-settings-prefillable w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm cursor-pointer"
+        class="field-settings-prefillable w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm cursor-pointer"
         @click.stop
       >
         <input
@@ -56,7 +56,7 @@
       </label>
       <label
         v-if="showSetSigningDate"
-        class="field-settings-set-signing-date w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm cursor-pointer"
+        class="field-settings-set-signing-date w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm cursor-pointer"
         @click.stop
       >
         <input
@@ -70,7 +70,7 @@
       </label>
       <label
         v-if="showWithLogo"
-        class="field-settings-with-logo w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm cursor-pointer"
+        class="field-settings-with-logo w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm cursor-pointer"
         @click.stop
       >
         <input
@@ -84,7 +84,7 @@
       </label>
       <label
         v-if="showSignatureId"
-        class="field-settings-signature-id w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm cursor-pointer"
+        class="field-settings-signature-id w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm cursor-pointer"
         @click.stop
       >
         <input
@@ -99,7 +99,7 @@
       </label>
       <label
         v-if="showChecked"
-        class="field-settings-checked w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm cursor-pointer"
+        class="field-settings-checked w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm cursor-pointer"
         @click.stop
       >
         <input
@@ -122,7 +122,7 @@
       />
       <hr
         v-if="showRequired || showReadOnly || showPrefillable || showSetSigningDate || showWithLogo || showSignatureId"
-        class="my-1 border-white/5"
+        class="my-1 border-neutral-200"
       >
       <ContextSubmenu
         v-if="showFormatSubmenu"
@@ -144,7 +144,7 @@
       />
       <button
         v-if="field.type === 'number'"
-        class="field-settings-validation w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
+        class="field-settings-validation w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
         @click.stop="openNumberRangeModal"
       >
         <IconInputCheck class="w-4 h-4" />
@@ -170,7 +170,7 @@
       />
       <button
         v-if="showFont"
-        class="field-settings-font w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
+        class="field-settings-font w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
         @click.stop="openFontModal"
       >
         <IconTypography class="w-4 h-4" />
@@ -178,7 +178,7 @@
       </button>
       <button
         v-if="showDescription"
-        class="field-settings-description w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
+        class="field-settings-description w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
         @click.stop="openDescriptionModal"
       >
         <IconInfoCircle class="w-4 h-4" />
@@ -186,7 +186,7 @@
       </button>
       <button
         v-if="showCondition"
-        class="field-settings-condition w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center justify-between text-sm"
+        class="field-settings-condition w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center justify-between text-sm"
         @click.stop="openConditionModal"
       >
         <span class="flex items-center space-x-2">
@@ -195,13 +195,13 @@
         </span>
         <span
           v-if="field.conditions?.length"
-          class="bg-white/10 rounded px-1 leading-3"
+          class="bg-neutral-200 rounded px-1 leading-3"
           style="font-size: 9px;"
         >{{ field.conditions.length }}</span>
       </button>
       <button
         v-if="showFormula"
-        class="field-settings-formula w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
+        class="field-settings-formula w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
         @click.stop="openFormulaModal"
       >
         <IconMathFunction class="w-4 h-4" />
@@ -209,10 +209,10 @@
       </button>
       <hr
         v-if="(showFont || showDescription || showCondition || showFormula || showPaymentSettings)"
-        class="my-1 border-white/5"
+        class="my-1 border-neutral-200"
       >
       <button
-        class="field-settings-copy w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center justify-between text-sm"
+        class="field-settings-copy w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center justify-between text-sm"
         @click.stop="$emit('copy')"
       >
         <span class="flex items-center space-x-2">

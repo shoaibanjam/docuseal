@@ -239,11 +239,7 @@ module Submissions
     def fill_submitter_fields(submitter, account, pdfs_index, with_signature_id:, is_flatten:, with_headings: nil,
                               with_submitter_timezone: false, with_signature_id_reason: true, with_file_links: nil,
                               with_timestamp_seconds: false, for_admin: false, apply_redactions: true)
-      cell_layouters = {
-        'top' => HexaPDF::Layout::TextLayouter.new(text_valign: :top, text_align: :center),
-        'center' => HexaPDF::Layout::TextLayouter.new(text_valign: :center, text_align: :center),
-        'bottom' => HexaPDF::Layout::TextLayouter.new(text_valign: :bottom, text_align: :center)
-      }
+      cell_layouter = HexaPDF::Layout::TextLayouter.new(text_valign: :center, text_align: :center)
 
       attachments_data_cache = {}
 
@@ -597,7 +593,7 @@ module Submissions
           when ->(type) { type == 'cells' && !area['cell_w'].to_f.zero? }
             cell_width = area['cell_w'] * width
             cell_valign = field.dig('preferences', 'valign').to_s.presence || 'center'
-            cell_layouter = cell_layouters[cell_valign] || cell_layouters['center']
+            cell_layouter = cell_layouters[cell_valign]
 
             if (mask = field.dig('preferences', 'mask').presence)
               value = TextUtils.mask_value(value, mask)

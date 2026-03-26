@@ -1,14 +1,14 @@
 <template>
   <div
     ref="menu"
-    class="fixed z-50 p-1 bg-[#0d1c2f] shadow-2xl rounded-lg border border-white/5 cursor-default text-primary-content"
+    class="fixed z-50 p-1 bg-white shadow-lg rounded-lg border border-neutral-200 cursor-default"
     style="min-width: 170px"
     :style="menuStyle"
     @mousedown.stop
     @pointerdown.stop
   >
     <button
-      class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center justify-between text-sm"
+      class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center justify-between text-sm"
       :class="!hasClipboardData ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-100'"
       :disabled="!hasClipboardData"
       @click.stop="!hasClipboardData ? null : $emit('paste')"
@@ -20,7 +20,7 @@
       <span class="text-xs text-base-content/60 ml-4">{{ isMac ? '⌘V' : 'Ctrl+V' }}</span>
     </button>
     <button
-      class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center justify-between text-sm"
+      class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center justify-between text-sm"
       @click.stop="handleToggleSelectMode"
     >
       <span class="flex items-center space-x-2">
@@ -38,11 +38,11 @@
     </button>
     <hr
       v-if="showAutodetectFields"
-      class="my-1 border-white/5"
+      class="my-1 border-neutral-200"
     >
     <button
       v-if="showAutodetectFields"
-      class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
+      class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
       @click.stop="$emit('autodetect-fields')"
     >
       <IconSparkles class="w-4 h-4" />

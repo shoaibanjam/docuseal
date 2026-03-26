@@ -22,7 +22,7 @@
           >
             <div>
               <button
-                class="btn border-[#44474c] bg-[#0d1c2f] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors p-0 document-control-button"
+                class="btn border-[#1f2937] bg-[#0b1a33] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors p-0 document-control-button"
                 @click.stop="isShowConditionsModal = true"
               >
                 <IconRouteAltLeft
@@ -47,7 +47,7 @@
           >
             <div>
               <button
-                class="btn border-[#44474c] bg-[#0d1c2f] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors document-control-button"
+                class="btn border-[#1f2937] bg-[#0b1a33] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors document-control-button"
                 style="width: 24px; height: 24px"
                 @click.stop="$emit('remove', item)"
               >
@@ -62,7 +62,7 @@
                 class="tooltip tooltip-left before:text-xs"
               >
                 <button
-                  class="btn border-[#44474c] bg-[#0d1c2f] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors p-0 document-control-button"
+                  class="btn border-[#1f2937] bg-[#0b1a33] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors p-0 document-control-button"
                   @click.stop="$emit('reorder', item)"
                 >
                   <IconSortDescending2
@@ -74,14 +74,14 @@
               </span>
               <template v-if="withArrows">
                 <button
-                  class="btn border-[#44474c] bg-[#0d1c2f] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors document-control-button"
+                  class="btn border-[#1f2937] bg-[#0b1a33] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors document-control-button"
                   style="width: 24px; height: 24px"
                   @click.stop="$emit('up', item)"
                 >
                   &uarr;
                 </button>
                 <button
-                  class="btn border-[#44474c] bg-[#0d1c2f] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors document-control-button"
+                  class="btn border-[#1f2937] bg-[#0b1a33] text-primary-content btn-xs rounded hover:text-secondary-content hover:bg-secondary hover:border-secondary w-full transition-colors document-control-button"
                   style="width: 24px; height: 24px"
                   @click.stop="$emit('down', item)"
                 >

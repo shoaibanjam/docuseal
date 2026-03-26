@@ -22,8 +22,8 @@ module.exports = {
         soft: '0 2px 8px rgba(38, 56, 84, 0.06)',
         'soft-lg': '0 4px 16px rgba(38, 56, 84, 0.08)',
         'soft-xl': '0 8px 24px rgba(38, 56, 84, 0.1)',
-        'focus-ring': '0 0 0 3px rgba(4, 190, 153, 0.25)',
-        'focus-ring-neutral': '0 0 0 3px rgba(4, 190, 153, 0.15)'
+        'focus-ring': '0 0 0 3px rgba(31, 224, 179, 0.25)',
+        'focus-ring-neutral': '0 0 0 3px rgba(38, 56, 84, 0.15)'
       }
     }
   },
@@ -34,28 +34,22 @@ module.exports = {
     themes: [
       {
         docuseal: {
-          'color-scheme': 'dark',
+          'color-scheme': 'light',
           // Brand palette (dark theme)
-          primary: '#0A192C',
-          'primary-content': '#d5e3fe',
-          secondary: '#04BE99',
-          'secondary-content': '#00382b',
-          accent: '#06be99',
+          primary: '#0a1628',
+          'primary-content': '#E5E7EB',
+          secondary: '#00d5a4',
+          'secondary-content': '#021018',
+          accent: '#00b48a',
           'accent-content': '#FFFFFF',
-          neutral: '#051427',
-          'neutral-content': '#d5e3fe',
-          error: '#ffb4ab',
-          'error-content': '#690005',
-          warning: '#ffb86b',
-          'warning-content': '#1b1200',
-          success: '#46ddb7',
-          'success-content': '#002018',
+          neutral: '#020617',
+          'neutral-content': '#E5E7EB',
           // Surface colors
-          'base-100': '#051427', // main app background
-          'base-200': '#0d1c2f',
-          'base-300': '#122033',
-          'base-content': '#d5e3fe',
-          info: '#06be99',
+          'base-100': '#020617', // main app background
+          'base-200': '#020617',
+          'base-300': '#111827',
+          'base-content': '#E5E7EB',
+          info: '#00b0ff',
           'info-content': '#FFFFFF',
           '--rounded-btn': '0.5rem',
           '--tab-border': '2px',

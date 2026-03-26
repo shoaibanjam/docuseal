@@ -30,20 +30,20 @@
       v-if="pendingFieldAttachmentUuids.length && editable"
       class="top-1.5 sticky h-0 z-20 max-w-2xl mx-auto"
     >
-      <div class="flex items-start gap-4 p-4 bg-secondary/10 border-l-4 border-secondary rounded-r-lg shadow-soft-xl">
+      <div class="alert border-base-content/30 py-2 px-2.5">
         <IconInfoCircle
           class="stroke-info shrink-0 w-6 h-6"
         />
         <span>{{ t('uploaded_pdf_contains_form_fields_keep_or_remove_them') }}</span>
         <div>
           <button
-            class="btn btn-sm bg-transparent border border-secondary text-secondary hover:bg-secondary/10 hover:border-secondary"
+            class="btn btn-sm"
             @click.prevent="removePendingFields"
           >
             {{ t('remove') }}
           </button>
           <button
-            class="btn btn-sm border border-secondary bg-secondary text-secondary-content hover:bg-secondary/90 hover:border-secondary"
+            class="btn btn-sm btn-neutral text-white"
             @click.prevent="save"
           >
             {{ t('keep') }}
@@ -701,7 +701,7 @@ export default {
     backgroundColor: {
       type: String,
       required: false,
-      default: '#051427'
+      default: '#020617'
     },
     locale: {
       type: String,

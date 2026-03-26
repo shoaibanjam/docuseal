@@ -5,7 +5,7 @@
     @mouseleave="handleMouseLeave"
   >
     <button
-      class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center justify-between text-sm"
+      class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center justify-between text-sm"
       @click.stop="isOpen ? close() : open()"
     >
       <span class="flex items-center space-x-2">
@@ -20,7 +20,7 @@
     <div
       v-if="isOpen"
       ref="submenu"
-      class="absolute p-1 z-50 left-full bg-[#0d1c2f] shadow-2xl rounded-lg border border-white/5 cursor-default text-primary-content"
+      class="absolute p-1 z-50 left-full bg-white shadow-lg rounded-lg border border-neutral-200 cursor-default"
       style="min-width: 170px"
       :style="submenuStyle"
       :class="menuClass"
@@ -30,7 +30,7 @@
         <button
           v-for="option in options"
           :key="option.value"
-          class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center justify-between space-x-2 text-sm cursor-pointer"
+          class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center justify-between space-x-2 text-sm cursor-pointer"
           @click="handleSelect(option.value)"
         >
           <span class="whitespace-nowrap">{{ option.label }}</span>
