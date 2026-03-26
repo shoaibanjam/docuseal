@@ -701,7 +701,7 @@ export default {
     backgroundColor: {
       type: String,
       required: false,
-      default: '#020617'
+      default: '#051427'
     },
     locale: {
       type: String,

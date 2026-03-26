@@ -116,7 +116,7 @@
     <img
       v-if="modelValue || computedPreviousValue"
       :src="attachmentsIndex[modelValue || computedPreviousValue].url"
-      class="mx-auto bg-white border border-base-300 rounded max-h-44"
+      class="mx-auto bg-[#010e21] border border-white/10 rounded max-h-44"
     >
     <div class="relative">
       <div
@@ -131,7 +131,7 @@
       <canvas
         v-show="!modelValue && !computedPreviousValue"
         ref="canvas"
-        class="bg-white border border-base-300 rounded-2xl w-full draw-canvas"
+        class="bg-[#010e21] border border-white/10 rounded-2xl w-full draw-canvas"
       />
     </div>
     <input

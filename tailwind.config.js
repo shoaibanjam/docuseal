@@ -1,4 +1,8 @@
 module.exports = {
+  content: [
+    './app/javascript/**/*.{js,vue}',
+    './app/views/**/*.erb'
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -34,22 +38,26 @@ module.exports = {
     themes: [
       {
         docuseal: {
-          'color-scheme': 'light',
-          // Brand palette (dark theme)
-          primary: '#0a1628',
-          'primary-content': '#E5E7EB',
-          secondary: '#00d5a4',
-          'secondary-content': '#021018',
-          accent: '#00b48a',
+          'color-scheme': 'dark',
+          primary: '#0A192C',
+          'primary-content': '#d5e3fe',
+          secondary: '#04BE99',
+          'secondary-content': '#00382b',
+          accent: '#06be99',
           'accent-content': '#FFFFFF',
-          neutral: '#020617',
-          'neutral-content': '#E5E7EB',
-          // Surface colors
-          'base-100': '#020617', // main app background
-          'base-200': '#020617',
-          'base-300': '#111827',
-          'base-content': '#E5E7EB',
-          info: '#00b0ff',
+          neutral: '#051427',
+          'neutral-content': '#d5e3fe',
+          error: '#ffb4ab',
+          'error-content': '#690005',
+          warning: '#ffb86b',
+          'warning-content': '#1b1200',
+          success: '#46ddb7',
+          'success-content': '#002018',
+          base-100: '#051427',
+          'base-200': '#0d1c2f',
+          'base-300': '#122033',
+          'base-content': '#d5e3fe',
+          info: '#06be99',
           'info-content': '#FFFFFF',
           '--rounded-btn': '0.5rem',
           '--tab-border': '2px',

@@ -3,7 +3,7 @@
     <div
       v-if="!isShowFontModal && !isShowConditionsModal"
       ref="menu"
-      class="fixed z-50 p-1 bg-white shadow-lg rounded-lg border border-neutral-200 cursor-default"
+      class="fixed z-50 p-1 bg-[#0d1c2f] shadow-2xl rounded-lg border border-white/10 cursor-default text-primary-content"
       style="min-width: 170px"
       :style="menuStyle"
       @mousedown.stop
@@ -14,28 +14,28 @@
         :label="t('align')"
       >
         <button
-          class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
+          class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
           @click.stop="alignSelectedAreas('left')"
         >
           <IconLayoutAlignLeft class="w-4 h-4" />
           <span>{{ t('align_left') }}</span>
         </button>
         <button
-          class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
+          class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
           @click.stop="alignSelectedAreas('right')"
         >
           <IconLayoutAlignRight class="w-4 h-4" />
           <span>{{ t('align_right') }}</span>
         </button>
         <button
-          class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
+          class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
           @click.stop="alignSelectedAreas('top')"
         >
           <IconLayoutAlignTop class="w-4 h-4" />
           <span>{{ t('align_top') }}</span>
         </button>
         <button
-          class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
+          class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
           @click.stop="alignSelectedAreas('bottom')"
         >
           <IconLayoutAlignBottom class="w-4 h-4" />
@@ -47,14 +47,14 @@
         :label="t('resize')"
       >
         <button
-          class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
+          class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
           @click.stop="resizeSelectedAreas('width')"
         >
           <IconArrowsHorizontal class="w-4 h-4" />
           <span>{{ t('width') }}</span>
         </button>
         <button
-          class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
+          class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
           @click.stop="resizeSelectedAreas('height')"
         >
           <IconArrowsVertical class="w-4 h-4" />
@@ -63,11 +63,11 @@
       </ContextSubmenu>
       <hr
         v-if="showFont || showCondition"
-        class="my-1 border-neutral-200"
+        class="my-1 border-white/10"
       >
       <button
         v-if="showFont"
-        class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
+        class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
         @click.stop="openFontModal"
       >
         <IconTypography class="w-4 h-4" />
@@ -75,15 +75,15 @@
       </button>
       <button
         v-if="showCondition"
-        class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center space-x-2 text-sm"
+        class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center space-x-2 text-sm"
         @click.stop="openConditionModal"
       >
         <IconRouteAltLeft class="w-4 h-4" />
         <span>{{ t('condition') }}</span>
       </button>
-      <hr class="my-1 border-neutral-200">
+      <hr class="my-1 border-white/10">
       <button
-        class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center justify-between text-sm"
+        class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center justify-between text-sm"
         @click.stop="$emit('copy')"
       >
         <span class="flex items-center space-x-2">
@@ -93,7 +93,7 @@
         <span class="text-xs text-base-content/60 ml-4">{{ isMac ? '⌘C' : 'Ctrl+C' }}</span>
       </button>
       <button
-        class="w-full px-2 py-1 rounded-md hover:bg-neutral-100 flex items-center justify-between text-sm text-red-600"
+        class="w-full px-2 py-1 rounded-md hover:bg-[#1d2b3e] flex items-center justify-between text-sm text-error"
         @click.stop="$emit('delete')"
       >
         <span class="flex items-center space-x-2">
