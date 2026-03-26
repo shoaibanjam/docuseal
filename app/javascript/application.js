@@ -179,6 +179,7 @@ safeRegisterElement('template-builder', class extends HTMLElement {
       withSendButton: this.dataset.withSendButton !== 'false',
       withSignYourselfButton: this.dataset.withSignYourselfButton !== 'false',
       withConditions: this.dataset.withConditions === 'true',
+      withDynamicDocuments: this.dataset.withDynamicDocuments === 'true',
       withGoogleDrive: this.dataset.withGoogleDrive === 'true',
       withAddPageButton: true,
       withReplaceAndCloneUpload: true,

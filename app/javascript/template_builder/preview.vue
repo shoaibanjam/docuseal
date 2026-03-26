@@ -18,8 +18,7 @@
         >
           <div
             style="width: 26px"
-            class="flex flex-col justify-between group-hover:opacity-100"
-            :class="{'opacity-0': !item.conditions?.length }"
+            class="flex flex-col"
           >
             <div>
               <button
@@ -129,24 +128,29 @@
 <script>
 import Contenteditable from './contenteditable'
 import Upload from './upload'
-import { IconRouteAltLeft, IconSortDescending2 } from '@tabler/icons-vue'
+import { IconRouteAltLeft, IconSortDescending2, IconDotsVertical, IconTrashX, IconBolt, IconInnerShadowTop } from '@tabler/icons-vue'
 import ConditionsModal from './conditions_modal'
 import ReplaceButton from './replace'
 import GoogleDriveDocumentSettings from './google_drive_document_settings'
 import Field from './field'
 import FieldType from './field_type'
+import { v4 } from 'uuid'
 
 export default {
   name: 'DocumentPreview',
   components: {
     Contenteditable,
+    IconInnerShadowTop,
     IconRouteAltLeft,
     ConditionsModal,
     ReplaceButton,
     GoogleDriveDocumentSettings,
-    IconSortDescending2
+    IconSortDescending2,
+    IconDotsVertical,
+    IconTrashX,
+    IconBolt
   },
-  inject: ['t', 'getFieldTypeIndex'],
+  inject: ['t', 'getFieldTypeIndex', 'baseFetch'],
   props: {
     item: {
       type: Object,
@@ -168,12 +172,21 @@ export default {
     acceptFileTypes: {
       type: String,
       required: false,
-      default: 'image/*, application/pdf, application/zip'
+      default: 'image/*, application/pdf, application/zip, application/json'
     },
     withReplaceButton: {
       type: Boolean,
       required: true,
       default: true
+    },
+    dynamicDocuments: {
+      type: Array,
+      required: true
+    },
+    withDynamicDocuments: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     withArrows: {
       type: Boolean,
@@ -184,7 +197,9 @@ export default {
   emits: ['scroll-to', 'change', 'remove', 'up', 'down', 'replace', 'reorder'],
   data () {
     return {
-      isShowConditionsModal: false
+      isShowConditionsModal: false,
+      isMakeDynamicLoading: false,
+      renderDropdown: false
     }
   },
   computed: {
@@ -200,6 +215,96 @@ export default {
   methods: {
     upload: Upload.methods.upload,
     buildDefaultName: Field.methods.buildDefaultName,
+    closeDropdown () {
+      this.$el.getRootNode().activeElement.blur()
+    },
+    makeDynamic () {
+      this.isMakeDynamicLoading = true
+
+      Promise.all([
+        this.baseFetch(`/templates/${this.template.id}/dynamic_documents`, {
+          method: 'POST',
+          body: JSON.stringify({ uuid: this.document.uuid }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }),
+        import(/* webpackChunkName: "dynamic-editor" */ './dynamic_document')
+      ]).then(async ([resp, _]) => {
+        const dynamicDocument = await resp.json()
+
+        this.template.schema.find((item) => item.attachment_uuid === dynamicDocument.uuid).dynamic = true
+
+        this.removeFieldAreas()
+
+        if (dynamicDocument.fields?.length) {
+          this.addDynamicFields(dynamicDocument.fields)
+        }
+
+        if (dynamicDocument.uuid) {
+          delete dynamicDocument.fields
+
+          this.dynamicDocuments.push(dynamicDocument)
+        }
+
+        this.$emit('change')
+      }).finally(() => {
+        this.isMakeDynamicLoading = false
+      })
+    },
+    removeFieldAreas () {
+      this.template.fields.forEach((field) => {
+        if (field.areas?.length) {
+          field.areas = field.areas.filter((a) => a.attachment_uuid !== this.document.uuid)
+        }
+      })
+
+      this.template.fields = this.template.fields.filter((field) => field.areas?.length)
+    },
+    addDynamicFields (fields) {
+      const submittersNameIndex = this.template.submitters.reduce((acc, submitter) => {
+        acc[submitter.name] = submitter
+
+        return acc
+      }, {})
+
+      fields.forEach((field) => {
+        const roleName = field.role || this.template.submitters[0]?.name || this.t('first_party')
+
+        let submitter = submittersNameIndex[roleName]
+
+        if (!submitter) {
+          submitter = { name: roleName, uuid: v4() }
+
+          this.template.submitters.push(submitter)
+
+          submittersNameIndex[roleName] = submitter
+        }
+
+        const existingField = this.template.fields.find((f) => {
+          return f.name && f.name === field.name && f.type === (field.type || 'text') && f.submitter_uuid === submitter.uuid
+        })
+
+        if (existingField) {
+          field.areas.forEach((area) => {
+            area.attachment_uuid = this.document.uuid
+
+            existingField.areas = existingField.areas || []
+            existingField.areas.push(area)
+          })
+        } else {
+          field.submitter_uuid = submitter.uuid
+
+          delete field.role
+
+          field.areas.forEach((area) => {
+            area.attachment_uuid = this.document.uuid
+          })
+
+          this.template.fields.push(field)
+        }
+      })
+    },
     onUpdateName (value) {
       this.item.name = value
 

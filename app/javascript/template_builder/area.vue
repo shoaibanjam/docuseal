@@ -232,6 +232,7 @@
             ref="textContainer"
             class="flex items-center px-0.5"
             :style="{ color: field.preferences?.color || 'black' }"
+            :style="{ color: field.preferences?.color || 'black' }"
             :class="{ 'w-full h-full': isWFullType }"
           >
             <IconCheck
@@ -315,6 +316,7 @@
           width="100%"
           height="100%"
           class="max-h-10 text-black"
+          class="max-h-10 text-black"
         />
       </span>
     </div>
@@ -333,85 +335,20 @@
       @mousedown.stop="startResize"
       @touchstart="startTouchResize"
     />
-    <Teleport
-      v-if="isShowFormulaModal"
-      :to="modalContainerEl"
-    >
-      <FormulaModal
-        :field="field"
-        :editable="editable && !defaultField"
-        :default-field="defaultField"
-        :build-default-name="buildDefaultName"
-        @save="save"
-        @close="isShowFormulaModal = false"
-      />
-    </Teleport>
-    <Teleport
-      v-if="isShowFontModal"
-      :to="modalContainerEl"
-    >
-      <FontModal
-        :field="field"
-        :editable="editable && !defaultField"
-        :default-field="defaultField"
-        :build-default-name="buildDefaultName"
-        @save="save"
-        @close="isShowFontModal = false"
-      />
-    </Teleport>
-    <Teleport
-      v-if="isShowConditionsModal"
-      :to="modalContainerEl"
-    >
-      <ConditionsModal
-        :item="field"
-        :build-default-name="buildDefaultName"
-        :default-field="defaultField"
-        @save="save"
-        @close="isShowConditionsModal = false"
-      />
-    </Teleport>
-    <Teleport
-      v-if="isShowDescriptionModal"
-      :to="modalContainerEl"
-    >
-      <DescriptionModal
-        :field="field"
-        :editable="editable && !defaultField"
-        :default-field="defaultField"
-        :build-default-name="buildDefaultName"
-        @save="save"
-        @close="isShowDescriptionModal = false"
-      />
-    </Teleport>
   </div>
 </template>
 
 <script>
-import FieldSubmitter from './field_submitter'
 import FieldType from './field_type'
 import Field from './field'
-import FieldSettings from './field_settings'
-import FormulaModal from './formula_modal'
-import FontModal from './font_modal'
-import ConditionsModal from './conditions_modal'
-import DescriptionModal from './description_modal'
-import { IconX, IconCheck, IconDotsVertical } from '@tabler/icons-vue'
-import { v4 } from 'uuid'
+import AreaTitle from './area_title'
+import { IconCheck } from '@tabler/icons-vue'
 
 export default {
   name: 'FieldArea',
   components: {
-    FieldType,
     IconCheck,
-    FieldSettings,
-    FormulaModal,
-    FontModal,
-    IconDotsVertical,
-    DescriptionModal,
-    ConditionsModal,
-    FieldSubmitter,
-    IconX
+    AreaTitle
   },
   inject: ['template', 'save', 't', 'isInlineSize', 'selectedAreasRef', 'isCmdKeyRef', 'getFieldTypeIndex'],
   props: {
@@ -493,17 +430,10 @@ export default {
   emits: ['start-resize', 'stop-resize', 'start-drag', 'stop-drag', 'remove', 'scroll-to', 'add-custom-field'],
   data () {
     return {
-      isShowFormulaModal: false,
-      isShowFontModal: false,
-      isShowConditionsModal: false,
       isContenteditable: false,
-      isSettingsFocus: false,
-      isShowDescriptionModal: false,
       isResize: false,
       isDragged: false,
       isMoved: false,
-      renderDropdown: false,
-      isNameFocus: false,
       isHeadingSelected: false,
       textOverflowChars: 0,
       dragFrom: { x: 0, y: 0 }
@@ -592,9 +522,6 @@ export default {
       return (this.field.type === 'heading' && this.isHeadingSelected) || this.isContenteditable ||
         (this.inputMode && (['text', 'number'].includes(this.field.type) || (this.field.type === 'date' && this.field.default_value !== '{{date}}')))
     },
-    modalContainerEl () {
-      return this.$el.getRootNode().querySelector('#docuseal_modal_container')
-    },
     defaultName () {
       return this.buildDefaultName(this.field)
     },
@@ -614,13 +541,6 @@ export default {
         'font-times': this.field.preferences.font === 'Times',
         'font-bold': ['bold_italic', 'bold'].includes(this.field.preferences.font_type),
         italic: ['bold_italic', 'italic'].includes(this.field.preferences.font_type)
-      }
-    },
-    optionIndexText () {
-      if (this.area.option_uuid && this.field.options) {
-        return `${this.field.options.findIndex((o) => o.uuid === this.area.option_uuid) + 1}.`
-      } else {
-        return ''
       }
     },
     cells () {
@@ -705,9 +625,6 @@ export default {
   },
   methods: {
     buildDefaultName: Field.methods.buildDefaultName,
-    closeDropdown () {
-      this.$el.getRootNode().activeElement.blur()
-    },
     buildAreaOptionValue (area) {
       const option = this.optionsUuidIndex[area.option_uuid]
 
@@ -792,23 +709,6 @@ export default {
         return number
       }
     },
-    maybeBlurSettings (e) {
-      if (!e.relatedTarget || !this.$refs.settingsDropdown.contains(e.relatedTarget)) {
-        this.isSettingsFocus = false
-      }
-    },
-    onNameFocus (e) {
-      this.selectedAreasRef.value = [this.area]
-
-      this.isNameFocus = true
-      this.$refs.name.style.minWidth = this.$refs.name.clientWidth + 'px'
-
-      if (!this.field.name) {
-        setTimeout(() => {
-          this.$refs.name.innerText = ' '
-        }, 1)
-      }
-    },
     startResizeCell (e) {
       this.$el.getRootNode().addEventListener('mousemove', this.onResizeCell)
       this.$el.getRootNode().addEventListener('mouseup', this.stopResizeCell)
@@ -842,53 +742,6 @@ export default {
           this.area.cell_w = positionX - this.area.x
         }
       }
-    },
-    maybeUpdateOptions () {
-      delete this.field.default_value
-
-      if (!['radio', 'multiple', 'select'].includes(this.field.type)) {
-        delete this.field.options
-      }
-
-      if (this.field.type === 'heading') {
-        this.field.readonly = true
-      }
-
-      if (this.field.type === 'strikethrough') {
-        this.field.readonly = true
-        this.field.default_value = true
-      }
-
-      if (['select', 'multiple', 'radio'].includes(this.field.type)) {
-        this.field.options ||= [{ value: '', uuid: v4() }]
-      }
-
-      (this.field.areas || []).forEach((area) => {
-        if (this.field.type === 'cells') {
-          area.cell_w = area.w * 2 / Math.floor(area.w / area.h)
-        } else {
-          delete area.cell_w
-        }
-      })
-    },
-    onNameBlur (e) {
-      if (e.relatedTarget === this.$refs.settingsButton) {
-        this.isSettingsFocus = true
-      }
-
-      const text = this.$refs.name.innerText.trim()
-
-      this.isNameFocus = false
-      this.$refs.name.style.minWidth = ''
-
-      if (text) {
-        this.field.name = text
-      } else {
-        this.field.name = ''
-        this.$refs.name.innerText = this.defaultName
-      }
-
-      this.save()
     },
     onDefaultValueBlur (e) {
       const text = this.$refs.defaultValue.innerText.trim()
@@ -926,9 +779,6 @@ export default {
 
         this.$refs.defaultValue.blur()
       }
-    },
-    onNameEnter (e) {
-      this.$refs.name.blur()
     },
     resize (e) {
       if (e.target.id === 'mask') {
@@ -1124,7 +974,7 @@ export default {
         this.selectedAreasRef.value = [this.area]
       }
 
-      this.$refs?.name?.blur()
+      this.$refs?.title?.$refs?.name?.blur()
 
       e.preventDefault()
 

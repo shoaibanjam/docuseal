@@ -1,9 +1,8 @@
 services:
   app:
-    depends_on:
-      postgres:
-        condition: service_healthy
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 9090:3000
     volumes:
