@@ -6,6 +6,7 @@
 
 body {
   @apply antialiased text-base-content bg-base-100;
+  @apply antialiased text-base-content bg-base-100;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   background: radial-gradient(circle at top left, rgba(0, 213, 164, 0.06), transparent 55%),
               radial-gradient(circle at bottom right, rgba(10, 25, 44, 0.09), transparent 55%);
@@ -133,6 +134,7 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-checkbox {
+  @apply checkbox rounded bg-base-100 checkbox-sm no-animation transition-colors duration-200 border-base-content/30 checked:border-secondary checked:bg-secondary;
   @apply checkbox rounded bg-base-100 checkbox-sm no-animation transition-colors duration-200 border-base-content/30 checked:border-secondary checked:bg-secondary;
 }
 

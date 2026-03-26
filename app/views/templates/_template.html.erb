@@ -6,6 +6,7 @@
     <div class="text-xl font-semibold" style="line-height: 1.6rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;">
       <% if template.template_accesses.present? %>
         <%= svg_icon('lock', class: 'w-5 h-5 inline -translate-y-[3px] mr-1') %>
+        <%= svg_icon('lock', class: 'w-5 h-5 inline -translate-y-[3px] mr-1') %>
       <% end %>
       <% template.name.split(/(_)/).each do |item| %><%= item %><wbr><% end %>
     </div>

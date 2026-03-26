@@ -5,6 +5,9 @@
     <span class="<%= filter_params.then { |f| f[:status].in?(%w[pending completed]) ? f.except(:status) : f }.present? ? 'md:hidden' : '' %>">
       Filter
     </span>
+    <span class="<%= filter_params.then { |f| f[:status].in?(%w[pending completed]) ? f.except(:status) : f }.present? ? 'md:hidden' : '' %>">
+      Filter
+    </span>
   </label>
   <ul tabindex="0" class="z-10 dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box min-w-[180px] text-right">
     <li class="flex">
