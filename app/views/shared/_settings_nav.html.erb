@@ -1,12 +1,10 @@
 <div class="block w-full md:w-52 flex-none">
+  <a href="<%= '/' %>" class="inline-flex items-center space-x-1 text-sm font-medium text-primary-content/70 hover:text-primary-content mb-3 pl-1">
+    <%= svg_icon('arrow_left', class: 'w-4 h-4 stroke-2') %>
+    <span><%= t('back') %></span>
+  </a>
   <menu-active>
     <ul id="account_settings_menu" class="menu px-0 text-primary-content/80">
-      <li class="menu-title py-0 !bg-transparent mb-3 -mt-5">
-        <a href="<%= '/' %>" class="!bg-transparent !text-primary-content/70 hover:!text-primary-content font-medium flex items-center space-x-0.5">
-          <%= svg_icon('arrow_left', class: 'w-4 h-4 stroke-2') %>
-          <span><%= t('back') %></span>
-        </a>
-      </li>
       <li class="menu-title py-0 !bg-transparent">
         <span class="!bg-transparent text-primary-content/60 tracking-wide text-xs uppercase"><%= t('settings') %></span>
       </li>
@@ -124,19 +122,19 @@
       </div>
       <div class="flex mt-3 space-x-3">
         <div class="tooltip" data-tip="GitHub">
-          <a href="<%= Docuseal::GITHUB_URL %>" target="_blank" class="btn btn-circle btn-primary btn-md">
-            <%= svg_icon('brand_github', class: 'w-8 h-8') %>
+          <a href="<%= Docuseal::GITHUB_URL %>" target="_blank" class="btn btn-circle btn-primary support-social-btn" aria-label="GitHub">
+            <%= svg_icon('brand_github', class: 'support-social-icon') %>
           </a>
         </div>
         <div class="tooltip" data-tip="<%= t('discord_community') %>">
-          <a href="<%= Docuseal::DISCORD_URL %>" target="_blank" class="btn btn-circle btn-primary btn-md">
-            <%= svg_icon('brand_discord', class: 'w-8 h-8') %>
+          <a href="<%= Docuseal::DISCORD_URL %>" target="_blank" class="btn btn-circle btn-primary support-social-btn" aria-label="Discord">
+            <%= svg_icon('brand_discord', class: 'support-social-icon') %>
           </a>
         </div>
         <%= capture do %>
           <div class="tooltip" data-tip="<%= t('ai_assistant') %>">
-            <a href="<%= Docuseal::CHATGPT_URL %>" target="_blank" class="btn btn-circle btn-primary btn-md">
-              <%= svg_icon('brand_openai', class: 'w-8 h-8') %>
+            <a href="<%= Docuseal::CHATGPT_URL %>" target="_blank" class="btn btn-circle btn-primary support-social-btn" aria-label="<%= t('ai_assistant') %>">
+              <%= svg_icon('brand_openai', class: 'support-social-icon') %>
             </a>
           </div>
         <% end %>

@@ -29,6 +29,13 @@ class ConsoleRedirectController < ApplicationController
     path = redir_uri.path if params[:redir].to_s.starts_with?(Docuseal::CONSOLE_URL)
 
     query_values = redir_uri&.query_values || {}
+    # Console auth handoff endpoint intermittently returns 500 for on-premises pages.
+    # In self-hosted mode, redirect directly and let Console use existing session.
+    if !Docuseal.multitenant? && path.to_s.starts_with?('/on_premises')
+      return redirect_to "#{Docuseal::CONSOLE_URL}#{path}?#{{ **query_values }.to_query}",
+                         allow_other_host: true
+    end
+
     redirect_to "#{Docuseal::CONSOLE_URL}#{path}?#{{ **query_values, 'auth' => auth }.to_query}",
                 allow_other_host: true
   end
