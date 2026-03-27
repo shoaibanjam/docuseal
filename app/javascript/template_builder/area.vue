@@ -162,11 +162,11 @@
       </div>
       <button
         v-else-if="editable"
-        class="pr-1"
+        class="pr-1 field-area-remove-btn"
         :title="t('remove')"
         @click.prevent="$emit('remove')"
       >
-        <IconX width="14" />
+        <span class="field-area-remove-icon">&times;</span>
       </button>
     </div>
     <div

@@ -440,6 +440,28 @@ markdown-editor [contenteditable] p {
   stroke: theme('colors.primary-content');
 }
 
+.navbar-account-menu li > a,
+.navbar-account-menu li > button {
+  border-radius: 8px;
+  transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.navbar-account-menu li > a:hover,
+.navbar-account-menu li > button:hover,
+.navbar-account-menu li > a:focus-visible,
+.navbar-account-menu li > button:focus-visible {
+  background: rgba(4, 190, 153, 0.12) !important;
+  color: #d5e3fe !important;
+}
+
+.navbar-account-menu li > a:hover svg,
+.navbar-account-menu li > button:hover svg,
+.navbar-account-menu li > a:focus-visible svg,
+.navbar-account-menu li > button:focus-visible svg {
+  color: #04be99 !important;
+  stroke: #04be99 !important;
+}
+
 /* Submission signing bottom form container */
 .form-container {
   @apply bg-[#0d1c2f] border border-white/10 rounded-t-xl text-primary-content;
@@ -805,6 +827,13 @@ table tbody tr:hover {
   border: 1px solid rgba(255, 180, 171, 0.35);
 }
 
+/* Improve OPENED badge readability on dark surfaces */
+.badge-warning {
+  background: #d8a24b !important;
+  color: #1f1400 !important;
+  border: 1px solid #c79039 !important;
+}
+
 .alert {
   border-radius: 10px;
   border-left-width: 4px;
@@ -944,4 +973,118 @@ table tbody tr:hover {
 .support-social-btn:hover .support-social-icon path:not([stroke='none']),
 .support-social-btn:focus-visible .support-social-icon path:not([stroke='none']) {
   stroke: currentColor !important;
+}
+
+/* Template builder: keep icon controls visible */
+template-builder .fields-list-item button.text-transparent,
+template-builder .fields-list-item label.text-transparent,
+template-builder .field-remove-button.text-transparent,
+template-builder .field-settings-dropdown label.text-transparent {
+  color: rgba(213, 227, 254, 0.72) !important;
+}
+
+template-builder .fields-list-item:hover button.text-transparent,
+template-builder .fields-list-item:hover label.text-transparent,
+template-builder .fields-list-item:hover .field-remove-button.text-transparent,
+template-builder .fields-list-item:hover .field-settings-dropdown label.text-transparent {
+  color: #04be99 !important;
+}
+
+template-builder .field-remove-button {
+  color: rgba(213, 227, 254, 0.72) !important;
+}
+
+template-builder .field-remove-button:hover,
+template-builder .field-remove-button:focus-visible {
+  color: #ffb4ab !important;
+}
+
+/* PDF preview + document controls (condition / close / arrows) */
+template-builder .document-control-button.btn,
+template-builder .document-control-button.btn.btn-xs {
+  width: 24px !important;
+  min-width: 24px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  border-radius: 6px !important;
+}
+
+template-builder .document-control-button {
+  color: rgba(213, 227, 254, 0.85) !important;
+}
+
+template-builder .document-control-button:hover,
+template-builder .document-control-button:focus-visible {
+  color: #00382b !important;
+}
+
+template-builder .document-control-button svg,
+template-builder .document-control-button svg path {
+  stroke: currentColor !important;
+  fill: none !important;
+  opacity: 1 !important;
+}
+
+/* PDF canvas field placeholder icons: force black for contrast */
+template-builder .field-area-container .field-area,
+template-builder .field-area-container .field-area > span,
+template-builder .field-area-container .field-area svg {
+  color: #111827 !important;
+}
+
+template-builder .field-area-container .field-area svg *,
+template-builder .field-area-container .field-area > span > svg * {
+  stroke: currentColor !important;
+  fill: none !important;
+  stroke-width: 1.4 !important;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 1 !important;
+}
+
+template-builder .field-area-container .field-area svg path[stroke='none'],
+template-builder .field-area-container .field-area svg *[stroke='none'] {
+  stroke: none !important;
+}
+
+/* On-PDF remove (X) control in the floating field toolbar */
+template-builder .field-area-controls button {
+  color: rgba(213, 227, 254, 0.95) !important;
+}
+
+template-builder .field-area-controls button:hover,
+template-builder .field-area-controls button:focus-visible {
+  color: #ffb4ab !important;
+}
+
+template-builder .field-area-controls button svg,
+template-builder .field-area-controls button svg * {
+  stroke: currentColor !important;
+  fill: none !important;
+  opacity: 1 !important;
+}
+
+template-builder .field-area-remove-btn {
+  min-width: 16px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+template-builder .field-area-remove-icon {
+  color: rgba(213, 227, 254, 0.95) !important;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-block;
+  transform: translateY(-0.5px);
+}
+
+template-builder .field-area-remove-btn:hover .field-area-remove-icon,
+template-builder .field-area-remove-btn:focus-visible .field-area-remove-icon {
+  color: #ffb4ab !important;
 }
