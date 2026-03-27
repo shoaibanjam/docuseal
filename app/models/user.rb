@@ -81,7 +81,12 @@ class User < ApplicationRecord
   validates :email, format: { with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\z/ }
 
   def access_token
-    super || build_access_token.tap(&:save!)
+    token_record = super || build_access_token.tap(&:save!)
+    token_record.token
+    token_record
+  rescue ActiveRecord::Encryption::Errors::Decryption, OpenSSL::Cipher::CipherError
+    token_record&.destroy! if token_record&.persisted?
+    build_access_token.tap(&:save!)
   end
 
   def active_for_authentication?

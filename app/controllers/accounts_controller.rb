@@ -13,6 +13,7 @@ class AccountsController < ApplicationController
   }.freeze
 
   before_action :load_account
+  before_action :load_app_url_config, only: %i[show update]
   authorize_resource :account
 
   def show; end
@@ -21,8 +22,8 @@ class AccountsController < ApplicationController
     current_account.update!(account_params)
 
     unless Docuseal.multitenant?
-      @encrypted_config = EncryptedConfig.find_or_initialize_by(account: current_account,
-                                                                key: EncryptedConfig::APP_URL_KEY)
+      @encrypted_config ||= EncryptedConfig.find_or_initialize_by(account: current_account,
+                                                                  key: EncryptedConfig::APP_URL_KEY)
       @encrypted_config.assign_attributes(app_url_params)
 
       unless URI.parse(@encrypted_config.value.to_s).class.in?([URI::HTTP, URI::HTTPS])
@@ -62,6 +63,16 @@ class AccountsController < ApplicationController
 
   def load_account
     @account = current_account
+  end
+
+  def load_app_url_config
+    @encrypted_config = EncryptedConfig.find_or_initialize_by(account: current_account,
+                                                              key: EncryptedConfig::APP_URL_KEY)
+    @encrypted_config.value
+  rescue ActiveRecord::Encryption::Errors::Decryption, OpenSSL::Cipher::CipherError
+    @encrypted_config.destroy! if @encrypted_config&.persisted?
+    @encrypted_config = EncryptedConfig.new(account: current_account,
+                                            key: EncryptedConfig::APP_URL_KEY)
   end
 
   def account_params
