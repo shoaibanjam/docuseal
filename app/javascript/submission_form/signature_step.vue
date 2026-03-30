@@ -136,7 +136,7 @@
     <img
       v-if="modelValue || computedPreviousValue"
       :src="attachmentsIndex[modelValue || computedPreviousValue].url"
-      class="mx-auto bg-[#010e21] border border-white/10 rounded max-h-44"
+      class="mx-auto bg-white border border-neutral-300 rounded max-h-44"
     >
     <FileDropzone
       v-if="format === 'upload' && !modelValue && !computedPreviousValue"
@@ -171,11 +171,11 @@
         v-show="!modelValue && !computedPreviousValue"
         ref="canvas"
         style="padding: 1px; 0"
-        class="bg-[#010e21] border border-white/10 rounded-2xl w-full draw-canvas"
+        class="bg-white border border-neutral-300 rounded-2xl w-full draw-canvas"
       />
       <div
         v-if="isShowQr"
-        class="top-0 bottom-0 right-0 left-0 absolute bg-[#010e21] rounded-2xl m-0.5"
+        class="top-0 bottom-0 right-0 left-0 absolute bg-white rounded-2xl m-0.5"
       />
       <div
         v-if="isShowQr"
@@ -217,7 +217,7 @@
     <select
       v-if="withSigningReason && !isOtherReason"
       class="select base-input !text-2xl w-full mt-6 text-center"
-      :class="{ 'text-gray-300': !reason }"
+      :class="{ 'text-neutral-700': !reason }"
       required
       :name="`values[${field.preferences.reason_field_uuid}]`"
       @change="$event.target.value === 'other' ? [reason = '', isOtherReason = true] : $emit('update:reason', $event.target.value)"
@@ -226,7 +226,7 @@
         value=""
         disabled
         :selected="!reason"
-        class="text-gray-300"
+        class="text-neutral-800"
       >
         {{ t('select_a_reason') }}
       </option>
@@ -664,6 +664,7 @@ export default {
 
       context.textAlign = 'center'
       context.clearRect(0, 0, canvas.width / scale, canvas.height / scale)
+      context.fillStyle = '#111827'
       context.fillText(e.target.value, canvas.width / 2 / scale, canvas.height / 2 / scale + 11)
     },
     toggleTextInput () {

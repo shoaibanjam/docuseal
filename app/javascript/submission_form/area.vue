@@ -208,7 +208,7 @@
     >
       <span
         v-if="field && field.name && withFieldPlaceholder && !modelValue && modelValue !== 0"
-        class="whitespace-pre-wrap text-gray-400"
+        class="whitespace-pre-wrap text-neutral-900"
         :class="{ 'w-full': field.preferences?.align }"
       >{{ field.name }}</span>
       <span

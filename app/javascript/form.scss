@@ -103,14 +103,20 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 
 .form-container .base-input,
 .form-container .base-textarea {
-  @apply border border-white/5;
-  background-color: #010e21;
-  color: #d5e3fe;
+  @apply border border-neutral-300;
+  background-color: #ffffff;
+  color: #111827;
 }
 
 .form-container .base-input::placeholder,
 .form-container .base-textarea::placeholder {
-  color: rgba(213, 227, 254, 0.5);
+  color: #171717;
+  opacity: 1;
+}
+
+.form-container .base-input[type='date'],
+.form-container .base-input[type='datetime-local'] {
+  color-scheme: light;
 }
 
 /* Primary action button inside signing bar */
