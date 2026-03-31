@@ -462,6 +462,20 @@ markdown-editor [contenteditable] p {
   stroke: #04be99 !important;
 }
 
+/* MFA setup: QR is generated black on transparent; invert for dark UI + teal edge */
+.mfa-qr-container {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(213, 227, 254, 0.12);
+}
+
+.mfa-qr-container .mfa-qr-svg {
+  display: block;
+  border-radius: 0.5rem;
+  filter: invert(1) brightness(1.08) drop-shadow(0 0 6px rgba(4, 190, 153, 0.25));
+}
+
 /* Submission signing bottom form container */
 .form-container {
   @apply bg-[#0d1c2f] border border-white/10 rounded-t-xl text-primary-content;
@@ -469,14 +483,20 @@ markdown-editor [contenteditable] p {
 
 .form-container .base-input,
 .form-container .base-textarea {
-  @apply border border-white/5;
-  background-color: #010e21;
-  color: #d5e3fe;
+  @apply border border-neutral-300;
+  background-color: #ffffff;
+  color: #111827;
 }
 
 .form-container .base-input::placeholder,
 .form-container .base-textarea::placeholder {
-  color: rgba(213, 227, 254, 0.5);
+  color: #171717;
+  opacity: 1;
+}
+
+.form-container .base-input[type='date'],
+.form-container .base-input[type='datetime-local'] {
+  color-scheme: light;
 }
 
 /* Templates dashboard - upload dropzone visibility */
