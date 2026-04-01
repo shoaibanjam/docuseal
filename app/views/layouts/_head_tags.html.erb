@@ -1,5 +1,5 @@
 <title>
-  <%= content_for(:html_title) || (signed_in? ? 'DocuSeal' : 'DocuSeal | Open Source Document Signing') %>
+  <%= content_for(:html_title) || (signed_in? ? Docuseal.product_name : "#{Docuseal.product_name} | Open Source Document Signing") %>
 </title>
 <%= render 'shared/meta' %>
 <link rel="preconnect" href="https://fonts.googleapis.com">

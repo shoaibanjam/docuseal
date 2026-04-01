@@ -124,6 +124,9 @@ class StartFormController < ApplicationController
     find_params = required_params.except('name')
 
     submitter = Submitter.new if find_params.compact_blank.blank?
+    # "Sign yourself" should always reflect the current template configuration.
+    # Reusing an old in-progress submitter can keep outdated template_fields.
+    submitter = Submitter.new if params[:selfsign].present?
 
     submitter ||=
       Submitter

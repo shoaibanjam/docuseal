@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# DocuSeal Deployment Script (Non-Docker)
-# This script deploys DocuSeal without using Docker
+# Trustseal Deployment Script (Non-Docker)
+# This script deploys Trustseal without using Docker
 
 set -e  # Exit on any error
 
@@ -29,7 +29,7 @@ if [ "$EUID" -eq 0 ]; then
     print_warn "It's not recommended to run this script as root"
 fi
 
-print_info "Starting DocuSeal deployment..."
+print_info "Starting Trustseal deployment..."
 
 # Check for required commands
 print_info "Checking for required dependencies..."

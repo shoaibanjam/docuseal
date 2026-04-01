@@ -766,6 +766,40 @@ textarea:focus {
   opacity: 0.45;
 }
 
+/* Some actions use `button_title` which swaps enabled/disabled text while the
+   button is temporarily disabled (loading). On dark UI, the global disabled
+   opacity can make labels unreadable. Opt-in class to keep disabled labels
+   legible without changing the disabled behavior.
+   NOTE: buttons styled via `.white-button` may not carry a `.btn` class in HTML,
+   so selectors must not require `.btn`. */
+.readable-disabled:disabled,
+.readable-disabled[disabled],
+.readable-disabled.btn-disabled {
+  opacity: 1 !important;
+}
+
+.readable-disabled:disabled,
+.readable-disabled[disabled] {
+  color: #ffffff !important;
+}
+
+/* API settings: keep Rotate button label readable on dark background.
+   (This button uses `button_title` spans and can be temporarily disabled.) */
+#rotate_api_token_button {
+  color: #ffffff !important;
+}
+
+#rotate_api_token_button svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+#rotate_api_token_button:disabled,
+#rotate_api_token_button[disabled],
+#rotate_api_token_button.btn-disabled {
+  opacity: 1 !important;
+}
+
 .toggle {
   background: var(--stitch-surface-highest);
   border-color: color-mix(in srgb, var(--stitch-outline) 70%, transparent);

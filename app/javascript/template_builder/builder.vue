@@ -108,7 +108,7 @@
               autocomplete="off"
             >
             <button
-              class="btn btn-primary btn-ghost text-base hidden md:flex"
+              class="base-button md:!px-6 hidden md:flex items-center space-x-2"
               type="submit"
             >
               <IconWritingSign
@@ -124,7 +124,7 @@
             v-else-if="withSignYourselfButton"
             id="sign_yourself_button"
             :href="`/templates/${template.id}/submissions/new?selfsign=true`"
-            class="btn btn-primary btn-ghost text-base hidden md:flex"
+            class="base-button md:!px-6 hidden md:flex items-center space-x-2"
             data-turbo-frame="modal"
             @click="maybeShowErrorTemplateAlert"
           >

@@ -1,10 +1,10 @@
 <h1 align="center" style="border-bottom: none">
   <div>
     <a href="https://www.docuseal.com">
-      <img  alt="DocuSeal" src="https://github.com/user-attachments/assets/38b45682-ffa4-4919-abde-d2d422325c44" width="80" />
+      <img  alt="Trustseal" src="https://github.com/user-attachments/assets/38b45682-ffa4-4919-abde-d2d422325c44" width="80" />
       <br>
     </a>
-    DocuSeal
+    Trustseal
   </div>
 </h1>
 <h3 align="center">
@@ -22,7 +22,7 @@
   </a>
 </p>
 <p>
-DocuSeal is an open source platform that provides secure and efficient digital document signing and processing. Create PDF forms to have them filled and signed online on any device with an easy-to-use, mobile-optimized web tool.
+Trustseal is an open source platform that provides secure and efficient digital document signing and processing. Create PDF forms to have them filled and signed online on any device with an easy-to-use, mobile-optimized web tool.
 </p>
 <h2 align="center">
   <a href="https://demo.docuseal.tech">✨ Live Demo</a>
@@ -74,7 +74,7 @@ DocuSeal is an open source platform that provides secure and efficient digital d
 docker run --name docuseal -p 3000:3000 -v.:/data docuseal/docuseal
 ```
 
-By default DocuSeal docker container uses an SQLite database to store data and configurations. Alternatively, it is possible use PostgreSQL or MySQL databases by specifying the `DATABASE_URL` env variable.
+By default Trustseal docker container uses an SQLite database to store data and configurations. Alternatively, it is possible use PostgreSQL or MySQL databases by specifying the `DATABASE_URL` env variable.
 
 #### Docker Compose
 
@@ -89,16 +89,16 @@ sudo HOST=your-domain-name.com docker compose up
 ```
 
 ## For Businesses
-### Integrate seamless document signing into your web or mobile apps with DocuSeal
+### Integrate seamless document signing into your web or mobile apps with Trustseal
 
-At DocuSeal we have expertise and technologies to make documents creation, filling, signing and processing seamlessly integrated with your product. We specialize in working with various industries, including **Banking, Healthcare, Transport, Real Estate, eCommerce, KYC, CRM, and other software products** that require bulk document signing. By leveraging DocuSeal, we can assist in reducing the overall cost of developing and processing electronic documents while ensuring security and compliance with local electronic document laws.
+At Trustseal we have expertise and technologies to make documents creation, filling, signing and processing seamlessly integrated with your product. We specialize in working with various industries, including **Banking, Healthcare, Transport, Real Estate, eCommerce, KYC, CRM, and other software products** that require bulk document signing. By leveraging Trustseal, we can assist in reducing the overall cost of developing and processing electronic documents while ensuring security and compliance with local electronic document laws.
 
 [Book a Meeting](https://www.docuseal.com/contact)
 
 ## License
 
 Distributed under the AGPLv3 License with Section 7(b) Additional Terms. See [LICENSE](https://github.com/docusealco/docuseal/blob/master/LICENSE) and [LICENSE_ADDITIONAL_TERMS](https://github.com/docusealco/docuseal/blob/master/LICENSE_ADDITIONAL_TERMS) for more information.
-Unless otherwise noted, all files © 2023-2026 DocuSeal LLC.
+Unless otherwise noted, all files © 2023-2026 Trustseal LLC.
 
 ## Tools
 
