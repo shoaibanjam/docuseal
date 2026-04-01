@@ -1,6 +1,6 @@
-# DocuSeal production deployment (EC2 / Docker)
+# Trustseal production deployment (EC2 / Docker)
 
-Deploy DocuSeal with Docker using PostgreSQL on the same server. App is exposed on port **9090**.
+Deploy Trustseal with Docker using PostgreSQL on the same server. App is exposed on port **9090**.
 
 ## Quick start
 

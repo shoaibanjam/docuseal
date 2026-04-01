@@ -5,7 +5,7 @@ class SendTestWebhookRequestJob
 
   sidekiq_options retry: 0
 
-  USER_AGENT = 'DocuSeal.com Webhook'
+  USER_AGENT = "#{Docuseal.product_name}.com Webhook"
 
   HttpsError = Class.new(StandardError)
   LocalhostError = Class.new(StandardError)

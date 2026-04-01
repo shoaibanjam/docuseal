@@ -33,7 +33,7 @@ RSpec.describe SendSubmissionExpiredWebhookRequestJob do
         },
         headers: {
           'Content-Type' => 'application/json',
-          'User-Agent' => 'DocuSeal.com Webhook'
+          'User-Agent' => "#{Docuseal.product_name}.com Webhook"
         }
       ).once
     end
@@ -51,7 +51,7 @@ RSpec.describe SendSubmissionExpiredWebhookRequestJob do
         },
         headers: {
           'Content-Type' => 'application/json',
-          'User-Agent' => 'DocuSeal.com Webhook',
+          'User-Agent' => "#{Docuseal.product_name}.com Webhook",
           'X-Secret-Header' => 'secret_value'
         }
       ).once

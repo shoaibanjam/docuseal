@@ -8,6 +8,8 @@ export default class extends HTMLElement {
       }, parseInt(this.dataset.interval))
     } else if (this.dataset.on) {
       this.lastElementChild.addEventListener(this.dataset.on, (event) => {
+        const target = event.target
+
         if (this.dataset.disable === 'true') {
           form.querySelector('[type="submit"]')?.setAttribute('disabled', true)
         }
@@ -18,6 +20,12 @@ export default class extends HTMLElement {
           }
         } else {
           form.requestSubmit()
+        }
+
+        // Toggle/checkbox controls can keep a temporary focused visual state
+        // after submit; clear focus so appearance is immediately consistent.
+        if (target && typeof target.blur === 'function') {
+          requestAnimationFrame(() => target.blur())
         }
       })
     } else {
