@@ -44,11 +44,11 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-input {
-  @apply input input-bordered bg-[#010e21] h-11 px-4 text-base rounded-lg font-normal transition-all duration-200 text-base-content placeholder:text-base-content/50;
+  @apply input input-bordered bg-[#010e21] h-11 px-4 text-base rounded-md font-normal transition-all duration-200 text-base-content placeholder:text-base-content/50;
 }
 
 .base-textarea {
-  @apply textarea textarea-bordered bg-[#010e21] rounded-lg px-4 py-3 text-base font-normal transition-all duration-200 min-h-[100px] text-base-content placeholder:text-base-content/50;
+  @apply textarea textarea-bordered bg-[#010e21] rounded-md px-4 py-3 text-base font-normal transition-all duration-200 min-h-[100px] text-base-content placeholder:text-base-content/50;
 }
 
 .btn {
@@ -56,11 +56,11 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-button {
-  @apply btn btn-primary bg-secondary text-secondary-content border-none text-sm font-bold px-6 h-10 rounded-lg hover:shadow-[0_0_15px_rgba(4,190,153,0.4)] active:scale-95 focus:outline-none focus:ring-1 focus:ring-secondary/20;
+  @apply btn btn-primary bg-secondary text-secondary-content border-none text-sm font-bold px-6 h-10 rounded-[10px] hover:shadow-[0_0_15px_rgba(4,190,153,0.4)] active:scale-95 focus:outline-none focus:ring-1 focus:ring-secondary/20;
 }
 
 .white-button {
-  @apply btn bg-transparent border border-[#44474c] text-base-content rounded-lg px-6 h-10 hover:border-secondary hover:text-secondary active:scale-95 focus:outline-none focus:ring-1 focus:ring-secondary/20 transition-all duration-200;
+  @apply btn bg-transparent border border-[#44474c] text-base-content rounded-[10px] px-6 h-10 hover:border-secondary hover:text-secondary active:scale-95 focus:outline-none focus:ring-1 focus:ring-secondary/20 transition-all duration-200;
 }
 
 .btn-ghost {

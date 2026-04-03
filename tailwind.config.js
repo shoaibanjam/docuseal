@@ -59,10 +59,10 @@ module.exports = {
           'base-content': '#d5e3fe',
           info: '#06be99',
           'info-content': '#FFFFFF',
-          '--rounded-btn': '0.5rem',
+          '--rounded-btn': '0.625rem',
           '--tab-border': '2px',
           '--tab-radius': '.5rem',
-          '--rounded-box': '0.75rem'
+          '--rounded-box': '1rem'
         }
       }
     ]
