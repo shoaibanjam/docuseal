@@ -58,7 +58,7 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-input {
-  @apply input input-bordered bg-base-100 h-11 px-4 text-base rounded-lg font-normal transition-all duration-200;
+  @apply input input-bordered bg-base-100 h-11 px-4 text-base rounded-md font-normal transition-all duration-200;
 }
 
 .base-input::placeholder {
@@ -71,7 +71,7 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-textarea {
-  @apply textarea textarea-bordered bg-base-100 rounded-lg px-4 py-3 text-base font-normal transition-all duration-200 min-h-[100px];
+  @apply textarea textarea-bordered bg-base-100 rounded-md px-4 py-3 text-base font-normal transition-all duration-200 min-h-[100px];
 }
 
 .base-select {
@@ -97,11 +97,11 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .base-button {
-  @apply btn btn-primary text-primary-content text-base px-6 h-11 rounded-lg hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:ring-offset-2;
+  @apply btn btn-primary text-primary-content text-base px-6 h-11 rounded-[10px] hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:ring-offset-2;
 }
 
 .white-button {
-  @apply btn btn-outline text-base-content bg-base-100 border-2 border-base-300 rounded-lg px-6 h-11 hover:bg-base-200 hover:border-base-content/20 hover:text-base-content active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-secondary/25 focus:ring-offset-2 transition-all duration-200;
+  @apply btn btn-outline text-base-content bg-base-100 border-2 border-base-300 rounded-[10px] px-6 h-11 hover:bg-base-200 hover:border-base-content/20 hover:text-base-content active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-secondary/25 focus:ring-offset-2 transition-all duration-200;
 }
 
 .btn-ghost {
@@ -256,12 +256,12 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 
 .page-title,
 .ds-page-title {
-  @apply text-3xl md:text-4xl font-semibold tracking-tight text-primary-content;
+  @apply text-[32px] leading-10 font-bold tracking-tight text-primary-content;
 }
 
 .page-subtitle,
 .ds-page-subtitle {
-  @apply text-base md:text-lg text-primary-content/70 max-w-2xl;
+  @apply text-base leading-6 text-primary-content/70 max-w-2xl;
 }
 
 .page-grid {
@@ -282,7 +282,7 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 }
 
 .page-section-title {
-  @apply text-sm font-semibold tracking-wide uppercase text-base-content/60;
+  @apply text-[11px] font-bold uppercase tracking-widest text-secondary;
 }
 
 .page-section {
@@ -298,9 +298,9 @@ button[disabled] .enabled, button.btn-disabled .enabled {
   @apply w-full max-w-lg mx-auto bg-primary text-primary-content border border-primary/50 rounded-2xl shadow-soft-xl p-6 md:p-7;
 }
 
-/* Main top navbar */
+/* Main top navbar — Stitch: surface + blur top bar */
 .main-navbar {
-  background-color: #0d1c2f;
+  background-color: rgba(5, 20, 39, 0.8);
   color: theme('colors.primary-content');
 }
 
@@ -319,23 +319,6 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 
 .auth-subtitle {
   @apply mt-2 text-base-content/70;
-}
-
-/* Headings */
-h1, .prose h1, .ds-heading-1 {
-  @apply text-5xl font-extrabold tracking-tighter text-white;
-}
-
-h2, .prose h2, .ds-heading-2 {
-  @apply text-4xl font-bold tracking-tight text-white;
-}
-
-h3, .prose h3, .ds-heading-3 {
-  @apply text-3xl font-semibold tracking-tight text-white;
-}
-
-h4, .prose h4, .ds-heading-4 {
-  @apply text-2xl font-semibold tracking-tight text-primary-content;
 }
 
 .input-outlined {
@@ -418,11 +401,11 @@ markdown-editor [contenteditable] p {
 
 /* Primary/secondary actions inside dark settings cards */
 .settings-card .base-button {
-  @apply border border-secondary/80 bg-secondary text-secondary-content font-medium rounded-lg px-5 h-11 hover:bg-secondary/90 active:scale-[0.98] transition-all duration-200;
+  @apply border border-secondary/80 bg-secondary text-secondary-content font-medium rounded-[10px] px-5 h-11 hover:bg-secondary/90 active:scale-[0.98] transition-all duration-200;
 }
 
 .settings-card .white-button {
-  @apply border border-secondary/70 bg-transparent text-secondary-content font-medium rounded-lg px-5 h-11 hover:bg-secondary/10 active:scale-[0.98] transition-all duration-200;
+  @apply border border-secondary/70 bg-transparent text-secondary-content font-medium rounded-[10px] px-5 h-11 hover:bg-secondary/10 active:scale-[0.98] transition-all duration-200;
 }
 
 /* Account dropdown in main navbar */
@@ -518,6 +501,7 @@ markdown-editor [contenteditable] p {
   --stitch-surface-high: #1d2b3e;
   --stitch-surface-highest: #28354a;
   --stitch-on-surface: #d5e3fe;
+  --stitch-on-primary-container: #74829a;
   --stitch-on-surface-variant: #c5c6cd;
   --stitch-outline: #8e9097;
   --stitch-outline-variant: #44474c;
@@ -548,22 +532,23 @@ h1, .prose h1, .ds-heading-1 {
   line-height: 40px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--stitch-on-surface);
+  color: #ffffff;
 }
 
 h2, .prose h2, .ds-heading-2 {
   font-size: 24px;
   line-height: 32px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--stitch-on-surface);
+  color: #ffffff;
 }
 
+/* Headline SM — section accent (Stitch editorial token) */
 h3, .prose h3, .ds-heading-3 {
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 24px;
+  line-height: 32px;
   font-weight: 600;
-  color: var(--stitch-on-surface);
+  color: var(--stitch-secondary);
 }
 
 h4, .prose h4, .ds-heading-4 {
@@ -574,6 +559,8 @@ h4, .prose h4, .ds-heading-4 {
 }
 
 p, li, .prose p {
+  font-size: 16px;
+  line-height: 24px;
   color: var(--stitch-on-surface);
 }
 
@@ -662,7 +649,7 @@ select {
   background-color: #010e21;
   color: var(--stitch-on-surface);
   border-color: color-mix(in srgb, var(--stitch-on-surface) 12%, transparent);
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .input::placeholder,
@@ -847,17 +834,17 @@ table {
 
 .table thead th,
 table thead th {
-  background: color-mix(in srgb, var(--stitch-surface-high) 65%, transparent);
-  color: var(--stitch-on-surface-variant);
-  font-size: 11px;
+  background: color-mix(in srgb, var(--stitch-surface-high) 50%, transparent);
+  color: var(--stitch-on-primary-container);
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   font-weight: 700;
 }
 
 .table tbody tr:hover,
 table tbody tr:hover {
-  background: color-mix(in srgb, var(--stitch-surface-highest) 38%, transparent);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .badge,
