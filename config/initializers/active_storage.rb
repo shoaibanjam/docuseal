@@ -19,11 +19,14 @@ ActiveSupport.on_load(:active_storage_blob) do
   attribute :uuid, :string, default: -> { SecureRandom.uuid }
   attribute :io_data, :string, default: ''
 
-  def self.proxy_url(blob, expires_at: nil, filename: nil, host: nil)
+  def self.proxy_url(blob, expires_at: nil, filename: nil, host: nil, url_options: nil)
+    opts = Docuseal.default_url_options.dup
+    opts[:host] = host if host.present?
+    opts.merge!(url_options.to_h.compact_blank.symbolize_keys) if url_options.present?
+
     Rails.application.routes.url_helpers.blobs_proxy_url(
       signed_uuid: blob.signed_uuid(expires_at:), filename: filename || blob.filename,
-      **Docuseal.default_url_options,
-      **{ host: }.compact
+      **opts
     )
   end
 

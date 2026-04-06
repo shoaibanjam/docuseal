@@ -445,18 +445,17 @@ markdown-editor [contenteditable] p {
   stroke: #04be99 !important;
 }
 
-/* MFA setup: QR is generated black on transparent; invert for dark UI + teal edge */
+/* MFA setup: keep QR black-on-white — inverted (white-on-dark) codes often fail to scan */
 .mfa-qr-container {
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(213, 227, 254, 0.12);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .mfa-qr-container .mfa-qr-svg {
   display: block;
-  border-radius: 0.5rem;
-  filter: invert(1) brightness(1.08) drop-shadow(0 0 6px rgba(4, 190, 153, 0.25));
+  border-radius: 0.25rem;
 }
 
 /* Submission signing bottom form container */
