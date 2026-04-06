@@ -61,4 +61,4 @@ configs.module = merge({
   ]
 }, configs.module)
 
-module.exports = webpackConfig
+module.exports = configs
