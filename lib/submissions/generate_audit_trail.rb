@@ -532,7 +532,7 @@ module Submissions
                                link: Docuseal::PRODUCT_EMAIL_URL }],
                             font_size: 20,
                             font: [FONT_NAME, { variant: :bold }],
-                            width: 100,
+                            width: 160,
                             padding: [5, 0, 0, 8],
                             position: :float, text_align: :left)
     end
