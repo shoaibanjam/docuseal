@@ -205,6 +205,18 @@ export default {
   },
   methods: {
     sanitizeUrl,
+    // Proxy file URLs must use the same origin as the signing page (APP_URL may be wrong behind Docker/reverse proxies).
+    resolveDownloadFileUrl (url) {
+      if (!url) return url
+      const base = new URL(this.baseUrl, window.location.href)
+      try {
+        const resolved = new URL(String(url), base)
+        if (resolved.pathname.startsWith('/file/')) {
+          return `${base.origin}${resolved.pathname}${resolved.search}`
+        }
+      } catch (_) {}
+      return url
+    },
     sendCopyToEmail () {
       this.isSendingCopy = true
 
@@ -245,12 +257,13 @@ export default {
     downloadUrls (urls) {
       const fileRequests = urls.map((url) => {
         return () => {
-          return fetch(url).then(async (resp) => {
+          const fileUrl = this.resolveDownloadFileUrl(url)
+          return fetch(fileUrl).then(async (resp) => {
             const blobUrl = URL.createObjectURL(await resp.blob())
             const link = document.createElement('a')
 
             link.href = blobUrl
-            link.setAttribute('download', decodeURI(url.split('/').pop()))
+            link.setAttribute('download', decodeURI(fileUrl.split('/').pop()))
 
             link.click()
 
@@ -268,13 +281,14 @@ export default {
     },
     downloadSafariIos (urls) {
       const fileRequests = urls.map((url) => {
-        return fetch(url).then(async (resp) => {
+        const fileUrl = this.resolveDownloadFileUrl(url)
+        return fetch(fileUrl).then(async (resp) => {
           const blob = await resp.blob()
           const blobUrl = URL.createObjectURL(blob.slice(0, blob.size, 'application/octet-stream'))
           const link = document.createElement('a')
 
           link.href = blobUrl
-          link.setAttribute('download', decodeURI(url.split('/').pop()))
+          link.setAttribute('download', decodeURI(fileUrl.split('/').pop()))
 
           return link
         })

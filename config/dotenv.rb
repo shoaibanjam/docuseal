@@ -64,18 +64,14 @@ if ENV['RAILS_ENV'] == 'production'
     begin
       test_file = "#{ENV.fetch('WORKDIR', '.')}/test"
 
-      orig_euid = Process.euid
-      orig_egid = Process.egid
-
-      Process::Sys.setegid(2000)
-      Process::Sys.seteuid(2000)
+      # Drop root privileges fully (real + effective) to avoid secure-exec
+      # behavior in child processes that rely on dynamic loader paths.
+      Process::Sys.setgid(2000)
+      Process::Sys.setuid(2000)
 
       File.open(test_file, 'w') { true }
-    rescue StandardError
-      Process::Sys.seteuid(orig_euid)
-      Process::Sys.setegid(orig_egid)
-
-      puts "Unable to run as 2000:2000, running as #{orig_euid}:#{orig_egid}"
+    rescue StandardError => e
+      puts "Unable to run as 2000:2000, running as #{Process.euid}:#{Process.egid} (#{e.class}: #{e.message})"
     ensure
       begin
         File.unlink(test_file)

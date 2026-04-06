@@ -124,7 +124,36 @@ module Templates
         return [handle_pdf_or_image(template, file, file.read, params, extract_fields:), []]
       end
 
+      if office_document?(file)
+        pdf_data = Templates::ConvertOfficeToPdf.call(file.read, file.original_filename)
+        pdf_name = "#{File.basename(file.original_filename, File.extname(file.original_filename))}.pdf"
+
+        return [handle_pdf_or_image(template, file, pdf_data, params, extract_fields:,
+                                    content_type_override: PDF_CONTENT_TYPE, filename_override: pdf_name), []]
+      end
+
       raise InvalidFileType, "#{file.content_type}/#{dynamic}"
+    rescue Templates::ConvertOfficeToPdf::ConversionError => e
+      Rails.logger.error("Office conversion failed for #{file.original_filename}: #{e.class}: #{e.message}")
+      Rollbar.error(e) if defined?(Rollbar)
+
+      raise
+    end
+
+    def office_document?(file)
+      return false unless Docuseal.advanced_formats?
+
+      ctype = file.content_type.to_s
+      return true if DOCUMENT_CONTENT_TYPES.include?(ctype)
+      return true if extension_matches_office?(file.original_filename)
+
+      false
+    end
+
+    def extension_matches_office?(name)
+      n = name.to_s.downcase
+
+      DOCUMENT_EXTENSIONS.any? { |ext| n.end_with?(ext) }
     end
   end
 end

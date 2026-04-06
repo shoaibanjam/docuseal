@@ -4,6 +4,10 @@ class SubmissionsDownloadController < ApplicationController
   skip_before_action :authenticate_user!
   skip_authorization_check
 
+  def default_url_options
+    Docuseal.default_url_options.merge(url_options_for_current_request)
+  end
+
   TTL = 40.minutes
   FILES_TTL = 5.minutes
 
@@ -76,7 +80,8 @@ class SubmissionsDownloadController < ApplicationController
       ActiveStorage::Blob.proxy_url(
         attachment.blob,
         expires_at: FILES_TTL.from_now.to_i,
-        filename: Submitters.build_document_filename(submitter, attachment.blob, filename_format)
+        filename: Submitters.build_document_filename(submitter, attachment.blob, filename_format),
+        url_options: url_options_for_current_request
       )
     end
   end

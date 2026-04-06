@@ -121,6 +121,18 @@ class ApplicationController < ActionController::Base
     Docuseal.default_url_options[:host]
   end
 
+  # Host/port/protocol as the client used to reach the app (Docker mapped ports, TLS terminators, etc.).
+  def url_options_for_current_request
+    return {} unless request&.base_url.present?
+
+    uri = Addressable::URI.parse(request.base_url)
+    opts = { protocol: uri.scheme, host: uri.host }
+    opts[:port] = uri.port unless [80, 443].include?(uri.port)
+    opts
+  rescue StandardError
+    {}
+  end
+
   def maybe_redirect_com
     return if request.domain != 'docuseal.co'
 
