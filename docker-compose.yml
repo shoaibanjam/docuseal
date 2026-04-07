@@ -13,7 +13,7 @@ services:
     environment:
       - RAILS_ENV=production
       - FORCE_SSL=${HOST}
-      - APP_URL= https://trustseal.cybroscloud.com}
+      - APP_URL= https://trustseal.cybroscloud.com
       - EMAIL_HOST=https://trustseal.cybroscloud.com
       - ADVANCED_FORMATS=true
       - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/docuseal
