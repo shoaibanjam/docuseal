@@ -12,6 +12,21 @@ export default targetable(class extends HTMLElement {
     this.loadingButton?.classList?.toggle('hidden')
   }
 
+  resolveDownloadFileUrl (url) {
+    if (!url) return url
+
+    try {
+      const base = new URL(window.location.href)
+      const resolved = new URL(String(url), base)
+
+      if (resolved.pathname.startsWith('/file/')) {
+        return `${base.origin}${resolved.pathname}${resolved.search}`
+      }
+    } catch (_) {}
+
+    return url
+  }
+
   downloadFiles () {
     if (!this.dataset.src) return
 
@@ -30,19 +45,27 @@ export default targetable(class extends HTMLElement {
         }
       } else {
         alert('Failed to download files')
+        this.toggleState()
       }
+    }).catch(() => {
+      alert('Failed to download files')
+      this.toggleState()
     })
   }
 
   downloadUrls (urls) {
     const fileRequests = urls.map((url) => {
       return () => {
-        return fetch(url).then(async (resp) => {
+        const fileUrl = this.resolveDownloadFileUrl(url)
+
+        return fetch(fileUrl).then(async (resp) => {
+          if (!resp.ok) throw new Error('download_failed')
+
           const blobUrl = URL.createObjectURL(await resp.blob())
           const link = document.createElement('a')
 
           link.href = blobUrl
-          link.setAttribute('download', decodeURI(url.split('/').pop()))
+          link.setAttribute('download', decodeURI(fileUrl.split('/').pop()))
 
           link.click()
 
@@ -54,6 +77,8 @@ export default targetable(class extends HTMLElement {
     fileRequests.reduce(
       (prevPromise, request) => prevPromise.then(() => request()),
       Promise.resolve()
+    ).catch(() => {
+      alert('Failed to download files')
     ).finally(() => {
       this.toggleState()
     })
@@ -61,13 +86,17 @@ export default targetable(class extends HTMLElement {
 
   downloadSafariIos (urls) {
     const fileRequests = urls.map((url) => {
-      return fetch(url).then(async (resp) => {
+      const fileUrl = this.resolveDownloadFileUrl(url)
+
+      return fetch(fileUrl).then(async (resp) => {
+        if (!resp.ok) throw new Error('download_failed')
+
         const blob = await resp.blob()
         const blobUrl = URL.createObjectURL(blob.slice(0, blob.size, 'application/octet-stream'))
         const link = document.createElement('a')
 
         link.href = blobUrl
-        link.setAttribute('download', decodeURI(url.split('/').pop()))
+        link.setAttribute('download', decodeURI(fileUrl.split('/').pop()))
 
         return link
       })
@@ -81,6 +110,8 @@ export default targetable(class extends HTMLElement {
           URL.revokeObjectURL(link.href)
         }, index * 50)
       })
+    }).catch(() => {
+      alert('Failed to download files')
     }).finally(() => {
       this.toggleState()
     })
