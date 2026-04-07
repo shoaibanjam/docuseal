@@ -4,16 +4,15 @@
 
 services:
   app:
-    image: docuseal-app
     build:
       context: .
       dockerfile: Dockerfile
-      network: host
-    restart: unless-stopped
     ports:
-      - "9090:3000"
+      - "8080:3000"
     volumes:
-      - docuseal_data:/data/docuseal
+      - ./docuseal:/data/docuseal
+      - ./lib/docuseal.rb:/app/lib/docuseal.rb
+      - ./app/controllers/esign_settings_controller.rb:/app/app/controllers/esign_settings_controller.rb
     env_file:
       - .env
     environment:
@@ -22,7 +21,7 @@ services:
       # Optional: REDIS_URL (if using ElastiCache; omit to use in-container Redis)
       # Optional: FORCE_SSL=true behind HTTPS
       # Optional: AWS_* for S3 attachments
-    # Reach PostgreSQL (or other services) on the same EC2 host
+      # Reach PostgreSQL (or other services) on the same EC2 host
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
