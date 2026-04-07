@@ -79,7 +79,7 @@ export default targetable(class extends HTMLElement {
       Promise.resolve()
     ).catch(() => {
       alert('Failed to download files')
-    ).finally(() => {
+    }).finally(() => {
       this.toggleState()
     })
   }
