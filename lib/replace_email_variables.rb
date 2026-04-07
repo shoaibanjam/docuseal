@@ -163,10 +163,23 @@ module ReplaceEmailVariables
        (config = AccountConfig.find_by(account_id: submitter.account_id, key: :custom_domain))
       { host: config.value, protocol: 'https' }
     elsif is_email && EMAIL_HOST.present?
-      { host: EMAIL_HOST, protocol: ENV['FORCE_SSL'].present? ? 'https' : 'http' }
+      parsed_email_host_url_options
+    elsif Current.url_options.present?
+      Current.url_options
     else
       Docuseal.default_url_options
     end
+  end
+
+  def parsed_email_host_url_options
+    raw_value = EMAIL_HOST.include?('://') ? EMAIL_HOST : "//#{EMAIL_HOST}"
+    uri = Addressable::URI.parse(raw_value)
+    protocol = uri.scheme.presence || (ENV['FORCE_SSL'].present? ? 'https' : 'http')
+    options = { host: uri.host.presence || EMAIL_HOST, protocol: }
+    options[:port] = uri.port if uri.port
+    options
+  rescue StandardError
+    { host: EMAIL_HOST, protocol: ENV['FORCE_SSL'].present? ? 'https' : 'http' }
   end
 
   def build_submission_link(submission)
