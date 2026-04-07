@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   check_authorization unless: :devise_controller?
 
   around_action :with_locale
+  around_action :with_current_url_options
   before_action :sign_in_for_demo, if: -> { Docuseal.demo? }
   before_action :maybe_redirect_to_setup, unless: :signed_in?
   before_action :authenticate_user!, unless: :devise_controller?
@@ -63,6 +64,13 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def with_current_url_options
+    Current.url_options = url_options_for_current_request
+    yield
+  ensure
+    Current.url_options = nil
+  end
 
   def with_locale(&)
     return yield unless current_account

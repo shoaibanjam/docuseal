@@ -13,7 +13,8 @@ services:
     environment:
       - RAILS_ENV=production
       - FORCE_SSL=${HOST}
+      - APP_URL=${APP_URL:-http://localhost:9090}
       - ADVANCED_FORMATS=true
-      - DATABASE_URL=postgresql://postgres:1122@host.docker.internal:5432/docuseal
+      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/docuseal
     extra_hosts:
       - 'host.docker.internal:host-gateway'
