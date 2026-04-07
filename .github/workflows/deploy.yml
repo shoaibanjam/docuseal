@@ -17,7 +17,7 @@ env:
   DEPLOY_HOST: 182.191.78.202
   DEPLOY_USER: cybros
   DEPLOY_PATH: /var/www/docuseal
-  DEPLOY_COMPOSE_FILE: docker-compose.production.yml
+  DEPLOY_COMPOSE_FILE: docker-compose.yml
 
 jobs:
   deploy:

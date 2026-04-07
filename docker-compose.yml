@@ -9,12 +9,9 @@ services:
       - ./docuseal:/data/docuseal
       - ./lib/docuseal.rb:/app/lib/docuseal.rb
       - ./app/controllers/esign_settings_controller.rb:/app/app/controllers/esign_settings_controller.rb
-
+    env_file:
+      - .env
     environment:
       - RAILS_ENV=production
-      - FORCE_SSL=${HOST}
-      - APP_URL=${APP_URL:-https://trustseal.cybroscloud.com}
-      - ADVANCED_FORMATS=true
-      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/docuseal
     extra_hosts:
       - 'host.docker.internal:host-gateway'
