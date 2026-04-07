@@ -123,11 +123,24 @@ class ApplicationController < ActionController::Base
 
   # Host/port/protocol as the client used to reach the app (Docker mapped ports, TLS terminators, etc.).
   def url_options_for_current_request
-    return {} unless request&.base_url.present?
+    return {} unless request
 
-    uri = Addressable::URI.parse(request.base_url)
-    opts = { protocol: uri.scheme, host: uri.host }
-    opts[:port] = uri.port unless [80, 443].include?(uri.port)
+    # Prefer reverse-proxy headers when present (TLS termination, port mapping).
+    forwarded_proto = request.headers['X-Forwarded-Proto'].to_s.split(',').first.to_s.strip
+    forwarded_host  = request.headers['X-Forwarded-Host'].to_s.split(',').first.to_s.strip
+    forwarded_port  = request.headers['X-Forwarded-Port'].to_s.split(',').first.to_s.strip
+
+    scheme = forwarded_proto.presence || request.protocol.to_s.delete('://')
+    host = forwarded_host.presence || request.host
+    port =
+      if forwarded_port.present?
+        forwarded_port.to_i
+      else
+        request.port
+      end
+
+    opts = { protocol: scheme, host: host }
+    opts[:port] = port unless (scheme == 'https' && port == 443) || (scheme == 'http' && port == 80)
     opts
   rescue StandardError
     {}
