@@ -86,7 +86,10 @@ class SubmissionsDownloadController < ApplicationController
 
         [Submitters.select_admin_attachments_for_download(all_completed_submitter), all_completed_submitter]
       else
-        [Submitters.select_attachments_for_download(submitter), submitter]
+        # For submitter downloads (signed links and regular non-combined endpoint),
+        # always serve submitter-scoped result documents and never auto-fallback to
+        # submission-level combined files.
+        [signer_attachments_for_download(submitter), submitter]
       end
 
     attachments.map do |attachment|
@@ -100,7 +103,22 @@ class SubmissionsDownloadController < ApplicationController
   end
 
   def admin_download_request?
-    !@signature_valid && current_user.present? && current_ability.can?(:read, @submitter.submission)
+    params[:admin] == 'true' &&
+      !@signature_valid &&
+      current_user.present? &&
+      current_ability.can?(:read, @submitter.submission)
+  end
+
+  # Signed submitter links must stay signer-scoped and never switch to
+  # submission-level combined files.
+  def signer_attachments_for_download(submitter)
+    original_documents = submitter.submission.schema_documents.preload(:blob)
+    is_more_than_two_images = original_documents.many?(&:image?)
+
+    submitter.documents.preload(:blob).reject do |attachment|
+      is_more_than_two_images &&
+        original_documents.find { |a| a.uuid == (attachment.metadata['original_uuid'] || attachment.uuid) }&.image?
+    end
   end
 
   def build_combined_url(submitter)

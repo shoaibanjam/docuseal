@@ -51,12 +51,13 @@ describe 'SubmissionsDownloadController' do
 
       allow(Submissions::GenerateResultAttachments).to receive(:call)
       allow(Submitters).to receive(:select_attachments_for_download).and_return([signer_attachment])
+      allow(first_submitter.documents).to receive(:preload).and_return([signer_attachment])
 
       get "/submitters/#{first_submitter.slug}/download", params: { sig: }
 
       expect(response).to have_http_status(:ok)
       expect(Submissions::GenerateResultAttachments).not_to have_received(:call)
-      expect(Submitters).to have_received(:select_attachments_for_download).with(first_submitter)
+      expect(Submitters).not_to have_received(:select_attachments_for_download)
       expect(response.parsed_body).to eq(['/file/generated.pdf'])
     end
   end

@@ -4,7 +4,7 @@ module Submissions
   module GenerateResultAttachments
     # Bump this when redaction rendering logic changes so we can
     # invalidate already-generated result PDFs.
-    REDACTION_LOGIC_VERSION = 4
+    REDACTION_LOGIC_VERSION = 7
 
     FONT_SIZE = 11
     FONT_PATH = '/fonts/GoNotoKurrent-Regular.ttf'
@@ -244,7 +244,7 @@ module Submissions
         next if !with_headings &&
                 (field['type'] == 'heading' || (field['type'] == 'strikethrough' && field['conditions'].blank?))
 
-        next if field['submitter_uuid'] != submitter.uuid && field['type'] != 'heading' &&
+        next if field['submitter_uuid'] != submitter.uuid && !%w[heading redact].include?(field['type']) &&
                 (field['type'] != 'strikethrough' || field['conditions'].present?)
 
         field.fetch('areas', []).each do |area|
@@ -674,13 +674,6 @@ module Submissions
           when 'redact'
             next if for_admin
             next unless apply_redactions
-            # `redact` overlays are party-specific: draw only the overlays
-            # belonging to the viewing party.
-            next if field['submitter_uuid'] != submitter.uuid
-            next unless apply_redactions
-            # `redact` overlays are party-specific: draw only the overlays
-            # belonging to the viewing party.
-            next if field['submitter_uuid'] != submitter.uuid
 
             area_x = area['x'] * width
             area_y = area['y'] * height
@@ -853,7 +846,9 @@ module Submissions
     def build_pdfs_index(submission, submitter: nil, flatten: true, use_latest_result: true)
       latest_submitter = use_latest_result ? find_last_submitter(submission, submitter:) : nil
 
-      documents = Submissions::EnsureResultGenerated.call(latest_submitter, apply_redactions: false) if latest_submitter
+      # Keep signer document artifacts redaction-preserving; do not overwrite
+      # previous signer files with non-redacted variants.
+      documents = Submissions::EnsureResultGenerated.call(latest_submitter, apply_redactions: true) if latest_submitter
       documents ||= submission.schema_documents
 
       ActiveRecord::Associations::Preloader.new(records: documents, associations: [:blob]).call
@@ -984,12 +979,6 @@ module Submissions
       acc = Hash.new { |h, k| h[k] = [] }
       fields.each do |field|
         next unless field['type'] == 'redact'
-        # Rasterize only the redaction overlays that belong to the
-        # viewing party.
-        next if viewing_submitter && field['submitter_uuid'] != viewing_submitter.uuid
-        # Rasterize only the redaction overlays that belong to the
-        # viewing party.
-        next if viewing_submitter && field['submitter_uuid'] != viewing_submitter.uuid
 
         field.fetch('areas', []).each do |area|
           next unless area['attachment_uuid'].present? && area['page'].present?
