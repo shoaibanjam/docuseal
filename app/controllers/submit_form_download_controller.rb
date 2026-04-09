@@ -24,42 +24,32 @@ class SubmitFormDownloadController < ApplicationController
                                                                 value: false) ||
                                           !Submitters::AuthorizedForForm.call(@submitter, current_user, request)
 
-    last_completed_submitter = @submitter.submission.submitters
-                                         .where.not(id: @submitter.id)
-                                         .where.not(completed_at: nil)
-                                         .max_by(&:completed_at)
+    # Always generate files from the active submitter state for in-progress links.
+    # This prevents exposing completed files from other submitters.
+    submission = @submitter.submission
 
-    attachments =
-      if last_completed_submitter
-        Submitters.select_attachments_for_download(last_completed_submitter)
-      else
-        # Generate a "current state" preview PDF that includes overlay fields (e.g. redact/stamp)
-        # for the active submitter before completion.
-        submission = @submitter.submission
+    fields = submission.template_fields || submission.template.fields
 
-        fields = submission.template_fields || submission.template.fields
+    fields.each do |field|
+      next unless field['submitter_uuid'] == @submitter.uuid
+      next unless field['type'] == 'stamp'
 
-        fields.each do |field|
-          next unless field['submitter_uuid'] == @submitter.uuid
-          next unless field['type'] == 'stamp'
+      next if @submitter.values[field['uuid']].present?
 
-          next if @submitter.values[field['uuid']].present?
+      attachment =
+        Submitters::CreateStampAttachment.call(
+          @submitter,
+          with_logo: field.dig('preferences', 'with_logo') != false
+        )
 
-          attachment =
-            Submitters::CreateStampAttachment.call(
-              @submitter,
-              with_logo: field.dig('preferences', 'with_logo') != false
-            )
+      @submitter.values[field['uuid']] = attachment.uuid
+    end
 
-          @submitter.values[field['uuid']] = attachment.uuid
-        end
+    @submitter.save! if @submitter.changed?
 
-        @submitter.save! if @submitter.changed?
+    Submissions::GeneratePreviewAttachments.call(submission, submitter: @submitter)
 
-        Submissions::GeneratePreviewAttachments.call(submission, submitter: @submitter)
-
-        @submitter.preview_documents.preload(:blob)
-      end
+    attachments = @submitter.preview_documents.preload(:blob)
 
     urls = attachments.map do |attachment|
       ActiveStorage::Blob.proxy_path(attachment.blob, expires_at: FILES_TTL.from_now.to_i)

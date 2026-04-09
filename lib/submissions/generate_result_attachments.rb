@@ -850,10 +850,10 @@ module Submissions
       Digest::UUID.uuid_v5(Digest::UUID::OID_NAMESPACE, attachments.map(&:uuid).sort.join(':'))
     end
 
-    def build_pdfs_index(submission, submitter: nil, flatten: true)
-      latest_submitter = find_last_submitter(submission, submitter:)
+    def build_pdfs_index(submission, submitter: nil, flatten: true, use_latest_result: true)
+      latest_submitter = use_latest_result ? find_last_submitter(submission, submitter:) : nil
 
-      documents   = Submissions::EnsureResultGenerated.call(latest_submitter, apply_redactions: false) if latest_submitter
+      documents = Submissions::EnsureResultGenerated.call(latest_submitter, apply_redactions: false) if latest_submitter
       documents ||= submission.schema_documents
 
       ActiveRecord::Associations::Preloader.new(records: documents, associations: [:blob]).call
