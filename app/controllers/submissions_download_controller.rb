@@ -137,4 +137,11 @@ class SubmissionsDownloadController < ApplicationController
       filename: Submitters.build_document_filename(submitter, attachment.blob, filename_format)
     )
   end
+
+  def respond_with_combined(submitter)
+    url = build_combined_url(submitter)
+    return head :not_found if url.blank?
+
+    render json: [url]
+  end
 end
