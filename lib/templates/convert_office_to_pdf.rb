@@ -9,6 +9,13 @@ require 'timeout'
 module Templates
   module ConvertOfficeToPdf
     CONVERT_TIMEOUT = ENV.fetch('OFFICE_CONVERT_TIMEOUT', '600').to_i
+    EXEC_PATH = [
+      ENV['SOFFICE_BIN_DIR'],
+      '/usr/lib/libreoffice/program',
+      '/usr/bin',
+      '/bin',
+      '/Applications/LibreOffice.app/Contents/MacOS'
+    ].compact.reject(&:empty?).uniq.join(File::PATH_SEPARATOR)
 
     ConversionError = Class.new(StandardError)
 
@@ -34,14 +41,15 @@ module Templates
         selected = candidates.select do |p|
           next false if p.to_s.empty?
 
-          p.include?('/') ? File.executable?(p) : true
+          p.include?('/') ? File.executable?(p) : command_in_path?(p)
         end
 
-        selected.empty? ? ['soffice'] : selected
+        selected
       end
 
       def call(file_data, original_filename)
         raise ConversionError, 'empty file' if !file_data || file_data.bytesize.zero?
+        raise ConversionError, 'soffice_not_found' if soffice_executables.empty?
 
         Timeout.timeout(CONVERT_TIMEOUT) do
           Dir.mktmpdir('office_to_pdf') do |dir|
@@ -77,7 +85,7 @@ module Templates
                 'env', '-i',
                 "HOME=#{dir}",
                 "XDG_RUNTIME_DIR=#{runtime_dir}",
-                'PATH=/usr/lib/libreoffice/program:/usr/bin:/bin',
+                "PATH=#{EXEC_PATH}",
                 'LANG=C.UTF-8',
                 'LC_ALL=C.UTF-8',
                 'LD_LIBRARY_PATH=/usr/lib/libreoffice/program:/usr/lib/libreoffice/lib'
@@ -138,6 +146,15 @@ module Templates
         return value if value.length <= MAX_ERROR_CHARS
 
         "#{value[0, MAX_ERROR_CHARS]}..."
+      end
+
+      def command_in_path?(command)
+        EXEC_PATH.split(File::PATH_SEPARATOR).any? do |dir|
+          next false if dir.to_s.empty?
+
+          full_path = File.join(dir, command)
+          File.file?(full_path) && File.executable?(full_path)
+        end
       end
     end
   end

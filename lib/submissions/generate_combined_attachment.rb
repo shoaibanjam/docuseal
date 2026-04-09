@@ -60,7 +60,11 @@ module Submissions
     end
 
     def build_combined_pdf(submitter, with_audit:)
-      pdfs_index = Submissions::GenerateResultAttachments.generate_pdfs(submitter)
+      pdfs_index = Submissions::GenerateResultAttachments.generate_pdfs(
+        submitter,
+        for_admin: true,
+        apply_redactions: false
+      )
 
       if with_audit
         audit_trail = I18n.with_locale(submitter.account.locale) do

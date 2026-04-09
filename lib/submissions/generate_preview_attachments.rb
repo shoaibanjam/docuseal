@@ -27,7 +27,13 @@ module Submissions
       with_signature_id_reason =
         configs.find { |c| c.key == AccountConfig::WITH_SIGNATURE_ID_REASON_KEY }&.value != false
 
-      pdfs_index = GenerateResultAttachments.build_pdfs_index(submission, flatten: is_flatten)
+      # Build preview PDFs from source schema documents only so each submitter
+      # sees/downloads only their own populated data.
+      pdfs_index = GenerateResultAttachments.build_pdfs_index(
+        submission,
+        flatten: is_flatten,
+        use_latest_result: false
+      )
 
       submitters = if submitter
                      submission.submitters.where(id: submitter.id)

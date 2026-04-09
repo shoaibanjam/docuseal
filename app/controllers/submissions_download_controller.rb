@@ -24,40 +24,37 @@ class SubmissionsDownloadController < ApplicationController
 
     @submitter ||= Submitter.find_by!(slug: params[:submitter_slug])
 
+    return head :not_found unless @submitter.completed_at?
+
     Submissions::EnsureResultGenerated.call(@submitter)
 
-    last_submitter = @submitter.submission.submitters.where.not(completed_at: nil).order(:completed_at).last
-
-    return head :not_found unless last_submitter
-
-    Submissions::EnsureResultGenerated.call(last_submitter)
-
-    if !@signature_valid && !current_user_submitter?(last_submitter)
+    if !@signature_valid && !current_user_submitter?(@submitter)
       return head :not_found unless Submitters::AuthorizedForForm.call(@submitter, current_user, request)
 
-      if last_submitter.completed_at < TTL.ago
-        Rollbar.info("TTL: #{last_submitter.id}") if defined?(Rollbar)
+      if @submitter.completed_at < TTL.ago
+        Rollbar.info("TTL: #{@submitter.id}") if defined?(Rollbar)
 
         return head :not_found
       end
     end
 
     if params[:combined] == 'true'
-      respond_with_combined(last_submitter)
+      return head :not_found if @signature_valid
+
+      respond_with_combined(@submitter)
     else
-      render json: build_urls(last_submitter)
+      render json: build_urls(@submitter, admin_download: admin_download_request?)
     end
   end
 
   def signed_download_url
     @submitter = Submitter.find_by!(slug: params[:slug])
-    last_submitter = @submitter.submission.submitters.where.not(completed_at: nil).order(:completed_at).last
 
-    return head :not_found unless last_submitter
+    return head :not_found unless @submitter.completed_at?
 
-    Submissions::EnsureResultGenerated.call(last_submitter)
+    Submissions::EnsureResultGenerated.call(@submitter)
 
-    return head :not_found if last_submitter.completed_at < TTL.ago && !current_user_submitter?(last_submitter)
+    return head :not_found if @submitter.completed_at < TTL.ago && !current_user_submitter?(@submitter)
 
     url = submitter_download_index_url(
       @submitter.slug,
@@ -72,17 +69,55 @@ class SubmissionsDownloadController < ApplicationController
     current_user && current_ability.can?(:read, submitter)
   end
 
-  def build_urls(submitter)
+  def build_urls(submitter, admin_download: false)
     filename_format = AccountConfig.find_or_initialize_by(account_id: submitter.account_id,
                                                           key: AccountConfig::DOCUMENT_FILENAME_FORMAT_KEY)&.value
 
-    Submitters.select_attachments_for_download(submitter).map do |attachment|
+    attachments, filename_submitter =
+      if admin_download
+        all_completed_submitter = submitter.submission.submitters.where.not(completed_at: nil).order(:completed_at).last || submitter
+
+        # Admin downloads should include all parties' values while excluding redact overlays.
+        Submissions::GenerateResultAttachments.call(
+          all_completed_submitter,
+          for_admin: true,
+          apply_redactions: false
+        )
+
+        [Submitters.select_admin_attachments_for_download(all_completed_submitter), all_completed_submitter]
+      else
+        # For submitter downloads (signed links and regular non-combined endpoint),
+        # always serve submitter-scoped result documents and never auto-fallback to
+        # submission-level combined files.
+        [signer_attachments_for_download(submitter), submitter]
+      end
+
+    attachments.map do |attachment|
       ActiveStorage::Blob.proxy_url(
         attachment.blob,
         expires_at: FILES_TTL.from_now.to_i,
-        filename: Submitters.build_document_filename(submitter, attachment.blob, filename_format),
+        filename: Submitters.build_document_filename(filename_submitter, attachment.blob, filename_format),
         url_options: url_options_for_current_request
       )
+    end
+  end
+
+  def admin_download_request?
+    params[:admin] == 'true' &&
+      !@signature_valid &&
+      current_user.present? &&
+      current_ability.can?(:read, @submitter.submission)
+  end
+
+  # Signed submitter links must stay signer-scoped and never switch to
+  # submission-level combined files.
+  def signer_attachments_for_download(submitter)
+    original_documents = submitter.submission.schema_documents.preload(:blob)
+    is_more_than_two_images = original_documents.many?(&:image?)
+
+    submitter.documents.preload(:blob).reject do |attachment|
+      is_more_than_two_images &&
+        original_documents.find { |a| a.uuid == (attachment.metadata['original_uuid'] || attachment.uuid) }&.image?
     end
   end
 
@@ -101,5 +136,12 @@ class SubmissionsDownloadController < ApplicationController
       expires_at: FILES_TTL.from_now.to_i,
       filename: Submitters.build_document_filename(submitter, attachment.blob, filename_format)
     )
+  end
+
+  def respond_with_combined(submitter)
+    url = build_combined_url(submitter)
+    return head :not_found if url.blank?
+
+    render json: [url]
   end
 end

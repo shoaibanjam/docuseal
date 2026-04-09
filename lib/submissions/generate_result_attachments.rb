@@ -4,7 +4,7 @@ module Submissions
   module GenerateResultAttachments
     # Bump this when redaction rendering logic changes so we can
     # invalidate already-generated result PDFs.
-    REDACTION_LOGIC_VERSION = 4
+    REDACTION_LOGIC_VERSION = 10
 
     FONT_SIZE = 11
     FONT_PATH = '/fonts/GoNotoKurrent-Regular.ttf'
@@ -169,7 +169,14 @@ module Submissions
       with_signature_id_reason =
         configs.find { |c| c.key == AccountConfig::WITH_SIGNATURE_ID_REASON_KEY }&.value != false
 
-      pdfs_index = build_pdfs_index(submitter.submission, submitter:, flatten: is_flatten)
+      # Signer-scoped documents must start from original template documents
+      # so previous submitters' filled values are never inherited.
+      pdfs_index = build_pdfs_index(
+        submitter.submission,
+        submitter:,
+        flatten: is_flatten,
+        use_latest_result: false
+      )
 
       if with_signature_id || submitter.account.testing?
         pdfs_index.each_value do |pdf|
@@ -235,6 +242,14 @@ module Submissions
       attachments_data_cache = {}
 
       submission = submitter.submission
+      submitters_index = submission.submitters.index_by(&:uuid)
+      submission_values = submission.submitters.reduce({}) { |acc, s| acc.merge(s.values) }
+      attachments_index =
+        if for_admin
+          ActiveStorage::Attachment.where(record: submission.submitters, name: :attachments).preload(:blob).index_by(&:uuid)
+        else
+          submitter.attachments.preload(:blob).index_by(&:uuid)
+        end
 
       with_headings = find_last_submitter(submission, submitter:).blank? if with_headings.nil?
 
@@ -244,7 +259,7 @@ module Submissions
         next if !with_headings &&
                 (field['type'] == 'heading' || (field['type'] == 'strikethrough' && field['conditions'].blank?))
 
-        next if field['submitter_uuid'] != submitter.uuid && field['type'] != 'heading' &&
+        next if !for_admin && field['submitter_uuid'] != submitter.uuid && !%w[heading redact].include?(field['type']) &&
                 (field['type'] != 'strikethrough' || field['conditions'].present?)
 
         field.fetch('areas', []).each do |area|
@@ -289,7 +304,8 @@ module Submissions
 
           font = pdf.fonts.add(font_name, variant: font_variant, custom_encoding: font_name.in?(DEFAULT_FONTS))
 
-          value = submitter.values[field['uuid']]
+          field_submitter = submitters_index[field['submitter_uuid']] || submitter
+          value = for_admin ? submission_values[field['uuid']] : submitter.values[field['uuid']]
           value = field['default_value'] if field['type'] == 'heading'
           value = field['default_value'] if field['type'] == 'strikethrough' && value.nil? && field['conditions'].blank?
 
@@ -315,7 +331,8 @@ module Submissions
 
           field_type = field['type']
           field_type = 'file' if field_type == 'image' &&
-                                 !submitter.attachments.find { |a| a.uuid == value }.image?
+                                 attachments_index[value].present? &&
+                                 !attachments_index[value].image?
 
           if field_type == 'signature' && field.dig('preferences', 'with_signature_id').in?([true, false])
             with_signature_id = field['preferences']['with_signature_id']
@@ -330,7 +347,8 @@ module Submissions
 
           case field_type
           when ->(type) { type == 'signature' && (with_signature_id || field.dig('preferences', 'reason_field_uuid')) }
-            attachment = submitter.attachments.find { |a| a.uuid == value }
+            attachment = attachments_index[value]
+            next unless attachment
 
             image =
               begin
@@ -342,18 +360,18 @@ module Submissions
                 raise
               end
 
-            reason_value = submitter.values[field.dig('preferences', 'reason_field_uuid')].presence
+            reason_value = (for_admin ? submission_values : submitter.values)[field.dig('preferences', 'reason_field_uuid')].presence
 
             reason_string =
               I18n.with_locale(locale) do
-                timezone = submitter.account.timezone
-                timezone = submitter.timezone || submitter.account.timezone if with_submitter_timezone
+                timezone = field_submitter.account.timezone
+                timezone = field_submitter.timezone || field_submitter.account.timezone if with_submitter_timezone
 
                 time_format = with_timestamp_seconds ? :detailed : :long
 
                 if with_signature_id_reason || field.dig('preferences', 'reasons').present?
                   "#{"#{I18n.t('reason')}: " if reason_value}#{reason_value || I18n.t('digitally_signed_by')} " \
-                    "#{submitter.name}#{" <#{submitter.email}>" if submitter.email.present?}\n" \
+                    "#{field_submitter.name}#{" <#{field_submitter.email}>" if field_submitter.email.present?}\n" \
                     "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: time_format)} " \
                     "#{TimeUtils.timezone_abbr(timezone, attachment.created_at)}"
                 else
@@ -468,7 +486,8 @@ module Submissions
               )
             end
           when 'image', 'signature', 'initials', 'stamp', 'kba'
-            attachment = submitter.attachments.find { |a| a.uuid == value }
+            attachment = attachments_index[value]
+            next unless attachment
 
             image =
               begin
@@ -496,7 +515,8 @@ module Submissions
             )
           when 'file', 'payment'
             items = Array.wrap(value).each_with_object([]) do |uuid, acc|
-              attachment = submitter.attachments.find { |a| a.uuid == uuid }
+              attachment = attachments_index[uuid]
+              next unless attachment
 
               acc << HexaPDF::Layout::InlineBox.create(width: font_size, height: font_size,
                                                        margin: [0, 1, -2, 0]) do |cv, box|
@@ -515,7 +535,8 @@ module Submissions
               next acc unless line.items.first.is_a?(HexaPDF::Layout::InlineBox)
 
               attachment_uuid = Array.wrap(value)[acc]
-              attachment = submitter.attachments.find { |a| a.uuid == attachment_uuid }
+              attachment = attachments_index[attachment_uuid]
+              next acc unless attachment
 
               next_index = lines[(index + 1)..].index { |l| l.items.first.is_a?(HexaPDF::Layout::InlineBox) }
               next_index += index if next_index
@@ -674,12 +695,7 @@ module Submissions
           when 'redact'
             next if for_admin
             next unless apply_redactions
-            # `redact` overlays are party-specific: draw only the overlays
-            # belonging to the viewing party.
-            next if field['submitter_uuid'] != submitter.uuid
-            next unless apply_redactions
-            # `redact` overlays are party-specific: draw only the overlays
-            # belonging to the viewing party.
+            # On signer-scoped downloads, only render this submitter's redact areas.
             next if field['submitter_uuid'] != submitter.uuid
 
             area_x = area['x'] * width
@@ -850,10 +866,12 @@ module Submissions
       Digest::UUID.uuid_v5(Digest::UUID::OID_NAMESPACE, attachments.map(&:uuid).sort.join(':'))
     end
 
-    def build_pdfs_index(submission, submitter: nil, flatten: true)
-      latest_submitter = find_last_submitter(submission, submitter:)
+    def build_pdfs_index(submission, submitter: nil, flatten: true, use_latest_result: true)
+      latest_submitter = use_latest_result ? find_last_submitter(submission, submitter:) : nil
 
-      documents   = Submissions::EnsureResultGenerated.call(latest_submitter, apply_redactions: false) if latest_submitter
+      # Keep signer document artifacts redaction-preserving; do not overwrite
+      # previous signer files with non-redacted variants.
+      documents = Submissions::EnsureResultGenerated.call(latest_submitter, apply_redactions: true) if latest_submitter
       documents ||= submission.schema_documents
 
       ActiveRecord::Associations::Preloader.new(records: documents, associations: [:blob]).call
@@ -984,11 +1002,6 @@ module Submissions
       acc = Hash.new { |h, k| h[k] = [] }
       fields.each do |field|
         next unless field['type'] == 'redact'
-        # Rasterize only the redaction overlays that belong to the
-        # viewing party.
-        next if viewing_submitter && field['submitter_uuid'] != viewing_submitter.uuid
-        # Rasterize only the redaction overlays that belong to the
-        # viewing party.
         next if viewing_submitter && field['submitter_uuid'] != viewing_submitter.uuid
 
         field.fetch('areas', []).each do |area|
