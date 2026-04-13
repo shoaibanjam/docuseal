@@ -242,7 +242,7 @@ export default {
     },
     validateSaveAndClose () {
       if (!this.withConditions) {
-        return alert(this.t('available_only_in_pro'))
+        return window.showToast(this.t('available_only_in_pro'))
       }
 
       if (this.conditions.find((f) => f.field_uuid)) {

@@ -104,7 +104,7 @@ export default {
       })
 
       if (this.accept === 'image/*' && !files.length) {
-        alert(this.t('please_upload_an_image_file'))
+        window.showToast(this.t('please_upload_an_image_file'))
       } else {
         this.uploadFiles(files)
       }
@@ -121,7 +121,7 @@ export default {
       })
 
       if (this.accept === 'image/*' && !files.length) {
-        alert(this.t('please_upload_an_image_file'))
+        window.showToast(this.t('please_upload_an_image_file'))
       } else {
         this.uploadFiles(files).then(() => {
           if (this.$refs.input) {
@@ -167,7 +167,7 @@ export default {
               const data = await resp.json()
 
               if (resp.status === 422) {
-                alert(data.error)
+                window.showToast(data.error)
               } else {
                 return data
               }

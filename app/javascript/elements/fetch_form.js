@@ -21,7 +21,7 @@ export default class extends HTMLElement {
           const data = JSON.parse(await resp.text())
 
           if (data.error) {
-            alert(data.error)
+            window.showToast(data.error)
           }
         } catch (err) {
           console.error(err)

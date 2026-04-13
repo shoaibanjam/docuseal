@@ -435,7 +435,7 @@ export default {
         }
       }).then(resp => resp.json()).then((data) => {
         if (data.error) {
-          return alert(data.error)
+          return window.showToast(data.error)
         }
 
         this.spreadsheet = data

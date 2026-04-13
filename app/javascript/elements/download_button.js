@@ -44,11 +44,11 @@ export default targetable(class extends HTMLElement {
           this.downloadUrls(urls)
         }
       } else {
-        alert('Failed to download files')
+        window.showToast('Failed to download files')
         this.toggleState()
       }
     }).catch(() => {
-      alert('Failed to download files')
+      window.showToast('Failed to download files')
       this.toggleState()
     })
   }
@@ -78,7 +78,7 @@ export default targetable(class extends HTMLElement {
       (prevPromise, request) => prevPromise.then(() => request()),
       Promise.resolve()
     ).catch(() => {
-      alert('Failed to download files')
+      window.showToast('Failed to download files')
     }).finally(() => {
       this.toggleState()
     })
@@ -111,7 +111,7 @@ export default targetable(class extends HTMLElement {
         }, index * 50)
       })
     }).catch(() => {
-      alert('Failed to download files')
+      window.showToast('Failed to download files')
     }).finally(() => {
       this.toggleState()
     })

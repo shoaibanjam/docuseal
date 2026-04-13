@@ -691,7 +691,7 @@ export default {
 
                   this.save()
                 } else {
-                  alert(data.error)
+                  window.showToast(data.error)
                 }
 
                 break

@@ -2,13 +2,14 @@
   <div class="form-control mt-4">
     <%= f.text_field :name, required: true, placeholder: t('document_name'), class: 'base-input', dir: 'auto' %>
   </div>
-  <div class="mt-3 mb-4 flex items-center justify-between">
+  <% folder_value = params[:folder_name].presence || TemplateFolder::DEFAULT_NAME %>
+  <div class="mt-3 mb-4 flex items-center justify-between bg-transparent">
     <label for="folder_name" class="cursor-pointer">
       <%= svg_icon('folder', class: 'w-6 h-6') %>
     </label>
-    <folder-autocomplete class="flex justify-between w-full">
-      <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer w-full whitespace-nowrap">
-        <input id="folder_name" placeholder="<%= t('folder_name') %>" type="text" class="w-full outline-none border-transparent focus:border-transparent focus:ring-0 bg-base-100 px-1" name="folder_name" value="<%= params[:folder_name].presence || TemplateFolder::DEFAULT_NAME %>" autocomplete="off">
+    <folder-autocomplete class="flex justify-between items-center w-full bg-transparent">
+      <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer inline-flex whitespace-nowrap flex-shrink">
+        <input id="folder_name" placeholder="<%= t('folder_name') %>" type="text" class="inline-block !w-fit min-w-0 max-w-[14rem] outline-none border-0 focus:border-0 focus:ring-0 bg-[#051427] rounded px-1.5 py-0 h-auto shadow-none appearance-none" style="width: <%= [folder_value.to_s.length + 5, 10].max %>ch;" oninput="this.style.width = Math.max(this.value.length + 5, 10) + 'ch'" name="folder_name" value="<%= folder_value %>" autocomplete="off">
       </set-value>
       <set-value data-on="click" data-value="" data-input-id="folder_name" class="peer-focus-within:hidden whitespace-nowrap">
         <label for="folder_name" data-clear-on-focus="true" class="shrink-0 link mr-1.5 cursor-pointer">

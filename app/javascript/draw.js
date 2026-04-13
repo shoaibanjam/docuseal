@@ -114,7 +114,7 @@ window.customElements.define('draw-signature', class extends HTMLElement {
 
   async submitImage () {
     if (!isValidSignatureCanvas(this.pad.toData())) {
-      alert('Signature is too small or simple. Please redraw.')
+      window.showToast('Signature is too small or simple. Please redraw.')
 
       return Promise.reject(new Error('Image too small or simple'))
     }

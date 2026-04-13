@@ -166,7 +166,7 @@ export default {
 
         this.upload()
       } else {
-        alert(this.t('only_pdf_and_images_are_supported'))
+        window.showToast(this.t('only_pdf_and_images_are_supported'))
       }
     }
   }

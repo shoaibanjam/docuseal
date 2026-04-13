@@ -91,10 +91,10 @@
     >
       {{ t('powered_by') }}
       <a
-        href="https://www.docuseal.com/start"
+        href="https://trustseal.cybroscloud.com/"
         target="_blank"
         class="underline"
-      >Trustseal</a> - {{ t('open_source_documents_software') }}
+      >Trustseal</a>
     </div>
   </div>
 </template>
@@ -223,7 +223,7 @@ export default {
       fetch(this.baseUrl + `/send_submission_email.json?submitter_slug=${this.submitterSlug}`, {
         method: 'POST'
       }).then(() => {
-        alert(this.t('email_has_been_sent'))
+        window.showToast(this.t('email_has_been_sent'))
       }).finally(() => {
         this.isSendingCopy = false
       })
@@ -246,11 +246,11 @@ export default {
             this.downloadUrls(urls)
           }
         } else {
-          alert(this.t('failed_to_download_files'))
+          window.showToast(this.t('failed_to_download_files'))
         }
       })
         .catch(() => {
-          alert(this.t('failed_to_download_files'))
+          window.showToast(this.t('failed_to_download_files'))
           this.isDownloading = false
         })
     },

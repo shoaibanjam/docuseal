@@ -1259,7 +1259,7 @@ export default {
             this.downloadUrls(urls)
           }
         } else {
-          alert(this.t('failed_to_download_files'))
+          window.showToast(this.t('failed_to_download_files'))
         }
       })
     },
@@ -2504,7 +2504,7 @@ export default {
       }, 'image/png')
     },
     onUploadFailed (error) {
-      if (error) alert(error)
+      if (error) window.showToast(error)
     },
     updateFromUpload (data) {
       this.template.schema.push(...data.schema)
@@ -2704,14 +2704,14 @@ export default {
         })
 
         if (fields?.length) {
-          return alert(this.t('add_all_required_fields_to_continue') + ': ' + fields.map((f) => f.name).join(', '))
+          return window.showToast(this.t('add_all_required_fields_to_continue') + ': ' + fields.map((f) => f.name).join(', '))
         }
       }
 
       if (!this.template.fields.length) {
         e.preventDefault()
 
-        alert(this.t('please_draw_fields_to_prepare_the_document'))
+        window.showToast(this.t('please_draw_fields_to_prepare_the_document'))
       } else {
         const submitterWithoutFields =
           this.template.submitters.find((submitter) => !this.template.fields.some((f) => f.submitter_uuid === submitter.uuid))
@@ -2719,7 +2719,7 @@ export default {
         if (submitterWithoutFields) {
           e.preventDefault()
 
-          alert(this.t('please_add_fields_for_the_submitter_name_or_remove_the_submitter_name_if_not_needed').replaceAll('{submitter_name}', submitterWithoutFields.name))
+          window.showToast(this.t('please_add_fields_for_the_submitter_name_or_remove_the_submitter_name_if_not_needed').replaceAll('{submitter_name}', submitterWithoutFields.name))
         }
       }
     },
@@ -2730,18 +2730,18 @@ export default {
         })
 
         if (fields?.length) {
-          return alert(this.t('add_all_required_fields_to_continue') + ': ' + fields.map((f) => f.name).join(', '))
+          return window.showToast(this.t('add_all_required_fields_to_continue') + ': ' + fields.map((f) => f.name).join(', '))
         }
       }
 
       if (!this.template.fields.length) {
-        alert(this.t('please_draw_fields_to_prepare_the_document'))
+        window.showToast(this.t('please_draw_fields_to_prepare_the_document'))
       } else {
         const submitterWithoutFields =
           this.template.submitters.find((submitter) => !this.template.fields.some((f) => f.submitter_uuid === submitter.uuid))
 
         if (submitterWithoutFields) {
-          alert(this.t('please_add_fields_for_the_submitter_name_or_remove_the_submitter_name_if_not_needed').replaceAll('{submitter_name}', submitterWithoutFields.name))
+          window.showToast(this.t('please_add_fields_for_the_submitter_name_or_remove_the_submitter_name_if_not_needed').replaceAll('{submitter_name}', submitterWithoutFields.name))
         } else {
           this.isSaving = true
 
@@ -2857,7 +2857,7 @@ export default {
 
                   this.save()
                 } else if (!(data.fields || fields).length) {
-                  alert(data.error)
+                  window.showToast(data.error)
                 }
 
                 break

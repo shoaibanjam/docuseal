@@ -313,14 +313,14 @@ export default {
                   this.$refs.input.value = ''
                   this.isLoading = false
                 } else {
-                  alert(this.t('wrong_password'))
+                  window.showToast(this.t('wrong_password'))
 
                   this.$emit('error', await resp.json().error)
                   this.isLoading = false
                 }
               })
             } else if (data.status === 'google_drive_file_missing') {
-              alert(data.error)
+              window.showToast(data.error)
               this.$emit('error', data.error)
               this.isLoading = false
             } else {

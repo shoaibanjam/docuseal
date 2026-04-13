@@ -1,16 +1,15 @@
-<div class="h-36 relative group">
-  <a href="<%= template_path(template) %>" class="flex h-full flex-col justify-between rounded-2xl pt-5 px-6 w-full bg-[#0d1c2f] border border-white/10 shadow-soft-lg before:border-2 before:border-base-300/60 before:border-dashed before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:hidden before:rounded-2xl" data-targets="dashboard-dropzone.templateCards">
-    <div class="w-full h-24 rounded-2xl bg-[#051427] border border-white/10 flex items-center justify-center mb-4">
-      <%= svg_icon('file_text', class: 'w-10 h-10 opacity-80') %>
-    </div>
-    <div class="text-xl font-semibold" style="line-height: 1.6rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;">
+<div class="min-h-44 h-auto relative group">
+  <a href="<%= template_path(template) %>" class="flex h-full flex-col rounded-2xl pt-4 px-4 pb-4 w-full bg-[#0d1c2f] border border-white/10 shadow-soft-lg before:border-2 before:border-base-300/60 before:border-dashed before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:hidden before:rounded-2xl" data-targets="dashboard-dropzone.templateCards">
+    <div class="text-[#e7f7ff] text-lg font-semibold mb-3 shrink-0" style="line-height: 1.5rem; min-height: 1.5rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;">
       <% if template.template_accesses.present? %>
-        <%= svg_icon('lock', class: 'w-5 h-5 inline -translate-y-[3px] mr-1') %>
         <%= svg_icon('lock', class: 'w-5 h-5 inline -translate-y-[3px] mr-1') %>
       <% end %>
       <% template.name.split(/(_)/).each do |item| %><%= item %><wbr><% end %>
     </div>
-    <div class="pb-6 pt-1 space-y-1" data-targets="dashboard-dropzone.hiddenOnDrag">
+    <div class="w-full h-14 rounded-2xl bg-[#051427] border border-white/10 flex items-center justify-center mb-3 shrink-0">
+      <%= svg_icon('file_text', class: 'w-8 h-8 opacity-80') %>
+    </div>
+    <div class="pt-1 space-y-1 mt-auto" data-targets="dashboard-dropzone.hiddenOnDrag">
       <p class="flex items-center space-x-1 text-xs text-base-content/60">
         <%= svg_icon('user', class: 'w-4 h-4') %>
         <span><%= template.author.full_name.presence || template.author.email.to_s.sub(/\+\w+@/, '@') %></span>
