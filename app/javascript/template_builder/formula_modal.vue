@@ -205,13 +205,13 @@ export default {
     },
     validateSaveAndClose () {
       if (!this.withFormula) {
-        return alert(this.t('available_only_in_pro'))
+        return window.showToast(this.t('available_only_in_pro'))
       }
 
       const normalizedFormula = this.normalizeFormula(this.formula)
 
       if (normalizedFormula.includes('FIELD NOT FOUND')) {
-        alert(this.t('some_fields_are_missing_in_the_formula'))
+        window.showToast(this.t('some_fields_are_missing_in_the_formula'))
       } else {
         this.field.preferences.formula = normalizedFormula
 

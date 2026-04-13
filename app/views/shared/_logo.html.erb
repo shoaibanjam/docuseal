@@ -1,7 +1,7 @@
 <% explicit_size = local_assigns.key?(:width) || local_assigns.key?(:height) %>
 <% size_classes = explicit_size ? 'max-h-full max-w-full object-contain' : 'h-[37px] w-auto object-contain shrink-0' %>
 <% logo_class = [size_classes, local_assigns[:class]].compact.join(' ') %>
-<% tag_attrs = { alt: 'CYBROS', class: logo_class } %>
+<% tag_attrs = { alt: Docuseal.product_name, class: logo_class } %>
 <% tag_attrs[:height] = 37 unless explicit_size %>
 <% tag_attrs[:width] = local_assigns[:width] if local_assigns.key?(:width) %>
 <% tag_attrs[:height] = local_assigns[:height] if local_assigns.key?(:height) %>

@@ -264,7 +264,7 @@ export default {
         this.isResendLoading = true
 
         this.sendVerificationCode().then(() => {
-          alert(this.t('verification_code_has_been_resent'))
+          window.showToast(this.t('verification_code_has_been_resent'))
         }).finally(() => {
           this.isResendLoading = false
         })
@@ -295,9 +295,9 @@ export default {
           const data = await resp.json()
 
           if (resp.status === 422) {
-            alert(data.error || this.t('number_phone_is_invalid').replace('{number}', this.fullInternationalPhoneValue))
+            window.showToast(data.error || this.t('number_phone_is_invalid').replace('{number}', this.fullInternationalPhoneValue))
           } else if (resp.status === 429) {
-            alert(data.error)
+            window.showToast(data.error)
           }
 
           return Promise.reject(new Error(data.error))
@@ -314,7 +314,7 @@ export default {
       }
 
       if (!this.fullInternationalPhoneValue.toString().startsWith('+')) {
-        alert(this.t('use_international_format'))
+        window.showToast(this.t('use_international_format'))
 
         return Promise.reject(new Error('phone invalid'))
       } else if (!this.isCodeSent) {

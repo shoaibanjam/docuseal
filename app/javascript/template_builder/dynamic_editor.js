@@ -91,6 +91,9 @@ img.ProseMirror-separator {
 }
 dynamic-variable {
   background-color: #fef3c7;
+  color: #1f2937;
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
 }`)
 
 function collectDomAttrs (dom) {

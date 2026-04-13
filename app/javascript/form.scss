@@ -91,6 +91,17 @@ button[disabled] .enabled, button.btn-disabled .enabled {
   @apply checkbox rounded bg-[#010e21] checkbox-sm border-white/10 checked:border-secondary checked:bg-secondary;
 }
 
+/* Keep checkbox checkmark visible on dark themed surfaces */
+.base-checkbox:checked,
+.checkbox:checked {
+  background-color: #04be99 !important;
+  border-color: #04be99 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.25' d='M3.5 8.5 6.5 11.25 12.5 5.25'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 78% 78% !important;
+}
+
 .base-radio {
   @apply radio bg-[#010e21] radio-sm border-white/10 checked:border-secondary checked:bg-secondary;
 }

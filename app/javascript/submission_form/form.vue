@@ -1616,9 +1616,9 @@ export default {
             } else if (data.error) {
               const i18nKey = data.error.replace(/\s+/g, '_').toLowerCase()
 
-              alert(this.t(i18nKey) !== i18nKey ? this.t(i18nKey) : data.error)
+              window.showToast(this.t(i18nKey) !== i18nKey ? this.t(i18nKey) : data.error)
             } else {
-              alert(this.t('value_is_invalid'))
+              window.showToast(this.t('value_is_invalid'))
             }
 
             return Promise.reject(new Error(data.error))
