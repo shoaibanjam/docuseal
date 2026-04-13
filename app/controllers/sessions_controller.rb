@@ -2,6 +2,7 @@
 
 class SessionsController < Devise::SessionsController
   before_action :configure_permitted_parameters
+  skip_before_action :verify_authenticity_token, only: :destroy
 
   around_action :with_browser_locale
 
@@ -20,6 +21,21 @@ class SessionsController < Devise::SessionsController
     end
 
     super
+  end
+
+  def destroy
+    signed_out =
+      if Devise.sign_out_all_scopes
+        sign_out
+      else
+        sign_out(resource_name)
+      end
+
+    # Ensure the underlying Rails session is fully rotated after logout.
+    reset_session
+    set_flash_message!(:notice, :signed_out) if signed_out
+
+    redirect_to after_sign_out_path_for(resource_name), status: :see_other
   end
 
   private
