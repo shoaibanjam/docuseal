@@ -71,6 +71,16 @@ document.addEventListener('keyup', (e) => {
   }
 })
 
+window.addEventListener('pageshow', (event) => {
+  const isProtectedPage = document.body?.dataset?.revalidateOnBack === 'true'
+  const navigationEntry = performance.getEntriesByType('navigation')[0]
+  const isBackForward = navigationEntry?.type === 'back_forward'
+
+  if (isProtectedPage && (event.persisted || isBackForward)) {
+    window.location.reload()
+  }
+})
+
 document.addEventListener('turbo:before-fetch-request', encodeMethodIntoRequestBody)
 document.addEventListener('turbo:before-fetch-request', (event) => {
   event.detail.fetchOptions.headers['X-Turbo'] = 'true'

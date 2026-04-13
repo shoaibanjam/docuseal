@@ -443,25 +443,41 @@ dynamic-variable {
 }
 
 .navbar-account-menu li > a,
-.navbar-account-menu li > button {
+.navbar-account-menu li > button,
+.navbar-account-menu li > form,
+.navbar-account-menu li > form > button {
   border-radius: 8px;
   transition: background-color 0.16s ease, color 0.16s ease;
 }
 
 .navbar-account-menu li > a:hover,
 .navbar-account-menu li > button:hover,
+.navbar-account-menu li > form:hover,
+.navbar-account-menu li > form > button:hover,
 .navbar-account-menu li > a:focus-visible,
-.navbar-account-menu li > button:focus-visible {
+.navbar-account-menu li > button:focus-visible,
+.navbar-account-menu li > form:focus-within,
+.navbar-account-menu li > form > button:focus-visible {
   background: rgba(4, 190, 153, 0.12) !important;
   color: #d5e3fe !important;
 }
 
 .navbar-account-menu li > a:hover svg,
 .navbar-account-menu li > button:hover svg,
+.navbar-account-menu li > form:hover svg,
+.navbar-account-menu li > form > button:hover svg,
 .navbar-account-menu li > a:focus-visible svg,
-.navbar-account-menu li > button:focus-visible svg {
+.navbar-account-menu li > button:focus-visible svg,
+.navbar-account-menu li > form:focus-within svg,
+.navbar-account-menu li > form > button:focus-visible svg {
   color: #04be99 !important;
   stroke: #04be99 !important;
+}
+
+.navbar-account-menu li > form > button {
+  width: 100%;
+  background: transparent;
+  color: inherit;
 }
 
 /* MFA setup: keep QR black-on-white — inverted (white-on-dark) codes often fail to scan */
@@ -924,8 +940,8 @@ table tbody tr:hover {
 .app-toast {
   pointer-events: auto;
   border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--stitch-on-surface) 12%, transparent);
-  background: var(--stitch-surface-high);
+  border: 1px solid color-mix(in srgb, var(--stitch-secondary) 35%, var(--stitch-outline));
+  background: #122033;
   color: var(--stitch-on-surface);
   box-shadow: 0 10px 24px rgba(1, 14, 33, 0.4);
   padding: 0.75rem 1rem;

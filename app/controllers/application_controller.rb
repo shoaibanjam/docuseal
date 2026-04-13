@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   before_action :sign_in_for_demo, if: -> { Docuseal.demo? }
   before_action :maybe_redirect_to_setup, unless: :signed_in?
   before_action :authenticate_user!, unless: :devise_controller?
+  before_action :set_authenticated_page_cache_headers, if: -> { signed_in? && request.get? }
 
   before_action :set_csp, if: -> { request.get? && !request.headers['HTTP_X_TURBO'] }
 
@@ -175,5 +176,12 @@ class ApplicationController < ActionController::Base
 
       policy.directives['connect-src'] << 'ws:' if Rails.env.development?
     end
+  end
+
+  # Prevent browsers from restoring authenticated pages from cache after logout.
+  def set_authenticated_page_cache_headers
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
   end
 end
