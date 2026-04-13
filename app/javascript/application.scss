@@ -924,8 +924,8 @@ table tbody tr:hover {
 .app-toast {
   pointer-events: auto;
   border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--stitch-on-surface) 12%, transparent);
-  background: var(--stitch-surface-high);
+  border: 1px solid color-mix(in srgb, var(--stitch-secondary) 35%, var(--stitch-outline));
+  background: #122033;
   color: var(--stitch-on-surface);
   box-shadow: 0 10px 24px rgba(1, 14, 33, 0.4);
   padding: 0.75rem 1rem;
