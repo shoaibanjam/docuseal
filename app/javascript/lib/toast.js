@@ -19,11 +19,20 @@ export const showToast = (message, { type = 'error', duration = DEFAULT_DURATION
 
   const container = getContainer()
   const toast = document.createElement('div')
+  const messageEl = document.createElement('span')
+  const closeButton = document.createElement('button')
 
   toast.className = `app-toast app-toast--${type}`
   toast.setAttribute('role', 'status')
   toast.setAttribute('aria-live', 'polite')
-  toast.textContent = String(message)
+  messageEl.className = 'app-toast-message'
+  messageEl.textContent = String(message)
+  closeButton.type = 'button'
+  closeButton.className = 'app-toast-close'
+  closeButton.setAttribute('aria-label', 'Close notification')
+  closeButton.innerHTML = '&times;'
+
+  toast.append(messageEl, closeButton)
 
   container.appendChild(toast)
 
@@ -31,7 +40,11 @@ export const showToast = (message, { type = 'error', duration = DEFAULT_DURATION
     toast.classList.add('is-visible')
   })
 
+  let isClosed = false
+
   const closeToast = () => {
+    if (isClosed) return
+    isClosed = true
     toast.classList.remove('is-visible')
 
     window.setTimeout(() => {
@@ -43,5 +56,6 @@ export const showToast = (message, { type = 'error', duration = DEFAULT_DURATION
     }, 180)
   }
 
+  closeButton.addEventListener('click', closeToast)
   window.setTimeout(closeToast, duration)
 }
