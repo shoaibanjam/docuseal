@@ -1051,18 +1051,29 @@ table tbody tr:hover {
 
 .app-toast-container {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 80;
-  width: min(24rem, calc(100vw - 1.5rem));
+  width: min(36rem, calc(100vw - 2rem));
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   pointer-events: none;
 }
 
+@media (min-width: 768px) {
+  .app-toast-container {
+    top: 4.5rem;
+  }
+}
+
 .app-toast {
   pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--stitch-secondary) 35%, var(--stitch-outline));
   background: #122033;
@@ -1074,6 +1085,30 @@ table tbody tr:hover {
   opacity: 0;
   transform: translateY(-8px);
   transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.app-toast-message {
+  flex: 1;
+}
+
+.app-toast-close {
+  flex: none;
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--stitch-on-surface) 70%, transparent);
+  width: 1.25rem;
+  height: 1.25rem;
+  line-height: 1;
+  font-size: 1rem;
+  border-radius: 9999px;
+  padding: 0;
+}
+
+.app-toast-close:hover,
+.app-toast-close:focus-visible {
+  color: var(--stitch-secondary);
+  background: rgba(4, 190, 153, 0.12);
+  outline: none;
 }
 
 .app-toast.is-visible {
