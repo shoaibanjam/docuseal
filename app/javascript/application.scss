@@ -1051,14 +1051,21 @@ table tbody tr:hover {
 
 .app-toast-container {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 80;
-  width: min(24rem, calc(100vw - 1.5rem));
+  width: min(36rem, calc(100vw - 2rem));
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .app-toast-container {
+    top: 4.5rem;
+  }
 }
 
 .app-toast {
