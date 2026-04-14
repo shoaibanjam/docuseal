@@ -1197,6 +1197,39 @@ table tbody tr:hover {
   stroke: currentColor !important;
 }
 
+/* Templates dashboard cards: make hover state obvious */
+.template-dashboard-card {
+  border-color: rgba(197, 198, 205, 0.14);
+}
+
+.template-dashboard-card:hover,
+.template-dashboard-card:focus-visible {
+  border-color: rgba(4, 190, 153, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(4, 190, 153, 0.35), 0 16px 36px rgba(3, 14, 32, 0.5) !important;
+  transform: translateY(-2px);
+}
+
+.template-dashboard-card:hover .template-dashboard-card-title,
+.template-dashboard-card:focus-visible .template-dashboard-card-title {
+  color: #46ddb7 !important;
+}
+
+.template-dashboard-card:hover .template-dashboard-card-preview,
+.template-dashboard-card:focus-visible .template-dashboard-card-preview {
+  background: #0b2038;
+  border-color: rgba(4, 190, 153, 0.55);
+}
+
+.template-dashboard-card:hover .template-dashboard-card-icon,
+.template-dashboard-card:focus-visible .template-dashboard-card-icon {
+  color: #04be99 !important;
+}
+
+.template-dashboard-card:hover .template-dashboard-card-meta,
+.template-dashboard-card:focus-visible .template-dashboard-card-meta {
+  color: rgba(213, 227, 254, 0.92) !important;
+}
+
 /* Settings support channel icons */
 .support-social-btn {
   width: 2.5rem !important;
