@@ -54,11 +54,11 @@
     <div
       v-if="$slots.buttons || withTitle"
       id="title_container"
-      class="flex justify-between py-1.5 items-center pr-4 top-0 z-10 title-container"
+      class="flex justify-between py-1.5 items-center pr-4 top-0 z-10 title-container builder-topbar"
       :class="{ sticky: withStickySubmitters || isBreakpointLg }"
       :style="{ backgroundColor }"
     >
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-3 builder-topbar-left">
         <a
           v-if="withLogo"
           href="/"
@@ -69,7 +69,7 @@
           v-if="withTitle"
           :model-value="template.name"
           :editable="editable"
-          class="text-xl md:text-3xl font-semibold focus:text-clip template-name"
+          class="text-xl md:text-3xl font-semibold focus:text-clip template-name builder-template-name"
           :icon-stroke-width="2.3"
           @update:model-value="updateName"
         />
@@ -108,7 +108,7 @@
               autocomplete="off"
             >
             <button
-              class="base-button md:!px-6 hidden md:flex items-center space-x-2"
+              class="base-button md:!px-6 hidden md:flex items-center space-x-2 builder-sign-button"
               type="submit"
             >
               <IconWritingSign
@@ -124,7 +124,7 @@
             v-else-if="withSignYourselfButton"
             id="sign_yourself_button"
             :href="`/templates/${template.id}/submissions/new?selfsign=true`"
-            class="base-button md:!px-6 hidden md:flex items-center space-x-2"
+            class="base-button md:!px-6 hidden md:flex items-center space-x-2 builder-sign-button"
             data-turbo-frame="modal"
             @click="maybeShowErrorTemplateAlert"
           >
@@ -141,7 +141,7 @@
             id="send_button"
             :href="`/templates/${template.id}/submissions/new?with_link=true`"
             data-turbo-frame="modal"
-            class="white-button md:!px-6"
+            class="white-button md:!px-6 builder-send-button"
             @click="maybeShowErrorTemplateAlert"
           >
             <IconUsersPlus
@@ -155,10 +155,10 @@
           <span
             v-if="editable"
             id="save_button_container"
-            class="flex"
+            class="flex builder-save-group"
           >
             <button
-              class="base-button !rounded-r-none !pr-2"
+              class="base-button !rounded-r-none !pr-2 builder-save-button"
               :class="{ disabled: isSaving }"
               v-bind="isSaving ? { disabled: true } : {}"
               @click.prevent="onSaveClick"
@@ -182,7 +182,7 @@
             >
               <label
                 tabindex="0"
-                class="base-button !rounded-l-none !pl-1 !pr-2 !border-l-neutral-500"
+                class="base-button !rounded-l-none !pl-1 !pr-2 !border-l-neutral-500 builder-save-dropdown-trigger"
               >
                 <span class="text-sm align-text-top">
                   <IconChevronDown class="w-5 h-5 flex-shrink-0" />
@@ -239,6 +239,20 @@
                 </li>
               </ul>
             </div>
+            <button
+              type="button"
+              class="btn btn-ghost btn-circle text-primary-content/70 hover:text-primary-content builder-top-action"
+              :title="t('copy_link')"
+            >
+              <IconShare class="w-5 h-5" />
+            </button>
+            <button
+              type="button"
+              class="btn btn-ghost btn-circle text-primary-content/70 hover:text-primary-content builder-top-action"
+              title="More"
+            >
+              <IconDotsVertical class="w-5 h-5" />
+            </button>
           </span>
           <a
             v-else
@@ -254,7 +268,7 @@
     </div>
     <div
       id="main_container"
-      class="flex main-container"
+      class="flex main-container builder-workspace"
       :class="$slots.buttons || withTitle ? (isMobile ? 'max-h-[calc(100%_-_60px)]' : 'md:max-h-[calc(100%_-_60px)]') : (isMobile ? 'max-h-[100%]' : 'md:max-h-[100%]')"
     >
       <div
@@ -262,7 +276,7 @@
         id="documents_container"
         ref="previews"
         :style="{ 'display': isBreakpointLg ? 'none' : 'initial' }"
-        class="overflow-y-auto overflow-x-hidden w-52 flex-none pr-3 mt-0.5 pt-0.5 hidden lg:block"
+        class="overflow-y-auto overflow-x-hidden w-52 flex-none pr-3 mt-0.5 pt-0.5 hidden lg:block builder-documents-rail"
       >
         <DocumentPreview
           v-for="(item, index) in template.schema"
@@ -319,7 +333,7 @@
       </div>
       <div
         id="pages_container"
-        class="w-full overflow-x-hidden mt-0.5 pt-0.5"
+        class="w-full overflow-x-hidden mt-0.5 pt-0.5 builder-pages-stage"
         :class="isMobile ? 'overflow-y-auto' : 'overflow-y-hidden md:overflow-y-auto'"
       >
         <div
@@ -458,7 +472,7 @@
       <div
         v-if="withFieldsList && !isMobile"
         id="fields_list_container"
-        class="relative w-80 flex-none mt-1 pr-4 pl-0.5 hidden md:block fields-list-container"
+        class="relative w-80 flex-none mt-1 pr-4 pl-0.5 hidden md:block fields-list-container builder-tools-panel"
         :class="drawField || drawCustomField ? 'overflow-hidden' : 'overflow-y-auto overflow-x-hidden'"
       >
         <div
@@ -612,7 +626,7 @@ import DocumentPreview from './preview'
 import DocumentControls from './controls'
 import MobileFields from './mobile_fields'
 import FieldSubmitter from './field_submitter'
-import { IconPlus, IconUsersPlus, IconDeviceFloppy, IconChevronDown, IconEye, IconWritingSign, IconInnerShadowTop, IconInfoCircle, IconAdjustments, IconDownload } from '@tabler/icons-vue'
+import { IconPlus, IconUsersPlus, IconDeviceFloppy, IconChevronDown, IconEye, IconWritingSign, IconInnerShadowTop, IconInfoCircle, IconAdjustments, IconDownload, IconShare, IconDotsVertical } from '@tabler/icons-vue'
 import { v4 } from 'uuid'
 import { ref, computed, toRaw, defineAsyncComponent } from 'vue'
 import * as i18n from './i18n'
@@ -626,6 +640,8 @@ export default {
     Document,
     Fields,
     IconInfoCircle,
+    IconShare,
+    IconDotsVertical,
     MobileDrawField,
     IconPlus,
     IconWritingSign,

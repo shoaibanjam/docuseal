@@ -27,7 +27,7 @@
           </span>
           <span
             v-else
-            class="mr-1 whitespace-nowrap truncate"
+            class="mr-1 text-center leading-tight"
           >
             {{ t('add_document') }}
           </span>
