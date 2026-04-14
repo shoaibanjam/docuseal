@@ -372,6 +372,46 @@ dynamic-variable {
   @apply space-y-6;
 }
 
+.settings-page-header {
+  @apply space-y-1;
+}
+
+.settings-page-subtitle {
+  @apply text-sm text-primary-content/70;
+}
+
+.settings-account-grid {
+  @apply grid gap-6 xl:grid-cols-[minmax(0,340px)_minmax(0,1fr)] items-start;
+}
+
+.settings-account-sidebar-stack {
+  @apply space-y-6;
+}
+
+.settings-account-user-card {
+  @apply flex items-center gap-4;
+}
+
+.settings-account-user-avatar {
+  @apply h-14 w-14 rounded-xl bg-[#010e21] border border-white/10 flex items-center justify-center text-primary-content font-semibold;
+}
+
+.settings-account-user-content {
+  @apply min-w-0;
+}
+
+.settings-account-user-name {
+  @apply font-semibold text-primary-content truncate;
+}
+
+.settings-account-user-email {
+  @apply text-sm text-primary-content/70 truncate;
+}
+
+.settings-account-user-role {
+  @apply mt-1 inline-flex text-[10px] uppercase tracking-[0.1em] font-semibold text-secondary bg-secondary/15 border border-secondary/25 rounded-full px-2 py-0.5;
+}
+
 .settings-card {
   @apply bg-[#0d1c2f] text-primary-content border border-white/10 rounded-2xl shadow-soft-lg p-6 md:p-8;
 }
@@ -416,6 +456,83 @@ dynamic-variable {
 .settings-card .base-input:focus,
 .settings-card .base-select:focus {
   @apply bg-[#010e21] border-secondary outline-none ring-1 ring-secondary/20;
+}
+
+.settings-card--preferences .settings-card-header {
+  @apply mb-6;
+}
+
+.settings-preferences-list {
+  @apply space-y-3;
+}
+
+.settings-card--preferences .flex.items-center.justify-between.gap-4.py-2\.5 {
+  @apply rounded-xl border border-white/10 bg-[#122033] px-4 py-3;
+}
+
+.settings-card--preferences .flex.items-center.space-x-1 {
+  @apply flex-1 min-w-0 items-center justify-between gap-2;
+}
+
+.settings-card--preferences .text-left {
+  @apply text-primary-content/95;
+}
+
+.settings-card--preferences .flex.items-center.space-x-1 > :not([hidden]) ~ :not([hidden]) {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.settings-card--preferences .flex.items-center.space-x-1 .tooltip {
+  @apply shrink-0;
+}
+
+.settings-card--preferences submit-form .toggle {
+  @apply mt-0.5;
+}
+
+.smtp-settings-form {
+  @apply space-y-4;
+}
+
+.smtp-settings-main {
+  @apply space-y-6;
+}
+
+.smtp-settings-grid {
+  @apply grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start;
+}
+
+.smtp-security-card {
+  @apply space-y-1;
+}
+
+.smtp-security-option {
+  @apply flex items-center justify-between gap-4 rounded-xl border border-white/10 bg-[#122033] px-4 py-3.5 transition-colors duration-150;
+}
+
+.smtp-security-option:hover {
+  @apply border-secondary/40 bg-[#1d2b3e];
+}
+
+.smtp-security-option-copy {
+  @apply cursor-pointer flex-1 min-w-0;
+}
+
+.smtp-security-option-title {
+  @apply text-sm font-medium text-primary-content;
+}
+
+.smtp-security-option-description {
+  @apply text-xs text-primary-content/70 mt-0.5;
+}
+
+.smtp-security-radio {
+  @apply radio radio-sm border-white/30 bg-[#010e21] checked:border-secondary checked:bg-secondary shrink-0 cursor-pointer;
+}
+
+.smtp-actions-card {
+  @apply p-5;
 }
 
 /* Primary/secondary actions inside dark settings cards */
@@ -1198,4 +1315,155 @@ template-builder .field-area-remove-icon {
 template-builder .field-area-remove-btn:hover .field-area-remove-icon,
 template-builder .field-area-remove-btn:focus-visible .field-area-remove-icon {
   color: #ffb4ab !important;
+}
+
+/* Template builder shell redesign */
+template-builder {
+  display: block;
+  height: calc(100vh - 4rem);
+  background: #071325;
+}
+
+template-builder > div {
+  max-width: none !important;
+  height: 100% !important;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+
+template-builder .builder-topbar {
+  min-height: 64px;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(197, 198, 205, 0.12);
+  background: rgba(7, 19, 37, 0.86) !important;
+  backdrop-filter: blur(10px);
+}
+
+template-builder .builder-topbar-left {
+  gap: 0.75rem;
+}
+
+template-builder .builder-toolbar-search {
+  border-radius: 10px;
+}
+
+template-builder .builder-template-name {
+  font-size: clamp(1.35rem, 2.2vw, 2.05rem) !important;
+  line-height: 1.1 !important;
+  font-weight: 800 !important;
+}
+
+template-builder .builder-sign-button,
+template-builder .builder-send-button {
+  height: 36px !important;
+  min-height: 36px !important;
+  border-radius: 10px !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+template-builder .builder-sign-button {
+  background: transparent !important;
+  border: 1px solid rgba(4, 190, 153, 0.55) !important;
+  color: #69fad2 !important;
+}
+
+template-builder .builder-send-button {
+  border: 1px solid rgba(142, 144, 151, 0.45) !important;
+}
+
+template-builder .builder-save-button,
+template-builder .builder-save-dropdown-trigger {
+  height: 36px !important;
+  min-height: 36px !important;
+  border-radius: 10px !important;
+}
+
+template-builder .builder-save-button {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+template-builder .builder-save-dropdown-trigger {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+template-builder .builder-top-action {
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+}
+
+template-builder .builder-workspace {
+  gap: 0.75rem;
+  padding-top: 0.45rem;
+}
+
+template-builder .builder-documents-rail {
+  width: 14.5rem !important;
+  min-width: 14.5rem !important;
+  background: #142032;
+  border-right: 1px solid rgba(197, 198, 205, 0.12);
+  border-radius: 10px;
+  padding: 0.8rem 0.75rem 0.8rem 0.75rem !important;
+}
+
+template-builder .builder-documents-rail img.rounded.border {
+  border-radius: 8px !important;
+  border-color: rgba(197, 198, 205, 0.22) !important;
+}
+
+template-builder .builder-documents-rail .add-document-button,
+template-builder .builder-documents-rail .add-blank-page-button {
+  min-height: 44px !important;
+  height: auto !important;
+  padding: 0.4rem 0.55rem !important;
+  white-space: normal !important;
+  line-height: 1.15 !important;
+  text-align: center !important;
+}
+
+template-builder .builder-pages-stage {
+  background: #071325;
+  border-radius: 12px;
+}
+
+template-builder .builder-tools-panel {
+  width: 292px !important;
+  min-width: 292px !important;
+  background: #142032;
+  border-left: 1px solid rgba(197, 198, 205, 0.12);
+  border-radius: 10px;
+  padding: 0.75rem 0.75rem 0.9rem 0.75rem !important;
+}
+
+template-builder .builder-tools-panel .roles-dropdown {
+  border: 1px solid rgba(197, 198, 205, 0.16);
+  background: #101c2e;
+}
+
+template-builder #field-types-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.6rem !important;
+}
+
+template-builder .fields-grid-item {
+  border-style: solid !important;
+  border-color: rgba(197, 198, 205, 0.14) !important;
+  background: #101c2e !important;
+  border-radius: 12px !important;
+  min-height: 72px;
+}
+
+template-builder .fields-grid-item:hover {
+  border-color: rgba(4, 190, 153, 0.48) !important;
+  background: #1f2a3d !important;
+}
+
+template-builder .draw-field-container {
+  background: #101c2e !important;
+  border: 1px solid rgba(197, 198, 205, 0.14);
 }

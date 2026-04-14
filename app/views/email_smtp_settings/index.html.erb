@@ -2,69 +2,108 @@
   <aside class="settings-sidebar">
     <%= render 'shared/settings_nav' %>
   </aside>
-  <div class="settings-main">
-    <h1 class="ds-heading-2 flex items-center gap-2">
-      <%= svg_icon('mail', class: 'w-5 h-5') %>
-      <span>Email SMTP</span>
-    </h1>
-    <section class="settings-card">
-      <h2 class="settings-card-title mb-5">
-        <%= t('smtp_configuration', default: 'SMTP Configuration') %>
-      </h2>
+  <div class="settings-main space-y-6">
+    <header class="settings-page-header">
+      <h1 class="ds-heading-2"><%= t('email_smtp_configuration', default: 'Email SMTP Configuration') %></h1>
+      <p class="settings-page-subtitle">
+        <%= t('manage_outgoing_email_server_settings', default: 'Manage your outgoing email server settings for notifications and document delivery.') %>
+      </p>
+    </header>
+
     <% value = @encrypted_config.value || {} %>
     <%= form_for @encrypted_config, url: settings_email_index_path, method: :post, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
       <%= f.fields_for :value do |ff| %>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="form-control">
-            <%= ff.label :host, 'Host', class: 'label' %>
-            <%= ff.text_field :host, value: value['host'], required: true, class: 'base-input' %>
+        <div class="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start">
+          <div class="space-y-6">
+            <section class="settings-card">
+              <div class="settings-card-header">
+                <h2 class="settings-card-title flex items-center gap-2">
+                  <%= svg_icon('mail', class: 'w-5 h-5') %>
+                  <span><%= t('server_credentials', default: 'Server Credentials') %></span>
+                </h2>
+              </div>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="form-control">
+                  <%= ff.label :host, 'Host Address', class: 'label' %>
+                  <%= ff.text_field :host, value: value['host'], required: true, class: 'base-input' %>
+                </div>
+                <div class="form-control">
+                  <%= ff.label :port, 'Port', class: 'label' %>
+                  <%= ff.text_field :port, value: value['port'], required: true, class: 'base-input' %>
+                </div>
+              </div>
+              <div class="grid md:grid-cols-2 gap-4 mt-4">
+                <div class="form-control">
+                  <%= ff.label :username, 'Username (Email)', class: 'label' %>
+                  <%= ff.text_field :username, value: value['username'], class: 'base-input' %>
+                </div>
+                <div class="form-control">
+                  <%= ff.label :password, 'Password', class: 'label' %>
+                  <%= ff.password_field :password, class: 'base-input', required: value['password'].present?, placeholder: value['password'].present? ? '*************' : '' %>
+                </div>
+              </div>
+            </section>
+
+            <section class="settings-card">
+              <div class="settings-card-header">
+                <h2 class="settings-card-title flex items-center gap-2">
+                  <%= svg_icon('info_circle', class: 'w-5 h-5') %>
+                  <span><%= t('identity_routing', default: 'Identity & Routing') %></span>
+                </h2>
+              </div>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="form-control">
+                  <%= ff.label :domain, "Domain (#{t('optional')})", class: 'label' %>
+                  <%= ff.text_field :domain, value: value['domain'], class: 'base-input' %>
+                </div>
+                <div class="form-control">
+                  <%= ff.label :authentication, 'Authentication', class: 'label' %>
+                  <%= ff.select :authentication, options_for_select([%w[Plain plain], %w[Login login], %w[CRAM-MD5 cram_md5]], value.fetch('authentication', 'plain')), { prompt: true }, required: true, class: 'base-select' %>
+                </div>
+              </div>
+              <div class="form-control mt-4">
+                <%= ff.label :from_email, t('send_from_email'), class: 'label' %>
+                <%= ff.email_field :from_email, value: value['from_email'], required: !Docuseal.multitenant?, class: 'base-input' %>
+              </div>
+            </section>
           </div>
-          <div class="form-control">
-            <%= ff.label :port, 'Port', class: 'label' %>
-            <%= ff.text_field :port, value: value['port'], required: true, class: 'base-input' %>
+
+          <div class="space-y-5 mt-6 lg:mt-0">
+            <% if !Docuseal.multitenant? || can?(:manage, :personalization_advanced) %>
+              <section class="settings-card">
+                <div class="settings-card-header mb-4">
+                <h2 class="settings-card-title flex items-center gap-2">
+                    <%= svg_icon('lock', class: 'w-5 h-5') %>
+                    <span><%= t('smtp_security', default: 'SMTP Security') %></span>
+                  </h2>
+                </div>
+                <div class="space-y-3">
+                  <% [
+                    ['none', 'STARTTLS', t('opportunistic_encryption', default: 'Opportunistic encryption')],
+                    ['tls', 'TLS', t('transport_layer_security', default: 'Transport Layer Security')],
+                    ['ssl', 'SSL', t('legacy_encryption', default: 'Legacy encryption')],
+                    ['noverify', 'Noverify', t('ignore_certificate_warnings', default: 'Ignore certificate warnings')]
+                  ].each do |(val, label, description)| %>
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; border:1px solid rgba(213,227,254,0.14); background:#122033; border-radius:0.75rem; padding:0.875rem 1rem;">
+                      <label for="<%= "#{val}_radio" %>" style="display:block; cursor:pointer; flex:1; min-width:0;">
+                        <p style="font-size:0.875rem; line-height:1.25rem; font-weight:500; color:#d5e3fe;"><%= label %></p>
+                        <p style="font-size:0.75rem; line-height:1rem; color:rgba(213,227,254,0.72); margin-top:0.125rem;"><%= description %></p>
+                      </label>
+                      <%= ff.radio_button :security, val, checked: (value['security'].blank? && val == 'none') || value['security'] == val, id: "#{val}_radio", class: 'radio radio-sm shrink-0', style: 'accent-color:#04be99;' %>
+                    </div>
+                  <% end %>
+                </div>
+              </section>
+            <% end %>
+
+            <section class="settings-card p-5">
+              <div class="form-control">
+                <%= f.button button_title(title: t('save_configuration', default: t('save')), disabled_with: t('saving')), class: 'base-button w-full' %>
+              </div>
+            </section>
           </div>
-        </div>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="form-control">
-            <%= ff.label :username, 'Username', class: 'label' %>
-            <%= ff.text_field :username, value: value['username'], class: 'base-input' %>
-          </div>
-          <div class="form-control">
-            <%= ff.label :password, 'Password', class: 'label' %>
-            <%= ff.password_field :password, class: 'base-input', required: value['password'].present?, placeholder: value['password'].present? ? '*************' : '' %>
-          </div>
-        </div>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="form-control">
-            <%= ff.label :domain, "Domain (#{t('optional')})", class: 'label' %>
-            <%= ff.text_field :domain, value: value['domain'], class: 'base-input' %>
-          </div>
-          <div class="form-control">
-            <%= ff.label :authentication, 'Authentication', class: 'label' %>
-            <%= ff.select :authentication, options_for_select([%w[Plain plain], %w[Login login], %w[CRAM-MD5 cram_md5]], value.fetch('authentication', 'plain')), { prompt: true }, required: true, class: 'base-select' %>
-          </div>
-        </div>
-        <% if !Docuseal.multitenant? || can?(:manage, :personalization_advanced) %>
-          <div class="form-control">
-            <%= ff.label :security_label, 'SMTP Security', class: 'label' %>
-            <div class="flex items-center space-x-6">
-              <% [%w[STARTTLS none], %w[TLS tls], %w[SSL ssl], %w[Noverify noverify]].each do |(label, val)| %>
-                <%= ff.label :security, value: val, for: "#{val}_radio", class: 'label' do %>
-                  <%= ff.radio_button :security, val, checked: (value['security'].blank? && val == 'none') || value['security'] == val, id: "#{val}_radio", class: 'base-radio mr-2' %>
-                  <%= label %>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-        <div class="form-control">
-          <%= ff.label :from_email, t('send_from_email'), class: 'label' %>
-          <%= ff.email_field :from_email, value: value['from_email'], required: !Docuseal.multitenant?, class: 'base-input' %>
         </div>
       <% end %>
-      <div class="form-control pt-2">
-        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
-      </div>
     <% end %>
-    </section>
+  </div>
 </div>
