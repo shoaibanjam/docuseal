@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="document-preview-card">
     <div class="relative">
       <img
         :src="previewImage.url"

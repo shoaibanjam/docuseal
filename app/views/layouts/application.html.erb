@@ -30,8 +30,9 @@
     <%= render 'shared/navbar' %>
     <% if flash.present? %><%= render 'shared/flash' %><% end %>
     <% if signed_in? %>
+      <% signed_page_class = request.path.start_with?('/settings') ? 'page-stack' : 'ds-page page-stack' %>
       <main class="ds-page-shell">
-        <div class="ds-page page-stack">
+        <div class="<%= signed_page_class %>">
           <%= yield %>
         </div>
       </main>

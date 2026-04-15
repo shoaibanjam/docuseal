@@ -38,6 +38,7 @@
               :with-label="withLabel && !withFieldPlaceholder && step.length < 2"
               :is-value-set="step.some((f) => f.uuid in values)"
               :attachments-index="attachmentsIndex"
+              :is-preview="isPreview"
               @click="[$emit('focus-step', stepIndex), maybeScrollOnClick(field, area)]"
             />
           </Teleport>
@@ -109,6 +110,11 @@ export default {
       type: Array,
       required: false,
       default: () => []
+    },
+    isPreview: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   emits: ['focus-step'],

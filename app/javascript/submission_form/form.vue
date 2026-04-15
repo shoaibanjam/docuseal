@@ -9,6 +9,7 @@
     :with-signature-id="withSignatureId"
     :attachments-index="attachmentsIndex"
     :with-label="withFieldLabels && !isAnonymousChecboxes && showFieldNames"
+    :is-preview="dryRun"
     :current-step="currentStepFields"
     :scroll-padding="scrollPadding"
     @focus-step="[saveStep(), currentField && currentField.type !== 'checkbox' ? isFormVisible = true : '', goToStep($event, false, true)]"
@@ -19,6 +20,7 @@
     :submitter="submitter"
     :attachments-index="attachmentsIndex"
     :submittable="false"
+    :is-preview="dryRun"
   />
   <FormulaFieldAreas
     v-if="formulaFields.length"
@@ -582,8 +584,8 @@
             <a
               v-if="!onlyRequiredFields || step.some((f) => f.required)"
               href="#"
-              class="inline border border-base-300 h-3 w-3 rounded-full mx-1 mt-1"
-              :class="{ 'bg-base-300 steps-progress-current': index === currentStep, 'bg-base-content': (index < currentStep && stepFields[index].every((f) => !f.required || ![null, undefined, ''].includes(values[f.uuid]))) || isCompleted, 'bg-[#0d1c2f]': index > currentStep }"
+              class="inline h-3.5 w-3.5 rounded-full mx-1 mt-1 border-2 transition-colors"
+              :class="{ 'bg-[#04be99] border-[#04be99] steps-progress-current shadow-[0_0_0_2px_rgba(4,190,153,0.28)]': index === currentStep, 'bg-[#d8e3f1] border-[#f3f8ff] shadow-[0_0_0_1px_rgba(216,227,241,0.45)]': (index < currentStep && stepFields[index].every((f) => !f.required || ![null, undefined, ''].includes(values[f.uuid]))) || isCompleted, 'bg-[#0b1f36] border-[#9fb6d4] shadow-[0_0_0_1px_rgba(159,182,212,0.35)]': index > currentStep }"
               @click.prevent="isCompleted ? '' : [saveStep(), goToStep(index, true)]"
             />
           </template>

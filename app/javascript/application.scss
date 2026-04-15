@@ -184,6 +184,63 @@ button[disabled] .enabled, button.btn-disabled .enabled {
   --tglbg: #ffffff;
 }
 
+.tooltip {
+  --tooltip-color: #1a2b42;
+}
+
+.tooltip:before {
+  background: color-mix(in srgb, var(--tooltip-color) 88%, #091626);
+  color: #e8f1ff;
+  border: 1px solid rgba(215, 229, 255, 0.26);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(10, 24, 43, 0.35);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+  z-index: 95;
+}
+
+.tooltip:after {
+  z-index: 95;
+}
+
+template-builder .builder-tools-panel .tooltip,
+template-builder .builder-tools-panel .tooltip:before,
+template-builder .builder-tools-panel .tooltip:after {
+  z-index: 260;
+}
+
+template-builder .builder-tools-panel .tooltip:before {
+  max-width: min(15rem, calc(100vw - 2rem));
+  white-space: normal;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+template-builder .builder-tools-panel .tooltip-bottom-end:before {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+template-builder .builder-tools-panel .tooltip-bottom-end:after {
+  left: auto;
+  right: 16px;
+  transform: none;
+}
+
+template-builder .builder-tools-panel .tooltip-bottom-start:before {
+  left: 0;
+  right: auto;
+  transform: none;
+}
+
+template-builder .builder-tools-panel .tooltip-bottom-start:after {
+  left: 16px;
+  right: auto;
+  transform: none;
+}
+
 .tooltip-bottom-end:before {
   transform: translateX(-95%);
   top: var(--tooltip-offset);
@@ -874,6 +931,13 @@ textarea:focus {
   box-shadow: 0 0 15px rgba(4, 190, 153, 0.35);
 }
 
+.preview-exit-button,
+.preview-exit-button:hover,
+.preview-exit-button:focus-visible {
+  color: #f2fffc !important;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.22);
+}
+
 .btn-outline,
 .white-button {
   background: transparent;
@@ -1108,6 +1172,39 @@ table tbody tr:hover {
 .app-toast-close:focus-visible {
   color: var(--stitch-secondary);
   background: rgba(4, 190, 153, 0.12);
+  outline: none;
+}
+
+.app-toast--confirm {
+  align-items: center;
+}
+
+.app-toast-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex: none;
+}
+
+.app-toast-action {
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--stitch-outline) 75%, transparent);
+  background: transparent;
+  color: var(--stitch-on-surface);
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.38rem 0.7rem;
+}
+
+.app-toast-action--confirm {
+  border-color: color-mix(in srgb, var(--stitch-secondary) 70%, transparent);
+  background: rgba(4, 190, 153, 0.14);
+  color: var(--stitch-secondary);
+}
+
+.app-toast-action:hover,
+.app-toast-action:focus-visible {
+  background: rgba(4, 190, 153, 0.1);
+  border-color: var(--stitch-secondary);
   outline: none;
 }
 
@@ -1486,6 +1583,21 @@ template-builder .builder-documents-rail {
   padding: 0.8rem 0.75rem 0.8rem 0.75rem !important;
 }
 
+template-builder .builder-documents-rail .document-preview-card {
+  background: rgba(7, 19, 37, 0.55);
+  border: 1px solid rgba(197, 198, 205, 0.12);
+  border-radius: 12px;
+  padding: 0.45rem 0.45rem 0.15rem;
+  margin-bottom: 0.55rem;
+}
+
+template-builder .builder-documents-rail .builder-documents-rail-footer {
+  border-radius: 12px;
+  padding: 0.5rem;
+  background: linear-gradient(180deg, rgba(20, 32, 50, 0.82) 0%, rgba(10, 22, 38, 0.92) 100%);
+  border: 1px solid rgba(197, 198, 205, 0.12);
+}
+
 template-builder .builder-documents-rail img.rounded.border {
   border-radius: 8px !important;
   border-color: rgba(197, 198, 205, 0.22) !important;
@@ -1509,6 +1621,7 @@ template-builder .builder-pages-stage {
 template-builder .builder-tools-panel {
   width: 292px !important;
   min-width: 292px !important;
+  overflow: visible !important;
   background: #142032;
   border-left: 1px solid rgba(197, 198, 205, 0.12);
   border-radius: 10px;
