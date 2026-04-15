@@ -1,23 +1,23 @@
 <div class="min-h-44 h-auto relative group">
-  <a href="<%= template_path(template) %>" class="flex h-full flex-col rounded-2xl pt-4 px-4 pb-4 w-full bg-[#0d1c2f] border border-white/10 shadow-soft-lg before:border-2 before:border-base-300/60 before:border-dashed before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:hidden before:rounded-2xl" data-targets="dashboard-dropzone.templateCards">
-    <div class="text-[#e7f7ff] text-lg font-semibold mb-3 shrink-0" style="line-height: 1.5rem; min-height: 1.5rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;">
+  <a href="<%= template_path(template) %>" class="template-dashboard-card flex h-full flex-col rounded-2xl pt-4 px-4 pb-4 w-full bg-[#0d1c2f] border border-white/10 shadow-soft-lg transition-all duration-200 before:border-2 before:border-base-300/60 before:border-dashed before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:hidden before:rounded-2xl" data-targets="dashboard-dropzone.templateCards">
+    <div class="template-dashboard-card-title text-[#e7f7ff] text-lg font-semibold mb-3 shrink-0 transition-colors duration-200" style="line-height: 1.5rem; min-height: 1.5rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;">
       <% if template.template_accesses.present? %>
         <%= svg_icon('lock', class: 'w-5 h-5 inline -translate-y-[3px] mr-1') %>
       <% end %>
       <% template.name.split(/(_)/).each do |item| %><%= item %><wbr><% end %>
     </div>
-    <div class="w-full h-14 rounded-2xl bg-[#051427] border border-white/10 flex items-center justify-center mb-3 shrink-0">
-      <%= svg_icon('file_text', class: 'w-8 h-8 opacity-80') %>
+    <div class="template-dashboard-card-preview w-full h-14 rounded-2xl bg-[#051427] border border-white/10 flex items-center justify-center mb-3 shrink-0 transition-colors duration-200">
+      <%= svg_icon('file_text', class: 'template-dashboard-card-icon w-8 h-8 opacity-80 transition-colors duration-200') %>
     </div>
     <div class="pt-1 space-y-1 mt-auto" data-targets="dashboard-dropzone.hiddenOnDrag">
-      <p class="flex items-center space-x-1 text-xs text-base-content/60">
+      <p class="template-dashboard-card-meta flex items-center space-x-1 text-xs text-base-content/60 transition-colors duration-200">
         <%= svg_icon('user', class: 'w-4 h-4') %>
         <span><%= template.author.full_name.presence || template.author.email.to_s.sub(/\+\w+@/, '@') %></span>
         <% if template.account_id != current_account.id %>
           <span class="badge badge-neutral badge-outline badge-sm text-[10px] uppercase"><%= t('shared') %></span>
         <% end %>
       </p>
-      <p class="flex text-xs text-base-content/60">
+      <p class="template-dashboard-card-meta flex text-xs text-base-content/60 transition-colors duration-200">
         <span class="flex items-center space-x-1 w-1/2">
           <%= svg_icon('calendar', class: 'w-4 h-4') %>
           <span><%= l(template.created_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale) %></span>
