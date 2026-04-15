@@ -94,6 +94,7 @@ const en = {
   processing_: 'Processing...',
   add_pdf_documents_or_images: 'Add PDF documents or images',
   add_documents_or_images: 'Add documents or images',
+  no_document_is_uploaded_yet: 'No document is uploaded yet',
   add_a_new_document: 'Add a new document',
   replace_existing_document: 'Replace existing document',
   clone_and_replace_documents: 'Clone and replace documents',

@@ -54,12 +54,13 @@ import GoogleDriveFilePicker from './elements/google_drive_file_picker'
 import OpenModal from './elements/open_modal'
 import BarChart from './elements/bar_chart'
 import FieldCondition from './elements/field_condition'
-import { showToast } from './lib/toast'
+import { showToast, showConfirmToast } from './lib/toast'
 
 import * as TurboInstantClick from './lib/turbo_instant_click'
 
 TurboInstantClick.start()
 window.showToast = showToast
+window.showConfirmToast = showConfirmToast
 
 document.addEventListener('turbo:before-cache', () => {
   window.flash?.remove()

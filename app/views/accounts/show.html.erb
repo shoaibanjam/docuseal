@@ -61,9 +61,7 @@
         </section>
 
         <section class="settings-card settings-account-user-card">
-          <div class="settings-account-user-avatar">
-            <span><%= current_user.initials %></span>
-          </div>
+          <img src="/admin-icon.png" alt="Admin icon" class="h-14 w-14 shrink-0 object-contain">
           <div class="settings-account-user-content">
             <p class="settings-account-user-name"><%= current_user.full_name.presence || current_user.email %></p>
             <p class="settings-account-user-email"><%= current_user.email %></p>
@@ -79,7 +77,6 @@
         <div class="settings-card-header">
           <div>
             <h2 class="settings-card-title flex items-center gap-2">
-              <%= svg_icon('info_circle', class: 'w-5 h-5') %>
               <span><%= t('preferences') %></span>
             </h2>
             <p class="settings-card-subtitle">

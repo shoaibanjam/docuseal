@@ -3,7 +3,7 @@
     class="flex absolute lg:text-base -outline-offset-1 field-area"
     dir="auto"
     :style="[computedStyle, fontStyle]"
-    :class="{ 'cursor-default': !submittable, 'border border-red-100 bg-red-100 cursor-pointer': submittable && field.type !== 'redact', 'border border-red-100': !isActive && submittable && field.type !== 'redact', 'bg-opacity-80': !isActive && !isValueSet && submittable && field.type !== 'redact', 'outline-red-500 outline-dashed outline-2 z-10 field-area-active': isActive && submittable, 'bg-opacity-40': (isActive || isValueSet) && submittable && field.type !== 'redact', '!bg-black !opacity-100 border-0 z-20': field.type === 'redact' }"
+    :class="{ 'cursor-default': !submittable, 'border border-red-100 bg-red-100 cursor-pointer': submittable && field.type !== 'redact' && !isPreview, 'border border-red-300 bg-red-200/90 cursor-pointer': submittable && field.type !== 'redact' && isPreview, 'border border-red-100': !isActive && submittable && field.type !== 'redact' && !isPreview, 'border border-red-300': !isActive && submittable && field.type !== 'redact' && isPreview, 'bg-opacity-80': !isActive && !isValueSet && submittable && field.type !== 'redact' && !isPreview, 'outline-red-500 outline-dashed outline-2 z-10 field-area-active': isActive && submittable, 'bg-opacity-40': (isActive || isValueSet) && submittable && field.type !== 'redact' && !isPreview, '!bg-black !opacity-100 border-0 z-20': field.type === 'redact' }"
   >
     <div
       v-if="(!withFieldPlaceholder || !field.name || field.type === 'cells') && !isActive && !isValueSet && field.type !== 'checkbox' && field.type !== 'redact' && submittable && !area.option_uuid"
@@ -11,13 +11,15 @@
     >
       <span
         v-if="field"
-        class="flex justify-center items-center h-full opacity-50"
+        class="flex justify-center items-center h-full"
+        :class="isPreview ? 'opacity-100' : 'opacity-50'"
       >
         <component
           :is="fieldIcons[field.type]"
           width="100%"
           height="100%"
-          class="max-h-10 text-base-content"
+          class="max-h-10"
+          :class="isPreview ? 'text-slate-700 drop-shadow-[0_1px_0_rgba(255,255,255,0.35)]' : 'text-base-content'"
         />
       </span>
     </div>
@@ -381,6 +383,11 @@ export default {
     area: {
       type: Object,
       required: true
+    },
+    isPreview: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   emits: ['update:model-value'],

@@ -8,8 +8,8 @@
       <%= svg_icon('folder', class: 'w-6 h-6') %>
     </label>
     <folder-autocomplete class="flex justify-between items-center w-full bg-transparent">
-      <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer inline-flex whitespace-nowrap flex-shrink">
-        <input id="folder_name" placeholder="<%= t('folder_name') %>" type="text" class="inline-block !w-fit min-w-0 max-w-[14rem] outline-none border-0 focus:border-0 focus:ring-0 bg-[#051427] rounded px-1.5 py-0 h-auto shadow-none appearance-none" style="width: <%= [folder_value.to_s.length + 5, 10].max %>ch;" oninput="this.style.width = Math.max(this.value.length + 5, 10) + 'ch'" name="folder_name" value="<%= folder_value %>" autocomplete="off">
+      <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer inline-flex whitespace-nowrap flex-shrink min-w-0">
+        <input id="folder_name" placeholder="<%= t('folder_name') %>" type="text" class="inline-block min-w-0 max-w-[14rem] outline-none border-0 focus:border-0 focus:ring-0 bg-[#051427] rounded px-1 py-0 h-auto shadow-none appearance-none" size="<%= [folder_value.to_s.length, 1].max %>" oninput="this.size = Math.max(this.value.length, 1)" name="folder_name" value="<%= folder_value %>" autocomplete="off">
       </set-value>
       <set-value data-on="click" data-value="" data-input-id="folder_name" class="peer-focus-within:hidden whitespace-nowrap">
         <label for="folder_name" data-clear-on-focus="true" class="shrink-0 link mr-1.5 cursor-pointer">

@@ -272,7 +272,7 @@
       :class="$slots.buttons || withTitle ? (isMobile ? 'max-h-[calc(100%_-_60px)]' : 'md:max-h-[calc(100%_-_60px)]') : (isMobile ? 'max-h-[100%]' : 'md:max-h-[100%]')"
     >
       <div
-        v-if="withDocumentsList"
+        v-if="withDocumentsList && sortedDocuments.length"
         id="documents_container"
         ref="previews"
         :style="{ 'display': isBreakpointLg ? 'none' : 'initial' }"
@@ -300,7 +300,7 @@
           @change="save"
         />
         <div
-          class="sticky bottom-0 py-2 space-y-2"
+          class="sticky bottom-0 py-2 space-y-2 builder-documents-rail-footer"
           :style="{ backgroundColor }"
         >
           <Upload
@@ -473,7 +473,7 @@
         v-if="withFieldsList && !isMobile"
         id="fields_list_container"
         class="relative w-80 flex-none mt-1 pr-4 pl-0.5 hidden md:block fields-list-container builder-tools-panel"
-        :class="drawField || drawCustomField ? 'overflow-hidden' : 'overflow-y-auto overflow-x-hidden'"
+        :class="drawField || drawCustomField ? 'overflow-hidden' : 'overflow-y-auto overflow-x-visible'"
       >
         <div
           v-if="showDrawField || drawField || drawCustomField"
@@ -528,13 +528,13 @@
             :only-defined-fields="onlyDefinedFields"
             :editable="editable"
             :show-tour-start-form="showTourStartForm"
-            @add-field="addField"
-            @set-draw="[drawField = $event.field, drawOption = $event.option]"
+            @add-field="addFieldFromFieldsPanel"
+            @set-draw="setDrawFromFieldsPanel"
             @remove-field="onRemoveField"
             @remove-submitter="onRemoveSubmitter"
             @select-submitter="selectedSubmitter = $event"
-            @set-draw-type="[drawFieldType = $event, showDrawField = true]"
-            @set-draw-custom-field="[drawCustomField = $event, showDrawField = true]"
+            @set-draw-type="setDrawTypeFromFieldsPanel"
+            @set-draw-custom-field="setDrawCustomFieldFromFieldsPanel"
             @set-drag="dragField = $event"
             @set-drag-placeholder="$refs.dragPlaceholder.dragPlaceholder = $event"
             @change-submitter="selectedSubmitter = $event"
@@ -1559,6 +1559,46 @@ export default {
       this.insertField(field)
 
       this.save()
+    },
+    ensureDocumentsUploaded () {
+      if (!this.sortedDocuments.length) {
+        window.showToast(this.t('no_document_is_uploaded_yet'))
+
+        return false
+      }
+
+      return true
+    },
+    addFieldFromFieldsPanel (type) {
+      if (!this.ensureDocumentsUploaded()) {
+        return
+      }
+
+      this.addField(type)
+    },
+    setDrawFromFieldsPanel (event) {
+      if (!this.ensureDocumentsUploaded()) {
+        return
+      }
+
+      this.drawField = event.field
+      this.drawOption = event.option
+    },
+    setDrawTypeFromFieldsPanel (type) {
+      if (!this.ensureDocumentsUploaded()) {
+        return
+      }
+
+      this.drawFieldType = type
+      this.showDrawField = true
+    },
+    setDrawCustomFieldFromFieldsPanel (field) {
+      if (!this.ensureDocumentsUploaded()) {
+        return
+      }
+
+      this.drawCustomField = field
+      this.showDrawField = true
     },
     startFieldDraw ({ name, type }) {
       const existingField = this.template.fields?.find((f) => f.submitter_uuid === this.selectedSubmitter.uuid && name && name === f.name)
@@ -2598,8 +2638,12 @@ export default {
         return acc
       }, [])
     },
-    onDocumentRemove (item) {
-      if (window.confirm(this.t('are_you_sure_'))) {
+    async onDocumentRemove (item) {
+      const isConfirmed = window.showConfirmToast
+        ? await window.showConfirmToast(this.t('are_you_sure_'), { confirmText: this.t('remove'), cancelText: this.t('cancel') })
+        : window.confirm(this.t('are_you_sure_'))
+
+      if (isConfirmed) {
         this.template.schema.splice(this.template.schema.indexOf(item), 1)
 
         this.removeAreasByAttachmentUuid(item.attachment_uuid)
