@@ -36,7 +36,7 @@
           <span class="font-normal"><%= t('all') %></span>
         </div>
         <% unless can?(:manage, :countless) %>
-          <div class="badge badge-neutral badge-outline font-medium">
+          <div class="badge badge-neutral badge-outline font-medium submission-status-count">
             <%= params[:status].blank? && filter_params.blank? ? @pagy.count : @base_submissions.unscope(:group, :order).select(:id).distinct.count %>
           </div>
         <% end %>
@@ -47,7 +47,7 @@
           <span class="font-normal"><%= t('pending') %></span>
         </div>
         <% unless can?(:manage, :countless) %>
-          <div class="badge badge-neutral badge-outline font-medium">
+          <div class="badge badge-neutral badge-outline font-medium submission-status-count">
             <%= params[:status] == 'pending' && filter_params.blank? ? @pagy.count : @base_submissions.pending.unscope(:group, :order).select(:id).distinct.count %>
           </div>
         <% end %>
@@ -58,7 +58,7 @@
           <span class="font-normal"><%= t('completed') %></span>
         </div>
         <% unless can?(:manage, :countless) %>
-          <div class="badge badge-neutral badge-outline font-medium">
+          <div class="badge badge-neutral badge-outline font-medium submission-status-count">
             <%= params[:status] == 'completed' && filter_params.blank? ? @pagy.count : @base_submissions.completed.unscope(:group, :order).select(:id).distinct.count %>
           </div>
         <% end %>

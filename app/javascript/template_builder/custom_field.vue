@@ -248,8 +248,12 @@ export default {
     closeDropdown () {
       this.$el.getRootNode().activeElement.blur()
     },
-    onRemoveClick () {
-      if (this.isNew || window.confirm(this.t('are_you_sure_'))) {
+    async onRemoveClick () {
+      const isConfirmed = this.isNew || (window.showConfirmToast
+        ? await window.showConfirmToast(this.t('are_you_sure_'), { confirmText: this.t('remove'), cancelText: this.t('cancel') })
+        : window.confirm(this.t('are_you_sure_')))
+
+      if (isConfirmed) {
         this.$emit('remove', this.field)
       }
     },
