@@ -12,14 +12,14 @@
       <span
         v-if="field"
         class="flex justify-center items-center h-full"
-        :class="isPreview ? 'opacity-100' : 'opacity-50'"
+        :class="isPreview ? 'opacity-100' : 'opacity-100'"
       >
         <component
           :is="fieldIcons[field.type]"
           width="100%"
           height="100%"
           class="max-h-10"
-          :class="isPreview ? 'text-slate-700 drop-shadow-[0_1px_0_rgba(255,255,255,0.35)]' : 'text-base-content'"
+          :class="isPreview ? 'text-slate-700 drop-shadow-[0_1px_0_rgba(255,255,255,0.35)]' : 'text-black drop-shadow-[0_1px_0_rgba(0,0,0,0.35)]'"
         />
       </span>
     </div>
