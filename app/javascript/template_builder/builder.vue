@@ -190,13 +190,13 @@
               </label>
               <ul
                 tabindex="0"
-                class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-right"
+                class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-right builder-save-dropdown-menu"
               >
                 <li>
                   <a
                     :href="`/templates/${template.id}/form`"
                     data-turbo="false"
-                    class="flex items-center justify-center space-x-2"
+                    class="builder-save-menu-item"
                   >
                     <IconEye class="w-6 h-6 flex-shrink-0" />
                     <span class="whitespace-nowrap">{{ t('save_and_preview') }}</span>
@@ -206,7 +206,7 @@
                   <a
                     :href="`/templates/${template.id}/preferences`"
                     data-turbo-frame="modal"
-                    class="flex space-x-2"
+                    class="builder-save-menu-item"
                     @click="closeDropdown"
                   >
                     <IconAdjustments class="w-6 h-6 flex-shrink-0" />
@@ -215,7 +215,7 @@
                 </li>
                 <li v-if="withDownload">
                   <button
-                    class="flex space-x-2"
+                    class="builder-save-menu-item"
                     :disabled="isDownloading"
                     @click.stop.prevent="download"
                   >
@@ -241,17 +241,14 @@
             </div>
             <button
               type="button"
-              class="btn btn-ghost btn-circle text-primary-content/70 hover:text-primary-content builder-top-action"
-              :title="t('copy_link')"
+              class="white-button md:!px-4 builder-copy-link-button"
+              :title="t('copy')"
+              @click.prevent="copyTemplateLink"
             >
-              <IconShare class="w-5 h-5" />
-            </button>
-            <button
-              type="button"
-              class="btn btn-ghost btn-circle text-primary-content/70 hover:text-primary-content builder-top-action"
-              title="More"
-            >
-              <IconDotsVertical class="w-5 h-5" />
+              <IconShare class="w-5 h-5 flex-shrink-0" />
+              <span class="hidden md:inline whitespace-nowrap">
+                {{ t('copy') }}
+              </span>
             </button>
           </span>
           <a
@@ -626,7 +623,7 @@ import DocumentPreview from './preview'
 import DocumentControls from './controls'
 import MobileFields from './mobile_fields'
 import FieldSubmitter from './field_submitter'
-import { IconPlus, IconUsersPlus, IconDeviceFloppy, IconChevronDown, IconEye, IconWritingSign, IconInnerShadowTop, IconInfoCircle, IconAdjustments, IconDownload, IconShare, IconDotsVertical } from '@tabler/icons-vue'
+import { IconPlus, IconUsersPlus, IconDeviceFloppy, IconChevronDown, IconEye, IconWritingSign, IconInnerShadowTop, IconInfoCircle, IconAdjustments, IconDownload, IconShare } from '@tabler/icons-vue'
 import { v4 } from 'uuid'
 import { ref, computed, toRaw, defineAsyncComponent } from 'vue'
 import * as i18n from './i18n'
@@ -641,7 +638,6 @@ export default {
     Fields,
     IconInfoCircle,
     IconShare,
-    IconDotsVertical,
     MobileDrawField,
     IconPlus,
     IconWritingSign,
@@ -1153,6 +1149,30 @@ export default {
   },
   methods: {
     toRaw,
+    async copyTemplateLink () {
+      const link = `${window.location.origin}/templates/${this.template.id}/form`
+
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(link)
+        } else {
+          const textarea = document.createElement('textarea')
+          textarea.value = link
+          textarea.setAttribute('readonly', '')
+          textarea.style.position = 'absolute'
+          textarea.style.left = '-9999px'
+          document.body.appendChild(textarea)
+          textarea.select()
+          document.execCommand('copy')
+          textarea.remove()
+        }
+
+        const copiedText = this.t('copied')
+        window.showToast?.(copiedText && copiedText !== 'copied' ? copiedText : 'Copied', { type: 'success' })
+      } catch (e) {
+        window.showToast?.('Failed to copy link')
+      }
+    },
     addCustomField (field) {
       return this.$refs.fields.addCustomField(field)
     },

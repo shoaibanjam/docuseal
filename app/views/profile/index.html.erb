@@ -6,142 +6,163 @@
     <h1 class="ds-heading-2">
       <%= t('profile') %>
     </h1>
-    <section class="settings-card">
-      <div class="settings-card-header">
-        <h2 class="settings-card-title flex items-center gap-2">
-          <%= svg_icon('user', class: 'w-5 h-5') %>
-          <span><%= t('personal_details', default: 'Personal Details') %></span>
-        </h2>
-      </div>
-    <%= form_for current_user, url: update_contact_settings_profile_index_path, method: :patch, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
-      <div class="grid md:grid-cols-2 gap-4">
-        <div class="form-control">
-          <%= f.label :first_name, t('first_name'), class: 'label' %>
-          <%= f.text_field :first_name, required: true, class: 'base-input', dir: 'auto' %>
-        </div>
-        <div class="form-control">
-          <%= f.label :last_name, t('last_name'), class: 'label' %>
-          <%= f.text_field :last_name, required: false, class: 'base-input', dir: 'auto' %>
-        </div>
-      </div>
-      <div class="form-control">
-        <%= f.label :email, t('email'), class: 'label' %>
-        <%= f.email_field :email, autocomplete: 'off', class: 'base-input' %>
-        <% if current_user.try(:pending_reconfirmation?) %>
-          <label class="label">
-            <span class="label-text-alt"><%= t('email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm', email: f.object.unconfirmed_email) %></span>
-          </label>
-        <% end %>
-      </div>
-      <div class="form-control pt-3">
-        <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button w-full md:w-auto flex items-center justify-center gap-2' do %>
-          <%= svg_icon('save', class: 'w-5 h-5') %>
-          <span><%= t('update') %></span>
-        <% end %>
-      </div>
-    <% end %>
-    </section>
-    <%= render 'email_configs' %>
-    <section class="settings-card">
-      <div class="settings-card-header">
-        <h2 class="settings-card-title flex items-center gap-2">
-          <%= svg_icon('writing_sign', class: 'w-5 h-5') %>
-          <span><%= t('signature') %></span>
-        </h2>
-      </div>
-    <% signature = UserConfigs.load_signature(current_user) %>
-    <% if signature %>
-      <div class="flex justify-center mb-4 relative">
-        <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_signature_path, method: :delete, class: 'right-0 top-0 absolute link' %>
-        <img src="<%= signature.url %>" style="max-height: 200px; width: auto" width="<%= signature.metadata['width'] %>" height="<%= signature.metadata['height'] %>">
-      </div>
-    <% end %>
-    <a href="<%= edit_user_signature_path %>" data-turbo-frame="modal" class="base-button w-full md:w-auto flex items-center justify-center gap-2">
-      <%= svg_icon('writing_sign', class: 'w-5 h-5') %>
-      <span><%= t('update_signature') %></span>
-    </a>
-    </section>
-    <section class="settings-card">
-      <div class="settings-card-header">
-        <h2 class="settings-card-title flex items-center gap-2">
-          <%= svg_icon('rubber_stamp', class: 'w-5 h-5') %>
-          <span><%= t('initials') %></span>
-        </h2>
-      </div>
-    <% initials = UserConfigs.load_initials(current_user) %>
-    <% if initials %>
-      <div class="flex justify-center mb-4 relative">
-        <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_initials_path, method: :delete, class: 'right-0 top-0 absolute link' %>
-        <img src="<%= initials.url %>" style="max-height: 200px; width: auto" width="<%= initials.metadata['width'] %>" height="<%= initials.metadata['height'] %>">
-      </div>
-    <% end %>
-    <a href="<%= edit_user_initials_path %>" data-turbo-frame="modal" class="base-button w-full md:w-auto flex items-center justify-center gap-2">
-      <%= svg_icon('rubber_stamp', class: 'w-5 h-5') %>
-      <span><%= t('update_initials') %></span>
-    </a>
-    </section>
-    <% if true_user == current_user && !current_account.testing? %>
-      <section class="settings-card">
-      <div class="settings-card-header">
-        <h2 class="settings-card-title flex items-center gap-2">
-          <%= svg_icon('lock', class: 'w-5 h-5') %>
-          <span><%= t('change_password') %></span>
-        </h2>
-      </div>
-      <%= form_for current_user, url: update_password_settings_profile_index_path, method: :patch, html: { autocomplete: 'off' } do |f| %>
-        <%= f.label :password, t('new_password'), class: 'label' %>
-        <%= f.password_field :password, autocomplete: 'off', class: 'base-input peer w-full', required: true %>
-        <div class="<%= 'peer-invalid:hidden' if current_user.errors.blank? %> space-y-4 mt-4">
-          <div class="form-control">
-            <%= f.label :password_confirmation, t('confirm_password'), class: 'label' %>
-            <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'base-input' %>
+    <div class="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start">
+      <div class="space-y-6">
+        <section class="settings-card">
+          <div class="settings-card-header">
+            <h2 class="settings-card-title flex items-center gap-2">
+              <%= svg_icon('user', class: 'w-5 h-5') %>
+              <span><%= t('personal_details', default: 'Personal Details') %></span>
+            </h2>
           </div>
-          <div class="form-control">
-            <%= f.label :current_password, t('current_password'), class: 'label' %>
-            <%= f.password_field :current_password, autocomplete: 'current-password', class: 'base-input' %>
-            <% if Accounts.can_send_emails?(current_account) %>
-              <span class="label-text-alt mt-1">
-                <%= t('dont_remember_your_current_password_click_here_to_reset_it_html') %>
-              </span>
+          <%= form_for current_user, url: update_contact_settings_profile_index_path, method: :patch, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="form-control">
+                <%= f.label :first_name, t('first_name'), class: 'label' %>
+                <%= f.text_field :first_name, required: true, class: 'base-input', dir: 'auto' %>
+              </div>
+              <div class="form-control">
+                <%= f.label :last_name, t('last_name'), class: 'label' %>
+                <%= f.text_field :last_name, required: false, class: 'base-input', dir: 'auto' %>
+              </div>
+            </div>
+            <div class="form-control">
+              <%= f.label :email, t('email'), class: 'label' %>
+              <%= f.email_field :email, autocomplete: 'off', class: 'base-input' %>
+              <% if current_user.try(:pending_reconfirmation?) %>
+                <label class="label">
+                  <span class="label-text-alt"><%= t('email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm', email: f.object.unconfirmed_email) %></span>
+                </label>
+              <% end %>
+            </div>
+            <div class="form-control pt-3">
+              <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button w-full md:w-auto flex items-center justify-center gap-2' do %>
+                <%= svg_icon('save', class: 'w-5 h-5') %>
+                <span><%= t('update') %></span>
+              <% end %>
+            </div>
+          <% end %>
+        </section>
+
+        <% if true_user == current_user && !current_account.testing? %>
+          <section class="settings-card">
+            <div class="settings-card-header">
+              <h2 class="settings-card-title flex items-center gap-2">
+                <%= svg_icon('lock', class: 'w-5 h-5') %>
+                <span><%= t('change_password') %></span>
+              </h2>
+            </div>
+            <%= form_for current_user, url: update_password_settings_profile_index_path, method: :patch, html: { autocomplete: 'off' } do |f| %>
+              <%= f.label :password, t('new_password'), class: 'label' %>
+              <%= f.password_field :password, autocomplete: 'off', class: 'base-input peer w-full', required: true %>
+              <div class="<%= 'peer-invalid:hidden' if current_user.errors.blank? %> space-y-4 mt-4">
+                <div class="form-control">
+                  <%= f.label :password_confirmation, t('confirm_password'), class: 'label' %>
+                  <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'base-input' %>
+                </div>
+                <div class="form-control">
+                  <%= f.label :current_password, t('current_password'), class: 'label' %>
+                  <%= f.password_field :current_password, autocomplete: 'current-password', class: 'base-input' %>
+                  <% if Accounts.can_send_emails?(current_account) %>
+                    <span class="label-text-alt mt-1">
+                      <%= t('dont_remember_your_current_password_click_here_to_reset_it_html') %>
+                    </span>
+                  <% end %>
+                </div>
+                <div class="form-control pt-2">
+                  <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button w-full md:w-auto flex items-center justify-center gap-2' do %>
+                    <%= svg_icon('lock', class: 'w-5 h-5') %>
+                    <span><%= t('update') %></span>
+                  <% end %>
+                </div>
+              </div>
             <% end %>
-          </div>
-          <div class="form-control pt-2">
-            <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button w-full md:w-auto flex items-center justify-center gap-2' do %>
-              <%= svg_icon('lock', class: 'w-5 h-5') %>
-              <span><%= t('update') %></span>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-      <%= button_to nil, user_send_reset_password_path(current_user), id: 'resend_password_button', method: :put, class: 'hidden', data: { turbo_confirm: t('are_you_sure_') } %>
-      </section>
-      <section class="settings-card">
-      <div class="settings-card-header">
-        <h2 class="settings-card-title flex items-center gap-2">
-          <%= svg_icon('2fa', class: 'w-5 h-5') %>
-          <span><%= t('two_factor_authentication') %></span>
-        </h2>
-      </div>
-      <div class="space-y-4">
-        <% if current_user.otp_required_for_login %>
-          <p class="flex items-center space-x-1">
-            <%= svg_icon('circle_check', class: 'stroke-success inline flex-none w-5 h-5') %>
-            <span>
-              <%= t('2fa_has_been_configured') %>
-            </span>
-          </p>
-          <a href="<%= edit_mfa_setup_path %>" data-turbo-frame="modal" class="white-button w-full md:w-auto !px-8">🔓 <%= t('remove_2fa') %></a>
-        <% else %>
-          <p class="flex items-center space-x-1">
-            <%= svg_icon('info_circle', class: 'stroke-warning inline flex-none w-5 h-5') %>
-            <span>
-              <%= t('2fa_is_not_configured') %>
-            </span>
-          </p>
-          <a href="<%= new_mfa_setup_path %>" data-turbo-frame="modal" class="base-button w-full md:w-auto !px-8">🔒 <%= t('set_up_2fa') %></a>
+            <%= button_to nil, user_send_reset_password_path(current_user), id: 'resend_password_button', method: :put, class: 'hidden', data: { turbo_confirm: t('are_you_sure_') } %>
+          </section>
         <% end %>
       </div>
-      </section>
-    <% end %>
+
+      <div class="space-y-6">
+        <%= render 'email_configs' %>
+
+        <section class="settings-card">
+          <div class="settings-card-header">
+            <h2 class="settings-card-title flex items-center gap-2">
+              <%= svg_icon('writing_sign', class: 'w-5 h-5') %>
+              <span><%= t('signature') %></span>
+            </h2>
+          </div>
+          <% signature = UserConfigs.load_signature(current_user) %>
+          <% if signature %>
+            <div class="flex justify-center mb-4 relative">
+              <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_signature_path, method: :delete, class: 'right-0 top-0 absolute link' %>
+              <img src="<%= signature.url %>" style="max-height: 200px; width: auto" width="<%= signature.metadata['width'] %>" height="<%= signature.metadata['height'] %>">
+            </div>
+          <% end %>
+          <a href="<%= edit_user_signature_path %>" data-turbo-frame="modal" class="base-button w-full">
+            <span class="flex items-center justify-center gap-2 w-full">
+              <%= svg_icon('writing_sign', class: 'w-5 h-5 flex-shrink-0') %>
+              <span class="whitespace-nowrap"><%= t('update_signature') %></span>
+            </span>
+          </a>
+        </section>
+
+        <section class="settings-card">
+          <div class="settings-card-header">
+            <h2 class="settings-card-title flex items-center gap-2">
+              <%= svg_icon('rubber_stamp', class: 'w-5 h-5') %>
+              <span><%= t('initials') %></span>
+            </h2>
+          </div>
+          <% initials = UserConfigs.load_initials(current_user) %>
+          <% if initials %>
+            <div class="flex justify-center mb-4 relative">
+              <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_initials_path, method: :delete, class: 'right-0 top-0 absolute link' %>
+              <img src="<%= initials.url %>" style="max-height: 200px; width: auto" width="<%= initials.metadata['width'] %>" height="<%= initials.metadata['height'] %>">
+            </div>
+          <% end %>
+          <a href="<%= edit_user_initials_path %>" data-turbo-frame="modal" class="base-button w-full flex items-center justify-center gap-2">
+            <%= svg_icon('rubber_stamp', class: 'w-5 h-5') %>
+            <span><%= t('update_initials') %></span>
+          </a>
+        </section>
+
+        <% if true_user == current_user && !current_account.testing? %>
+          <section class="settings-card">
+            <div class="settings-card-header">
+              <h2 class="settings-card-title flex items-center gap-2">
+                <%= svg_icon('2fa', class: 'w-5 h-5') %>
+                <span><%= t('two_factor_authentication') %></span>
+              </h2>
+            </div>
+            <div class="space-y-4">
+              <% if current_user.otp_required_for_login %>
+                <p class="flex items-center space-x-1">
+                  <%= svg_icon('circle_check', class: 'stroke-success inline flex-none w-5 h-5') %>
+                  <span>
+                    <%= t('2fa_has_been_configured') %>
+                  </span>
+                </p>
+                <a href="<%= edit_mfa_setup_path %>" data-turbo-frame="modal" class="white-button w-full flex items-center justify-center gap-2 !px-8">
+                  <%= svg_icon('lock', class: 'w-5 h-5') %>
+                  <span><%= t('remove_2fa') %></span>
+                </a>
+              <% else %>
+                <p class="flex items-center space-x-1">
+                  <%= svg_icon('info_circle', class: 'stroke-warning inline flex-none w-5 h-5') %>
+                  <span>
+                    <%= t('2fa_is_not_configured') %>
+                  </span>
+                </p>
+                <a href="<%= new_mfa_setup_path %>" data-turbo-frame="modal" class="base-button w-full flex items-center justify-center gap-2 !px-8">
+                  <%= svg_icon('lock', class: 'w-5 h-5') %>
+                  <span><%= t('set_up_2fa') %></span>
+                </a>
+              <% end %>
+            </div>
+          </section>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

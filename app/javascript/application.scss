@@ -1097,6 +1097,18 @@ table tbody tr:hover {
   border: 1px solid #c79039 !important;
 }
 
+/* Keep template submissions status counters visible on dark tabs */
+.submission-status-count {
+  min-width: 1.75rem;
+  height: 1.35rem;
+  padding: 0 0.45rem;
+  border-color: #8ea8c7 !important;
+  background: rgba(33, 56, 84, 0.9) !important;
+  color: #ecf4ff !important;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  opacity: 1 !important;
+}
+
 .alert {
   border-radius: 10px;
   border-left-width: 4px;
@@ -1526,30 +1538,53 @@ template-builder .builder-template-name {
 }
 
 template-builder .builder-sign-button,
-template-builder .builder-send-button {
+template-builder .builder-send-button,
+template-builder .builder-save-button,
+template-builder .builder-save-dropdown-trigger,
+template-builder .builder-copy-link-button {
   height: 36px !important;
   min-height: 36px !important;
   border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  padding: 0 0.78rem !important;
   font-size: 0.72rem !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
+  border: 1px solid rgba(197, 198, 205, 0.34) !important;
+  background: rgba(16, 31, 52, 0.78) !important;
+  color: #d6e6ff !important;
 }
 
-template-builder .builder-sign-button {
-  background: transparent !important;
-  border: 1px solid rgba(4, 190, 153, 0.55) !important;
-  color: #69fad2 !important;
+template-builder .builder-sign-button:hover,
+template-builder .builder-sign-button:focus-visible,
+template-builder .builder-send-button:hover,
+template-builder .builder-send-button:focus-visible,
+template-builder .builder-save-button:hover,
+template-builder .builder-save-button:focus-visible,
+template-builder .builder-save-dropdown-trigger:hover,
+template-builder .builder-save-dropdown-trigger:focus-visible,
+template-builder .builder-copy-link-button:hover,
+template-builder .builder-copy-link-button:focus-visible {
+  border-color: rgba(4, 190, 153, 0.7) !important;
+  background: rgba(20, 44, 71, 0.92) !important;
+  color: #f3fbff !important;
 }
 
-template-builder .builder-send-button {
-  border: 1px solid rgba(142, 144, 151, 0.45) !important;
-}
-
-template-builder .builder-save-button,
-template-builder .builder-save-dropdown-trigger {
-  height: 36px !important;
-  min-height: 36px !important;
-  border-radius: 10px !important;
+template-builder .builder-sign-button svg,
+template-builder .builder-sign-button svg *,
+template-builder .builder-send-button svg,
+template-builder .builder-send-button svg *,
+template-builder .builder-save-button svg,
+template-builder .builder-save-button svg *,
+template-builder .builder-save-dropdown-trigger svg,
+template-builder .builder-save-dropdown-trigger svg *,
+template-builder .builder-copy-link-button svg,
+template-builder .builder-copy-link-button svg * {
+  color: currentColor !important;
+  stroke: currentColor !important;
 }
 
 template-builder .builder-save-button {
@@ -1562,11 +1597,98 @@ template-builder .builder-save-dropdown-trigger {
   border-bottom-left-radius: 0 !important;
 }
 
+template-builder .builder-save-button.disabled,
+template-builder .builder-save-button:disabled {
+  opacity: 0.65 !important;
+}
+
 template-builder .builder-top-action {
   width: 36px !important;
   min-width: 36px !important;
   height: 36px !important;
   min-height: 36px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(197, 198, 205, 0.28) !important;
+  background: rgba(16, 31, 52, 0.78) !important;
+  color: #d6e6ff !important;
+}
+
+template-builder .builder-top-action:hover,
+template-builder .builder-top-action:focus-visible {
+  border-color: rgba(4, 190, 153, 0.7) !important;
+  background: rgba(20, 44, 71, 0.92) !important;
+  color: #f3fbff !important;
+}
+
+template-builder .builder-save-group .builder-copy-link-button {
+  margin-left: 0.5rem !important;
+}
+
+/* Keep legacy accent styling for key builder actions */
+template-builder .builder-sign-button {
+  background: transparent !important;
+  border-color: rgba(4, 190, 153, 0.55) !important;
+  color: #69fad2 !important;
+}
+
+template-builder .builder-sign-button:hover,
+template-builder .builder-sign-button:focus-visible {
+  background: rgba(4, 190, 153, 0.12) !important;
+  border-color: rgba(4, 190, 153, 0.78) !important;
+  color: #8fffe0 !important;
+}
+
+template-builder .builder-save-button,
+template-builder .builder-save-dropdown-trigger {
+  background: var(--stitch-secondary) !important;
+  color: var(--stitch-on-secondary) !important;
+  border-color: color-mix(in srgb, var(--stitch-secondary) 85%, black) !important;
+}
+
+template-builder .builder-save-dropdown-trigger {
+  border-left-color: rgba(0, 0, 0, 0.24) !important;
+}
+
+template-builder .builder-save-button:hover,
+template-builder .builder-save-button:focus-visible,
+template-builder .builder-save-dropdown-trigger:hover,
+template-builder .builder-save-dropdown-trigger:focus-visible {
+  background: #06be99 !important;
+  color: var(--stitch-on-secondary) !important;
+  border-color: #06be99 !important;
+}
+
+template-builder .builder-save-dropdown-menu .builder-save-menu-item {
+  width: 100%;
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.5rem;
+  color: #d6e6ff !important;
+  font-weight: 500;
+}
+
+template-builder .builder-save-dropdown-menu .builder-save-menu-item svg,
+template-builder .builder-save-dropdown-menu .builder-save-menu-item svg * {
+  color: #8cc6ff !important;
+  stroke: #8cc6ff !important;
+}
+
+template-builder .builder-save-dropdown-menu .builder-save-menu-item:hover,
+template-builder .builder-save-dropdown-menu .builder-save-menu-item:focus-visible {
+  background: rgba(29, 43, 62, 0.95) !important;
+  color: #f3fbff !important;
+}
+
+template-builder .builder-save-dropdown-menu .builder-save-menu-item:hover svg,
+template-builder .builder-save-dropdown-menu .builder-save-menu-item:hover svg *,
+template-builder .builder-save-dropdown-menu .builder-save-menu-item:focus-visible svg,
+template-builder .builder-save-dropdown-menu .builder-save-menu-item:focus-visible svg * {
+  color: #04be99 !important;
+  stroke: #04be99 !important;
 }
 
 template-builder .builder-workspace {

@@ -349,8 +349,12 @@ export default {
     selectSubmitter (submitter) {
       this.$emit('update:model-value', submitter.uuid)
     },
-    remove (submitter) {
-      if (window.confirm(this.t('are_you_sure_'))) {
+    async remove (submitter) {
+      const isConfirmed = window.showConfirmToast
+        ? await window.showConfirmToast(this.t('are_you_sure_'), { confirmText: this.t('remove'), cancelText: this.t('cancel') })
+        : window.confirm(this.t('are_you_sure_'))
+
+      if (isConfirmed) {
         this.$emit('remove', submitter)
       }
     },

@@ -61,6 +61,13 @@ import * as TurboInstantClick from './lib/turbo_instant_click'
 TurboInstantClick.start()
 window.showToast = showToast
 window.showConfirmToast = showConfirmToast
+window.Turbo?.setConfirmMethod((message) => {
+  if (window.showConfirmToast) {
+    return window.showConfirmToast(message, { confirmText: 'OK', cancelText: 'Cancel' })
+  }
+
+  return window.confirm(message)
+})
 
 document.addEventListener('turbo:before-cache', () => {
   window.flash?.remove()
