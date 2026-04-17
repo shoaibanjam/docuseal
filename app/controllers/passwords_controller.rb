@@ -13,7 +13,11 @@ class PasswordsController < Devise::PasswordsController
 
   def create
     super do |resource|
-      resource.errors.clear unless Docuseal.multitenant?
+      next if Docuseal.multitenant?
+
+      # Keep validation feedback for invalid input (e.g., blank email),
+      # but hide account existence checks to avoid user enumeration.
+      resource.errors.delete(:email, :not_found)
     end
   end
 

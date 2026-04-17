@@ -14,8 +14,15 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show'
   get 'manifest' => 'pwa#manifest'
 
-  devise_for :users, path: '/', only: %i[sessions passwords],
-                     controllers: { sessions: 'sessions', passwords: 'passwords' }
+  devise_modules = %i[sessions passwords omniauth_callbacks]
+  devise_controllers = { sessions: 'sessions', passwords: 'passwords', omniauth_callbacks: 'omniauth_callbacks' }
+
+  unless Docuseal.multitenant?
+    devise_modules << :registrations
+    devise_controllers[:registrations] = 'registrations'
+  end
+
+  devise_for :users, path: '/', only: devise_modules, controllers: devise_controllers
 
   devise_scope :user do
     resource :invitation, only: %i[update] do
@@ -77,7 +84,7 @@ Rails.application.routes.draw do
   resources :console_redirect, only: %i[index]
   resources :upgrade, only: %i[index], controller: 'console_redirect'
   resources :manage, only: %i[index], controller: 'console_redirect'
-  get 'sign_up' => 'console_redirect#index'
+  get 'sign_up' => 'console_redirect#index' if Docuseal.multitenant?
   resource :testing_account, only: %i[show destroy]
   resources :testing_api_settings, only: %i[index]
   resources :submitters_autocomplete, only: %i[index]

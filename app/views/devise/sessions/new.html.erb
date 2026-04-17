@@ -4,7 +4,6 @@
     <div class="auth-header">
       <%= render 'devise/shared/select_server' if Docuseal.multitenant? %>
       <h1 class="auth-title"><%= t('sign_in') %></h1>
-      <p class="auth-subtitle"><%= t('please_sign_in_to_continue', default: t('sign_in')) %></p>
     </div>
     <%= form_for(resource, as: resource_name, html: { class: 'space-y-6' }, data: { turbo: params[:redir].blank? }, url: session_path(resource_name)) do |f| %>
     <%= render 'hidden_fields' %>
@@ -25,14 +24,14 @@
     <% if devise_mapping.omniauthable? %>
       <div class="pt-4 mt-2 border-t border-base-300/70 space-y-4">
         <% if User.omniauth_providers.include?(:google_oauth2) %>
-          <%= form_for '', url: omniauth_authorize_path(resource_name, :google_oauth2), data: { turbo: false }, method: :post do |f| %>
+          <%= form_for '', url: user_google_oauth2_omniauth_authorize_path, data: { turbo: false }, method: :post do |f| %>
             <set-timezone data-input-id="state" data-params="true"></set-timezone>
             <%= hidden_field_tag :state, { redir: params[:redir].to_s }.compact_blank.to_query %>
             <%= f.button button_title(title: t('sign_in_with_google'), icon: svg_icon('brand_google', class: 'w-6 h-6')), class: 'white-button w-full mt-1' %>
           <% end %>
         <% end %>
         <% if User.omniauth_providers.include?(:microsoft_office365) %>
-          <%= form_for '', url: omniauth_authorize_path(resource_name, :microsoft_office365), data: { turbo: false }, method: :post do |f| %>
+          <%= form_for '', url: user_microsoft_office365_omniauth_authorize_path, data: { turbo: false }, method: :post do |f| %>
             <set-timezone data-input-id="state_microsoft" data-params="true"></set-timezone>
             <%= hidden_field_tag :state, { redir: params[:redir].to_s }.compact_blank.to_query, id: 'state_microsoft' %>
             <%= f.button button_title(title: t('sign_in_with_microsoft'), icon: svg_icon('brand_microsoft', class: 'w-6 h-6')), class: 'white-button w-full' %>

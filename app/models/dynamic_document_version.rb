@@ -4,12 +4,12 @@
 #
 # Table name: dynamic_document_versions
 #
-#  id                  :bigint           not null, primary key
+#  id                  :integer          not null, primary key
 #  areas               :text             not null
 #  sha1                :string           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  dynamic_document_id :bigint           not null
+#  dynamic_document_id :integer          not null
 #
 # Indexes
 #
@@ -17,7 +17,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (dynamic_document_id => dynamic_documents.id)
+#  dynamic_document_id  (dynamic_document_id => dynamic_documents.id)
 #
 class DynamicDocumentVersion < ApplicationRecord
   belongs_to :dynamic_document

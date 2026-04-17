@@ -4,14 +4,14 @@
 #
 # Table name: dynamic_documents
 #
-#  id          :bigint           not null, primary key
+#  id          :integer          not null, primary key
 #  body        :text             not null
 #  head        :text
-#  sha1        :text             not null
-#  uuid        :uuid             not null
+#  sha1        :string           not null
+#  uuid        :string           not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  template_id :bigint           not null
+#  template_id :integer          not null
 #
 # Indexes
 #
@@ -19,7 +19,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (template_id => templates.id)
+#  template_id  (template_id => templates.id)
 #
 class DynamicDocument < ApplicationRecord
   belongs_to :template
