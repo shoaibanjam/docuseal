@@ -22,11 +22,13 @@
 #  locked_at              :datetime
 #  otp_required_for_login :boolean          default(FALSE), not null
 #  otp_secret             :string
+#  provider               :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  role                   :string           not null
 #  sign_in_count          :integer          default(0), not null
+#  uid                    :string
 #  unconfirmed_email      :string
 #  unlock_token           :string
 #  uuid                   :string           not null
@@ -38,6 +40,7 @@
 #
 #  index_users_on_account_id            (account_id)
 #  index_users_on_email                 (email) UNIQUE
+#  index_users_on_provider_and_uid      (provider,uid) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #  index_users_on_uuid                  (uuid) UNIQUE
@@ -47,6 +50,8 @@
 #  account_id  (account_id => accounts.id)
 #
 class User < ApplicationRecord
+  OAUTH_PROVIDER_GOOGLE = 'google_oauth2'
+
   ROLES = [
     ADMIN_ROLE = 'admin'
   ].freeze
@@ -69,7 +74,15 @@ class User < ApplicationRecord
   has_many :encrypted_configs, dependent: :destroy, class_name: 'EncryptedUserConfig'
   has_many :email_messages, dependent: :destroy, foreign_key: :author_id, inverse_of: :author
 
-  devise :two_factor_authenticatable, :recoverable, :rememberable, :validatable, :trackable, :lockable
+  devise :two_factor_authenticatable,
+         :registerable,
+         :recoverable,
+         :rememberable,
+         :validatable,
+         :trackable,
+         :lockable,
+         :omniauthable,
+         omniauth_providers: [OAUTH_PROVIDER_GOOGLE.to_sym]
 
   attribute :role, :string, default: ADMIN_ROLE
   attribute :uuid, :string, default: -> { SecureRandom.uuid }
@@ -79,6 +92,40 @@ class User < ApplicationRecord
   scope :admins, -> { where(role: ADMIN_ROLE) }
 
   validates :email, format: { with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\z/ }
+  validates :uid, uniqueness: { scope: :provider }, allow_blank: true
+
+  def self.from_omniauth(auth)
+    provider = auth.provider.to_s
+    uid = auth.uid.to_s
+    email = auth.info.email.to_s.downcase
+
+    return User.new.tap { |user| user.errors.add(:email, :blank) } if email.blank?
+
+    user = find_by(provider:, uid:) || find_or_initialize_by(email:)
+    return user if user.persisted? && user.provider == provider && user.uid == uid
+
+    user.provider = provider
+    user.uid = uid
+    user.first_name ||= auth.info.first_name.presence || auth.info.name.to_s.split.first.presence
+    user.last_name ||= auth.info.last_name.presence || auth.info.name.to_s.split.drop(1).join(' ').presence
+    user.password = Devise.friendly_token.first(32) if user.encrypted_password.blank?
+
+    if user.new_record?
+      account = Account.new(name: registration_account_name(user.first_name, user.last_name, email))
+      user.account = account
+
+      ActiveRecord::Base.transaction do
+        account.save!
+        user.save!
+      end
+    else
+      user.save! if user.changed?
+    end
+
+    user
+  rescue ActiveRecord::RecordInvalid
+    user
+  end
 
   def access_token
     token_record = super || build_access_token.tap(&:save!)
@@ -125,5 +172,17 @@ class User < ApplicationRecord
     else
       email
     end
+  end
+
+  def self.registration_account_name(first_name, last_name, email)
+    full_name = [first_name, last_name].compact_blank.join(' ')
+    return "#{full_name}'s Workspace" if full_name.present?
+
+    email_prefix = email.to_s.downcase.split('@').first.to_s
+    sanitized_prefix = email_prefix.gsub(/[^a-z0-9]+/i, ' ').squish
+
+    return "#{sanitized_prefix.titleize}'s Workspace" if sanitized_prefix.present?
+
+    'Workspace'
   end
 end

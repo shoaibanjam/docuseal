@@ -4,14 +4,14 @@
 #
 # Table name: mcp_tokens
 #
-#  id           :bigint           not null, primary key
+#  id           :integer          not null, primary key
 #  archived_at  :datetime
 #  name         :string           not null
 #  sha256       :string           not null
 #  token_prefix :string           not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  user_id      :bigint           not null
+#  user_id      :integer          not null
 #
 # Indexes
 #
@@ -20,7 +20,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (user_id => users.id)
+#  user_id  (user_id => users.id)
 #
 class McpToken < ApplicationRecord
   TOKEN_LENGTH = 43

@@ -20,6 +20,8 @@ gem 'email_typo'
 gem 'faraday'
 gem 'faraday-follow_redirects'
 gem 'google-cloud-storage', require: false
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'
 gem 'hexapdf'
 gem 'image_processing'
 gem 'jwt', require: false

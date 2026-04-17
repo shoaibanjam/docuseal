@@ -334,6 +334,17 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
 
+  google_client_id = ENV.fetch('GOOGLE_CLIENT_ID', nil)
+  google_client_secret = ENV.fetch('GOOGLE_CLIENT_SECRET', nil)
+
+  if (google_client_id.present? && google_client_secret.present?) || Rails.env.test?
+    config.omniauth :google_oauth2,
+                    google_client_id.presence || 'test-google-client-id',
+                    google_client_secret.presence || 'test-google-client-secret',
+                    scope: 'userinfo.email,userinfo.profile',
+                    prompt: 'select_account'
+  end
+
   ActiveSupport.run_load_hooks(:devise_config, config)
 end
 # rubocop:enable Metrics/BlockLength
