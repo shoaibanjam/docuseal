@@ -30,6 +30,7 @@ yarn-debug.log*
 .yarn-integrity
 
 .env
+/docuseal.env
 .DS_Store
 
 /coverage

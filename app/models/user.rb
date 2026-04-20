@@ -39,6 +39,7 @@
 # Indexes
 #
 #  index_users_on_account_id            (account_id)
+#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_provider_and_uid      (provider,uid) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
@@ -76,6 +77,7 @@ class User < ApplicationRecord
 
   devise :two_factor_authenticatable,
          :registerable,
+         :confirmable,
          :recoverable,
          :rememberable,
          :validatable,
@@ -113,6 +115,7 @@ class User < ApplicationRecord
     if user.new_record?
       account = Account.new(name: registration_account_name(user.first_name, user.last_name, email))
       user.account = account
+      user.skip_confirmation!
 
       ActiveRecord::Base.transaction do
         account.save!

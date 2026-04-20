@@ -14,8 +14,13 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show'
   get 'manifest' => 'pwa#manifest'
 
-  devise_modules = %i[sessions passwords omniauth_callbacks]
-  devise_controllers = { sessions: 'sessions', passwords: 'passwords', omniauth_callbacks: 'omniauth_callbacks' }
+  devise_modules = %i[sessions passwords confirmations omniauth_callbacks]
+  devise_controllers = {
+    sessions: 'sessions',
+    passwords: 'passwords',
+    confirmations: 'confirmations',
+    omniauth_callbacks: 'omniauth_callbacks'
+  }
 
   unless Docuseal.multitenant?
     devise_modules << :registrations

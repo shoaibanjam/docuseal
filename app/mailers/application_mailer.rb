@@ -16,6 +16,7 @@ class ApplicationMailer < ActionMailer::Base
 
   after_action :set_message_metadata
   after_action :set_message_uuid
+  after_action :set_docuseal_account_smtp_header
 
   def default_url_options
     options = (Current.url_options.presence || Docuseal.default_url_options).dup
@@ -47,6 +48,12 @@ class ApplicationMailer < ActionMailer::Base
 
   def set_message_uuid
     message['X-Message-Uuid'] = SecureRandom.uuid
+  end
+
+  def set_docuseal_account_smtp_header
+    return if @current_account.blank?
+
+    message[ActionMailerConfigsInterceptor::ACCOUNT_SMTP_HEADER] = @current_account.id.to_s
   end
 
   def assign_message_metadata(tag, record)
