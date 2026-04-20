@@ -28,6 +28,8 @@ class SetupController < ApplicationController
 
     return render :index, status: :unprocessable_content unless @account.valid?
 
+    @user.skip_confirmation!
+
     if @user.save
       encrypted_configs = [
         { key: EncryptedConfig::APP_URL_KEY, value: encrypted_config_params[:value] },

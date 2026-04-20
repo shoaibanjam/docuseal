@@ -18,6 +18,8 @@ module Devise
 
         initialize_from_record(record)
 
+        @current_account = record.account if record.respond_to?(:account)
+
         I18n.with_locale(record.account.locale) do
           mail(headers_for(action, opts), &)
         end
@@ -169,8 +171,9 @@ Devise.setup do |config|
   # You can also set it to nil, which will allow the user to access the website
   # without confirming their account.
   # Default is 0.days, meaning the user cannot access the website without
-  # confirming their account.
-  config.allow_unconfirmed_access_for = nil
+  # confirming their account. (nil would incorrectly treat the grace period as
+  # always valid in Devise’s confirmable implementation.)
+  config.allow_unconfirmed_access_for = 0.days
 
   # A period that the user is allowed to confirm their account before their
   # token becomes invalid. For example, if set to 3.days, the user can confirm

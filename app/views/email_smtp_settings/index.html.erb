@@ -10,7 +10,7 @@
       </p>
     </header>
 
-    <% value = @encrypted_config.value || {} %>
+    <% value = @email_smtp_form_value %>
     <%= form_for @encrypted_config, url: settings_email_index_path, method: :post, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
       <%= f.fields_for :value do |ff| %>
         <div class="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start">

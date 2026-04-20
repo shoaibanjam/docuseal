@@ -1,0 +1,9 @@
+<p><%= @resource.first_name.present? ? t('hello_name', name: @resource.first_name) : t('hi_there') %>,</p>
+<p><%= t('please_confirm_your_email_address_using_the_link_below_') %></p>
+<p><%= link_to t('confirm_email'), user_confirmation_url(confirmation_token: @token) %></p>
+<p><%= t('if_you_didnt_request_this_you_can_ignore_this_email') %></p>
+<p>
+  <%= t('thanks') %>,<br>
+  <%= Docuseal.product_name %>
+</p>
+<% content_for(:remove_attribution, true) %>

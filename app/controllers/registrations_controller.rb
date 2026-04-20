@@ -23,9 +23,16 @@ class RegistrationsController < Devise::RegistrationsController
 
     if resource.persisted?
       yield resource if block_given?
-      sign_up(resource_name, resource)
 
-      redirect_to after_sign_up_path_for(resource)
+      if resource.active_for_authentication?
+        set_flash_message! :notice, :signed_up
+        sign_up(resource_name, resource)
+        redirect_to after_sign_up_path_for(resource), status: :see_other
+      else
+        set_flash_message! :notice, :signed_up_but_unconfirmed, email: resource.email
+        expire_data_after_sign_in!
+        redirect_to after_inactive_sign_up_path_for(resource), status: :see_other
+      end
     end
   rescue ActiveRecord::RecordInvalid
     clean_up_passwords(resource)
@@ -35,8 +42,14 @@ class RegistrationsController < Devise::RegistrationsController
 
   protected
 
-  def after_sign_up_path_for(_resource)
-    root_path
+  def after_sign_up_path_for(resource)
+    return root_path if resource.active_for_authentication?
+
+    after_inactive_sign_up_path_for(resource)
+  end
+
+  def after_inactive_sign_up_path_for(_resource)
+    new_user_session_path
   end
 
   private

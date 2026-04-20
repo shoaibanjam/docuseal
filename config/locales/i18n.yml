@@ -241,6 +241,7 @@ en: &en
   save: Save
   saving: Saving
   changes_have_been_saved: Changes have been saved.
+  email_smtp_settings_could_not_be_decrypted: Stored SMTP settings could not be decrypted. They were likely saved with different encryption keys than this server uses (for example ENCRYPTION_SECRET or SECRET_KEY_BASE). Re-enter your SMTP details and save, or align your environment secrets with the database that produced this row.
   unlock_with_docuseal_pro: Unlock with Trustseal Pro
   use_your_own_certificates_to_sign_and_verify_pdf_files: Use your own certificates to sign and verify PDF files.
   upload_certificate: Upload Certificate
@@ -923,6 +924,9 @@ en: &en
       confirmed: Your email address has been successfully confirmed.
     failure:
       unconfirmed: You have to confirm your email address before continuing.
+    registrations:
+      signed_up: Welcome! You have signed up successfully.
+      signed_up_but_unconfirmed: A message with a confirmation link has been sent to %{email}. Please follow the link to activate your account.
     mailer:
       confirmation_instructions:
         subject: Confirm your email address

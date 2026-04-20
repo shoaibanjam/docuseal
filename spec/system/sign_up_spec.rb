@@ -5,29 +5,50 @@ RSpec.describe 'Sign Up' do
   let!(:existing_user) { create(:user, account:, email: 'admin@example.com', password: 'strong_password') }
 
   before do
+    ActionMailer::Base.deliveries.clear
     visit new_user_registration_path
   end
 
-  it 'creates a new isolated account for the new user' do
+  it 'creates a new isolated account and requires email confirmation before sign in' do
     fill_in 'First name', with: 'Jane'
     fill_in 'Last name', with: 'Doe'
     fill_in 'Email', with: 'jane.doe@example.com'
     fill_in 'Password', with: 'strong_password'
     fill_in 'Confirm new password', with: 'strong_password'
-    within("form[action='#{user_registration_path}']") do
-      click_button 'Sign up'
-    end
+    expect do
+      within("form[action='#{user_registration_path}']") do
+        click_button 'Sign up'
+      end
+    end.to change(ActionMailer::Base.deliveries, :size).by(1)
 
-    expect(page).to have_content('Document Templates')
+    expect(page).to have_current_path(new_user_session_path)
+    expect(page).to have_content('confirmation link')
 
     user = User.find_by(email: 'jane.doe@example.com')
 
     expect(user).to be_present
+    expect(user).not_to be_confirmed
     expect(Account.count).to eq(2)
     expect(user.account_id).not_to eq(account.id)
     expect(user.account.name).to eq("Jane Doe's Workspace")
     expect(user.first_name).to eq('Jane')
     expect(user.last_name).to eq('Doe')
+
+    confirmation_email = ActionMailer::Base.deliveries.last
+    confirmation_path = extract_confirmation_path(confirmation_email)
+    expect(confirmation_path).to be_present
+
+    visit confirmation_path
+
+    expect(user.reload).to be_confirmed
+    expect(page).to have_content('successfully confirmed')
+
+    fill_in 'Email', with: 'jane.doe@example.com'
+    fill_in 'Password', with: 'strong_password'
+    click_button 'Sign In'
+
+    expect(page).to have_content('Signed in successfully')
+    expect(page).to have_content('Document Templates')
   end
 
   it 'creates a new user account with google oauth' do
@@ -49,6 +70,7 @@ RSpec.describe 'Sign Up' do
 
     user = User.find_by(email: 'google.user@example.com')
     expect(user).to be_present
+    expect(user).to be_confirmed
     expect(user.provider).to eq('google_oauth2')
     expect(user.uid).to eq('google-user-2')
     expect(Account.count).to eq(2)
@@ -56,5 +78,13 @@ RSpec.describe 'Sign Up' do
   ensure
     OmniAuth.config.mock_auth[:google_oauth2] = nil
     OmniAuth.config.test_mode = false
+  end
+
+  def extract_confirmation_path(email)
+    doc = Nokogiri::HTML(email.body.encoded)
+    href = doc.at_css('a')&.[]('href')
+    return if href.blank?
+
+    URI.parse(CGI.unescapeHTML(href)).request_uri
   end
 end
