@@ -21,6 +21,26 @@
       <%= f.button button_title(title: t(:sign_in), disabled_with: t(:signing_in)), class: 'base-button w-full' %>
     </div>
     <% end %>
+    <% if @show_confirmation_resend_option %>
+      <div class="mt-4">
+        <%= form_with url: user_confirmation_path, method: :post, class: 'form-control' do %>
+          <% if @confirmation_resend_email.present? %>
+            <%= hidden_field_tag 'user[email]', @confirmation_resend_email %>
+          <% else %>
+            <div class="form-control mb-2">
+              <%= label_tag 'resend_confirmation_email_input', t(:email), class: 'label' %>
+              <%= email_field_tag 'user[email]', nil, id: 'resend_confirmation_email_input', required: true, class: 'base-input' %>
+            </div>
+          <% end %>
+          <%= hidden_field_tag :redir, params[:redir] if params[:redir].present? %>
+          <%= hidden_field_tag :lang, params[:lang] if params[:lang].present? %>
+          <%= button_tag t('resend_confirmation_email', default: 'Resend confirmation email'), class: 'white-button w-full', type: :submit %>
+        <% end %>
+        <p class="text-xs text-primary-content/70 mt-2">
+          <%= t('resend_confirmation_limit_hint', default: 'You can resend up to 2 times per 10 minutes.') %>
+        </p>
+      </div>
+    <% end %>
     <% if devise_mapping.omniauthable? %>
       <div class="pt-4 mt-2 border-t border-base-300/70 space-y-4">
         <% if User.omniauth_providers.include?(:google_oauth2) %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_18_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
   create_table "access_tokens", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "sha256", null: false
@@ -442,6 +442,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_18_120000) do
   create_table "users", force: :cascade do |t|
     t.integer "account_id", null: false
     t.datetime "archived_at"
+    t.integer "confirmation_resend_count", default: 0, null: false
+    t.datetime "confirmation_resend_window_started_at"
     t.datetime "confirmation_sent_at"
     t.string "confirmation_token"
     t.datetime "confirmed_at"

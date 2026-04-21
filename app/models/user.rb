@@ -4,37 +4,39 @@
 #
 # Table name: users
 #
-#  id                     :integer          not null, primary key
-#  archived_at            :datetime
-#  confirmation_sent_at   :datetime
-#  confirmation_token     :string
-#  confirmed_at           :datetime
-#  consumed_timestep      :integer
-#  current_sign_in_at     :datetime
-#  current_sign_in_ip     :string
-#  email                  :string           not null
-#  encrypted_password     :string           not null
-#  failed_attempts        :integer          default(0), not null
-#  first_name             :string
-#  last_name              :string
-#  last_sign_in_at        :datetime
-#  last_sign_in_ip        :string
-#  locked_at              :datetime
-#  otp_required_for_login :boolean          default(FALSE), not null
-#  otp_secret             :string
-#  provider               :string
-#  remember_created_at    :datetime
-#  reset_password_sent_at :datetime
-#  reset_password_token   :string
-#  role                   :string           not null
-#  sign_in_count          :integer          default(0), not null
-#  uid                    :string
-#  unconfirmed_email      :string
-#  unlock_token           :string
-#  uuid                   :string           not null
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  account_id             :integer          not null
+#  id                                    :integer          not null, primary key
+#  archived_at                           :datetime
+#  confirmation_resend_count             :integer          default(0), not null
+#  confirmation_resend_window_started_at :datetime
+#  confirmation_sent_at                  :datetime
+#  confirmation_token                    :string
+#  confirmed_at                          :datetime
+#  consumed_timestep                     :integer
+#  current_sign_in_at                    :datetime
+#  current_sign_in_ip                    :string
+#  email                                 :string           not null
+#  encrypted_password                    :string           not null
+#  failed_attempts                       :integer          default(0), not null
+#  first_name                            :string
+#  last_name                             :string
+#  last_sign_in_at                       :datetime
+#  last_sign_in_ip                       :string
+#  locked_at                             :datetime
+#  otp_required_for_login                :boolean          default(FALSE), not null
+#  otp_secret                            :string
+#  provider                              :string
+#  remember_created_at                   :datetime
+#  reset_password_sent_at                :datetime
+#  reset_password_token                  :string
+#  role                                  :string           not null
+#  sign_in_count                         :integer          default(0), not null
+#  uid                                   :string
+#  unconfirmed_email                     :string
+#  unlock_token                          :string
+#  uuid                                  :string           not null
+#  created_at                            :datetime         not null
+#  updated_at                            :datetime         not null
+#  account_id                            :integer          not null
 #
 # Indexes
 #
@@ -56,6 +58,8 @@ class User < ApplicationRecord
   ROLES = [
     ADMIN_ROLE = 'admin'
   ].freeze
+  CONFIRMATION_RESEND_LIMIT = 2
+  CONFIRMATION_RESEND_WINDOW = 10.minutes
 
   EMAIL_REGEXP = /[^@;,<>\s]+@[^@;,<>\s]+/
 
@@ -177,6 +181,67 @@ class User < ApplicationRecord
     end
   end
 
+  # Devise confirmable keeps confirmation period helpers protected.
+  # Expose an explicit public predicate for controller/service checks.
+  def confirmation_link_expired?
+    return true if confirmation_sent_at.blank?
+
+    confirmation_sent_at <= CONFIRMATION_RESEND_WINDOW.ago
+  end
+
+  def confirmation_resend_rate_limited?(now = Time.current)
+    return false if confirmation_resend_window_started_at.blank?
+    return false if confirmation_resend_window_started_at <= now - CONFIRMATION_RESEND_WINDOW
+
+    confirmation_resend_count >= CONFIRMATION_RESEND_LIMIT
+  end
+
+  def register_confirmation_resend_attempt!(now = Time.current)
+    with_lock do
+      reset_confirmation_resend_window_if_needed!(now)
+
+      if confirmation_resend_count >= CONFIRMATION_RESEND_LIMIT
+        return {
+          allowed: false,
+          remaining_count: 0
+        }
+      end
+
+      self.confirmation_resend_count += 1
+      save!(validate: false)
+
+      {
+        allowed: true,
+        remaining_count: CONFIRMATION_RESEND_LIMIT - confirmation_resend_count
+      }
+    end
+  end
+
+  def reset_confirmation_resend_window!(now = Time.current)
+    update_columns(
+      confirmation_resend_count: 0,
+      confirmation_resend_window_started_at: now
+    )
+  end
+
+  def resend_confirmation_with_limit!
+    if confirmation_link_expired?
+      send_confirmation_instructions
+      reset_confirmation_resend_window!
+      return { status: :sent_expired, remaining_count: CONFIRMATION_RESEND_LIMIT }
+    end
+
+    resend_result = register_confirmation_resend_attempt!
+    return { status: :limited, remaining_count: 0 } unless resend_result[:allowed]
+
+    send_confirmation_instructions
+
+    {
+      status: :sent,
+      remaining_count: resend_result[:remaining_count]
+    }
+  end
+
   def self.registration_account_name(first_name, last_name, email)
     full_name = [first_name, last_name].compact_blank.join(' ')
     return "#{full_name}'s Workspace" if full_name.present?
@@ -187,5 +252,15 @@ class User < ApplicationRecord
     return "#{sanitized_prefix.titleize}'s Workspace" if sanitized_prefix.present?
 
     'Workspace'
+  end
+
+  private
+
+  def reset_confirmation_resend_window_if_needed!(now)
+    return if confirmation_resend_window_started_at.present? &&
+              confirmation_resend_window_started_at > now - CONFIRMATION_RESEND_WINDOW
+
+    self.confirmation_resend_count = 0
+    self.confirmation_resend_window_started_at = now
   end
 end

@@ -82,12 +82,19 @@ if ENV['RAILS_ENV'] == 'production'
   end
 end
 
-# In non-production environments (e.g. development), also load `docuseal.env`
-# so that SMTP and other settings defined there are available via ENV.
+# In non-production environments (e.g. development), load `.env` first and then
+# `docuseal.env` so local overrides are available via ENV.
 if ENV['RAILS_ENV'] != 'production'
-  dotenv_path = "#{ENV.fetch('WORKDIR', '.')}/docuseal.env"
+  app_root = ENV.fetch('WORKDIR', File.expand_path('..', __dir__))
 
-  if File.exist?(dotenv_path)
+  env_paths = [
+    "#{app_root}/.env",
+    "#{app_root}/docuseal.env"
+  ].uniq
+
+  env_paths.each do |dotenv_path|
+    next unless File.exist?(dotenv_path)
+
     File.foreach(dotenv_path) do |line|
       line = line.strip
       next if line.empty? || line.start_with?('#')
