@@ -5,8 +5,22 @@ Devise.otp_allowed_drift = 60.seconds
 class FailureApp < Devise::FailureApp
   def respond
     Rollbar.warning('Invalid password') if defined?(Rollbar) && warden_message == :invalid
+    store_unconfirmed_resend_context! if warden_message == :unconfirmed
 
     super
+  end
+
+  private
+
+  def store_unconfirmed_resend_context!
+    rack_session = request.env['rack.session']
+    return unless rack_session.respond_to?(:[]=)
+
+    scope_key = scope.to_s
+    attempted_email = params.dig(scope_key, 'email').to_s.downcase.presence
+
+    rack_session['show_confirmation_resend'] = true
+    rack_session['pending_confirmation_email'] = attempted_email if attempted_email.present?
   end
 end
 
@@ -181,7 +195,7 @@ Devise.setup do |config|
   # their account can't be confirmed with the token any more.
   # Default is nil, meaning there is no restriction on how long a user can take
   # before confirming their account.
-  # config.confirm_within = 3.days
+  config.confirm_within = 10.minutes
 
   # If true, requires any email changes to be confirmed (exactly the same way as
   # initial account confirmation) to be applied. Requires additional unconfirmed_email
