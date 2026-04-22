@@ -495,7 +495,30 @@
 
 [data-theme='docuseal-light'] .main-navbar .navbar-main-link--active {
   background: rgba(4, 190, 153, 0.16) !important;
-  color: #02725c !important;
+  color: #0f3b30 !important;
+}
+
+[data-theme='docuseal-light'] .main-navbar .navbar-main-link--active:hover,
+[data-theme='docuseal-light'] .main-navbar .navbar-main-link--active:focus-visible,
+[data-theme='docuseal-light'] .main-navbar .navbar-main-link--active.text-secondary {
+  background: rgba(4, 190, 153, 0.22) !important;
+  color: #0b3027 !important;
+}
+
+[data-theme='docuseal-light'] .tooltip {
+  --tooltip-color: #ffffff;
+}
+
+[data-theme='docuseal-light'] .tooltip:before {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border: 1px solid rgba(18, 35, 60, 0.18) !important;
+  box-shadow: 0 10px 24px rgba(10, 25, 44, 0.14) !important;
+  text-shadow: none !important;
+}
+
+[data-theme='docuseal-light'] .tooltip-left:after {
+  border-left-color: #ffffff !important;
 }
 
 [data-theme='docuseal-light'] .ds-page,
@@ -631,6 +654,76 @@
   box-shadow: 0 0 0 1px rgba(4, 190, 153, 0.32), 0 16px 30px rgba(10, 25, 44, 0.12) !important;
 }
 
+[data-theme='docuseal-light'] .template-action-btn {
+  background: #f3f8fe !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  box-shadow: 0 6px 14px rgba(10, 25, 44, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .template-action-btn:hover,
+[data-theme='docuseal-light'] .template-action-btn:focus-visible {
+  background: #e9f5f2 !important;
+  color: #02725c !important;
+  border-color: rgba(4, 190, 153, 0.62) !important;
+  box-shadow: 0 0 0 3px rgba(4, 190, 153, 0.18), 0 10px 20px rgba(10, 25, 44, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .template-action-btn .disabled {
+  color: #02725c !important;
+}
+
+[data-theme='docuseal-light'] .template-action-icon,
+[data-theme='docuseal-light'] .template-action-icon *,
+[data-theme='docuseal-light'] .template-action-btn svg,
+[data-theme='docuseal-light'] .template-action-btn svg * {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .template-action-icon *[stroke='none'],
+[data-theme='docuseal-light'] .template-action-btn svg *[stroke='none'] {
+  stroke: none !important;
+}
+
+.template-folder-name-input {
+  border: 1px solid rgba(197, 198, 205, 0.22);
+  background: #051427;
+  color: var(--stitch-on-surface);
+}
+
+.template-folder-name-input::placeholder {
+  color: color-mix(in srgb, var(--stitch-on-surface-variant) 76%, transparent);
+}
+
+.template-folder-name-input:hover:not(:focus) {
+  border-color: rgba(4, 190, 153, 0.45);
+}
+
+.template-folder-name-input:focus {
+  border-color: rgba(4, 190, 153, 0.8);
+  box-shadow: 0 0 0 2px rgba(4, 190, 153, 0.18);
+}
+
+[data-theme='docuseal-light'] .template-folder-name-input {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+}
+
+[data-theme='docuseal-light'] .template-folder-name-input::placeholder {
+  color: rgba(18, 35, 60, 0.56) !important;
+}
+
+[data-theme='docuseal-light'] .template-folder-name-input:hover:not(:focus) {
+  border-color: rgba(4, 190, 153, 0.48) !important;
+}
+
+[data-theme='docuseal-light'] .template-folder-name-input:focus {
+  border-color: rgba(4, 190, 153, 0.72) !important;
+  box-shadow: 0 0 0 2px rgba(4, 190, 153, 0.16) !important;
+}
+
 [data-theme='docuseal-light'] .templates-dropzone {
   background: #f8fbff !important;
   border-color: rgba(18, 35, 60, 0.18) !important;
@@ -662,6 +755,22 @@
   border-color: rgba(4, 190, 153, 0.65) !important;
 }
 
+[data-theme='docuseal-light'] .ds-submissions-tab.border-secondary,
+[data-theme='docuseal-light'] .ds-submissions-tab.bg-secondary\/10,
+[data-theme='docuseal-light'] .ds-submissions-tab.border-secondary.bg-secondary\/10 {
+  background: rgba(4, 190, 153, 0.15) !important;
+  border-color: rgba(4, 190, 153, 0.72) !important;
+  color: #026854 !important;
+  box-shadow: inset 0 0 0 1px rgba(4, 190, 153, 0.15);
+}
+
+[data-theme='docuseal-light'] .ds-submissions-tab.border-secondary:hover,
+[data-theme='docuseal-light'] .ds-submissions-tab.bg-secondary\/10:hover {
+  background: rgba(4, 190, 153, 0.2) !important;
+  border-color: rgba(4, 190, 153, 0.82) !important;
+  color: #025746 !important;
+}
+
 [data-theme='docuseal-light'] .ds-submissions-list-shell {
   background: #f4f8fd !important;
   border-color: rgba(18, 35, 60, 0.12) !important;
@@ -678,9 +787,47 @@
 
 [data-theme='docuseal-light'] .ds-submission-row .btn-neutral,
 [data-theme='docuseal-light'] .ds-submission-row .btn.btn-neutral {
-  background: #0a192c !important;
-  border-color: #0a192c !important;
-  color: #eaf2ff !important;
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  color: #12233c !important;
+  box-shadow: 0 4px 10px rgba(10, 25, 44, 0.08) !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-row .btn-neutral:hover,
+[data-theme='docuseal-light'] .ds-submission-row .btn-neutral:focus-visible,
+[data-theme='docuseal-light'] .ds-submission-row .btn.btn-neutral:hover,
+[data-theme='docuseal-light'] .ds-submission-row .btn.btn-neutral:focus-visible {
+  background: #eef6ff !important;
+  border-color: rgba(4, 190, 153, 0.6) !important;
+  color: #02725c !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-row .btn.btn-primary {
+  background: #04be99 !important;
+  border-color: #04be99 !important;
+  color: #00382b !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-row .btn.btn-primary:hover,
+[data-theme='docuseal-light'] .ds-submission-row .btn.btn-primary:focus-visible {
+  background: #03ab89 !important;
+  border-color: #03ab89 !important;
+  color: #002f24 !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-row .btn.text-white,
+[data-theme='docuseal-light'] .ds-submission-row .btn .text-white {
+  color: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-row .btn svg,
+[data-theme='docuseal-light'] .ds-submission-row .btn svg * {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-row .btn svg *[stroke='none'] {
+  stroke: none !important;
 }
 
 [data-theme='docuseal-light'] .ds-submission-row .badge-neutral.badge-outline,
