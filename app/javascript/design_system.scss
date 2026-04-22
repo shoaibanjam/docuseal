@@ -585,7 +585,7 @@
 [data-theme='docuseal-light'] .settings-card .toggle {
   background: #dde6f0 !important;
   border-color: rgba(18, 35, 60, 0.2) !important;
-  --tglbg: #12233c;
+  --tglbg: #ffffff;
 }
 
 [data-theme='docuseal-light'] .settings-card .toggle:checked,
@@ -593,6 +593,42 @@
   background: #04be99 !important;
   border-color: #04be99 !important;
   --tglbg: #ffffff;
+}
+
+[data-theme='docuseal-light'] .toggle:disabled,
+[data-theme='docuseal-light'] .toggle[disabled],
+[data-theme='docuseal-light'] .settings-card .toggle:disabled,
+[data-theme='docuseal-light'] .settings-card .toggle[disabled] {
+  opacity: 1 !important;
+  background: #edf2f7 !important;
+  border-color: rgba(18, 35, 60, 0.18) !important;
+  --tglbg: #464f5a;
+}
+
+[data-theme='docuseal-light'] .toggle:checked:disabled,
+[data-theme='docuseal-light'] .toggle[aria-checked='true'][disabled],
+[data-theme='docuseal-light'] .settings-card .toggle:checked:disabled,
+[data-theme='docuseal-light'] .settings-card .toggle[aria-checked='true'][disabled] {
+  opacity: 1 !important;
+  background: #bdeee1 !important;
+  border-color: #8ad8c4 !important;
+  --tglbg: #ffffff;
+}
+
+/* DaisyUI toggle handle is drawn via pseudo-element/box-shadow.
+   Force disabled knob tint explicitly so it changes in light theme. */
+[data-theme='docuseal-light'] .toggle:disabled::before,
+[data-theme='docuseal-light'] .toggle[disabled]::before,
+[data-theme='docuseal-light'] .settings-card .toggle:disabled::before,
+[data-theme='docuseal-light'] .settings-card .toggle[disabled]::before {
+  background-color: #4d555e !important;
+}
+
+[data-theme='docuseal-light'] .toggle:checked:disabled::before,
+[data-theme='docuseal-light'] .toggle[aria-checked='true'][disabled]::before,
+[data-theme='docuseal-light'] .settings-card .toggle:checked:disabled::before,
+[data-theme='docuseal-light'] .settings-card .toggle[aria-checked='true'][disabled]::before {
+  background-color: #ffffff !important;
 }
 
 [data-theme='docuseal-light'] .navbar-account-menu,
