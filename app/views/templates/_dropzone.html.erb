@@ -2,7 +2,7 @@
   <input type="hidden" name="form_id" value="<%= form_id %>">
   <button type="submit" class="hidden"></button>
   <file-dropzone data-submit-on-upload="true" class="w-full">
-    <label for="file_dropzone_input" class="group w-full block h-52 relative rounded-xl border-2 border-dashed border-white/20 bg-[#0a1b30] hover:bg-[#10243c] hover:border-secondary hover:shadow-[0_0_0_1px_rgba(4,190,153,0.3),0_14px_34px_rgba(3,14,32,0.45)] transition-all duration-200" data-target="file-dropzone.area">
+    <label for="file_dropzone_input" class="ds-templates-upload-zone group w-full block h-52 relative rounded-xl border-2 border-dashed border-white/20 bg-[#0a1b30] hover:bg-[#10243c] hover:border-secondary hover:shadow-[0_0_0_1px_rgba(4,190,153,0.3),0_14px_34px_rgba(3,14,32,0.45)] transition-all duration-200" data-target="file-dropzone.area">
       <div class="absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center p-2 pointer-events-none">
         <div class="flex flex-col items-center text-center">
           <span data-target="file-dropzone.icon" class="flex flex-col items-center <%= 'mb-5' if Docuseal.multitenant? %>">

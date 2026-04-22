@@ -2,6 +2,7 @@
 
 module ActionMailerConfigsInterceptor
   ACCOUNT_SMTP_HEADER = 'X-Docuseal-Account-Smtp'
+  AUTH_EMAIL_TAGS = %w[reset_password_instructions confirmation_instructions].freeze
 
   OPEN_TIMEOUT = ENV.fetch('SMTP_OPEN_TIMEOUT', '15').to_i
   READ_TIMEOUT = ENV.fetch('SMTP_READ_TIMEOUT', '25').to_i
@@ -13,6 +14,13 @@ module ActionMailerConfigsInterceptor
 
     if Docuseal.demo?
       message.delivery_method(:test)
+
+      return message
+    end
+
+    if auth_email?(message)
+      apply_auth_sender!(message)
+      remove_account_smtp_header(message)
 
       return message
     end
@@ -63,6 +71,20 @@ module ActionMailerConfigsInterceptor
     message.header[ACCOUNT_SMTP_HEADER] = nil
   rescue StandardError
     message[ACCOUNT_SMTP_HEADER] = nil
+  end
+
+  def auth_email?(message)
+    metadata = message.instance_variable_get(:@message_metadata)
+    tag = metadata.is_a?(Hash) ? (metadata['tag'] || metadata[:tag]).to_s : ''
+
+    AUTH_EMAIL_TAGS.include?(tag)
+  end
+
+  def apply_auth_sender!(message)
+    from = ENV['AUTH_MAILER_FROM'].to_s.strip.presence || ENV['SMTP_USERNAME'].to_s.strip.presence
+    return if from.blank? || !from.match?(User::FULL_EMAIL_REGEXP)
+
+    message.from = from
   end
 
   def apply_encrypted_smtp!(message, email_configs)

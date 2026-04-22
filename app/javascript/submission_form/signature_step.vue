@@ -192,7 +192,7 @@
         </div>
         <div class="flex items-center justify-center w-full h-full p-4">
           <div
-            class="bg-[#0d1c2f] p-4 rounded-xl h-full border border-white/10"
+            class="signature-qr-panel bg-white p-4 rounded-xl h-full border border-neutral-300"
           >
             <canvas
               ref="qrCanvas"
@@ -585,7 +585,8 @@ export default {
               text: `${document.location.origin}/p/${this.submitterSlug}?f=${this.field.uuid.split('-')[0]}`,
               radius: 0.0,
               ecLevel: 'H',
-              background: null,
+              background: '#ffffff',
+              fill: '#111827',
               size: 132
             }, this.$refs.qrCanvas)
           }

@@ -34,22 +34,22 @@
 
   <div class="overflow-x-auto mt-6 mb-7 md:mt-8 md:mb-10">
     <div class="flex flex-nowrap gap-4 min-w-[900px]">
-      <div class="relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
+      <div class="ds-submissions-stat-card relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
         <span class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></span>
         <div class="text-xs uppercase tracking-wider text-primary-content/60">Total Active</div>
         <div class="text-3xl font-bold mt-1"><%= number_with_delimiter(@stats_total) %></div>
       </div>
-      <div class="relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
+      <div class="ds-submissions-stat-card relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
         <span class="absolute left-0 top-0 bottom-0 w-1 bg-[#35d0af]"></span>
         <div class="text-xs uppercase tracking-wider text-primary-content/60"><%= t('completed') %></div>
         <div class="text-3xl font-bold mt-1"><%= number_with_delimiter(@stats_completed) %></div>
       </div>
-      <div class="relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
+      <div class="ds-submissions-stat-card relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
         <span class="absolute left-0 top-0 bottom-0 w-1 bg-[#f3b565]"></span>
         <div class="text-xs uppercase tracking-wider text-primary-content/60"><%= t('awaiting') %></div>
         <div class="text-3xl font-bold mt-1"><%= number_with_delimiter(@stats_awaiting) %></div>
       </div>
-      <div class="relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
+      <div class="ds-submissions-stat-card relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
         <span class="absolute left-0 top-0 bottom-0 w-1 bg-[#60708a]"></span>
         <div class="text-xs uppercase tracking-wider text-primary-content/60">Avg. Time</div>
         <div class="text-3xl font-bold mt-1"><%= @stats_avg_time %></div>
@@ -68,19 +68,19 @@
   <% if is_show_tabs %>
     <div class="flex items-center flex-col md:flex-row md:flex-wrap gap-2 mt-4 md:mt-6">
       <div class="flex items-center md:items-end flex-col md:flex-row gap-2 w-full md:w-fit">
-        <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="<%= params[:status].blank? ? 'border-secondary bg-secondary/10' : 'border-white/10' %> flex h-10 px-3 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-44 hover:border-secondary/70 bg-[#0d1c2f]">
+        <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="ds-submissions-tab <%= params[:status].blank? ? 'border-secondary bg-secondary/10' : 'border-white/10' %> flex h-10 px-3 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-44 hover:border-secondary/70 bg-[#0d1c2f]">
           <div class="flex items-center space-x-1">
             <%= svg_icon('list', class: 'w-5 h-5') %>
             <span class="font-normal"><%= t('all') %></span>
           </div>
         </a>
-        <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="<%= params[:status] == 'pending' ? 'border-secondary bg-secondary/10' : 'border-white/10' %> flex h-10 px-3 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-44 hover:border-secondary/70 bg-[#0d1c2f]">
+        <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="ds-submissions-tab <%= params[:status] == 'pending' ? 'border-secondary bg-secondary/10' : 'border-white/10' %> flex h-10 px-3 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-44 hover:border-secondary/70 bg-[#0d1c2f]">
           <div class="flex items-center space-x-1">
             <%= svg_icon('clock', class: 'w-5 h-5') %>
             <span class="font-normal"><%= t('pending') %></span>
           </div>
         </a>
-        <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="<%= params[:status] == 'completed' ? 'border-secondary bg-secondary/10' : 'border-white/10' %> flex h-10 px-3 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-44 hover:border-secondary/70 bg-[#0d1c2f]">
+        <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="ds-submissions-tab <%= params[:status] == 'completed' ? 'border-secondary bg-secondary/10' : 'border-white/10' %> flex h-10 px-3 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-44 hover:border-secondary/70 bg-[#0d1c2f]">
           <div class="flex items-center space-x-1">
             <%= svg_icon('circle_check', class: 'w-5 h-5') %>
             <span class="font-normal"><%= t('completed') %></span>
@@ -96,7 +96,7 @@
   <% end %>
 
   <% if @pagy.count.nil? || @pagy.count > 0 %>
-    <div class="bg-[#08192d] border border-white/10 rounded-2xl p-3 md:p-4">
+    <div class="ds-submissions-list-shell bg-[#08192d] border border-white/10 rounded-2xl p-3 md:p-4">
       <div class="hidden md:flex items-center px-4 pb-2 text-[11px] uppercase tracking-wider text-primary-content/50">
         <div class="w-52 px-1">Submission Details</div>
         <div class="flex-1 flex items-center justify-between px-6">

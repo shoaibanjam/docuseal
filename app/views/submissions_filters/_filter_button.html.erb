@@ -1,6 +1,6 @@
 <% query_params = params.permit(:q).merge(filter_params) %>
 <div class="dropdown dropdown-end">
-  <label tabindex="0" class="cursor-pointer flex h-10 px-3 py-1 space-x-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl border-white/10 hover:border-secondary/70 bg-[#0d1c2f]">
+  <label tabindex="0" class="ds-submissions-filter-trigger cursor-pointer flex h-10 px-3 py-1 space-x-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl border-white/10 hover:border-secondary/70 bg-[#0d1c2f]">
     <%= svg_icon('filter', class: 'w-5 h-5 flex-shrink-0 stroke-2') %>
     <span class="<%= filter_params.then { |f| f[:status].in?(%w[pending completed]) ? f.except(:status) : f }.present? ? 'md:hidden' : '' %>">
       Filter

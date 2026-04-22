@@ -922,6 +922,8 @@ en: &en
   devise:
     confirmations:
       confirmed: Your email address has been successfully confirmed.
+      already_confirmed: Your email address is already confirmed. You can sign in.
+      send_instructions: If that email address is registered, you will receive instructions shortly. Otherwise, check the address and try again.
     failure:
       unconfirmed: You have to confirm your email address before continuing.
     registrations:
@@ -1952,6 +1954,8 @@ es: &es
   devise:
     confirmations:
       confirmed: Tu dirección de correo electrónico ha sido confirmada correctamente.
+      already_confirmed: Tu dirección de correo electrónico ya está confirmada. Puedes iniciar sesión.
+      send_instructions: Si esa dirección está registrada, recibirás instrucciones en breve. Si no, comprueba el correo e inténtalo de nuevo.
     failure:
       unconfirmed: Debes confirmar tu dirección de correo electrónico antes de continuar.
     mailer:
@@ -2980,6 +2984,8 @@ it: &it
   devise:
     confirmations:
       confirmed: Il tuo indirizzo email è stato confermato con successo.
+      already_confirmed: Il tuo indirizzo email è già confermato. Puoi accedere.
+      send_instructions: Se quell'indirizzo è registrato, riceverai a breve le istruzioni. Altrimenti controlla l'indirizzo e riprova.
     failure:
       unconfirmed: Devi confermare il tuo indirizzo email prima di continuare.
     mailer:
@@ -4004,6 +4010,8 @@ fr: &fr
   devise:
     confirmations:
       confirmed: Votre adresse e-mail a été confirmée avec succès.
+      already_confirmed: Votre adresse e-mail est déjà confirmée. Vous pouvez vous connecter.
+      send_instructions: Si cette adresse est enregistrée, vous recevrez des instructions sous peu. Sinon, vérifiez l'adresse et réessayez.
     failure:
       unconfirmed: Vous devez confirmer votre adresse e-mail avant de continuer.
     mailer:
@@ -5031,6 +5039,8 @@ pt: &pt
   devise:
     confirmations:
       confirmed: Seu endereço de e-mail foi confirmado com sucesso.
+      already_confirmed: Seu endereço de e-mail já está confirmado. Você pode entrar.
+      send_instructions: Se esse endereço estiver cadastrado, você receberá instruções em breve. Caso contrário, verifique o e-mail e tente novamente.
     failure:
       unconfirmed: Você deve confirmar seu endereço de e-mail antes de continuar.
     mailer:
@@ -6058,6 +6068,8 @@ de: &de
   devise:
     confirmations:
       confirmed: Ihre E-Mail-Adresse wurde erfolgreich bestätigt.
+      already_confirmed: Ihre E-Mail-Adresse ist bereits bestätigt. Sie können sich anmelden.
+      send_instructions: Wenn diese Adresse registriert ist, erhalten Sie in Kürze Anweisungen. Andernfalls prüfen Sie die Adresse und versuchen Sie es erneut.
     failure:
       unconfirmed: Sie müssen Ihre E-Mail-Adresse bestätigen, bevor Sie fortfahren.
     mailer:
@@ -7470,6 +7482,8 @@ nl: &nl
   devise:
     confirmations:
       confirmed: Je e-mailadres is succesvol bevestigd.
+      already_confirmed: Je e-mailadres is al bevestigd. Je kunt inloggen.
+      send_instructions: Als dat adres geregistreerd is, ontvang je zo instructies. Controleer anders het adres en probeer opnieuw.
     failure:
       unconfirmed: Je moet je e-mailadres bevestigen voordat je verdergaat.
     mailer:

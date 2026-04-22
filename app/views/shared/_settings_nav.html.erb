@@ -16,7 +16,8 @@
         <%= link_to t('account'), settings_account_path, class: 'text-base rounded-lg hover:bg-base-200 transition-colors duration-150 py-2.5 text-primary-content/80' %>
       </li>
       <% unless Docuseal.multitenant? %>
-        <% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::EMAIL_SMTP_KEY, account: current_account)) && ENV['SMTP_ADDRESS'].blank? && true_user == current_user %>
+        <%# Per-account SMTP is independent of optional global SMTP_* (e.g. auth emails from .env). %>
+        <% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::EMAIL_SMTP_KEY, account: current_account)) && true_user == current_user %>
           <li>
             <%= link_to t('email'), settings_email_index_path, class: 'text-base rounded-lg hover:bg-base-200 transition-colors duration-150 py-2.5 text-primary-content/80' %>
           </li>
