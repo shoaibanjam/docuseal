@@ -1,20 +1,16 @@
-<div id="flash" class="fixed inset-x-0 top-16 md:top-[4.5rem] z-30 animate-fade-in pointer-events-none">
-  <div class="max-w-xl mx-auto">
-    <div class="px-4 py-3.5 rounded-2xl bg-[#122033]/95 border border-secondary/40 shadow-soft-xl flex items-center justify-between mx-4 md:mx-0 pointer-events-auto backdrop-blur-sm">
-      <div class="flex items-center space-x-3">
-        <% if flash[:notice] %>
-          <%= svg_icon('info_circle', class: 'stroke-info flex-none w-6 h-6') %>
-        <% else %>
-          <%= svg_icon('exclamation_circle', class: 'stroke-error flex-none w-6 h-6') %>
-        <% end %>
-        <div class="text-sm md:text-base leading-snug">
-          <span><%= flash[:notice] || flash[:alert] %></span>
-        </div>
-      </div>
-      <remove-on-event data-on="click" data-selector-id="flash" class="ml-3 text-xl leading-none text-base-content/50 hover:text-base-content cursor-pointer">
-        &times;
-      </remove-on-event>
-      <remove-on-event data-on="timeout" data-timeout-ms="3000" data-selector-id="flash" class="hidden" />
+<div id="flash" class="app-toast-container" style="z-index: 95;">
+  <div class="app-toast <%= flash[:notice] ? 'app-toast--info' : 'app-toast--error' %> app-toast--confirm is-visible">
+    <div class="flex items-center gap-2">
+      <% if flash[:notice] %>
+        <%= svg_icon('info_circle', class: 'stroke-info flex-none w-5 h-5') %>
+      <% else %>
+        <%= svg_icon('exclamation_circle', class: 'stroke-error flex-none w-5 h-5') %>
+      <% end %>
+      <span class="app-toast-message"><%= flash[:notice] || flash[:alert] %></span>
     </div>
+    <remove-on-event data-on="click" data-selector-id="flash" class="app-toast-close cursor-pointer" aria-label="<%= t('close', default: 'Close') %>">
+      &times;
+    </remove-on-event>
+    <remove-on-event data-on="timeout" data-timeout-ms="3000" data-selector-id="flash" class="hidden" />
   </div>
 </div>
