@@ -505,20 +505,45 @@
   color: #0b3027 !important;
 }
 
-[data-theme='docuseal-light'] .tooltip {
-  --tooltip-color: #ffffff;
+[data-theme='docuseal-light'] .tooltip,
+[data-theme='docuseal-light'] .tooltip[data-tip] {
+  --tooltip-color: rgba(255, 255, 255, 0.92);
 }
 
-[data-theme='docuseal-light'] .tooltip:before {
-  background: #ffffff !important;
+[data-theme='docuseal-light'] .tooltip:before,
+[data-theme='docuseal-light'] .tooltip[data-tip]:before {
+  background: color-mix(in srgb, #ffffff 88%, #eaf3ff 12%) !important;
   color: #12233c !important;
-  border: 1px solid rgba(18, 35, 60, 0.18) !important;
-  box-shadow: 0 10px 24px rgba(10, 25, 44, 0.14) !important;
+  border: 1px solid rgba(18, 35, 60, 0.22) !important;
+  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.48) inset !important;
+  backdrop-filter: blur(10px) saturate(1.05) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(1.05) !important;
   text-shadow: none !important;
 }
 
-[data-theme='docuseal-light'] .tooltip-left:after {
-  border-left-color: #ffffff !important;
+[data-theme='docuseal-light'] .tooltip:after,
+[data-theme='docuseal-light'] .tooltip[data-tip]:after {
+  filter: drop-shadow(0 2px 4px rgba(10, 25, 44, 0.12));
+}
+
+[data-theme='docuseal-light'] .tooltip-left:after,
+[data-theme='docuseal-light'] .tooltip-left[data-tip]:after {
+  border-left-color: color-mix(in srgb, #ffffff 88%, #eaf3ff 12%) !important;
+}
+
+[data-theme='docuseal-light'] .tooltip-top:after,
+[data-theme='docuseal-light'] .tooltip-top[data-tip]:after {
+  border-top-color: color-mix(in srgb, #ffffff 88%, #eaf3ff 12%) !important;
+}
+
+[data-theme='docuseal-light'] .tooltip-right:after,
+[data-theme='docuseal-light'] .tooltip-right[data-tip]:after {
+  border-right-color: color-mix(in srgb, #ffffff 88%, #eaf3ff 12%) !important;
+}
+
+[data-theme='docuseal-light'] .tooltip-bottom:after,
+[data-theme='docuseal-light'] .tooltip-bottom[data-tip]:after {
+  border-bottom-color: color-mix(in srgb, #ffffff 88%, #eaf3ff 12%) !important;
 }
 
 [data-theme='docuseal-light'] .ds-page,
