@@ -1249,3 +1249,104 @@
   border-color: rgba(4, 190, 153, 0.55) !important;
   color: #01624d !important;
 }
+
+/* Public signing page (submit_form) */
+[data-theme='docuseal-light'] .signing-page-shell {
+  background: radial-gradient(1000px 420px at 50% -60px, rgba(4, 190, 153, 0.1), transparent 62%), #edf5fb !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-header {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+  box-shadow: 0 10px 24px rgba(10, 25, 44, 0.1) !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-title {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-action,
+[data-theme='docuseal-light'] .signing-form-header .btn.btn-neutral,
+[data-theme='docuseal-light'] scroll-buttons .btn.btn-neutral {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.22) !important;
+  color: #12233c !important;
+  box-shadow: 0 4px 10px rgba(10, 25, 44, 0.08) !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-action:hover,
+[data-theme='docuseal-light'] .signing-form-action:focus-visible,
+[data-theme='docuseal-light'] .signing-form-header .btn.btn-neutral:hover,
+[data-theme='docuseal-light'] .signing-form-header .btn.btn-neutral:focus-visible,
+[data-theme='docuseal-light'] scroll-buttons .btn.btn-neutral:hover,
+[data-theme='docuseal-light'] scroll-buttons .btn.btn-neutral:focus-visible {
+  background: #eef6ff !important;
+  border-color: rgba(4, 190, 153, 0.62) !important;
+  color: #026854 !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-header .btn.btn-neutral svg,
+[data-theme='docuseal-light'] .signing-form-header .btn.btn-neutral svg *,
+[data-theme='docuseal-light'] scroll-buttons .btn.btn-neutral svg,
+[data-theme='docuseal-light'] scroll-buttons .btn.btn-neutral svg * {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-header .btn.btn-neutral svg *[stroke='none'],
+[data-theme='docuseal-light'] scroll-buttons .btn.btn-neutral svg *[stroke='none'] {
+  stroke: none !important;
+}
+
+[data-theme='docuseal-light'] .signing-page-sheet {
+  border-color: rgba(18, 35, 60, 0.16) !important;
+  box-shadow: 0 16px 34px rgba(10, 25, 44, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .form-container {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.16) !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-dock .btn.btn-neutral,
+[data-theme='docuseal-light'] .signing-form-dock .expand-form-button {
+  background: #e8f3ff !important;
+  border-color: rgba(18, 35, 60, 0.28) !important;
+  color: #0f2f4d !important;
+  box-shadow: 0 8px 18px rgba(10, 25, 44, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-dock .btn.btn-neutral:hover,
+[data-theme='docuseal-light'] .signing-form-dock .btn.btn-neutral:focus-visible,
+[data-theme='docuseal-light'] .signing-form-dock .expand-form-button:hover,
+[data-theme='docuseal-light'] .signing-form-dock .expand-form-button:focus-visible {
+  background: #def3ed !important;
+  border-color: rgba(4, 190, 153, 0.65) !important;
+  color: #015f4b !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-dock .btn.text-white,
+[data-theme='docuseal-light'] .signing-form-dock .btn .text-white,
+[data-theme='docuseal-light'] .signing-form-dock .expand-form-button.text-white {
+  color: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-dock .btn.btn-neutral svg,
+[data-theme='docuseal-light'] .signing-form-dock .btn.btn-neutral svg *,
+[data-theme='docuseal-light'] .signing-form-dock .expand-form-button svg,
+[data-theme='docuseal-light'] .signing-form-dock .expand-form-button svg * {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-dock .btn.btn-neutral[disabled],
+[data-theme='docuseal-light'] .signing-form-dock .btn.btn-neutral.btn-disabled,
+[data-theme='docuseal-light'] .signing-form-dock .expand-form-button[disabled],
+[data-theme='docuseal-light'] .signing-form-dock .expand-form-button.btn-disabled {
+  background: #f2f7fc !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  color: rgba(18, 35, 60, 0.58) !important;
+  opacity: 1 !important;
+}
