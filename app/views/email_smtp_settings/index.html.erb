@@ -84,12 +84,12 @@
                     ['ssl', 'SSL', t('legacy_encryption', default: 'Legacy encryption')],
                     ['noverify', 'Noverify', t('ignore_certificate_warnings', default: 'Ignore certificate warnings')]
                   ].each do |(val, label, description)| %>
-                    <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; border:1px solid rgba(213,227,254,0.14); background:#122033; border-radius:0.75rem; padding:0.875rem 1rem;">
-                      <label for="<%= "#{val}_radio" %>" style="display:block; cursor:pointer; flex:1; min-width:0;">
-                        <p style="font-size:0.875rem; line-height:1.25rem; font-weight:500; color:#d5e3fe;"><%= label %></p>
-                        <p style="font-size:0.75rem; line-height:1rem; color:rgba(213,227,254,0.72); margin-top:0.125rem;"><%= description %></p>
+                    <div class="smtp-security-option">
+                      <label for="<%= "#{val}_radio" %>" class="smtp-security-option-copy">
+                        <p class="smtp-security-option-title"><%= label %></p>
+                        <p class="smtp-security-option-description"><%= description %></p>
                       </label>
-                      <%= ff.radio_button :security, val, checked: (value['security'].blank? && val == 'none') || value['security'] == val, id: "#{val}_radio", class: 'radio radio-sm shrink-0', style: 'accent-color:#04be99;' %>
+                      <%= ff.radio_button :security, val, checked: (value['security'].blank? && val == 'none') || value['security'] == val, id: "#{val}_radio", class: 'smtp-security-radio' %>
                     </div>
                   <% end %>
                 </div>

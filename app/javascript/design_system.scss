@@ -1,0 +1,1104 @@
+:root,
+[data-theme='docuseal'],
+[data-theme='docuseal-dark'] {
+  --ds-primary-50: #e9eef5;
+  --ds-primary-100: #cbd7e6;
+  --ds-primary-200: #a5bbd3;
+  --ds-primary-300: #7f9fbf;
+  --ds-primary-400: #5b86ac;
+  --ds-primary-500: #3a6c95;
+  --ds-primary-600: #25547a;
+  --ds-primary-700: #153d5f;
+  --ds-primary-800: #0c2a46;
+  --ds-primary-900: #0a192c;
+
+  --ds-secondary-50: #e7fcf7;
+  --ds-secondary-100: #c2f6ea;
+  --ds-secondary-200: #99f0de;
+  --ds-secondary-300: #6fe9d1;
+  --ds-secondary-400: #46e3c4;
+  --ds-secondary-500: #04be99;
+  --ds-secondary-600: #03987a;
+  --ds-secondary-700: #02725c;
+  --ds-secondary-800: #014d3f;
+  --ds-secondary-900: #003226;
+
+  --ds-neutral-50: #f5f8fb;
+  --ds-neutral-100: #e4eaf2;
+  --ds-neutral-200: #cfd7e2;
+  --ds-neutral-300: #b3bfcd;
+  --ds-neutral-400: #8e9aa8;
+  --ds-neutral-500: #6e7987;
+  --ds-neutral-600: #505a67;
+  --ds-neutral-700: #37404d;
+  --ds-neutral-800: #1f2733;
+  --ds-neutral-900: #0b1421;
+
+  --ds-success: #22c55e;
+  --ds-error: #ef4444;
+  --ds-warning: #f59e0b;
+  --ds-info: #0ea5e9;
+
+  --ds-bg-base: #051427;
+  --ds-bg-elevated: #0d1c2f;
+  --ds-bg-hover: #1d2b3e;
+  --ds-bg-active: #28354a;
+  --ds-text: #d5e3fe;
+  --ds-text-muted: #93a3bc;
+  --ds-border: rgba(213, 227, 254, 0.15);
+  --ds-ring: rgba(4, 190, 153, 0.35);
+  --ds-shadow-sm: 0 2px 8px rgba(3, 10, 24, 0.12);
+  --ds-shadow-md: 0 8px 20px rgba(3, 10, 24, 0.2);
+  --ds-shadow-lg: 0 16px 36px rgba(3, 10, 24, 0.28);
+  --ds-shadow-xl: 0 24px 56px rgba(3, 10, 24, 0.36);
+
+  --ds-radius-4: 4px;
+  --ds-radius-8: 8px;
+  --ds-radius-12: 12px;
+  --ds-radius-16: 16px;
+  --ds-radius-20: 20px;
+
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-8: 32px;
+  --ds-space-10: 40px;
+  --ds-space-12: 48px;
+  --ds-space-16: 64px;
+
+  --ds-opacity-2: 0.02;
+  --ds-opacity-4: 0.04;
+  --ds-opacity-8: 0.08;
+  --ds-opacity-12: 0.12;
+  --ds-opacity-16: 0.16;
+  --ds-opacity-24: 0.24;
+  --ds-opacity-36: 0.36;
+  --ds-opacity-72: 0.72;
+
+  --ds-z-base: 1;
+  --ds-z-raised: 10;
+  --ds-z-sticky: 40;
+  --ds-z-overlay: 60;
+  --ds-z-modal: 80;
+  --ds-z-toast: 90;
+  --ds-z-tooltip: 100;
+}
+
+[data-theme='docuseal-light'] {
+  --ds-bg-base: #f5f8fb;
+  --ds-bg-elevated: #ffffff;
+  --ds-bg-hover: #ecf1f7;
+  --ds-bg-active: #dde6f0;
+  --ds-text: #12233c;
+  --ds-text-muted: #4b5d75;
+  --ds-border: rgba(18, 35, 60, 0.14);
+  --ds-ring: rgba(4, 190, 153, 0.25);
+  --ds-shadow-sm: 0 2px 8px rgba(10, 25, 44, 0.08);
+  --ds-shadow-md: 0 10px 24px rgba(10, 25, 44, 0.12);
+  --ds-shadow-lg: 0 20px 42px rgba(10, 25, 44, 0.14);
+  --ds-shadow-xl: 0 30px 62px rgba(10, 25, 44, 0.16);
+
+  --stitch-surface: #f5f8fb;
+  --stitch-surface-low: #ffffff;
+  --stitch-surface-container: #ecf1f7;
+  --stitch-surface-high: #dde6f0;
+  --stitch-surface-highest: #ccd9e8;
+  --stitch-on-surface: #12233c;
+  --stitch-on-primary-container: #36506f;
+  --stitch-on-surface-variant: #5a6f8a;
+  --stitch-outline: #8fa3bb;
+  --stitch-outline-variant: #bfd0e0;
+  --stitch-secondary: #04be99;
+  --stitch-secondary-dim: #03987a;
+  --stitch-secondary-fixed: #6fe9d1;
+  --stitch-on-secondary: #00382b;
+  --stitch-error: #dc2626;
+  --stitch-error-container: #fee2e2;
+}
+
+.theme-toggle-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--ds-border);
+  background: var(--ds-bg-elevated);
+  color: var(--ds-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn [data-theme-icon] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.theme-toggle-btn [data-theme-icon].hidden {
+  display: none !important;
+}
+
+.theme-toggle-btn [data-theme-icon] svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--ds-bg-hover);
+  color: var(--ds-secondary-500);
+  border-color: color-mix(in srgb, var(--ds-secondary-500) 55%, var(--ds-border));
+  transform: translateY(-1px);
+}
+
+.theme-toggle-btn:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--ds-ring);
+}
+
+.theme-toggle-btn[data-theme='docuseal-light'] {
+  background: #ffffff;
+  color: #1f3755;
+  border-color: rgba(18, 35, 60, 0.16);
+}
+
+.theme-toggle-btn[data-theme='docuseal-dark'] {
+  background: #122033;
+  color: #d5e3fe;
+  border-color: rgba(213, 227, 254, 0.2);
+}
+
+.navbar-main-link {
+  border-radius: 10px;
+  padding: 0.34rem 0.6rem;
+}
+
+.navbar-main-link:hover,
+.navbar-main-link:focus-visible {
+  background: color-mix(in srgb, var(--ds-secondary-500) 12%, transparent);
+  color: var(--ds-secondary-500) !important;
+  outline: none;
+}
+
+.navbar-main-link--active {
+  background: color-mix(in srgb, var(--ds-secondary-500) 16%, transparent);
+}
+
+/* Typography scale (Inter) */
+.ds-display {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+.ds-h1 { font-size: 2rem; line-height: 2.5rem; letter-spacing: -0.02em; font-weight: 700; }
+.ds-h2 { font-size: 1.5rem; line-height: 2rem; letter-spacing: -0.01em; font-weight: 700; }
+.ds-h3 { font-size: 1.25rem; line-height: 1.75rem; letter-spacing: -0.005em; font-weight: 600; }
+.ds-h4 { font-size: 1.125rem; line-height: 1.5rem; font-weight: 600; }
+.ds-h5 { font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
+.ds-h6 { font-size: 0.875rem; line-height: 1.25rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+
+.ds-body-lg { font-size: 1rem; line-height: 1.65; font-weight: 400; }
+.ds-body { font-size: 0.9375rem; line-height: 1.55; font-weight: 400; }
+.ds-body-sm { font-size: 0.875rem; line-height: 1.4; font-weight: 400; }
+.ds-label { font-size: 0.8125rem; line-height: 1.2; letter-spacing: 0.02em; font-weight: 600; }
+.ds-caption { font-size: 0.75rem; line-height: 1.3; letter-spacing: 0.02em; font-weight: 500; }
+
+/* Buttons */
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.ds-btn-sm { height: 32px; padding: 0 0.75rem; font-size: 0.75rem; }
+.ds-btn-md { height: 40px; padding: 0 1rem; font-size: 0.875rem; }
+.ds-btn-lg { height: 48px; padding: 0 1.25rem; font-size: 1rem; }
+.ds-btn-primary { background: var(--ds-secondary-500); color: #00382b; }
+.ds-btn-secondary { background: var(--ds-primary-800); color: #e8f0fc; border-color: var(--ds-border); }
+.ds-btn-outline { background: transparent; color: var(--ds-text); border-color: var(--ds-border); }
+.ds-btn-ghost { background: transparent; color: var(--ds-text-muted); }
+.ds-btn-danger { background: var(--ds-error); color: #fff; }
+.ds-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--ds-shadow-sm); }
+.ds-btn:active:not(:disabled) { transform: translateY(0); }
+.ds-btn:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--ds-ring); }
+.ds-btn:disabled, .ds-btn.is-disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+
+.ds-btn.is-loading { position: relative; color: transparent !important; pointer-events: none; }
+.ds-btn.is-loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: ds-spin 0.65s linear infinite;
+}
+
+@keyframes ds-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Inputs */
+.ds-field { display: grid; gap: 6px; }
+.ds-helper { color: var(--ds-text-muted); font-size: 0.75rem; }
+.ds-error-text { color: var(--ds-error); font-size: 0.75rem; }
+
+.ds-input,
+.ds-textarea,
+.ds-select {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--ds-border);
+  background: var(--ds-bg-elevated);
+  color: var(--ds-text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.ds-input,
+.ds-select { height: 44px; padding: 0 14px; }
+.ds-textarea { min-height: 112px; padding: 12px 14px; resize: vertical; }
+.ds-input::placeholder,
+.ds-textarea::placeholder { color: color-mix(in srgb, var(--ds-text-muted) 75%, transparent); }
+.ds-input:hover:not(:disabled), .ds-textarea:hover:not(:disabled), .ds-select:hover:not(:disabled) { border-color: color-mix(in srgb, var(--ds-secondary-500) 42%, var(--ds-border)); }
+.ds-input:focus-visible, .ds-textarea:focus-visible, .ds-select:focus-visible { outline: 0; border-color: var(--ds-secondary-500); box-shadow: 0 0 0 3px var(--ds-ring); }
+.ds-input:disabled, .ds-textarea:disabled, .ds-select:disabled { opacity: 0.58; cursor: not-allowed; }
+
+.ds-input-with-icon { position: relative; }
+.ds-input-with-icon .ds-input { padding-left: 2.5rem; }
+.ds-input-with-icon-right .ds-input { padding-right: 2.5rem; }
+.ds-input-icon-left, .ds-input-icon-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ds-text-muted);
+}
+.ds-input-icon-left { left: 12px; }
+.ds-input-icon-right { right: 12px; }
+
+/* Advanced form controls */
+.ds-checkbox, .ds-radio {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--ds-border);
+  background: var(--ds-bg-elevated);
+}
+.ds-switch {
+  width: 38px;
+  height: 22px;
+  border-radius: 9999px;
+  background: var(--ds-bg-active);
+  border: 1px solid var(--ds-border);
+}
+
+.ds-otp { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.ds-otp .ds-input { text-align: center; font-weight: 700; letter-spacing: 0.08em; }
+.ds-stepper { display: inline-flex; align-items: center; border: 1px solid var(--ds-border); border-radius: 10px; overflow: hidden; }
+.ds-stepper button { width: 34px; height: 34px; background: var(--ds-bg-hover); color: var(--ds-text); }
+.ds-stepper .ds-input { width: 3.5rem; border: 0; text-align: center; border-radius: 0; height: 34px; }
+.ds-file-upload {
+  border: 1px dashed color-mix(in srgb, var(--ds-secondary-500) 45%, var(--ds-border));
+  background: color-mix(in srgb, var(--ds-secondary-500) 6%, var(--ds-bg-base));
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+/* Form layout system */
+.ds-form-vertical { display: grid; gap: 1rem; }
+.ds-form-horizontal .ds-field { grid-template-columns: 200px minmax(0, 1fr); align-items: center; }
+.ds-form-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; }
+.ds-form-wizard { display: grid; gap: 1rem; }
+.ds-form-error-summary {
+  border: 1px solid color-mix(in srgb, var(--ds-error) 50%, var(--ds-border));
+  background: color-mix(in srgb, var(--ds-error) 12%, var(--ds-bg-base));
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+}
+
+/* Data display */
+.ds-card {
+  background: var(--ds-bg-elevated);
+  border: 1px solid var(--ds-border);
+  border-radius: 16px;
+  box-shadow: var(--ds-shadow-sm);
+}
+.ds-stat-card { padding: 1rem; display: grid; gap: 0.35rem; }
+.ds-progress { width: 100%; height: 8px; border-radius: 9999px; background: color-mix(in srgb, var(--ds-bg-active) 75%, transparent); overflow: hidden; }
+.ds-progress > span { display: block; height: 100%; background: linear-gradient(90deg, var(--ds-secondary-600), var(--ds-secondary-400)); }
+.ds-chart-placeholder {
+  height: 220px;
+  border-radius: 12px;
+  border: 1px dashed var(--ds-border);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ds-bg-hover) 65%, transparent), transparent);
+}
+
+.ds-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.ds-table th, .ds-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--ds-border);
+}
+.ds-table th {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.6875rem;
+  color: var(--ds-text-muted);
+}
+
+/* Navigation */
+.ds-sidebar {
+  background: color-mix(in srgb, var(--ds-bg-base) 94%, black);
+  border-right: 1px solid var(--ds-border);
+}
+.ds-topnav {
+  background: color-mix(in srgb, var(--ds-bg-base) 88%, transparent);
+  border-bottom: 1px solid var(--ds-border);
+  backdrop-filter: blur(10px);
+}
+.ds-breadcrumb { color: var(--ds-text-muted); display: inline-flex; gap: 0.35rem; }
+.ds-tabs-underline .is-active { color: var(--ds-secondary-500); border-bottom: 2px solid var(--ds-secondary-500); }
+.ds-tabs-pill .is-active {
+  color: var(--ds-secondary-500);
+  background: color-mix(in srgb, var(--ds-secondary-500) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ds-secondary-500) 40%, transparent);
+}
+
+/* Feedback */
+.ds-alert, .ds-toast, .ds-modal, .ds-drawer, .ds-tooltip {
+  border: 1px solid var(--ds-border);
+  border-radius: 12px;
+  background: var(--ds-bg-elevated);
+  color: var(--ds-text);
+}
+.ds-alert-success { border-left: 3px solid var(--ds-success); }
+.ds-alert-error { border-left: 3px solid var(--ds-error); }
+.ds-alert-warning { border-left: 3px solid var(--ds-warning); }
+.ds-alert-info { border-left: 3px solid var(--ds-info); }
+.ds-skeleton {
+  border-radius: 10px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ds-bg-hover) 70%, transparent), color-mix(in srgb, var(--ds-bg-active) 72%, transparent), color-mix(in srgb, var(--ds-bg-hover) 70%, transparent));
+  background-size: 200% 100%;
+  animation: ds-skeleton 1.2s linear infinite;
+}
+
+@keyframes ds-skeleton {
+  to { background-position: -200% 0; }
+}
+
+/* Layout */
+.ds-container { width: min(1280px, calc(100% - 2rem)); margin-inline: auto; }
+.ds-grid-12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; }
+.ds-surface-base { background: var(--ds-bg-base); color: var(--ds-text); }
+.ds-surface-elevated { background: var(--ds-bg-elevated); color: var(--ds-text); border: 1px solid var(--ds-border); }
+
+@media (max-width: 1024px) {
+  .ds-form-horizontal .ds-field { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Light theme compatibility overrides for existing app shells */
+[data-theme='docuseal-light'] body {
+  color: var(--ds-text);
+  background: radial-gradient(circle at top left, rgba(4, 190, 153, 0.09), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(10, 25, 44, 0.07), transparent 55%),
+    var(--ds-bg-base);
+}
+
+[data-theme='docuseal-light'] .main-navbar {
+  background-color: rgba(245, 248, 251, 0.9);
+  color: var(--ds-text);
+  border-bottom-color: rgba(18, 35, 60, 0.09);
+}
+
+[data-theme='docuseal-light'] .page-card,
+[data-theme='docuseal-light'] .ds-page,
+[data-theme='docuseal-light'] .settings-card,
+[data-theme='docuseal-light'] .auth-card,
+[data-theme='docuseal-light'] .settings-layout {
+  background: var(--ds-bg-elevated) !important;
+  color: var(--ds-text) !important;
+  border-color: var(--ds-border) !important;
+  box-shadow: var(--ds-shadow-md) !important;
+}
+
+[data-theme='docuseal-light'] .base-input,
+[data-theme='docuseal-light'] .base-select,
+[data-theme='docuseal-light'] .base-textarea,
+[data-theme='docuseal-light'] .input,
+[data-theme='docuseal-light'] .select,
+[data-theme='docuseal-light'] .textarea {
+  background: #ffffff !important;
+  color: var(--ds-text) !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .base-button,
+[data-theme='docuseal-light'] .btn-primary {
+  background: var(--ds-secondary-500) !important;
+  border-color: var(--ds-secondary-600) !important;
+  color: #00382b !important;
+}
+
+[data-theme='docuseal-light'] .white-button,
+[data-theme='docuseal-light'] .btn-outline {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  color: var(--ds-text) !important;
+}
+
+[data-theme='docuseal-light'] .dropdown-content,
+[data-theme='docuseal-light'] .autocomplete,
+[data-theme='docuseal-light'] .menu {
+  background: #ffffff !important;
+  color: var(--ds-text) !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+/* Explicit hardcoded-dark component fixes for light mode */
+[data-theme='docuseal-light'] .main-navbar {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .main-navbar {
+  box-shadow: 0 8px 22px rgba(10, 25, 44, 0.08);
+}
+
+[data-theme='docuseal-light'] .main-navbar .navbar-brand-link,
+[data-theme='docuseal-light'] .main-navbar .navbar-brand-link * {
+  color: #12233c !important;
+  stroke: currentColor;
+}
+
+[data-theme='docuseal-light'] .main-navbar .navbar-main-link {
+  color: rgba(18, 35, 60, 0.72) !important;
+}
+
+[data-theme='docuseal-light'] .main-navbar .navbar-main-link:hover,
+[data-theme='docuseal-light'] .main-navbar .navbar-main-link:focus-visible {
+  background: rgba(4, 190, 153, 0.12) !important;
+  color: #02725c !important;
+}
+
+[data-theme='docuseal-light'] .main-navbar .navbar-main-link--active {
+  background: rgba(4, 190, 153, 0.16) !important;
+  color: #02725c !important;
+}
+
+[data-theme='docuseal-light'] .ds-page,
+[data-theme='docuseal-light'] .page-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f9fcff 100%) !important;
+}
+
+[data-theme='docuseal-light'] .ds-page-title,
+[data-theme='docuseal-light'] .page-title,
+[data-theme='docuseal-light'] .settings-card-title,
+[data-theme='docuseal-light'] h1,
+[data-theme='docuseal-light'] h2,
+[data-theme='docuseal-light'] h3,
+[data-theme='docuseal-light'] h4 {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .ds-page-subtitle,
+[data-theme='docuseal-light'] .page-subtitle,
+[data-theme='docuseal-light'] .settings-card-subtitle {
+  color: #4b5d75 !important;
+}
+
+[data-theme='docuseal-light'] .settings-layout {
+  background: #f2f7fc !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .settings-account-user-avatar {
+  background: #e7eff8 !important;
+  border-color: rgba(18, 35, 60, 0.12) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .settings-card .label .label-text,
+[data-theme='docuseal-light'] .settings-card .label-text-alt,
+[data-theme='docuseal-light'] .settings-account-user-name,
+[data-theme='docuseal-light'] .settings-account-user-email {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .settings-card .base-input,
+[data-theme='docuseal-light'] .settings-card .base-select,
+[data-theme='docuseal-light'] .settings-card .base-textarea {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .settings-card .base-input:hover:not(:focus),
+[data-theme='docuseal-light'] .settings-card .base-select:hover:not(:focus),
+[data-theme='docuseal-light'] .settings-card .base-textarea:hover:not(:focus) {
+  background: #f7fbff !important;
+  border-color: rgba(4, 190, 153, 0.45) !important;
+}
+
+[data-theme='docuseal-light'] .settings-card .base-input:focus,
+[data-theme='docuseal-light'] .settings-card .base-select:focus,
+[data-theme='docuseal-light'] .settings-card .base-textarea:focus {
+  background: #ffffff !important;
+  border-color: #04be99 !important;
+}
+
+[data-theme='docuseal-light'] .settings-card .toggle {
+  background: #dde6f0 !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  --tglbg: #12233c;
+}
+
+[data-theme='docuseal-light'] .settings-card .toggle:checked,
+[data-theme='docuseal-light'] .settings-card .toggle[aria-checked='true'] {
+  background: #04be99 !important;
+  border-color: #04be99 !important;
+  --tglbg: #ffffff;
+}
+
+[data-theme='docuseal-light'] .navbar-account-menu,
+[data-theme='docuseal-light'] .navbar-account-menu li a,
+[data-theme='docuseal-light'] .navbar-account-menu li button,
+[data-theme='docuseal-light'] .navbar-account-menu svg {
+  color: #12233c !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .navbar-account-menu li > a:hover,
+[data-theme='docuseal-light'] .navbar-account-menu li > button:hover,
+[data-theme='docuseal-light'] .navbar-account-menu li > form:hover,
+[data-theme='docuseal-light'] .navbar-account-menu li > form > button:hover,
+[data-theme='docuseal-light'] .navbar-account-menu li > a:focus-visible,
+[data-theme='docuseal-light'] .navbar-account-menu li > button:focus-visible,
+[data-theme='docuseal-light'] .navbar-account-menu li > form:focus-within,
+[data-theme='docuseal-light'] .navbar-account-menu li > form > button:focus-visible {
+  background: rgba(4, 190, 153, 0.1) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .navbar-profile-trigger {
+  background: #e7eff8 !important;
+  color: #12233c !important;
+  border: 1px solid rgba(18, 35, 60, 0.14) !important;
+  box-shadow: 0 2px 8px rgba(10, 25, 44, 0.08);
+}
+
+[data-theme='docuseal-light'] .navbar-profile-trigger:hover,
+[data-theme='docuseal-light'] .navbar-profile-trigger:focus-visible {
+  background: #f3f8fe !important;
+  color: #0c2a46 !important;
+  border-color: rgba(4, 190, 153, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(4, 190, 153, 0.18);
+  outline: none;
+}
+
+[data-theme='docuseal-light'] .template-dashboard-card {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.12) !important;
+  box-shadow: var(--ds-shadow-sm) !important;
+}
+
+[data-theme='docuseal-light'] .template-dashboard-card-title,
+[data-theme='docuseal-light'] .template-dashboard-card-meta,
+[data-theme='docuseal-light'] .template-dashboard-card-icon {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .template-dashboard-card-preview {
+  background: #f3f8fe !important;
+  border-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .template-dashboard-card:hover,
+[data-theme='docuseal-light'] .template-dashboard-card:focus-visible {
+  border-color: rgba(4, 190, 153, 0.75) !important;
+  box-shadow: 0 0 0 1px rgba(4, 190, 153, 0.32), 0 16px 30px rgba(10, 25, 44, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .templates-dropzone {
+  background: #f8fbff !important;
+  border-color: rgba(18, 35, 60, 0.18) !important;
+}
+
+[data-theme='docuseal-light'] .templates-dropzone:hover,
+[data-theme='docuseal-light'] .templates-dropzone:focus-within {
+  border-color: rgba(4, 190, 153, 0.78) !important;
+}
+
+/* Submissions pages: cards, tabs, rows */
+[data-theme='docuseal-light'] .ds-submissions-stat-card {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+  color: #12233c !important;
+  box-shadow: 0 8px 20px rgba(10, 25, 44, 0.08);
+}
+
+[data-theme='docuseal-light'] .ds-submissions-tab,
+[data-theme='docuseal-light'] .ds-submissions-filter-trigger {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.18) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .ds-submissions-tab:hover,
+[data-theme='docuseal-light'] .ds-submissions-filter-trigger:hover {
+  background: #f7fbff !important;
+  border-color: rgba(4, 190, 153, 0.65) !important;
+}
+
+[data-theme='docuseal-light'] .ds-submissions-list-shell {
+  background: #f4f8fd !important;
+  border-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-row {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-meta-panel {
+  background: #eef4fb !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-row .btn-neutral,
+[data-theme='docuseal-light'] .ds-submission-row .btn.btn-neutral {
+  background: #0a192c !important;
+  border-color: #0a192c !important;
+  color: #eaf2ff !important;
+}
+
+[data-theme='docuseal-light'] .ds-submission-row .badge-neutral.badge-outline,
+[data-theme='docuseal-light'] .submission-status-count {
+  background: #e9f0f8 !important;
+  border-color: rgba(18, 35, 60, 0.22) !important;
+  color: #1f3858 !important;
+  text-shadow: none !important;
+}
+
+/* Settings pages */
+[data-theme='docuseal-light'] .settings-card--preferences .flex.items-center.justify-between.gap-4.py-2\.5 {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .settings-card--preferences .text-left {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .ds-storage-provider-option {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .ds-storage-provider-option:hover {
+  background: #f7fbff !important;
+  border-color: rgba(4, 190, 153, 0.6) !important;
+}
+
+[data-theme='docuseal-light'] .base-radio.peer:checked + .ds-storage-provider-option,
+[data-theme='docuseal-light'] .peer:checked + .ds-storage-provider-option {
+  background: #04be99 !important;
+  border-color: #04be99 !important;
+  color: #00382b !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-option {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-option-title {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-option-description {
+  color: #4b5d75 !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-radio {
+  border-color: rgba(18, 35, 60, 0.3) !important;
+  background: #ffffff !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-radio:checked {
+  border-color: #04be99 !important;
+  background: #04be99 !important;
+}
+
+/* Personalization editor surfaces */
+[data-theme='docuseal-light'] .collapse.bg-base-200 {
+  background: #f4f8fd !important;
+}
+
+[data-theme='docuseal-light'] .ds-markdown-shell {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .ds-markdown-link-tooltip,
+[data-theme='docuseal-light'] .ds-markdown-variables-menu {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .ds-markdown-link-input {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+}
+
+[data-theme='docuseal-light'] .ds-markdown-variable-item {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .ds-markdown-variable-item:hover {
+  background: #eef4fb !important;
+}
+
+[data-theme='docuseal-light'] markdown-editor [contenteditable='true'] {
+  background: #ffffff !important;
+  color: #12233c !important;
+}
+
+/* Pro lock CTAs and disabled actions */
+.ds-pro-lock-cta {
+  color: var(--stitch-on-surface) !important;
+}
+
+.ds-pro-lock-disabled-action {
+  color: color-mix(in srgb, var(--stitch-on-surface) 72%, transparent) !important;
+}
+
+.ds-esign-neutral-action {
+  color: var(--stitch-on-surface) !important;
+}
+
+/* Templates dashboard upload section */
+[data-theme='docuseal-light'] .ds-templates-upload-zone {
+  background: #f8fbff !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-cta {
+  background: #e7eff8 !important;
+  border-color: rgba(18, 35, 60, 0.22) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-cta:hover,
+[data-theme='docuseal-light'] .ds-pro-lock-cta:focus-visible {
+  background: #f3f8fe !important;
+  border-color: rgba(4, 190, 153, 0.58) !important;
+  color: #0c2a46 !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-disabled-action {
+  background: #f5f8fc !important;
+  border-color: rgba(18, 35, 60, 0.18) !important;
+  color: rgba(18, 35, 60, 0.62) !important;
+}
+
+[data-theme='docuseal-light'] .ds-esign-neutral-action {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .ds-esign-neutral-action:hover,
+[data-theme='docuseal-light'] .ds-esign-neutral-action:focus-visible {
+  background: #f4f9ff !important;
+  border-color: rgba(4, 190, 153, 0.55) !important;
+  color: #0c2a46 !important;
+}
+
+/* API settings: Rotate token button must stay readable in light mode */
+[data-theme='docuseal-light'] #rotate_api_token_button {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.22) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] #rotate_api_token_button svg {
+  color: #12233c !important;
+  stroke: #12233c !important;
+}
+
+[data-theme='docuseal-light'] #rotate_api_token_button:hover,
+[data-theme='docuseal-light'] #rotate_api_token_button:focus-visible {
+  background: #f4f9ff !important;
+  border-color: rgba(4, 190, 153, 0.55) !important;
+  color: #0c2a46 !important;
+}
+
+[data-theme='docuseal-light'] #rotate_api_token_button:hover svg,
+[data-theme='docuseal-light'] #rotate_api_token_button:focus-visible svg {
+  color: #0c2a46 !important;
+  stroke: #0c2a46 !important;
+}
+
+[data-theme='docuseal-light'] #rotate_api_token_button:disabled,
+[data-theme='docuseal-light'] #rotate_api_token_button[disabled],
+[data-theme='docuseal-light'] #rotate_api_token_button.btn-disabled {
+  background: #f5f8fc !important;
+  border-color: rgba(18, 35, 60, 0.16) !important;
+  color: rgba(18, 35, 60, 0.62) !important;
+  opacity: 1 !important;
+}
+
+[data-theme='docuseal-light'] #rotate_api_token_button:disabled svg,
+[data-theme='docuseal-light'] #rotate_api_token_button[disabled] svg,
+[data-theme='docuseal-light'] #rotate_api_token_button.btn-disabled svg {
+  color: rgba(18, 35, 60, 0.62) !important;
+  stroke: rgba(18, 35, 60, 0.62) !important;
+}
+
+[data-theme='docuseal-light'] .ds-templates-upload-zone:hover,
+[data-theme='docuseal-light'] .ds-templates-upload-zone:focus-within {
+  background: #eef7ff !important;
+  border-color: rgba(4, 190, 153, 0.78) !important;
+  box-shadow: 0 0 0 1px rgba(4, 190, 153, 0.32), 0 14px 30px rgba(10, 25, 44, 0.1) !important;
+}
+
+[data-theme='docuseal-light'] .ds-templates-upload-zone .text-primary-content\/90,
+[data-theme='docuseal-light'] .ds-templates-upload-zone .text-primary-content\/80 {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .ds-templates-upload-zone .text-primary-content\/70 {
+  color: #4b5d75 !important;
+}
+
+/* Template builder full light theme */
+[data-theme='docuseal-light'] template-builder {
+  background: #edf4fb !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-topbar {
+  background: rgba(245, 248, 251, 0.94) !important;
+  border-bottom-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-template-name,
+[data-theme='docuseal-light'] template-builder .builder-topbar,
+[data-theme='docuseal-light'] template-builder .builder-topbar * {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-workspace,
+[data-theme='docuseal-light'] template-builder .builder-pages-stage {
+  background: #edf4fb !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-documents-rail,
+[data-theme='docuseal-light'] template-builder .builder-tools-panel {
+  background: #f8fbff !important;
+  border-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .document-preview-card,
+[data-theme='docuseal-light'] template-builder .builder-documents-rail .builder-documents-rail-footer,
+[data-theme='docuseal-light'] template-builder .draw-field-container,
+[data-theme='docuseal-light'] template-builder .fields-grid-item,
+[data-theme='docuseal-light'] template-builder .builder-tools-panel .roles-dropdown {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] template-builder .fields-grid-item:hover,
+[data-theme='docuseal-light'] template-builder .draw-field-container:hover {
+  background: #f0f7ff !important;
+  border-color: rgba(4, 190, 153, 0.52) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-top-action,
+[data-theme='docuseal-light'] template-builder .builder-send-button,
+[data-theme='docuseal-light'] template-builder .builder-copy-link-button {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-top-action:hover,
+[data-theme='docuseal-light'] template-builder .builder-send-button:hover,
+[data-theme='docuseal-light'] template-builder .builder-copy-link-button:hover {
+  background: #f4f9ff !important;
+  border-color: rgba(4, 190, 153, 0.65) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-sign-button {
+  background: transparent !important;
+  border-color: rgba(4, 190, 153, 0.62) !important;
+  color: #02725c !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-sign-button:hover {
+  background: rgba(4, 190, 153, 0.1) !important;
+  color: #015844 !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-save-button,
+[data-theme='docuseal-light'] template-builder .builder-save-dropdown-trigger {
+  background: #04be99 !important;
+  border-color: #03987a !important;
+  color: #00382b !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-save-button:hover,
+[data-theme='docuseal-light'] template-builder .builder-save-dropdown-trigger:hover {
+  background: #03a786 !important;
+  border-color: #02866b !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-save-dropdown-menu .builder-save-menu-item {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-save-dropdown-menu .builder-save-menu-item svg,
+[data-theme='docuseal-light'] template-builder .builder-save-dropdown-menu .builder-save-menu-item svg * {
+  color: #32587f !important;
+  stroke: #32587f !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-save-dropdown-menu .builder-save-menu-item:hover {
+  background: #eef6ff !important;
+  color: #0c2a46 !important;
+}
+
+[data-theme='docuseal-light'] template-builder .document-control-button,
+[data-theme='docuseal-light'] template-builder .field-area-controls button {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  color: #24466a !important;
+}
+
+[data-theme='docuseal-light'] template-builder .document-control-button:hover,
+[data-theme='docuseal-light'] template-builder .field-area-controls button:hover {
+  background: #eef7ff !important;
+  border-color: rgba(4, 190, 153, 0.65) !important;
+  color: #02725c !important;
+}
+
+[data-theme='docuseal-light'] template-builder .field-area-controls {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  color: #12233c !important;
+  box-shadow: 0 6px 14px rgba(10, 25, 44, 0.12);
+}
+
+[data-theme='docuseal-light'] template-builder .field-area-controls .roles-dropdown,
+[data-theme='docuseal-light'] template-builder .field-area-controls .label,
+[data-theme='docuseal-light'] template-builder .field-area-controls span,
+[data-theme='docuseal-light'] template-builder .field-area-controls svg {
+  color: #12233c !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] template-builder .field-area-controls [contenteditable='true'] {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] template-builder .field-area-controls [contenteditable='true']:focus {
+  background: #f4f9ff !important;
+  border-radius: 4px;
+}
+
+[data-theme='docuseal-light'] template-builder .field-area-controls .checkbox {
+  border-color: rgba(18, 35, 60, 0.3) !important;
+  background: #ffffff !important;
+}
+
+[data-theme='docuseal-light'] template-builder .field-area-controls .checkbox:checked {
+  border-color: #04be99 !important;
+  background: #04be99 !important;
+}
+
+[data-theme='docuseal-light'] template-builder .field-area-settings-dropdown .dropdown-content,
+[data-theme='docuseal-light'] template-builder .field-area-controls .dropdown-content,
+[data-theme='docuseal-light'] template-builder .field-area-controls .menu {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border: 1px solid rgba(18, 35, 60, 0.16) !important;
+}
+
+/* Builder right panel: keep row action icons visible in light mode */
+[data-theme='docuseal-light'] template-builder .fields-list-item button.text-transparent,
+[data-theme='docuseal-light'] template-builder .fields-list-item label.text-transparent,
+[data-theme='docuseal-light'] template-builder .field-remove-button.text-transparent,
+[data-theme='docuseal-light'] template-builder .field-settings-dropdown label.text-transparent {
+  color: rgba(18, 35, 60, 0.64) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .fields-list-item:hover button.text-transparent,
+[data-theme='docuseal-light'] template-builder .fields-list-item:hover label.text-transparent,
+[data-theme='docuseal-light'] template-builder .fields-list-item:hover .field-remove-button.text-transparent,
+[data-theme='docuseal-light'] template-builder .fields-list-item:hover .field-settings-dropdown label.text-transparent {
+  color: #02725c !important;
+}
+
+[data-theme='docuseal-light'] template-builder .field-remove-button:hover,
+[data-theme='docuseal-light'] template-builder .field-remove-button:focus-visible {
+  color: #dc2626 !important;
+}
+
+/* Global toasts: light mode surfaces + confirm actions */
+[data-theme='docuseal-light'] .app-toast {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border: 1px solid rgba(18, 35, 60, 0.16) !important;
+  box-shadow: 0 12px 26px rgba(10, 25, 44, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .app-toast--error {
+  border-left: 3px solid #dc2626 !important;
+}
+
+[data-theme='docuseal-light'] .app-toast-message {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .app-toast-close {
+  color: rgba(18, 35, 60, 0.62) !important;
+}
+
+[data-theme='docuseal-light'] .app-toast-close:hover,
+[data-theme='docuseal-light'] .app-toast-close:focus-visible {
+  color: #0c2a46 !important;
+  background: rgba(4, 190, 153, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .app-toast-action {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.22) !important;
+}
+
+[data-theme='docuseal-light'] .app-toast-action:hover,
+[data-theme='docuseal-light'] .app-toast-action:focus-visible {
+  background: #f4f9ff !important;
+  border-color: rgba(4, 190, 153, 0.62) !important;
+  color: #0c2a46 !important;
+}
+
+[data-theme='docuseal-light'] .app-toast-action--confirm {
+  background: rgba(4, 190, 153, 0.14) !important;
+  border-color: rgba(4, 190, 153, 0.55) !important;
+  color: #01624d !important;
+}

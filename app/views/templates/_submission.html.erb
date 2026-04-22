@@ -1,8 +1,8 @@
 <% status_badges = { 'awaiting' => 'badge-info', 'sent' => 'badge-info', 'completed' => 'badge-success', 'opened' => 'badge-warning', 'declined' => 'badge-error' } %>
-<div class="bg-base-200 rounded-2xl border border-base-content/10 shadow-sm hover:border-base-content/20 transition-colors overflow-hidden flex flex-col sm:flex-row items-strech <%= 'bg-[#0d1c2f] border-white/10' if local_assigns[:with_template] %>">
+<div class="ds-submission-row bg-base-200 rounded-2xl border border-base-content/10 shadow-sm hover:border-base-content/20 transition-colors overflow-hidden flex flex-col sm:flex-row items-strech <%= 'bg-[#0d1c2f] border-white/10' if local_assigns[:with_template] %>">
   <% if local_assigns[:with_template] %>
     <% template = submission.template %>
-    <a href="<%= template ? template_path(template) : submission_path(submission) %>" class="px-5 sm:pr-3 py-3 group sm:rounded-l-2xl sm:rounded-tr-none rounded-t-2xl flex sm:flex-col justify-between sm:w-52 w-full flex-shrink-0 bg-base-300/60 space-x-2 sm:space-x-0">
+    <a href="<%= template ? template_path(template) : submission_path(submission) %>" class="ds-submission-meta-panel px-5 sm:pr-3 py-3 group sm:rounded-l-2xl sm:rounded-tr-none rounded-t-2xl flex sm:flex-col justify-between sm:w-52 w-full flex-shrink-0 bg-base-300/60 space-x-2 sm:space-x-0">
       <div>
         <div class="font-medium items-start w-full group-hover:link text-sm flex space-x-1">
           <%= svg_icon('file_text', class: 'w-4 h-4 mt-0.5 flex-shrink-0') %>

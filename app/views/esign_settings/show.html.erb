@@ -92,7 +92,7 @@
                     <%= t('default') %>
                   </span>
                 <% elsif can?(:update, @encrypted_config) %>
-                  <%= button_to settings_esign_path, method: :put, params: { name: item['name'] }, class: 'btn btn-outline btn-neutral btn-xs whitespace-nowrap text-white hover:text-white focus-visible:text-white', title: t('make_default'), data: { turbo_confirm: t('are_you_sure_') } do %>
+                  <%= button_to settings_esign_path, method: :put, params: { name: item['name'] }, class: 'btn btn-outline btn-neutral btn-xs whitespace-nowrap ds-esign-neutral-action', title: t('make_default'), data: { turbo_confirm: t('are_you_sure_') } do %>
                     <%= t('make_default') %>
                   <% end %>
                 <% end %>

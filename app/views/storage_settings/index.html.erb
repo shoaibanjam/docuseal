@@ -23,7 +23,7 @@
                 <%= f.radio_button :selected, val, checked: value['service'] == val, id: "#{val}_radio", data: { action: 'change:toggle-visible#trigger' }, class: 'base-radio ml-3 relative peer z-10' %>
                 <%= f.label :selected, label, value: val, for: "#{val}_radio",
                       class: [
-                        'absolute left-0 right-0 top-0 bottom-0 flex items-center justify-center rounded-xl border transition-colors',
+                        'ds-storage-provider-option absolute left-0 right-0 top-0 bottom-0 flex items-center justify-center rounded-xl border transition-colors',
                         'bg-[#0d1c2f] text-primary-content/80 border-white/10 group-hover:bg-[#1d2b3e] group-hover:border-secondary/70 group-hover:text-primary-content peer-checked:bg-secondary peer-checked:text-primary-content peer-checked:border-secondary'
                       ].join(' ')
                 %>

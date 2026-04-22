@@ -7,8 +7,9 @@
 body {
   @apply antialiased text-base-content bg-base-100;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-  background: radial-gradient(circle at top left, rgba(4, 190, 153, 0.08), transparent 55%),
-              radial-gradient(circle at bottom right, rgba(13, 28, 47, 0.18), transparent 55%);
+  background: radial-gradient(circle at top left, color-mix(in srgb, var(--stitch-secondary) 14%, transparent), transparent 55%),
+              radial-gradient(circle at bottom right, color-mix(in srgb, var(--stitch-surface-high) 42%, transparent), transparent 55%),
+              var(--stitch-surface);
   overflow-y: auto; /* ensure main app pages can always scroll */
 }
 
@@ -709,7 +710,8 @@ dynamic-variable {
 
 /* Stitch-complete design system overrides */
 :root,
-[data-theme='docuseal'] {
+[data-theme='docuseal'],
+[data-theme='docuseal-dark'] {
   --stitch-surface: #051427;
   --stitch-surface-low: #0d1c2f;
   --stitch-surface-container: #122033;
@@ -1777,3 +1779,5 @@ template-builder .draw-field-container {
   background: #101c2e !important;
   border: 1px solid rgba(197, 198, 205, 0.14);
 }
+
+@import "design_system";

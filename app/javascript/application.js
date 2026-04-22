@@ -55,10 +55,12 @@ import OpenModal from './elements/open_modal'
 import BarChart from './elements/bar_chart'
 import FieldCondition from './elements/field_condition'
 import { showToast, showConfirmToast } from './lib/toast'
+import ThemeToggle, { initTheme, getCurrentTheme } from './lib/theme'
 
 import * as TurboInstantClick from './lib/turbo_instant_click'
 
 TurboInstantClick.start()
+initTheme()
 window.showToast = showToast
 window.showConfirmToast = showConfirmToast
 window.Turbo?.setConfirmMethod((message) => {
@@ -166,6 +168,7 @@ safeRegisterElement('google-drive-file-picker', GoogleDriveFilePicker)
 safeRegisterElement('open-modal', OpenModal)
 safeRegisterElement('bar-chart', BarChart)
 safeRegisterElement('field-condition', FieldCondition)
+safeRegisterElement('theme-toggle', ThemeToggle)
 
 safeRegisterElement('template-builder', class extends HTMLElement {
   connectedCallback () {
@@ -177,10 +180,12 @@ safeRegisterElement('template-builder', class extends HTMLElement {
 
     const template = reactive(JSON.parse(this.dataset.template))
 
+    const builderBackgroundColor = getCurrentTheme() === 'docuseal-light' ? '#f8fbff' : '#051427'
+
     this.app = createApp(TemplateBuilder, {
       template: reactive(JSON.parse(this.dataset.template)),
-      // Use the global dark background to match the rest of the app
-      backgroundColor: '#051427',
+      // Keep builder panel/field surfaces aligned with current theme.
+      backgroundColor: builderBackgroundColor,
       template,
       customFields: reactive(JSON.parse(this.dataset.customFields || '[]')),
       locale: this.dataset.locale,
