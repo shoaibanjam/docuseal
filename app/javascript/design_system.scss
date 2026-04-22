@@ -932,6 +932,39 @@
   border-color: rgba(18, 35, 60, 0.14) !important;
 }
 
+[data-theme='docuseal-light'] .smtp-security-option:hover,
+[data-theme='docuseal-light'] .smtp-security-option:focus-within {
+  background: #f3f9ff !important;
+  border-color: rgba(4, 190, 153, 0.58) !important;
+  box-shadow: 0 0 0 2px rgba(4, 190, 153, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-option:hover .smtp-security-option-title,
+[data-theme='docuseal-light'] .smtp-security-option:focus-within .smtp-security-option-title {
+  color: #0f3b30 !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-option:hover .smtp-security-option-description,
+[data-theme='docuseal-light'] .smtp-security-option:focus-within .smtp-security-option-description {
+  color: #2f4b69 !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-option:hover .smtp-security-radio:not(:checked),
+[data-theme='docuseal-light'] .smtp-security-option:focus-within .smtp-security-radio:not(:checked) {
+  border-color: rgba(4, 190, 153, 0.62) !important;
+  background: #ffffff !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-option:has(.smtp-security-radio:checked) {
+  background: #e9f8f4 !important;
+  border-color: rgba(4, 190, 153, 0.72) !important;
+  box-shadow: 0 0 0 1px rgba(4, 190, 153, 0.2) inset !important;
+}
+
+[data-theme='docuseal-light'] .smtp-security-option:has(.smtp-security-radio:checked) .smtp-security-option-title {
+  color: #015f4b !important;
+}
+
 [data-theme='docuseal-light'] .smtp-security-option-title {
   color: #12233c !important;
 }
@@ -996,6 +1029,48 @@
 
 .ds-esign-neutral-action {
   color: var(--stitch-on-surface) !important;
+}
+
+.personalization-email-shell {
+  border-radius: 0.9rem;
+}
+
+.personalization-submission-shell {
+  border-radius: 0.9rem;
+}
+
+[data-theme='docuseal-dark'] .personalization-email-shell,
+[data-theme='docuseal'] .personalization-email-shell {
+  background: #122033 !important;
+  border: 1px solid rgba(197, 198, 205, 0.18) !important;
+  box-shadow: 0 10px 22px rgba(3, 14, 32, 0.32) !important;
+}
+
+[data-theme='docuseal-dark'] .personalization-submission-shell,
+[data-theme='docuseal'] .personalization-submission-shell {
+  background: #122033 !important;
+  border: 1px solid rgba(197, 198, 205, 0.18) !important;
+  box-shadow: 0 10px 22px rgba(3, 14, 32, 0.32) !important;
+}
+
+[data-theme='docuseal-dark'] .personalization-email-shell:hover,
+[data-theme='docuseal'] .personalization-email-shell:hover {
+  border-color: rgba(4, 190, 153, 0.46) !important;
+}
+
+[data-theme='docuseal-dark'] .personalization-submission-shell:hover,
+[data-theme='docuseal'] .personalization-submission-shell:hover {
+  border-color: rgba(4, 190, 153, 0.46) !important;
+}
+
+[data-theme='docuseal-dark'] .personalization-email-shell .collapse-title,
+[data-theme='docuseal'] .personalization-email-shell .collapse-title {
+  color: #d7e3fc !important;
+}
+
+[data-theme='docuseal-dark'] .personalization-submission-shell .collapse-title,
+[data-theme='docuseal'] .personalization-submission-shell .collapse-title {
+  color: #d7e3fc !important;
 }
 
 /* Templates dashboard upload section */
