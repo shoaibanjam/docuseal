@@ -796,6 +796,25 @@
 }
 
 /* Submissions pages: cards, tabs, rows */
+[data-theme='docuseal-dark'] .ds-submission-row,
+[data-theme='docuseal'] .ds-submission-row {
+  background: #0d1c2f !important;
+  border-color: rgba(197, 198, 205, 0.16) !important;
+}
+
+[data-theme='docuseal-dark'] .ds-submission-meta-panel,
+[data-theme='docuseal'] .ds-submission-meta-panel {
+  background: #122033 !important;
+  border-right: 1px solid rgba(197, 198, 205, 0.12);
+}
+
+[data-theme='docuseal-dark'] .ds-submission-row:hover,
+[data-theme='docuseal-dark'] .ds-submission-row:focus-within,
+[data-theme='docuseal'] .ds-submission-row:hover,
+[data-theme='docuseal'] .ds-submission-row:focus-within {
+  border-color: rgba(4, 190, 153, 0.5) !important;
+}
+
 [data-theme='docuseal-light'] .ds-submissions-stat-card {
   background: #ffffff !important;
   border-color: rgba(18, 35, 60, 0.14) !important;
