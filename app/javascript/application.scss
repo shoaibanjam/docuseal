@@ -1320,24 +1320,32 @@ table tbody tr:hover {
   transform: translateY(-2px);
 }
 
-.template-dashboard-card:hover .template-dashboard-card-title,
-.template-dashboard-card:focus-visible .template-dashboard-card-title {
+[data-theme='docuseal-dark'] .template-dashboard-card:hover .template-dashboard-card-title,
+[data-theme='docuseal-dark'] .template-dashboard-card:focus-visible .template-dashboard-card-title,
+[data-theme='docuseal'] .template-dashboard-card:hover .template-dashboard-card-title,
+[data-theme='docuseal'] .template-dashboard-card:focus-visible .template-dashboard-card-title {
   color: #46ddb7 !important;
 }
 
-.template-dashboard-card:hover .template-dashboard-card-preview,
-.template-dashboard-card:focus-visible .template-dashboard-card-preview {
+[data-theme='docuseal-dark'] .template-dashboard-card:hover .template-dashboard-card-preview,
+[data-theme='docuseal-dark'] .template-dashboard-card:focus-visible .template-dashboard-card-preview,
+[data-theme='docuseal'] .template-dashboard-card:hover .template-dashboard-card-preview,
+[data-theme='docuseal'] .template-dashboard-card:focus-visible .template-dashboard-card-preview {
   background: #0b2038;
   border-color: rgba(4, 190, 153, 0.55);
 }
 
-.template-dashboard-card:hover .template-dashboard-card-icon,
-.template-dashboard-card:focus-visible .template-dashboard-card-icon {
+[data-theme='docuseal-dark'] .template-dashboard-card:hover .template-dashboard-card-icon,
+[data-theme='docuseal-dark'] .template-dashboard-card:focus-visible .template-dashboard-card-icon,
+[data-theme='docuseal'] .template-dashboard-card:hover .template-dashboard-card-icon,
+[data-theme='docuseal'] .template-dashboard-card:focus-visible .template-dashboard-card-icon {
   color: #04be99 !important;
 }
 
-.template-dashboard-card:hover .template-dashboard-card-meta,
-.template-dashboard-card:focus-visible .template-dashboard-card-meta {
+[data-theme='docuseal-dark'] .template-dashboard-card:hover .template-dashboard-card-meta,
+[data-theme='docuseal-dark'] .template-dashboard-card:focus-visible .template-dashboard-card-meta,
+[data-theme='docuseal'] .template-dashboard-card:hover .template-dashboard-card-meta,
+[data-theme='docuseal'] .template-dashboard-card:focus-visible .template-dashboard-card-meta {
   color: rgba(213, 227, 254, 0.92) !important;
 }
 
