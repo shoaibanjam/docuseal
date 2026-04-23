@@ -843,6 +843,25 @@ kbd {
   box-shadow: 0 12px 28px rgba(10, 25, 44, 0.12);
 }
 
+.landing-feature-card {
+  border-width: 2px !important;
+  border-style: solid !important;
+  border-color: rgba(18, 35, 60, 0.24) !important;
+  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18) !important;
+}
+
+[data-theme='docuseal-light'] .landing-feature-card {
+  background: #ffffff !important;
+  border-color: #c1cedf !important;
+  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-feature-card,
+[data-theme='docuseal'] .landing-feature-card {
+  border-color: rgba(213, 227, 254, 0.24) !important;
+  box-shadow: 0 14px 30px rgba(1, 14, 33, 0.36) !important;
+}
+
 .modal-box,
 .dropdown-content,
 .menu,
