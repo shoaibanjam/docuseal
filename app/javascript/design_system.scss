@@ -1253,6 +1253,98 @@
   stroke: rgba(18, 35, 60, 0.62) !important;
 }
 
+/* API docs page: keep expanded cURL examples readable in light mode */
+[data-theme='docuseal-light'] .api-docs-item {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.1) !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-item .collapse-title,
+[data-theme='docuseal-light'] .api-docs-item .collapse-content {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-item.collapse-plus > .collapse-title::after {
+  color: rgba(18, 35, 60, 0.75) !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-method.badge-warning {
+  background: #f7c66a !important;
+  border-color: #d3a34a !important;
+  color: #5f3d05 !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-method.badge-info {
+  background: #d2edff !important;
+  border-color: #8ac9f6 !important;
+  color: #0f4870 !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-endpoint.badge-primary {
+  background: #e9f2ff !important;
+  border-color: #bfd4f2 !important;
+  color: #12345d !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-pre,
+[data-theme='docuseal-light'] .api-docs-pre code,
+[data-theme='docuseal-light'] .api-docs-code-content,
+[data-theme='docuseal-dark'] .api-docs-pre,
+[data-theme='docuseal-dark'] .api-docs-pre code,
+[data-theme='docuseal-dark'] .api-docs-code-content,
+[data-theme='docuseal'] .api-docs-pre,
+[data-theme='docuseal'] .api-docs-pre code,
+[data-theme='docuseal'] .api-docs-code-content {
+  background: transparent !important;
+}
+
+/* Theme-aware code variants (show light syntax in light theme, dark syntax in dark theme) */
+.api-docs-pre--light {
+  display: none;
+}
+
+[data-theme='docuseal-light'] .api-docs-pre--light {
+  display: block;
+}
+
+[data-theme='docuseal-light'] .api-docs-pre--dark {
+  display: none;
+}
+
+[data-theme='docuseal-light'] .api-docs-code {
+  background: #f8fbff !important;
+  border: 1px solid rgba(18, 35, 60, 0.16) !important;
+  border-radius: 0.75rem !important;
+}
+
+[data-theme='docuseal-dark'] .api-docs-code,
+[data-theme='docuseal'] .api-docs-code {
+  background: #0f2238 !important;
+  border: 1px solid rgba(213, 227, 254, 0.16) !important;
+  border-radius: 0.75rem !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-copy-btn {
+  color: #4b5d75 !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-copy-btn svg,
+[data-theme='docuseal-light'] .api-docs-copy-btn svg * {
+  color: #4b5d75 !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-copy-btn svg *[stroke='none'] {
+  stroke: none !important;
+}
+
+[data-theme='docuseal-light'] .api-docs-copy-btn:hover,
+[data-theme='docuseal-light'] .api-docs-copy-btn:focus-visible {
+  background: rgba(18, 35, 60, 0.08) !important;
+  color: #12233c !important;
+}
+
 [data-theme='docuseal-light'] .ds-templates-upload-zone:hover,
 [data-theme='docuseal-light'] .ds-templates-upload-zone:focus-within {
   background: #eef7ff !important;
