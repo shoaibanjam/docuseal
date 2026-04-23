@@ -1566,6 +1566,36 @@
   border-color: rgba(4, 190, 153, 0.65) !important;
 }
 
+[data-theme='docuseal-light'] template-builder .replace-document-button {
+  background: #0f3a62 !important;
+  border-color: #0b2f50 !important;
+  color: #ffffff !important;
+}
+
+[data-theme='docuseal-light'] template-builder .replace-document-button:hover,
+[data-theme='docuseal-light'] template-builder .replace-document-button:focus-visible {
+  background: #145081 !important;
+  border-color: #0e446f !important;
+  color: #ffffff !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-documents-rail .add-document-button,
+[data-theme='docuseal-light'] template-builder .builder-documents-rail .add-blank-page-button {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.24) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-documents-rail .add-document-button:hover,
+[data-theme='docuseal-light'] template-builder .builder-documents-rail .add-document-button:focus-visible,
+[data-theme='docuseal-light'] template-builder .builder-documents-rail .add-blank-page-button:hover,
+[data-theme='docuseal-light'] template-builder .builder-documents-rail .add-blank-page-button:focus-visible {
+  background: #eaf6f2 !important;
+  border-color: rgba(4, 190, 153, 0.68) !important;
+  color: #0e6d58 !important;
+  box-shadow: 0 8px 18px rgba(4, 190, 153, 0.16) !important;
+}
+
 [data-theme='docuseal-light'] template-builder .builder-sign-button {
   background: transparent !important;
   border-color: rgba(4, 190, 153, 0.62) !important;
