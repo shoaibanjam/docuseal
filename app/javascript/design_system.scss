@@ -460,6 +460,14 @@
   color: var(--ds-text) !important;
 }
 
+[data-theme='docuseal-light'] .settings-card .btn-outline:not(.btn-error):not(.btn-danger):hover,
+[data-theme='docuseal-light'] .settings-card .btn-outline:not(.btn-error):not(.btn-danger):focus-visible {
+  background: #eaf7f3 !important;
+  border-color: rgba(4, 190, 153, 0.65) !important;
+  color: #0d7a62 !important;
+  box-shadow: 0 8px 20px -16px rgba(4, 190, 153, 0.6) !important;
+}
+
 [data-theme='docuseal-light'] .dropdown-content,
 [data-theme='docuseal-light'] .autocomplete,
 [data-theme='docuseal-light'] .menu {
