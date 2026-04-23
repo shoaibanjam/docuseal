@@ -64,7 +64,7 @@
     />
     <div
       v-if="!isTextArea && field.type !== 'cells' && !field.validation?.pattern"
-      class="tooltip"
+      class="tooltip tooltip-left"
       :data-tip="t('toggle_multiline_text')"
     >
       <a

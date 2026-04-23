@@ -41,14 +41,14 @@
             <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button w-full md:w-32' %>
           </div>
           <% unless @webhook_url.persisted? %>
-            <div class="space-y-4 mt-4">
+            <div class="space-y-2 mt-4">
               <% WebhookUrl::EVENTS.group_by { |e| e.include?('form') }.each do |_, events| %>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-2">
                   <%= f.collection_check_boxes(:events, events, :to_s, :to_s, include_hidden: false) do |b| %>
-                    <div class="flex">
-                      <label class="flex items-center space-x-2">
+                    <div class="flex min-w-0">
+                      <label class="flex min-w-0 items-start gap-2">
                         <%= b.check_box class: 'base-checkbox', checked: @webhook_url.events.include?(b.value) %>
-                        <span>
+                        <span class="min-w-0 break-all leading-5">
                           <%= b.label %>
                         </span>
                       </label>
@@ -61,17 +61,17 @@
         <% end %>
         <% if @webhook_url.persisted? %>
           <%= form_for @webhook_url, url: webhook_preference_path(@webhook_url), method: :put, html: { autocomplete: 'off', class: 'mt-4' } do |f| %>
-            <div class="space-y-4">
+            <div class="space-y-2">
               <% WebhookUrl::EVENTS.group_by { |e| e.include?('form') }.each do |_, events| %>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-2">
                   <% events.each do |event| %>
                     <%= f.fields_for :events do |ff| %>
-                      <div class="flex">
-                        <label class="flex items-center cursor-pointer">
-                          <submit-form data-on="change" class="flex">
+                      <div class="flex min-w-0">
+                        <label class="flex min-w-0 items-start gap-2 cursor-pointer">
+                          <submit-form data-on="change" class="flex shrink-0 pt-0.5">
                             <%= ff.check_box event, class: 'base-checkbox', checked: @webhook_url.events.include?(event) %>
                           </submit-form>
-                          <span class="ml-2"><%= event %></span>
+                          <span class="min-w-0 break-all leading-5"><%= event %></span>
                         </label>
                       </div>
                     <% end %>

@@ -34,20 +34,20 @@
           <%= button_to button_title(title: t('rotate'), disabled_with: t('rotate'), icon: svg_icon('reload', class: 'w-6 h-6')), settings_api_index_path, id: 'rotate_api_token_button', class: 'white-button w-full readable-disabled', data: { turbo_confirm: t('remove_existing_api_token_and_generated_a_new_one_are_you_sure_') } %>
         </div>
     </section>
-    <div class="space-y-4">
-      <div class="collapse collapse-plus bg-base-100 rounded-xl border border-base-300 shadow-soft px-1">
+    <div class="space-y-4 api-docs-list">
+      <div class="collapse collapse-plus bg-base-100 rounded-xl border border-base-300 shadow-soft px-1 api-docs-item">
         <input type="checkbox">
-        <div class="collapse-title text-xl font-medium">
+        <div class="collapse-title text-xl font-medium api-docs-title">
           <div>
             <%= t('request_signature_multiple_submitters_with_default_values') %>
           </div>
           <div class="mt-1">
-            <div class="badge badge-warning badge-lg">POST</div>
-            <div class="badge badge-primary badge-lg"><%= api_submissions_path %></div>
+            <div class="badge badge-warning badge-lg api-docs-method">POST</div>
+            <div class="badge badge-primary badge-lg api-docs-endpoint"><%= api_submissions_path %></div>
           </div>
         </div>
-        <div class="collapse-content" style="display: inherit">
-          <div class="mockup-code overflow-hidden">
+        <div class="collapse-content api-docs-content" style="display: inherit">
+          <div class="mockup-code overflow-hidden api-docs-code">
             <% text = capture do %>curl --location '<%= api_submissions_url %>' \
        --header 'X-Auth-Token: API_TOKEN' \
        --data-raw '{
@@ -65,25 +65,26 @@
          ]
        }'<% end.to_str %>
             <span class="top-0 right-0 absolute">
-              <%= render 'shared/clipboard_copy', icon: 'copy', text:, class: 'btn btn-ghost text-white', icon_class: 'w-6 h-6 text-white', copy_title: t('copy'), copied_title: t('copied') %>
+              <%= render 'shared/clipboard_copy', icon: 'copy', text:, class: 'btn btn-ghost api-docs-copy-btn', icon_class: 'w-6 h-6', copy_title: t('copy'), copied_title: t('copied') %>
             </span>
-            <pre data-prefix="$"><code class="overflow-hidden w-full"><%== HighlightCode.call(text, 'Shell', theme: 'base16.dark') %></code></pre>
+            <pre data-prefix="$" class="api-docs-pre api-docs-pre--dark"><code class="overflow-hidden w-full api-docs-code-content api-docs-code-content--dark"><%== HighlightCode.call(text, 'Shell', theme: 'base16.dark') %></code></pre>
+            <pre data-prefix="$" class="api-docs-pre api-docs-pre--light"><code class="overflow-hidden w-full api-docs-code-content api-docs-code-content--light"><%== HighlightCode.call(text, 'Shell', theme: 'base16.light') %></code></pre>
           </div>
         </div>
       </div>
-      <div class="collapse collapse-plus bg-base-100 rounded-xl border border-base-300 shadow-soft px-1">
+      <div class="collapse collapse-plus bg-base-100 rounded-xl border border-base-300 shadow-soft px-1 api-docs-item">
         <input type="checkbox">
-        <div class="collapse-title text-xl font-medium">
+        <div class="collapse-title text-xl font-medium api-docs-title">
           <div>
             <%= t('request_signature_single_submitter') %>
           </div>
           <div class="mt-1">
-            <div class="badge badge-warning badge-lg">POST</div>
-            <div class="badge badge-primary badge-lg"><%= api_submissions_emails_path %></div>
+            <div class="badge badge-warning badge-lg api-docs-method">POST</div>
+            <div class="badge badge-primary badge-lg api-docs-endpoint"><%= api_submissions_emails_path %></div>
           </div>
         </div>
-        <div class="collapse-content" style="display: inherit">
-          <div class="mockup-code overflow-hidden">
+        <div class="collapse-content api-docs-content" style="display: inherit">
+          <div class="mockup-code overflow-hidden api-docs-code">
             <% text = capture do %>curl --location '<%= api_submissions_emails_url %>' \
        --header 'X-Auth-Token: API_TOKEN' \
        --data-raw '{
@@ -91,31 +92,33 @@
            "emails":  "<%= current_user.email.sub('@', '+test@') %>, <%= current_user.email.sub('@', '+test2@') %>"
        }'<% end.to_str %>
             <span class="top-0 right-0 absolute">
-              <%= render 'shared/clipboard_copy', icon: 'copy', text:, class: 'btn btn-ghost text-white', icon_class: 'w-6 h-6 text-white', copy_title: t('copy'), copied_title: t('copied') %>
+              <%= render 'shared/clipboard_copy', icon: 'copy', text:, class: 'btn btn-ghost api-docs-copy-btn', icon_class: 'w-6 h-6', copy_title: t('copy'), copied_title: t('copied') %>
             </span>
-            <pre data-prefix="$"><code class="overflow-hidden w-full"><%== HighlightCode.call(text, 'Shell', theme: 'base16.dark') %></code></pre>
+            <pre data-prefix="$" class="api-docs-pre api-docs-pre--dark"><code class="overflow-hidden w-full api-docs-code-content api-docs-code-content--dark"><%== HighlightCode.call(text, 'Shell', theme: 'base16.dark') %></code></pre>
+            <pre data-prefix="$" class="api-docs-pre api-docs-pre--light"><code class="overflow-hidden w-full api-docs-code-content api-docs-code-content--light"><%== HighlightCode.call(text, 'Shell', theme: 'base16.light') %></code></pre>
           </div>
         </div>
       </div>
-      <div class="collapse collapse-plus bg-base-100 rounded-xl border border-base-300 shadow-soft px-1">
+      <div class="collapse collapse-plus bg-base-100 rounded-xl border border-base-300 shadow-soft px-1 api-docs-item">
         <input type="checkbox">
-        <div class="collapse-title text-xl font-medium">
+        <div class="collapse-title text-xl font-medium api-docs-title">
           <div>
             <%= t('template_details') %>
           </div>
           <div class="mt-1">
-            <div class="badge badge-info badge-lg">GET</div>
-            <div class="badge badge-primary badge-lg"><%= api_template_path(':id') %></div>
+            <div class="badge badge-info badge-lg api-docs-method">GET</div>
+            <div class="badge badge-primary badge-lg api-docs-endpoint"><%= api_template_path(':id') %></div>
           </div>
         </div>
-        <div class="collapse-content" style="display: inherit">
-          <div class="mockup-code overflow-hidden">
+        <div class="collapse-content api-docs-content" style="display: inherit">
+          <div class="mockup-code overflow-hidden api-docs-code">
             <% text = capture do %>curl '<%= api_template_url(current_account.templates&.last || 1) %>' \
        --header 'X-Auth-Token: API_TOKEN'<% end.to_str %>
             <span class="top-0 right-0 absolute">
-              <%= render 'shared/clipboard_copy', icon: 'copy', text:, class: 'btn btn-ghost text-white', icon_class: 'w-6 h-6 text-white', copy_title: t('copy'), copied_title: t('copied') %>
+              <%= render 'shared/clipboard_copy', icon: 'copy', text:, class: 'btn btn-ghost api-docs-copy-btn', icon_class: 'w-6 h-6', copy_title: t('copy'), copied_title: t('copied') %>
             </span>
-            <pre data-prefix="$"><code class="overflow-hidden w-full"><%== HighlightCode.call(text, 'Shell', theme: 'base16.dark') %></code></pre>
+            <pre data-prefix="$" class="api-docs-pre api-docs-pre--dark"><code class="overflow-hidden w-full api-docs-code-content api-docs-code-content--dark"><%== HighlightCode.call(text, 'Shell', theme: 'base16.dark') %></code></pre>
+            <pre data-prefix="$" class="api-docs-pre api-docs-pre--light"><code class="overflow-hidden w-full api-docs-code-content api-docs-code-content--light"><%== HighlightCode.call(text, 'Shell', theme: 'base16.light') %></code></pre>
           </div>
         </div>
       </div>

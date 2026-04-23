@@ -18,6 +18,18 @@ Deploy Trustseal with Docker using PostgreSQL on the same server. App is exposed
 
 3. **App URL:** `http://your-server:9090`
 
+## Auto-recovery after server reboot
+
+Set `restart: unless-stopped` for the `app` service in compose so Docker automatically starts it after host reboot.
+
+If your container is already deployed, apply the restart policy once on the server:
+
+```bash
+cd /var/www/docuseal
+docker compose -f docker-compose.production.yml up -d
+docker update --restart unless-stopped "$(docker compose -f docker-compose.production.yml ps -q app)"
+```
+
 ## PostgreSQL on same server
 
 - In `postgresql.conf`: `listen_addresses = '*'`

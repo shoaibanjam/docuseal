@@ -80,6 +80,27 @@
           name="buttons"
         />
         <template v-else>
+          <theme-toggle class="hidden md:inline-flex">
+            <button
+              type="button"
+              class="theme-toggle-btn builder-theme-toggle-btn"
+              aria-label="Toggle color theme"
+              title="Toggle color theme"
+            >
+              <span
+                data-theme-icon="sun"
+                class="inline-flex items-center"
+              >
+                <IconSun width="20" />
+              </span>
+              <span
+                data-theme-icon="moon"
+                class="hidden inline-flex items-center"
+              >
+                <IconMoon width="20" />
+              </span>
+            </button>
+          </theme-toggle>
           <form
             v-if="withSignYourselfButton && undefinedSubmitters.length < 2 && (!template.variables_schema || Object.keys(template.variables_schema).length === 0)"
             target="_blank"
@@ -623,7 +644,7 @@ import DocumentPreview from './preview'
 import DocumentControls from './controls'
 import MobileFields from './mobile_fields'
 import FieldSubmitter from './field_submitter'
-import { IconPlus, IconUsersPlus, IconDeviceFloppy, IconChevronDown, IconEye, IconWritingSign, IconInnerShadowTop, IconInfoCircle, IconAdjustments, IconDownload, IconShare } from '@tabler/icons-vue'
+import { IconPlus, IconUsersPlus, IconDeviceFloppy, IconChevronDown, IconEye, IconWritingSign, IconInnerShadowTop, IconInfoCircle, IconAdjustments, IconDownload, IconShare, IconSun, IconMoon } from '@tabler/icons-vue'
 import { v4 } from 'uuid'
 import { ref, computed, toRaw, defineAsyncComponent } from 'vue'
 import * as i18n from './i18n'
@@ -654,7 +675,9 @@ export default {
     IconDownload,
     IconAdjustments,
     IconEye,
-    IconDeviceFloppy
+    IconDeviceFloppy,
+    IconSun,
+    IconMoon
   },
   provide () {
     return {
