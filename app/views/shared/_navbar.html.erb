@@ -7,17 +7,27 @@
       </a>
       <% if signed_in? %>
         <nav class="hidden md:flex items-center space-x-6">
-          <% is_templates = request.path == root_path || request.path.start_with?('/templates') || request.path.start_with?('/folders') %>
-          <% is_submissions = request.path.start_with?('/submissions') %>
+          <% dashboard_view = cookies[:dashboard_view] %>
+          <% on_root_dashboard = request.path == root_path %>
+          <% is_templates = request.path.start_with?('/templates') || request.path.start_with?('/folders') || (on_root_dashboard && dashboard_view != 'submissions') %>
+          <% is_submissions = request.path.start_with?('/submissions') || (on_root_dashboard && dashboard_view == 'submissions') %>
           <% is_settings = request.path.start_with?('/settings') %>
 
-          <%= link_to root_path, class: "navbar-main-link font-medium text-base transition-colors duration-200 #{is_templates ? 'navbar-main-link--active text-secondary' : 'text-primary-content/70 hover:text-secondary'}" do %>
-            <%= t('templates') %>
-          <% end %>
+          <form action="<%= root_path %>" method="get" class="inline">
+            <toggle-cookies data-value="templates" data-key="dashboard_view">
+              <button type="submit" class="<%= "navbar-main-link font-medium text-base transition-colors duration-200 #{is_templates ? 'navbar-main-link--active text-secondary' : 'text-primary-content/70 hover:text-secondary'}" %>">
+                <%= t('templates') %>
+              </button>
+            </toggle-cookies>
+          </form>
 
-          <%= link_to submissions_path, class: "navbar-main-link font-medium text-base transition-colors duration-200 #{is_submissions ? 'navbar-main-link--active text-secondary' : 'text-primary-content/70 hover:text-secondary'}" do %>
-            <%= t('submissions') %>
-          <% end %>
+          <form action="<%= submissions_path %>" method="get" class="inline">
+            <toggle-cookies data-value="submissions" data-key="dashboard_view">
+              <button type="submit" class="<%= "navbar-main-link font-medium text-base transition-colors duration-200 #{is_submissions ? 'navbar-main-link--active text-secondary' : 'text-primary-content/70 hover:text-secondary'}" %>">
+                <%= t('submissions') %>
+              </button>
+            </toggle-cookies>
+          </form>
 
           <%= link_to settings_profile_index_path, class: "navbar-main-link font-medium text-base transition-colors duration-200 #{is_settings ? 'navbar-main-link--active text-secondary' : 'text-primary-content/70 hover:text-secondary'}" do %>
             <%= t('settings') %>
