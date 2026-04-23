@@ -7,7 +7,7 @@ import FetchForm from './elements/fetch_form'
 import ScrollButtons from './elements/scroll_buttons'
 import PageContainer from './elements/page_container'
 import SubmitForm from './elements/submit_form'
-import { initTheme } from './lib/theme'
+import ThemeToggle, { initTheme } from './lib/theme'
 
 initTheme()
 
@@ -19,6 +19,7 @@ safeRegisterElement('fetch-form', FetchForm)
 safeRegisterElement('scroll-buttons', ScrollButtons)
 safeRegisterElement('page-container', PageContainer)
 safeRegisterElement('submit-form', SubmitForm)
+safeRegisterElement('theme-toggle', ThemeToggle)
 safeRegisterElement('submission-form', class extends HTMLElement {
   connectedCallback () {
     this.appElem = document.createElement('div')

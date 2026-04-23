@@ -13,6 +13,20 @@
     <%= stylesheet_pack_tag 'application', media: 'all' %>
   </head>
   <body>
+    <% unless content_for?(:hide_theme_toggle) %>
+      <div class="fixed top-4 right-4 z-[80]">
+        <theme-toggle class="inline-flex">
+          <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
+            <span data-theme-icon="sun">
+              <%= svg_icon('sun', class: 'w-5 h-5') %>
+            </span>
+            <span data-theme-icon="moon" class="hidden">
+              <%= svg_icon('moon', class: 'w-5 h-5') %>
+            </span>
+          </button>
+        </theme-toggle>
+      </div>
+    <% end %>
     <% if flash.present? %><%= render 'shared/flash' %><% end %>
     <%= yield %>
     <turbo-frame id="modal"></turbo-frame>

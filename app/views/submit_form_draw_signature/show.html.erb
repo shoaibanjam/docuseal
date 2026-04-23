@@ -13,6 +13,18 @@
     <%= stylesheet_pack_tag 'form', media: 'all' %>
   </head>
   <body>
+    <div class="fixed top-4 right-4 z-[80]">
+      <theme-toggle class="inline-flex">
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
+          <span data-theme-icon="sun">
+            <%= svg_icon('sun', class: 'w-5 h-5') %>
+          </span>
+          <span data-theme-icon="moon" class="hidden">
+            <%= svg_icon('moon', class: 'w-5 h-5') %>
+          </span>
+        </button>
+      </theme-toggle>
+    </div>
     <% field = (@submitter.submission.template_fields || @submitter.template.fields).find { |f| f['type'] == 'signature' && f['uuid'].starts_with?(params[:f]) } %>
     <draw-signature data-slug="<%= params[:slug] %>" data-color="<%= field.dig('preferences', 'color') %>" class="flex items-center h-screen p-2 justify-center">
       <%= form_for '', url: submit_form_path(params[:slug]), html: { style: 'max-width: 900px; width: 100%; margin-bottom: 120px' }, method: :put do |f| %>

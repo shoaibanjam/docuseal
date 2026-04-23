@@ -1,6 +1,13 @@
 import SignaturePad from 'signature_pad'
 import { cropCanvasAndExportToPNG } from './submission_form/crop_canvas'
 import { isValidSignatureCanvas } from './submission_form/validate_signature'
+import ThemeToggle, { initTheme } from './lib/theme'
+
+initTheme()
+
+if (!window.customElements.get('theme-toggle')) {
+  window.customElements.define('theme-toggle', ThemeToggle)
+}
 
 window.customElements.define('draw-signature', class extends HTMLElement {
   connectedCallback () {
