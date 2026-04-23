@@ -3,6 +3,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "design_system";
 
 body {
   @apply antialiased text-base-content bg-base-100;
@@ -828,6 +829,37 @@ kbd {
   border: 1px solid color-mix(in srgb, var(--stitch-on-surface) 8%, transparent);
   box-shadow: 0 8px 24px rgba(1, 14, 33, 0.34);
   border-radius: 12px;
+}
+
+[data-theme='docuseal-light'] .card,
+[data-theme='docuseal-light'] .panel,
+[data-theme='docuseal-light'] .tile,
+[data-theme='docuseal-light'] .ds-page,
+[data-theme='docuseal-light'] .page-card,
+[data-theme='docuseal-light'] .settings-card,
+[data-theme='docuseal-light'] .auth-card {
+  background: #ffffff;
+  border: 1px solid rgba(18, 35, 60, 0.12);
+  box-shadow: 0 12px 28px rgba(10, 25, 44, 0.12);
+}
+
+.landing-feature-card {
+  border-width: 2px !important;
+  border-style: solid !important;
+  border-color: rgba(18, 35, 60, 0.24) !important;
+  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18) !important;
+}
+
+[data-theme='docuseal-light'] .landing-feature-card {
+  background: #ffffff !important;
+  border-color: #c1cedf !important;
+  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-feature-card,
+[data-theme='docuseal'] .landing-feature-card {
+  border-color: rgba(213, 227, 254, 0.24) !important;
+  box-shadow: 0 14px 30px rgba(1, 14, 33, 0.36) !important;
 }
 
 .modal-box,
@@ -1788,4 +1820,41 @@ template-builder .draw-field-container {
   border: 1px solid rgba(197, 198, 205, 0.14);
 }
 
-@import "design_system";
+/* Template header: make Link action clearly visible in light theme */
+[data-theme='docuseal-light'] .template-link-button {
+  opacity: 1 !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button--enabled {
+  background: #ffffff !important;
+  border-color: #7f9bb9 !important;
+  color: #14324f !important;
+  box-shadow: 0 1px 0 rgba(127, 155, 185, 0.22) inset !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button--enabled:hover,
+[data-theme='docuseal-light'] .template-link-button--enabled:focus-visible {
+  background: #eef5ff !important;
+  border-color: #6385ab !important;
+  color: #0e2a44 !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button--disabled {
+  background: #e8f1fb !important;
+  border-color: #7f9bb9 !important;
+  color: #1e3a56 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 0 1px rgba(127, 155, 185, 0.26) inset !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button svg,
+[data-theme='docuseal-light'] .template-link-button svg * {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button svg *[stroke='none'] {
+  stroke: none !important;
+}

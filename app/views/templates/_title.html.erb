@@ -49,11 +49,20 @@
             <% end %>
           </div>
         <% end %>
-        <%= link_to template_share_link_path(template), class: "absolute md:relative bottom-0 right-0 btn btn-xs md:btn-sm whitespace-nowrap btn-neutral text-white mt-1 px-2 #{'btn-disabled text-base-100' if template.variables_schema.present?}", data: { turbo_frame: :modal } do %>
-          <span class="flex items-center justify-center space-x-2">
-            <%= svg_icon('link', class: 'w-4 h-4 md:w-6 md:h-6') %>
-            <span><%= t('link') %></span>
+        <% if template.variables_schema.present? %>
+          <span class="template-link-button template-link-button--disabled absolute md:relative bottom-0 right-0 btn btn-xs md:btn-sm whitespace-nowrap mt-1 px-2 cursor-not-allowed" aria-disabled="true">
+            <span class="flex items-center justify-center space-x-2">
+              <%= svg_icon('link', class: 'w-4 h-4 md:w-6 md:h-6') %>
+              <span><%= t('link') %></span>
+            </span>
           </span>
+        <% else %>
+          <%= link_to template_share_link_path(template), class: 'template-link-button template-link-button--enabled absolute md:relative bottom-0 right-0 btn btn-xs md:btn-sm whitespace-nowrap mt-1 px-2 btn-neutral text-white', data: { turbo_frame: :modal } do %>
+            <span class="flex items-center justify-center space-x-2">
+              <%= svg_icon('link', class: 'w-4 h-4 md:w-6 md:h-6') %>
+              <span><%= t('link') %></span>
+            </span>
+          <% end %>
         <% end %>
       </div>
     <% end %>
