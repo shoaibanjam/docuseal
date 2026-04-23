@@ -781,6 +781,55 @@
   stroke: none !important;
 }
 
+[data-theme='docuseal-light'] .template-link-button.btn-disabled,
+[data-theme='docuseal-light'] .template-link-button[disabled],
+[data-theme='docuseal'] .template-link-button.btn-disabled,
+[data-theme='docuseal'] .template-link-button[disabled],
+.template-link-button.btn-disabled,
+.template-link-button[disabled] {
+  background: #f2f7fc !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  color: rgba(18, 35, 60, 0.6) !important;
+  opacity: 1 !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button.btn-disabled svg,
+[data-theme='docuseal-light'] .template-link-button.btn-disabled svg *,
+[data-theme='docuseal-light'] .template-link-button[disabled] svg,
+[data-theme='docuseal-light'] .template-link-button[disabled] svg *,
+[data-theme='docuseal'] .template-link-button.btn-disabled svg,
+[data-theme='docuseal'] .template-link-button.btn-disabled svg *,
+[data-theme='docuseal'] .template-link-button[disabled] svg,
+[data-theme='docuseal'] .template-link-button[disabled] svg *,
+.template-link-button.btn-disabled svg,
+.template-link-button.btn-disabled svg *,
+.template-link-button[disabled] svg,
+.template-link-button[disabled] svg * {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button.btn-disabled svg *[stroke='none'],
+[data-theme='docuseal-light'] .template-link-button[disabled] svg *[stroke='none'],
+[data-theme='docuseal'] .template-link-button.btn-disabled svg *[stroke='none'],
+[data-theme='docuseal'] .template-link-button[disabled] svg *[stroke='none'],
+.template-link-button.btn-disabled svg *[stroke='none'],
+.template-link-button[disabled] svg *[stroke='none'] {
+  stroke: none !important;
+}
+
+[data-theme='docuseal-light'] .template-recipient-name-input {
+  background: #ffffff !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.16) !important;
+  border-radius: 0.5rem !important;
+}
+
+[data-theme='docuseal-light'] .template-recipient-name-input:focus {
+  border-color: rgba(4, 190, 153, 0.65) !important;
+  box-shadow: 0 0 0 2px rgba(4, 190, 153, 0.18) !important;
+}
+
 .template-folder-name-input {
   border: 1px solid rgba(197, 198, 205, 0.22);
   background: #051427;

@@ -49,7 +49,12 @@
             <% end %>
           </div>
         <% end %>
-        <%= link_to template_share_link_path(template), class: "absolute md:relative bottom-0 right-0 btn btn-xs md:btn-sm whitespace-nowrap btn-neutral text-white mt-1 px-2 #{'btn-disabled text-base-100' if template.variables_schema.present?}", data: { turbo_frame: :modal } do %>
+        <% link_button_classes = if template.variables_schema.present?
+                                   'btn-outline bg-base-200 border-base-300 text-base-content/70 opacity-100 btn-disabled cursor-not-allowed'
+                                 else
+                                   'btn-neutral text-white'
+                                 end %>
+        <%= link_to template_share_link_path(template), class: "template-link-button absolute md:relative bottom-0 right-0 btn btn-xs md:btn-sm whitespace-nowrap mt-1 px-2 #{link_button_classes}", data: { turbo_frame: :modal } do %>
           <span class="flex items-center justify-center space-x-2">
             <%= svg_icon('link', class: 'w-4 h-4 md:w-6 md:h-6') %>
             <span><%= t('link') %></span>
