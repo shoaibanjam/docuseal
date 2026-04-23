@@ -831,6 +831,18 @@ kbd {
   border-radius: 12px;
 }
 
+[data-theme='docuseal-light'] .card,
+[data-theme='docuseal-light'] .panel,
+[data-theme='docuseal-light'] .tile,
+[data-theme='docuseal-light'] .ds-page,
+[data-theme='docuseal-light'] .page-card,
+[data-theme='docuseal-light'] .settings-card,
+[data-theme='docuseal-light'] .auth-card {
+  background: #ffffff;
+  border: 1px solid rgba(18, 35, 60, 0.12);
+  box-shadow: 0 12px 28px rgba(10, 25, 44, 0.12);
+}
+
 .modal-box,
 .dropdown-content,
 .menu,
