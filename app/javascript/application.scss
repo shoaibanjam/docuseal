@@ -3,6 +3,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "design_system";
 
 body {
   @apply antialiased text-base-content bg-base-100;
@@ -1787,8 +1788,6 @@ template-builder .draw-field-container {
   background: #101c2e !important;
   border: 1px solid rgba(197, 198, 205, 0.14);
 }
-
-@import "design_system";
 
 /* Template header: make Link action clearly visible in light theme */
 [data-theme='docuseal-light'] .template-link-button {
