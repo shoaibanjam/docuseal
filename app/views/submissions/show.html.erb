@@ -1,3 +1,4 @@
+<% content_for :hide_theme_toggle, true %>
 <% if params[:controller] == 'submissions_preview' %>
   <%= render 'submissions/preview_tags' %>
 <% end %>
@@ -20,6 +21,16 @@
       <% if signed_in? && can?(:create, @submission) && @submission.archived_at? && !is_all_completed %>
         <%= button_to button_title(title: t('unarchive'), disabled_with: t('unarchive')[0..-2], icon: svg_icon('rotate', class: 'w-6 h-6')), submission_unarchive_index_path(@submission), class: 'btn btn-primary btn-ghost text-base hidden md:flex' %>
       <% end %>
+      <theme-toggle class="inline-flex">
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
+          <span data-theme-icon="sun">
+            <%= svg_icon('sun', class: 'w-5 h-5') %>
+          </span>
+          <span data-theme-icon="moon" class="hidden">
+            <%= svg_icon('moon', class: 'w-5 h-5') %>
+          </span>
+        </button>
+      </theme-toggle>
       <% if @submission.audit_trail.present? %>
         <a href="<%= ActiveStorage::Blob.proxy_path(@submission.audit_trail.blob, expires_at: 4.hours.from_now) %>" class="white-button" target="_blank">
           <%= svg_icon('external_link', class: 'w-6 h-6') %>
