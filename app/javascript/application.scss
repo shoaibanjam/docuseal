@@ -1789,3 +1789,42 @@ template-builder .draw-field-container {
 }
 
 @import "design_system";
+
+/* Template header: make Link action clearly visible in light theme */
+[data-theme='docuseal-light'] .template-link-button {
+  opacity: 1 !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button--enabled {
+  background: #ffffff !important;
+  border-color: #7f9bb9 !important;
+  color: #14324f !important;
+  box-shadow: 0 1px 0 rgba(127, 155, 185, 0.22) inset !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button--enabled:hover,
+[data-theme='docuseal-light'] .template-link-button--enabled:focus-visible {
+  background: #eef5ff !important;
+  border-color: #6385ab !important;
+  color: #0e2a44 !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button--disabled {
+  background: #e8f1fb !important;
+  border-color: #7f9bb9 !important;
+  color: #1e3a56 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 0 1px rgba(127, 155, 185, 0.26) inset !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button svg,
+[data-theme='docuseal-light'] .template-link-button svg * {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button svg *[stroke='none'] {
+  stroke: none !important;
+}

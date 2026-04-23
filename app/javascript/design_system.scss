@@ -782,39 +782,39 @@
 }
 
 [data-theme='docuseal-light'] .template-link-button.btn-disabled,
-[data-theme='docuseal-light'] .template-link-button[disabled],
-[data-theme='docuseal'] .template-link-button.btn-disabled,
-[data-theme='docuseal'] .template-link-button[disabled],
-.template-link-button.btn-disabled,
-.template-link-button[disabled] {
+[data-theme='docuseal-light'] .template-link-button[disabled] {
   background: #f2f7fc !important;
   border-color: rgba(18, 35, 60, 0.2) !important;
   color: rgba(18, 35, 60, 0.6) !important;
   opacity: 1 !important;
 }
 
+[data-theme='docuseal-light'] .template-link-button--disabled {
+  background: #e8f1fb !important;
+  border-color: #8da7c4 !important;
+  color: #1e3a56 !important;
+  opacity: 1 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 0 1px rgba(141, 167, 196, 0.35) inset !important;
+}
+
+[data-theme='docuseal-light'] .template-link-button--disabled:hover,
+[data-theme='docuseal-light'] .template-link-button--disabled:focus-visible {
+  background: #e8f1fb !important;
+  border-color: #8da7c4 !important;
+  color: #1e3a56 !important;
+}
+
 [data-theme='docuseal-light'] .template-link-button.btn-disabled svg,
 [data-theme='docuseal-light'] .template-link-button.btn-disabled svg *,
 [data-theme='docuseal-light'] .template-link-button[disabled] svg,
-[data-theme='docuseal-light'] .template-link-button[disabled] svg *,
-[data-theme='docuseal'] .template-link-button.btn-disabled svg,
-[data-theme='docuseal'] .template-link-button.btn-disabled svg *,
-[data-theme='docuseal'] .template-link-button[disabled] svg,
-[data-theme='docuseal'] .template-link-button[disabled] svg *,
-.template-link-button.btn-disabled svg,
-.template-link-button.btn-disabled svg *,
-.template-link-button[disabled] svg,
-.template-link-button[disabled] svg * {
+[data-theme='docuseal-light'] .template-link-button[disabled] svg * {
   color: currentColor !important;
   stroke: currentColor !important;
 }
 
 [data-theme='docuseal-light'] .template-link-button.btn-disabled svg *[stroke='none'],
-[data-theme='docuseal-light'] .template-link-button[disabled] svg *[stroke='none'],
-[data-theme='docuseal'] .template-link-button.btn-disabled svg *[stroke='none'],
-[data-theme='docuseal'] .template-link-button[disabled] svg *[stroke='none'],
-.template-link-button.btn-disabled svg *[stroke='none'],
-.template-link-button[disabled] svg *[stroke='none'] {
+[data-theme='docuseal-light'] .template-link-button[disabled] svg *[stroke='none'] {
   stroke: none !important;
 }
 
