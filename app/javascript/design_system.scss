@@ -441,7 +441,7 @@
 [data-theme='docuseal-light'] .input,
 [data-theme='docuseal-light'] .select,
 [data-theme='docuseal-light'] .textarea {
-  background: #ffffff !important;
+  background-color: #ffffff !important;
   color: var(--ds-text) !important;
   border-color: rgba(18, 35, 60, 0.14) !important;
 }
@@ -586,9 +586,14 @@
 }
 
 [data-theme='docuseal-light'] .settings-card .base-input,
-[data-theme='docuseal-light'] .settings-card .base-select,
 [data-theme='docuseal-light'] .settings-card .base-textarea {
-  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .settings-card .base-select {
+  background-color: #ffffff !important;
   color: #12233c !important;
   border-color: rgba(18, 35, 60, 0.14) !important;
 }
@@ -596,14 +601,14 @@
 [data-theme='docuseal-light'] .settings-card .base-input:hover:not(:focus),
 [data-theme='docuseal-light'] .settings-card .base-select:hover:not(:focus),
 [data-theme='docuseal-light'] .settings-card .base-textarea:hover:not(:focus) {
-  background: #f7fbff !important;
+  background-color: #f7fbff !important;
   border-color: rgba(4, 190, 153, 0.45) !important;
 }
 
 [data-theme='docuseal-light'] .settings-card .base-input:focus,
 [data-theme='docuseal-light'] .settings-card .base-select:focus,
 [data-theme='docuseal-light'] .settings-card .base-textarea:focus {
-  background: #ffffff !important;
+  background-color: #ffffff !important;
   border-color: #04be99 !important;
 }
 
