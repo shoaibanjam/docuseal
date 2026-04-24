@@ -102,8 +102,9 @@ module Submitters
     submitters.where(arel)
   end
 
-  def select_attachments_for_download(submitter)
-    if submitter.submission.submitters.all?(&:completed_at?) &&
+  def select_attachments_for_download(submitter, allow_combined: true)
+    if allow_combined &&
+       submitter.submission.submitters.all?(&:completed_at?) &&
        submitter.submission.template_fields.none? { |f| f['type'] == 'verification' }
       attachment =
         submitter.submission.combined_document_attachment || Submissions::EnsureCombinedGenerated.call(submitter)

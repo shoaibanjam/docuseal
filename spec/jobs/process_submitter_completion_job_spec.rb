@@ -45,5 +45,29 @@ RSpec.describe ProcessSubmitterCompletionJob do
         described_class.new.perform('submitter_id' => 'invalid_id')
       end.to raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it 'sends submitter copy emails using each recipient submitter context' do
+      template = create(:template, account:, author: user, submitter_count: 2, only_field_types: %w[text])
+      submission = create(:submission, :with_submitters, template:, created_by_user: user)
+      first_submitter = submission.submitters.order(:id).first
+      second_submitter = submission.submitters.order(:id).second
+      first_submitter.update!(completed_at: 2.minutes.ago)
+      second_submitter.update!(completed_at: 1.minute.ago)
+
+      email_delivery = instance_double(ActionMailer::MessageDelivery, deliver_later!: true)
+
+      allow(SubmitterMailer).to receive(:documents_copy_email).and_return(email_delivery)
+
+      described_class.new.perform('submitter_id' => second_submitter.id)
+
+      expect(SubmitterMailer).to have_received(:documents_copy_email).with(
+        first_submitter,
+        to: first_submitter.friendly_name
+      )
+      expect(SubmitterMailer).to have_received(:documents_copy_email).with(
+        second_submitter,
+        to: second_submitter.friendly_name
+      )
+    end
   end
 end

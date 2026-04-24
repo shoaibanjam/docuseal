@@ -136,15 +136,18 @@ class ProcessSubmitterCompletionJob
 
     return if configs.value['enabled'] == false
 
-    to = submitter.submission.submitters.reject { |e| e.preferences['send_email'] == false }
-                  .sort_by(&:completed_at).select(&:email?).map(&:friendly_name)
+    recipient_submitters =
+      submitter.submission.submitters
+               .reject { |e| e.preferences['send_email'] == false }
+               .sort_by(&:completed_at)
+               .select(&:email?)
 
-    return if to.blank?
+    return if recipient_submitters.blank?
 
-    if configs.value['bcc_recipients'] == true
-      to.each { |to| SubmitterMailer.documents_copy_email(submitter, to:).deliver_later! }
-    else
-      SubmitterMailer.documents_copy_email(submitter, to: to.join(', ')).deliver_later!
+    # Copy emails include signer-scoped documents, so each recipient must receive
+    # an email generated from their own submitter context.
+    recipient_submitters.each do |recipient_submitter|
+      SubmitterMailer.documents_copy_email(recipient_submitter, to: recipient_submitter.friendly_name).deliver_later!
     end
   end
 
