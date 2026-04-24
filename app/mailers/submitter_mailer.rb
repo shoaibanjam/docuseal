@@ -172,7 +172,7 @@ class SubmitterMailer < ApplicationMailer
   end
 
   def add_completed_email_attachments!(submitter, with_audit_log: true, with_documents: true)
-    documents = with_documents ? Submitters.select_attachments_for_download(submitter) : []
+    documents = with_documents ? Submitters.select_attachments_for_download(submitter, allow_combined: false) : []
 
     filename_format = AccountConfig.find_or_initialize_by(account_id: submitter.account_id,
                                                           key: AccountConfig::DOCUMENT_FILENAME_FORMAT_KEY)&.value
