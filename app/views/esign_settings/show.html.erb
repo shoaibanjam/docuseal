@@ -9,9 +9,9 @@
     </h1>
     <section class="settings-card">
     <div class="max-w-xl">
-      <h2 class="text-lg font-semibold text-base-content mb-4"><%= t('verify_signed_pdf') %></h2>
+      <h2 class="settings-card-title mb-4"><%= t('verify_signed_pdf') %></h2>
       <div id="result">
-        <p class="mb-2">
+        <p class="mb-2 settings-card-subtitle esign-helper-text">
           <%= t('upload_signed_pdf_file_to_validate_its_signature_') %>
         </p>
       </div>
@@ -48,7 +48,7 @@
     </section>
     <section class="settings-card">
     <div class="flex flex-col md:flex-row gap-2 md:justify-between md:items-end mb-4">
-      <h2 class="text-lg font-semibold text-base-content">
+      <h2 class="settings-card-title">
         <%= t('signing_certificates') %>
       </h2>
       <% if can?(:create, @encrypted_config) %>
@@ -62,7 +62,7 @@
     <div class="overflow-x-auto md:overflow-visible">
       <table class="table w-full table-lg rounded-b-none">
         <thead class="bg-base-200">
-          <tr class="text-neutral uppercase">
+          <tr class="uppercase esign-table-head-row">
             <th>
               <%= t('name') %>
             </th>

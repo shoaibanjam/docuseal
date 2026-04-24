@@ -757,6 +757,80 @@
   outline: none;
 }
 
+/* Settings sidebar nav states */
+[data-theme='docuseal-dark'] .settings-sidebar #account_settings_menu > li > a,
+[data-theme='docuseal'] .settings-sidebar #account_settings_menu > li > a {
+  color: rgba(213, 227, 254, 0.78) !important;
+  background: transparent !important;
+  border: 1px solid transparent;
+}
+
+[data-theme='docuseal-dark'] .settings-sidebar #account_settings_menu > li > a:hover,
+[data-theme='docuseal-dark'] .settings-sidebar #account_settings_menu > li > a:focus-visible,
+[data-theme='docuseal'] .settings-sidebar #account_settings_menu > li > a:hover,
+[data-theme='docuseal'] .settings-sidebar #account_settings_menu > li > a:focus-visible {
+  color: #e9f3ff !important;
+  background: rgba(29, 43, 62, 0.88) !important;
+  border-color: rgba(213, 227, 254, 0.16) !important;
+}
+
+[data-theme='docuseal-dark'] .settings-sidebar #account_settings_menu > li > a.active,
+[data-theme='docuseal-dark'] .settings-sidebar #account_settings_menu > li > a[aria-current='page'],
+[data-theme='docuseal-dark'] .settings-sidebar #account_settings_menu > li > a.bg-base-300,
+[data-theme='docuseal'] .settings-sidebar #account_settings_menu > li > a.active,
+[data-theme='docuseal'] .settings-sidebar #account_settings_menu > li > a[aria-current='page'],
+[data-theme='docuseal'] .settings-sidebar #account_settings_menu > li > a.bg-base-300 {
+  color: #ecf4ff !important;
+  background: linear-gradient(180deg, rgba(33, 54, 79, 0.94), rgba(24, 43, 66, 0.96)) !important;
+  border-color: rgba(4, 190, 153, 0.42) !important;
+  box-shadow: inset 0 0 0 1px rgba(4, 190, 153, 0.16);
+}
+
+[data-theme='docuseal-light'] .settings-sidebar #account_settings_menu > li > a {
+  color: rgba(18, 35, 60, 0.76) !important;
+  background: transparent !important;
+  border: 1px solid transparent;
+}
+
+[data-theme='docuseal-light'] .settings-sidebar #account_settings_menu > li > a:hover,
+[data-theme='docuseal-light'] .settings-sidebar #account_settings_menu > li > a:focus-visible {
+  color: #0f2d4a !important;
+  background: #edf4fb !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .settings-sidebar #account_settings_menu > li > a.active,
+[data-theme='docuseal-light'] .settings-sidebar #account_settings_menu > li > a[aria-current='page'],
+[data-theme='docuseal-light'] .settings-sidebar #account_settings_menu > li > a.bg-base-300 {
+  color: #12233c !important;
+  background: #dbe6f3 !important;
+  border-color: rgba(18, 35, 60, 0.2) !important;
+  box-shadow: inset 0 0 0 1px rgba(18, 35, 60, 0.06);
+}
+
+[data-theme='docuseal-dark'] .settings-sidebar #account_settings_menu label[for='testing_toggle'],
+[data-theme='docuseal'] .settings-sidebar #account_settings_menu label[for='testing_toggle'] {
+  color: rgba(213, 227, 254, 0.78) !important;
+}
+
+[data-theme='docuseal-dark'] .settings-sidebar #account_settings_menu label[for='testing_toggle']:hover,
+[data-theme='docuseal-dark'] .settings-sidebar #account_settings_menu label[for='testing_toggle']:focus-within,
+[data-theme='docuseal'] .settings-sidebar #account_settings_menu label[for='testing_toggle']:hover,
+[data-theme='docuseal'] .settings-sidebar #account_settings_menu label[for='testing_toggle']:focus-within {
+  color: #e9f3ff !important;
+  background: rgba(29, 43, 62, 0.88) !important;
+}
+
+[data-theme='docuseal-light'] .settings-sidebar #account_settings_menu label[for='testing_toggle'] {
+  color: rgba(18, 35, 60, 0.76) !important;
+}
+
+[data-theme='docuseal-light'] .settings-sidebar #account_settings_menu label[for='testing_toggle']:hover,
+[data-theme='docuseal-light'] .settings-sidebar #account_settings_menu label[for='testing_toggle']:focus-within {
+  color: #0f2d4a !important;
+  background: #edf4fb !important;
+}
+
 [data-theme='docuseal-light'] .template-dashboard-card {
   background: #ffffff !important;
   border-color: rgba(18, 35, 60, 0.12) !important;
@@ -1314,6 +1388,104 @@
   color: rgba(18, 35, 60, 0.62) !important;
 }
 
+[data-theme='docuseal-light'] .ds-pro-lock-disabled-action:disabled,
+[data-theme='docuseal-light'] .ds-pro-lock-disabled-action[disabled],
+[data-theme='docuseal-light'] .ds-pro-lock-disabled-action.btn-disabled,
+[data-theme='docuseal-light'] .ds-pro-lock-disabled-action.readable-disabled:disabled,
+[data-theme='docuseal-light'] .ds-pro-lock-disabled-action.readable-disabled[disabled] {
+  color: #425a78 !important;
+  -webkit-text-fill-color: #425a78 !important;
+  opacity: 1 !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-banner {
+  background: #eef4fb !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-banner svg,
+[data-theme='docuseal-light'] .ds-pro-lock-banner svg * {
+  color: #4b5d75 !important;
+  stroke: currentColor !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-banner svg *[stroke='none'] {
+  stroke: none !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-title {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-description {
+  color: #4b5d75 !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-link {
+  color: #0f6f5a !important;
+}
+
+[data-theme='docuseal-light'] .ds-pro-lock-link:hover,
+[data-theme='docuseal-light'] .ds-pro-lock-link:focus-visible {
+  color: #085746 !important;
+}
+
+[data-theme='docuseal-light'] .personalization-email-shell .collapse-title,
+[data-theme='docuseal-light'] .personalization-email-shell .collapse-title *,
+[data-theme='docuseal-light'] .personalization-email-shell .collapse-content,
+[data-theme='docuseal-light'] .personalization-email-shell .collapse-content * {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .personalization-email-shell .collapse-content .label,
+[data-theme='docuseal-light'] .personalization-email-shell .collapse-content .label * {
+  color: #334e6b !important;
+}
+
+[data-theme='docuseal-light'] .personalization-email-shell .collapse-content .text-base-content\/60,
+[data-theme='docuseal-light'] .personalization-email-shell .collapse-content .text-base-content\/70,
+[data-theme='docuseal-light'] .personalization-email-shell .collapse-content .text-primary-content\/70 {
+  color: #4b5d75 !important;
+}
+
+[data-theme='docuseal-light'] .esign-helper-text {
+  color: #4b5d75 !important;
+}
+
+[data-theme='docuseal-light'] .esign-table-head-row,
+[data-theme='docuseal-light'] .esign-table-head-row th {
+  color: #4b5d75 !important;
+}
+
+[data-theme='docuseal-light'] .esign-trusted-signature-cell,
+[data-theme='docuseal-light'] .esign-trusted-signature-text {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .users-table-head-row,
+[data-theme='docuseal-light'] .users-table-head-row th {
+  color: #4b5d75 !important;
+}
+
+[data-theme='docuseal-light'] .users-table-row,
+[data-theme='docuseal-light'] .users-table-row td {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .storage-disk-title {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .storage-disk-description,
+[data-theme='docuseal-light'] .storage-disk-description * {
+  color: #4b5d75 !important;
+}
+
+[data-theme='docuseal-light'] .profile-2fa-status-text {
+  color: #4b5d75 !important;
+}
+
 [data-theme='docuseal-light'] .ds-esign-neutral-action {
   background: #ffffff !important;
   border-color: rgba(18, 35, 60, 0.2) !important;
@@ -1596,6 +1768,28 @@
   box-shadow: 0 8px 18px rgba(4, 190, 153, 0.16) !important;
 }
 
+[data-theme='docuseal-dark'] template-builder .builder-documents-rail .add-document-button,
+[data-theme='docuseal-dark'] template-builder .builder-documents-rail .add-blank-page-button,
+[data-theme='docuseal'] template-builder .builder-documents-rail .add-document-button,
+[data-theme='docuseal'] template-builder .builder-documents-rail .add-blank-page-button {
+  background: rgba(13, 28, 47, 0.92) !important;
+  border-color: rgba(213, 227, 254, 0.22) !important;
+  color: #b8cae3 !important;
+}
+
+[data-theme='docuseal-dark'] template-builder .builder-documents-rail .add-document-button:hover,
+[data-theme='docuseal-dark'] template-builder .builder-documents-rail .add-document-button:focus-visible,
+[data-theme='docuseal-dark'] template-builder .builder-documents-rail .add-blank-page-button:hover,
+[data-theme='docuseal-dark'] template-builder .builder-documents-rail .add-blank-page-button:focus-visible,
+[data-theme='docuseal'] template-builder .builder-documents-rail .add-document-button:hover,
+[data-theme='docuseal'] template-builder .builder-documents-rail .add-document-button:focus-visible,
+[data-theme='docuseal'] template-builder .builder-documents-rail .add-blank-page-button:hover,
+[data-theme='docuseal'] template-builder .builder-documents-rail .add-blank-page-button:focus-visible {
+  background: rgba(20, 44, 71, 0.92) !important;
+  border-color: rgba(4, 190, 153, 0.68) !important;
+  color: #d5e3fe !important;
+}
+
 [data-theme='docuseal-light'] template-builder .builder-sign-button {
   background: transparent !important;
   border-color: rgba(4, 190, 153, 0.62) !important;
@@ -1691,7 +1885,7 @@
 [data-theme='docuseal'] template-builder .field-area-controls [contenteditable='true'],
 [data-theme='docuseal-dark'] template-builder .field-area-controls .group\/contenteditable,
 [data-theme='docuseal'] template-builder .field-area-controls .group\/contenteditable {
-  color: #d5e3fe !important;
+  color: #b8cae3 !important;
 }
 
 [data-theme='docuseal-light'] template-builder .field-area-controls .checkbox {
