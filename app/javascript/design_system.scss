@@ -1092,6 +1092,60 @@
   border-color: rgba(4, 190, 153, 0.58) !important;
 }
 
+/* Search clear button lane in submissions/templates search input */
+.search-input-field--with-clear {
+  padding-left: 3.7rem !important;
+}
+
+.search-input-clear-slot::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 1px;
+  background: color-mix(in srgb, var(--stitch-outline) 65%, transparent);
+}
+
+.search-input-clear-btn {
+  color: color-mix(in srgb, var(--stitch-on-surface) 68%, transparent);
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+
+.search-input-clear-btn:hover,
+.search-input-clear-btn:focus-visible {
+  color: var(--stitch-on-surface);
+  background: color-mix(in srgb, var(--stitch-surface-high) 72%, transparent);
+  outline: none;
+}
+
+[data-theme='docuseal-light'] .search-input-clear-slot::after {
+  background: rgba(18, 35, 60, 0.18);
+}
+
+[data-theme='docuseal-light'] .search-input-clear-btn {
+  color: rgba(18, 35, 60, 0.7);
+}
+
+[data-theme='docuseal-light'] .search-input-clear-btn:hover,
+[data-theme='docuseal-light'] .search-input-clear-btn:focus-visible {
+  color: #12233c;
+  background: rgba(18, 35, 60, 0.08);
+}
+
+[data-theme='docuseal-dark'] .search-input-clear-btn,
+[data-theme='docuseal'] .search-input-clear-btn {
+  color: rgba(213, 227, 254, 0.86);
+}
+
+[data-theme='docuseal-dark'] .search-input-clear-btn:hover,
+[data-theme='docuseal-dark'] .search-input-clear-btn:focus-visible,
+[data-theme='docuseal'] .search-input-clear-btn:hover,
+[data-theme='docuseal'] .search-input-clear-btn:focus-visible {
+  color: #f3f8ff;
+  background: rgba(213, 227, 254, 0.08);
+}
+
 [data-theme='docuseal-light'] .ds-submissions-tab.border-secondary,
 [data-theme='docuseal-light'] .ds-submissions-tab.bg-secondary\/10,
 [data-theme='docuseal-light'] .ds-submissions-tab.border-secondary.bg-secondary\/10 {
