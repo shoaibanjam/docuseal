@@ -120,24 +120,63 @@
 }
 
 .theme-toggle-btn {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.4rem;
+  height: 2.4rem;
   border-radius: 9999px;
-  border: 1px solid var(--ds-border);
-  background: var(--ds-bg-elevated);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 86%, transparent);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--ds-bg-elevated) 96%, #ffffff 4%), color-mix(in srgb, var(--ds-bg-base) 92%, transparent));
   color: var(--ds-text);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(1, 14, 33, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+}
+
+.theme-toggle-btn::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.02) 56%, rgba(4, 190, 153, 0.07));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.theme-toggle-btn::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background: linear-gradient(145deg, rgba(4, 190, 153, 0.42), rgba(105, 250, 210, 0.1)) border-box;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.24s ease;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .theme-toggle-btn [data-theme-icon] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 1.48rem;
+  height: 1.48rem;
+  border-radius: 9999px;
   line-height: 0;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  border: 1px solid transparent;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.24s cubic-bezier(.2,.8,.2,1), opacity 0.2s ease, background-color 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
 }
 
 .theme-toggle-btn [data-theme-icon].hidden {
@@ -145,15 +184,47 @@
 }
 
 .theme-toggle-btn [data-theme-icon] svg {
-  width: 1.05rem;
-  height: 1.05rem;
+  width: 1.04rem;
+  height: 1.04rem;
+  stroke-width: 2;
+  transition: transform 0.24s cubic-bezier(.2,.8,.2,1), color 0.24s ease, stroke 0.24s ease, filter 0.24s ease;
+}
+
+.theme-toggle-btn [data-theme-icon='sun'] {
+  background: linear-gradient(145deg, rgba(251, 191, 36, 0.24), rgba(245, 158, 11, 0.11));
+  border-color: rgba(251, 191, 36, 0.34);
+  box-shadow: inset 0 1px 0 rgba(255, 248, 220, 0.4);
+}
+
+.theme-toggle-btn [data-theme-icon='moon'] {
+  background: linear-gradient(145deg, rgba(96, 165, 250, 0.24), rgba(59, 130, 246, 0.1));
+  border-color: rgba(96, 165, 250, 0.3);
+  box-shadow: inset 0 1px 0 rgba(224, 238, 255, 0.26);
+}
+
+.theme-toggle-btn [data-theme-icon='sun'] svg {
+  color: #ffd978;
+  stroke: currentColor;
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.42));
+}
+
+.theme-toggle-btn [data-theme-icon='moon'] svg {
+  color: #b9d8ff;
+  stroke: currentColor;
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.34));
 }
 
 .theme-toggle-btn:hover {
-  background: var(--ds-bg-hover);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--ds-bg-hover) 94%, #ffffff 6%), color-mix(in srgb, var(--ds-bg-elevated) 92%, transparent));
   color: var(--ds-secondary-500);
   border-color: color-mix(in srgb, var(--ds-secondary-500) 55%, var(--ds-border));
-  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(1, 14, 33, 0.28), 0 0 0 1px rgba(4, 190, 153, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px) scale(1.01);
+}
+
+.theme-toggle-btn:hover::after,
+.theme-toggle-btn:focus-visible::after {
+  opacity: 1;
 }
 
 .theme-toggle-btn:focus-visible {
@@ -162,15 +233,48 @@
 }
 
 .theme-toggle-btn[data-theme='docuseal-light'] {
-  background: #ffffff;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.97), rgba(242, 248, 255, 0.95));
   color: #1f3755;
-  border-color: rgba(18, 35, 60, 0.16);
+  border-color: rgba(18, 35, 60, 0.18);
+  box-shadow: 0 10px 22px rgba(10, 25, 44, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.theme-toggle-btn[data-theme='docuseal-light']::before {
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.35) 56%, rgba(15, 111, 90, 0.08));
+}
+
+.theme-toggle-btn[data-theme='docuseal-light'] [data-theme-icon='moon'] {
+  background: linear-gradient(145deg, rgba(59, 130, 246, 0.24), rgba(37, 99, 235, 0.12));
+  border-color: rgba(59, 130, 246, 0.34);
+}
+
+.theme-toggle-btn[data-theme='docuseal-light'] [data-theme-icon='moon'] svg {
+  color: #1f4f80;
+  filter: drop-shadow(0 0 7px rgba(30, 79, 130, 0.24));
 }
 
 .theme-toggle-btn[data-theme='docuseal-dark'] {
-  background: #122033;
+  background: linear-gradient(160deg, rgba(18, 32, 51, 0.96), rgba(11, 24, 40, 0.96));
   color: #d5e3fe;
-  border-color: rgba(213, 227, 254, 0.2);
+  border-color: rgba(213, 227, 254, 0.24);
+  box-shadow: 0 12px 24px rgba(2, 8, 19, 0.42), inset 0 1px 0 rgba(213, 227, 254, 0.08);
+}
+
+.theme-toggle-btn[data-theme='docuseal-dark']::before {
+  background: linear-gradient(155deg, rgba(213, 227, 254, 0.12), rgba(213, 227, 254, 0.02) 56%, rgba(4, 190, 153, 0.11));
+}
+
+.theme-toggle-btn[data-theme='docuseal-dark'] [data-theme-icon='sun'] {
+  background: linear-gradient(145deg, rgba(251, 191, 36, 0.27), rgba(245, 158, 11, 0.12));
+  border-color: rgba(251, 191, 36, 0.36);
+}
+
+.theme-toggle-btn[data-theme='docuseal-dark'] [data-theme-icon='sun'] svg {
+  color: #ffde8f;
+}
+
+.theme-toggle-btn:hover [data-theme-icon] svg {
+  transform: scale(1.09) rotate(-4deg);
 }
 
 .navbar-main-link {
@@ -1522,9 +1626,84 @@
   color: #4b5d75 !important;
 }
 
+[data-theme='docuseal-light'] .users-table-head-row {
+  background: #d7e3f1 !important;
+}
+
+[data-theme='docuseal-light'] .users-table-head-row th {
+  background: transparent !important;
+}
+
+[data-theme='docuseal-light'] .users-table-head,
+[data-theme='docuseal-light'] .esign-table-head {
+  background: #d7e3f1 !important;
+}
+
+[data-theme='docuseal-light'] .users-table-head th,
+[data-theme='docuseal-light'] .esign-table-head th {
+  background: transparent !important;
+  color: #3f556f !important;
+}
+
 [data-theme='docuseal-light'] .users-table-row,
 [data-theme='docuseal-light'] .users-table-row td {
   color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .templates-empty-subtitle {
+  color: #4b5d75 !important;
+}
+
+/* Export modal option cards + close button readability in light theme */
+.export-option-card {
+  cursor: pointer;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.export-option-title {
+  color: #d5e3fe;
+}
+
+.export-option-description {
+  color: rgba(213, 227, 254, 0.76);
+}
+
+.export-option-card:hover,
+.export-option-card:focus-within {
+  background: #1d2b3e;
+  border-color: rgba(4, 190, 153, 0.52);
+  box-shadow: 0 0 0 1px rgba(4, 190, 153, 0.22);
+}
+
+[data-theme='docuseal-light'] .turbo-modal-close-btn {
+  color: #435a76 !important;
+}
+
+[data-theme='docuseal-light'] .turbo-modal-close-btn:hover,
+[data-theme='docuseal-light'] .turbo-modal-close-btn:focus-visible {
+  color: #12233c !important;
+  background: rgba(18, 35, 60, 0.08);
+  border-radius: 0.35rem;
+}
+
+[data-theme='docuseal-light'] .export-option-card {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.18) !important;
+}
+
+[data-theme='docuseal-light'] .export-option-card:hover,
+[data-theme='docuseal-light'] .export-option-card:focus-within {
+  background: #eef7ff !important;
+  border-color: rgba(4, 190, 153, 0.68) !important;
+  box-shadow: 0 0 0 1px rgba(4, 190, 153, 0.26), 0 8px 18px rgba(10, 25, 44, 0.1);
+}
+
+[data-theme='docuseal-light'] .export-option-title {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .export-option-description {
+  color: #4b5d75 !important;
 }
 
 [data-theme='docuseal-light'] .storage-disk-title {
@@ -1775,6 +1954,34 @@
 [data-theme='docuseal-light'] template-builder .draw-field-container:hover {
   background: #f0f7ff !important;
   border-color: rgba(4, 190, 153, 0.52) !important;
+}
+
+template-builder .builder-fields-help-item,
+template-builder .builder-draw-field-title {
+  color: rgba(213, 227, 254, 0.86);
+}
+
+template-builder .builder-draw-field-link {
+  color: #69fad2 !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-fields-help {
+  border-color: rgba(18, 35, 60, 0.16) !important;
+  background: #ffffff !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-fields-help-item,
+[data-theme='docuseal-light'] template-builder .builder-draw-field-title {
+  color: #2d4563 !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-draw-field-link {
+  color: #0f6f5a !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-draw-field-link:hover,
+[data-theme='docuseal-light'] template-builder .builder-draw-field-link:focus-visible {
+  color: #0a5847 !important;
 }
 
 [data-theme='docuseal-light'] template-builder .builder-top-action,
