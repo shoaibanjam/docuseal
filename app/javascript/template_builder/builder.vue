@@ -54,7 +54,7 @@
     <div
       v-if="$slots.buttons || withTitle"
       id="title_container"
-      class="flex justify-between py-1.5 items-center pr-4 top-0 z-10 title-container builder-topbar"
+      class="flex justify-between py-1.5 items-center pr-4 top-0 z-30 title-container builder-topbar"
       :class="{ sticky: withStickySubmitters || isBreakpointLg }"
       :style="{ backgroundColor }"
     >
@@ -502,7 +502,7 @@
             <p v-if="(drawField?.type || drawFieldType || drawCustomField?.type) === 'strikethrough'">
               {{ t('draw_strikethrough_the_document') }}
             </p>
-            <p v-else>
+            <p v-else class="builder-draw-field-title">
               {{ t('draw_field_on_the_document') }}
             </p>
             <div>
@@ -515,7 +515,7 @@
               <a
                 v-if="!drawField && !drawOption && !['stamp', 'signature', 'initials', 'heading', 'strikethrough'].includes(drawField?.type || drawFieldType || drawCustomField?.type)"
                 href="#"
-                class="link block mt-3 text-sm"
+                class="link block mt-3 text-sm builder-draw-field-link"
                 @click.prevent="drawCustomField ? addCustomFieldWithoutDraw() : [addField(drawFieldType), drawField = null, drawOption = null, withSelectedFieldType ? '' : drawFieldType = '', showDrawField = false]"
               >
                 {{ t('or_add_field_without_drawing') }}

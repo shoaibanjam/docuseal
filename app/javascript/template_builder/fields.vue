@@ -306,16 +306,16 @@
   </div>
   <div
     v-if="!isShowVariables && fields.length < 4 && editable && withHelp && !showTourStartForm"
-    class="text-xs p-2 border border-base-200 rounded"
+    class="text-xs p-2 border border-base-200 rounded builder-fields-help"
   >
-    <ul class="list-disc list-outside ml-3">
-      <li>
+    <ul class="list-disc list-outside ml-3 builder-fields-help-list">
+      <li class="builder-fields-help-item">
         {{ t('draw_a_text_field_on_the_page_with_a_mouse') }}
       </li>
-      <li>
+      <li class="builder-fields-help-item">
         {{ t('drag_and_drop_any_other_field_type_on_the_page') }}
       </li>
-      <li>
+      <li class="builder-fields-help-item">
         {{ t('click_on_the_field_type_above_to_start_drawing_it') }}
       </li>
     </ul>
