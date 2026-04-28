@@ -55,7 +55,7 @@ import OpenModal from './elements/open_modal'
 import BarChart from './elements/bar_chart'
 import FieldCondition from './elements/field_condition'
 import { showToast, showConfirmToast } from './lib/toast'
-import ThemeToggle, { initTheme, getCurrentTheme } from './lib/theme'
+import ThemeToggle, { initTheme } from './lib/theme'
 
 import * as TurboInstantClick from './lib/turbo_instant_click'
 
@@ -180,7 +180,7 @@ safeRegisterElement('template-builder', class extends HTMLElement {
 
     const template = reactive(JSON.parse(this.dataset.template))
 
-    const builderBackgroundColor = getCurrentTheme() === 'docuseal-light' ? '#f8fbff' : '#051427'
+    const builderBackgroundColor = 'var(--stitch-surface-low)'
 
     this.app = createApp(TemplateBuilder, {
       template: reactive(JSON.parse(this.dataset.template)),

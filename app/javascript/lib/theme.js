@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'cybros-theme'
+const COOKIE_KEY = 'cybros-theme'
 const DARK_THEME = 'docuseal-dark'
 const LIGHT_THEME = 'docuseal-light'
 const LEGACY_DARK_THEME = 'docuseal'
@@ -24,6 +25,10 @@ export const applyTheme = (themeName, { persist = true } = {}) => {
       window.localStorage.setItem(STORAGE_KEY, normalizedTheme)
     } catch (_) {}
   }
+
+  try {
+    document.cookie = `${COOKIE_KEY}=${normalizedTheme}; Path=/; Max-Age=31536000; SameSite=Lax`
+  } catch (_) {}
 
   window.dispatchEvent(new CustomEvent('cybros:theme-changed', { detail: { theme: normalizedTheme } }))
 
