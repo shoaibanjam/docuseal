@@ -2,6 +2,29 @@
   <%= content_for(:html_title) || (signed_in? ? Docuseal.product_name : "#{Docuseal.product_name} | Open Source Document Signing") %>
 </title>
 <%= render 'shared/meta' %>
+<script>
+  (function () {
+    var STORAGE_KEY = 'cybros-theme';
+    var DARK_THEME = 'docuseal-dark';
+    var LIGHT_THEME = 'docuseal-light';
+    var LEGACY_DARK_THEME = 'docuseal';
+    var initialTheme = document.documentElement.getAttribute('data-theme');
+    var theme = initialTheme === LIGHT_THEME ? LIGHT_THEME : DARK_THEME;
+
+    try {
+      var storedTheme = window.localStorage.getItem(STORAGE_KEY);
+
+      if (storedTheme === LIGHT_THEME) {
+        theme = LIGHT_THEME;
+      } else if (storedTheme === LEGACY_DARK_THEME || storedTheme === DARK_THEME) {
+        theme = DARK_THEME;
+      }
+    } catch (_) {}
+
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.colorScheme = theme === LIGHT_THEME ? 'light' : 'dark';
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">

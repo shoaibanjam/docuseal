@@ -32,9 +32,23 @@ RSpec.describe 'Sign In' do
   context 'when resetting password' do
     it "shows validation error for blank email on forgot password form" do
       click_link 'Forgot your password?'
+      expect(page).to have_css('.auth-card')
       click_forgot_password_submit
 
       expect(page).to have_content("Email can't be blank")
+      expect(page).to have_current_path(new_user_password_path)
+      expect(ActionMailer::Base.deliveries).to be_empty
+    end
+
+    it 'shows a signup hint when email is not registered on forgot password form' do
+      click_link 'Forgot your password?'
+      expect(page).to have_css('.auth-card')
+
+      fill_in 'Email', with: 'unregistered@example.com'
+      click_forgot_password_submit
+
+      expect(page).to have_content('This email is not registered')
+      expect(page).to have_content('try signup')
       expect(page).to have_current_path(new_user_password_path)
       expect(ActionMailer::Base.deliveries).to be_empty
     end

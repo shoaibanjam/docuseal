@@ -4,7 +4,7 @@
 #
 # Table name: submission_events
 #
-#  id              :integer          not null, primary key
+#  id              :bigint           not null, primary key
 #  data            :text             not null
 #  event_timestamp :datetime         not null
 #  event_type      :string           not null
@@ -20,13 +20,13 @@
 #  index_submission_events_on_created_at        (created_at)
 #  index_submission_events_on_submission_id     (submission_id)
 #  index_submission_events_on_submitter_id      (submitter_id)
-#  index_submissions_events_on_sms_event_types  (account_id,created_at) WHERE event_type IN ('send_sms', 'send_2fa_sms')
+#  index_submissions_events_on_sms_event_types  (account_id,created_at) WHERE ((event_type)::text = ANY ((ARRAY['send_sms'::character varying, 'send_2fa_sms'::character varying])::text[]))
 #
 # Foreign Keys
 #
-#  account_id     (account_id => accounts.id)
-#  submission_id  (submission_id => submissions.id)
-#  submitter_id   (submitter_id => submitters.id)
+#  fk_rails_...  (account_id => accounts.id)
+#  fk_rails_...  (submission_id => submissions.id)
+#  fk_rails_...  (submitter_id => submitters.id)
 #
 class SubmissionEvent < ApplicationRecord
   belongs_to :submission

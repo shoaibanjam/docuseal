@@ -1,17 +1,23 @@
-<div class="max-w-lg mx-auto px-2">
-  <h1 class="text-4xl font-bold text-center mt-8">
-    <%= t('forgot_your_password_') %>
-  </h1>
-  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'space-y-6' }) do |f| %>
-    <div class="space-y-2">
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="auth-title auth-title--sm"><%= t('forgot_your_password_') %></h1>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'space-y-6' }, data: { turbo: params[:redir].blank? }) do |f| %>
       <%= render 'devise/shared/error_messages', resource: %>
-      <div class="form-control">
-        <%= f.label :email, t(:email), class: 'label' %>
-        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input' %>
+      <%= render 'devise/sessions/hidden_fields' %>
+
+      <div class="space-y-2" dir="auto">
+        <div class="form-control">
+          <%= f.label :email, t(:email), class: 'label' %>
+          <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input' %>
+        </div>
       </div>
-    </div>
-    <div class="form-control">
-      <%= f.button button_title(title: t('reset_password'), disabled_with: t('resetting_password')), class: 'base-button' %>
-    </div>
-  <% end %>
+
+      <div class="form-control">
+        <%= f.button button_title(title: t('reset_password'), disabled_with: t('resetting_password')), class: 'base-button w-full' %>
+      </div>
+    <% end %>
+  </div>
 </div>

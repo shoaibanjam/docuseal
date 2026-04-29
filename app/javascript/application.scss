@@ -387,6 +387,10 @@ template-builder .builder-tools-panel .tooltip-bottom-start:after {
   @apply text-5xl font-extrabold tracking-tighter text-white;
 }
 
+.auth-title--sm {
+  @apply text-4xl leading-tight font-extrabold tracking-tighter text-white;
+}
+
 .auth-subtitle {
   @apply mt-2 text-base-content/70;
 }
@@ -1163,6 +1167,31 @@ table tbody tr:hover {
   border-left-width: 4px;
 }
 
+#error_explanation .alert {
+  /* Devise error partial uses `.alert` without an `alert-error` modifier.
+     Force readable text in both light + dark themes. */
+  color: var(--stitch-on-surface) !important;
+}
+
+[data-theme='docuseal-light'] #error_explanation .alert {
+  color: #12233c !important;
+  /* Ensure strong contrast even if the underlying UI framework sets a faded
+     color or low opacity on `.alert`. */
+  background: rgba(147, 0, 10, 0.08) !important;
+  border-left-color: #b40011 !important;
+}
+
+[data-theme='docuseal-light'] #error_explanation .alert p {
+  color: #12233c !important;
+  opacity: 1 !important;
+}
+
+[data-theme='docuseal-light'] #error_explanation .alert,
+[data-theme='docuseal-light'] #error_explanation .alert * {
+  color: #12233c !important;
+  opacity: 1 !important;
+}
+
 .alert-info {
   background: rgba(4, 190, 153, 0.1);
   border-left-color: var(--stitch-secondary);
@@ -1179,7 +1208,8 @@ table tbody tr:hover {
   top: 4rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 80;
+  /* Keep global flash banner above Turbo/Daisy modals */
+  z-index: 2000;
   width: min(36rem, calc(100vw - 2rem));
   display: flex;
   flex-direction: column;
@@ -1721,7 +1751,7 @@ template-builder .builder-save-dropdown-menu .builder-save-menu-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 0.35rem 0.55rem;
   border-radius: 0.5rem;
   color: #d6e6ff !important;
@@ -1833,6 +1863,23 @@ template-builder .fields-grid-item:hover {
 template-builder .draw-field-container {
   background: #101c2e !important;
   border: 1px solid rgba(197, 198, 205, 0.14);
+}
+
+/* Ensure template-builder right rail follows light theme surfaces */
+[data-theme='docuseal-light'] template-builder .builder-tools-panel,
+[data-theme='docuseal-light'] template-builder .builder-tools-panel.builder-tools-panel,
+[data-theme='docuseal-light'] template-builder #fields_list_container {
+  background: #f8fbff !important;
+  border-left-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-draw-overlay {
+  background: #f8fbff !important;
+}
+
+template-builder .builder-draw-overlay {
+  padding-bottom: 0.75rem;
+  overflow: hidden;
 }
 
 /* Template header: make Link action clearly visible in light theme */

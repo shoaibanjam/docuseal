@@ -4,7 +4,7 @@
 #
 # Table name: webhook_attempts
 #
-#  id                   :integer          not null, primary key
+#  id                   :bigint           not null, primary key
 #  attempt              :integer          not null
 #  response_body        :text
 #  response_status_code :integer          not null
