@@ -80,7 +80,7 @@
           name="buttons"
         />
         <template v-else>
-          <theme-toggle class="hidden md:inline-flex">
+          <theme-toggle class="hidden md:inline-flex items-center justify-center">
             <button
               type="button"
               class="theme-toggle-btn builder-theme-toggle-btn"
@@ -211,7 +211,7 @@
               </label>
               <ul
                 tabindex="0"
-                class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-right builder-save-dropdown-menu"
+              class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-center builder-save-dropdown-menu"
               >
                 <li>
                   <a

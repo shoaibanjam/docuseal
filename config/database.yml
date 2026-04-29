@@ -4,10 +4,12 @@ default: &default
   pool: <%= ENV.fetch('RAILS_MAX_THREADS', 15).to_i + ENV.fetch('SIDEKIQ_THREADS', 5).to_i %>
 
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
-  pool: <%= ENV.fetch('RAILS_MAX_THREADS', 15).to_i + ENV.fetch('SIDEKIQ_THREADS', 5).to_i %>
-  timeout: 5000
+  <<: *default
+  host: localhost
+  port: 5432
+  username: postgres
+  password: 1122
+  database: docuseal_development
  
 test:
   adapter: sqlite3

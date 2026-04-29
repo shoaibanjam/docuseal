@@ -37,7 +37,7 @@
     </div>
     <% if signed_in? %>
       <div class="space-x-4 flex items-center">
-        <theme-toggle class="inline-flex">
+        <theme-toggle class="inline-flex items-center justify-center">
           <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
             <span data-theme-icon="sun">
               <%= svg_icon('sun', class: 'w-5 h-5') %>
@@ -65,51 +65,53 @@
         </label>
         <ul tabindex="0" class="navbar-account-menu z-10 dropdown-content p-1.5 mt-2 shadow-soft-lg menu bg-base-100 rounded-lg min-w-[180px] text-right border border-base-300 animate-fade-in-up">
           <li>
-            <%= link_to settings_profile_index_path, class: 'flex items-center' do %>
+            <%= link_to settings_profile_index_path, class: 'flex items-center gap-2' do %>
               <%= svg_icon('adjustments', class: 'w-5 h-5 flex-shrink-0 stroke-2 text-primary-content') %>
-              <span class="mr-1"><%= t('profile') %></span>
+              <span class="whitespace-nowrap"><%= t('profile') %></span>
             <% end %>
           </li>
           <% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::ESIGN_CERTS_KEY, account: current_account)) %>
             <li>
-              <%= link_to settings_esign_path, class: 'flex items-center' do %>
+              <%= link_to settings_esign_path, class: 'flex items-center gap-2' do %>
                 <%= svg_icon('zoom_check', class: 'w-5 h-5 flex-shrink-0 stroke-2 text-primary-content') %>
-                <span class="mr-1 whitespace-nowrap"><%= t('verify_pdf') %></span>
+                <span class="whitespace-nowrap"><%= t('verify_pdf') %></span>
               <% end %>
             </li>
           <% end %>
           <% if Docuseal.multitenant? || current_user.role == 'superadmin' %>
             <li>
-              <%= link_to Docuseal::CHATGPT_URL, target: 'blank', class: 'flex items-center' do %>
+              <%= link_to Docuseal::CHATGPT_URL, target: 'blank', class: 'flex items-center gap-2' do %>
                 <%= svg_icon('sparkles', class: 'w-5 h-5 flex-shrink-0 stroke-2 text-primary-content') %>
-                <span class="mr-1 whitespace-nowrap"><%= t('ask_ai') %></span>
+                <span class="whitespace-nowrap"><%= t('ask_ai') %></span>
               <% end %>
             </li>
           <% end %>
           <% if (can?(:manage, EncryptedConfig) && current_user == true_user) || (current_user != true_user && current_account.testing?) %>
-            <%= form_for '', url: testing_account_path, method: current_account.testing? ? :delete : :get, html: { class: 'w-full py-1' } do |f| %>
-              <label class="flex items-center pl-6 pr-4 py-2 border-y border-base-300 -ml-2 -mr-2" for="testing_toggle">
-                <submit-form data-on="change" class="flex">
-                  <%= f.check_box :testing_toggle, class: 'toggle', checked: current_account.testing?, style: 'height: 0.885rem; width: 1.35rem; --handleoffset: 0.395rem; margin-left: -2px; margin-right: 8px' %>
-                </submit-form>
-                <span class="whitespace-nowrap">
-                  <%= t('test_mode') %>
-                </span>
-              </label>
-            <% end %>
+            <li>
+              <%= form_for '', url: testing_account_path, method: current_account.testing? ? :delete : :get, html: { class: 'w-full py-1' } do |f| %>
+                <label class="flex items-center gap-2 w-full py-2 border-y border-base-300" for="testing_toggle">
+                  <submit-form data-on="change" class="flex">
+                    <%= f.check_box :testing_toggle, class: 'toggle', checked: current_account.testing?, style: 'height: 0.885rem; width: 1.35rem; --handleoffset: 0.395rem' %>
+                  </submit-form>
+                  <span class="whitespace-nowrap">
+                    <%= t('test_mode') %>
+                  </span>
+                </label>
+              <% end %>
+            </li>
           <% end %>
           <li>
-            <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false }, class: 'flex items-center' do %>
-              <%= svg_icon('logout', class: 'w-5 h-5 flex-shrink-0 stroke-2 mr-2 inline text-primary-content') %>
-              <span class="mr-1 whitespace-nowrap"><%= t('sign_out') %></span>
+            <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false }, class: 'flex items-center gap-2' do %>
+              <%= svg_icon('logout', class: 'w-5 h-5 flex-shrink-0 stroke-2 inline text-primary-content') %>
+              <span class="whitespace-nowrap"><%= t('sign_out') %></span>
             <% end %>
           </li>
         </ul>
       </div>
       </div>
     <% else %>
-    <div class="flex space-x-2">
-      <theme-toggle class="inline-flex">
+    <div class="flex items-center justify-center space-x-2">
+      <theme-toggle class="inline-flex items-center justify-center">
         <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
           <span data-theme-icon="sun">
             <%= svg_icon('sun', class: 'w-5 h-5') %>
