@@ -39,6 +39,7 @@ class DashboardController < ApplicationController
   def maybe_render_landing
     return if signed_in?
 
+    @marketing_landing = true
     render 'pages/landing'
   end
 end

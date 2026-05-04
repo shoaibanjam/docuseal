@@ -1,0 +1,151 @@
+<section class="landing-section landing-fields-grid bg-[#fdf8f5] py-20">
+  <div class="mx-auto max-w-7xl px-6">
+    <header class="mb-12 text-center">
+      <div class="landing-fields-compliance-badge inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-100/60 px-3 py-1">
+        <span class="material-symbols-outlined landing-fields-compliance-badge-icon text-[16px] text-emerald-700">verified_user</span>
+        <span class="landing-fields-compliance-badge-text text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-700">Enterprise Compliance Ready</span>
+      </div>
+      <h2 class="mt-5 text-3xl font-semibold tracking-tight text-slate-900 md:text-5xl">Every Field You Need</h2>
+      <p class="mx-auto mt-4 max-w-3xl text-base text-slate-600 md:text-lg">
+        Build high-integrity documents with a comprehensive suite of industrial-grade field types designed for modern legal and financial workflows.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-12">
+      <div class="landing-fields-identity-card relative overflow-hidden rounded-xl border border-slate-200 bg-white p-8 md:col-span-8">
+        <div class="relative z-10">
+          <div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-[#0d1c2f] text-white">
+            <span class="material-symbols-outlined text-[24px]">signature</span>
+          </div>
+          <h3 class="text-4xl font-semibold tracking-tight text-slate-900">Core Identity</h3>
+          <p class="mt-3 max-w-md text-slate-600">
+            The bedrock of every agreement. Capture verified signatures and plain text entries with cryptographic timestamping.
+          </p>
+        </div>
+
+        <div class="relative z-10 mt-8 flex gap-4 overflow-x-auto pb-3">
+          <% [['text', 'text_fields'], ['signature', 'edit'], ['initials', 'person']].each do |label, icon| %>
+            <div class="landing-fields-pill flex min-w-[120px] flex-col items-center rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <span class="material-symbols-outlined landing-fields-pill-icon mb-2 text-[20px] text-slate-800"><%= icon %></span>
+              <span class="landing-fields-pill-label text-xs font-semibold uppercase tracking-wide text-slate-700"><%= label %></span>
+            </div>
+          <% end %>
+        </div>
+
+        <img
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlBmmPVbEUUI9DdV-6Z2EL7f1D_gaOq_-2XhJmWBA4wEXu6dnfreMaIhgYmdbORI6TQZubWZs06IaA2jsevA-KkCEixgmepZ3o6vwgV0YEuN24OVIVJc_1A2Fd5onPtVzkiWQqZajxz-NxCCesHTJy28UcWpZM1Z8u5ixbd7uU-8KF4BIQwQI647a4luXVdfddt6umtJXVZNowqTjxdx5S_wH-JpVT-AvyBGyY_Jz4EFlg3eim5FDMgIRzVFr9I6daRKWv4V3lPF_A"
+          alt="Document identity workspace"
+          class="pointer-events-none absolute bottom-0 right-0 h-full w-1/2 object-cover opacity-15"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="landing-fields-identity-shield rounded-xl bg-[#0d1c2f] p-8 text-white md:col-span-4">
+        <div class="mb-6 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-400 text-[#0d1c2f]">
+          <span class="material-symbols-outlined text-[20px]">verified</span>
+        </div>
+        <h3 class="landing-fields-identity-shield-title text-2xl font-semibold">Identity Shield</h3>
+        <p class="landing-fields-identity-shield-copy mt-3 text-slate-300">Advanced KBA and biometric verification fields for high-stakes transactions.</p>
+        <div class="mt-6 grid grid-cols-2 gap-3">
+          <div class="landing-fields-identity-shield-chip flex items-center gap-2 rounded-lg border border-white/10 bg-white/10 p-3">
+            <span class="material-symbols-outlined text-[18px]">lock</span>
+            <span class="text-[10px] font-semibold uppercase tracking-wider">kba</span>
+          </div>
+          <div class="landing-fields-identity-shield-chip flex items-center gap-2 rounded-lg border border-white/10 bg-white/10 p-3">
+            <span class="material-symbols-outlined text-[18px]">fingerprint</span>
+            <span class="text-[10px] font-semibold uppercase tracking-wider">verification</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-xl border border-slate-200 bg-white p-8 md:col-span-12">
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <% [
+            ['Temporal', 'date', 'calendar_month'],
+            ['Live Timestamp', 'datenow', 'schedule'],
+            ['Quantitative', 'number', '123'],
+            ['Media', 'image', 'image'],
+            ['Asset', 'file', 'upload_file'],
+            ['Choice', 'select', 'list'],
+            ['Boolean', 'checkbox', 'check_box'],
+            ['Multi-pick', 'multiple', 'checklist'],
+            ['Exclusive', 'radio', 'radio_button_checked'],
+            ['Tabular', 'cells', 'grid_on'],
+            ['Notary', 'stamp', 'approval'],
+            ['Transaction', 'payment', 'payments'],
+            ['Contact', 'phone', 'call'],
+            ['Structure', 'heading', 'title'],
+            ['Edit', 'strikethrough', 'format_strikethrough'],
+            ['Privacy', 'redact', 'ink_eraser']
+          ].each do |label, value, icon| %>
+            <div class="rounded-xl border border-slate-200 bg-white p-5 transition hover:shadow-lg">
+              <span class="material-symbols-outlined mb-3 text-[28px] leading-none text-emerald-700"><%= icon %></span>
+              <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500"><%= label %></p>
+              <p class="mt-1 text-base font-semibold text-slate-900"><%= value %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <section class="landing-fields-enterprise-panel mt-16 rounded-3xl border border-slate-200 bg-[#ece7e4] p-8 md:p-12">
+      <div class="flex flex-col items-center gap-10 md:flex-row">
+        <div class="md:w-1/2">
+          <h3 class="landing-fields-enterprise-title text-4xl font-semibold tracking-tight text-slate-900">Designed for Enterprise Complexity</h3>
+          <p class="landing-fields-enterprise-copy mt-5 text-slate-600">
+            Our field system does not just collect data. It manages document life cycles, from controlled edits to automatic redaction for compliance-heavy industries.
+          </p>
+          <div class="mt-7 space-y-4">
+            <div class="flex items-start gap-3">
+              <span class="landing-fields-enterprise-chip rounded-lg bg-emerald-100 p-2"><span class="material-symbols-outlined text-[18px] leading-none text-emerald-700">security</span></span>
+              <div>
+                <p class="landing-fields-enterprise-item-title font-semibold text-slate-900">End-to-End Encryption</p>
+                <p class="landing-fields-enterprise-item-copy text-sm text-slate-600">Every field entry is encrypted before it leaves the browser.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="landing-fields-enterprise-chip rounded-lg bg-emerald-100 p-2"><span class="material-symbols-outlined text-[18px] leading-none text-emerald-700">history_edu</span></span>
+              <div>
+                <p class="landing-fields-enterprise-item-title font-semibold text-slate-900">Audit Trail Mastery</p>
+                <p class="landing-fields-enterprise-item-copy text-sm text-slate-600">Full version history for every field modification or redaction.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative w-full md:w-1/2">
+          <div class="relative aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-[#0d1c2f] to-[#4c00ff] shadow-2xl">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEAakhvE4oMl8BuBlfQ9XjObchYUmgiWgyXBPfpKetes1SiGhgvstZd0Orezxdd1nCk3NgJremFJOLLKCU2n1eXjdAQmJM-6whZdGCTWul9MQ7CapGCuYLzKxt6lU8rHW2gjiPkAlDyArw2sfWJCnFAReP3Y0Tn68Kqdg6V--ww63a-XXzMUhVAdU_v_P4tTh9kLbrJPQPpAwTiyeadLgm8ONYbUPSjS8lgfcr2CXI-8nRZqs9iiBETBzgEmUzt3XrLOKIalbjSXsz"
+              alt="Enterprise complexity visual"
+              class="h-full w-full object-cover opacity-60 mix-blend-overlay"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 flex items-center justify-center p-8">
+              <div class="w-full rounded-xl border border-white/20 bg-white/10 p-6 backdrop-blur-md">
+                <div class="mb-4 h-4 w-1/3 rounded bg-white/20"></div>
+                <div class="space-y-3">
+                  <div class="flex h-10 items-center rounded border border-white/10 bg-white/10 px-4">
+                    <div class="h-2 w-1/2 rounded bg-white/30"></div>
+                  </div>
+                  <div class="flex h-10 items-center rounded border border-emerald-300/30 bg-emerald-300/20 px-4">
+                    <div class="h-2 w-2/3 rounded bg-emerald-300/50"></div>
+                  </div>
+                  <div class="rounded border border-white/10 bg-white/10 p-4">
+                    <div class="flex gap-2">
+                      <div class="h-8 w-8 rounded-full bg-white/20"></div>
+                      <div class="flex-1 space-y-2">
+                        <div class="h-2 w-1/2 rounded bg-white/30"></div>
+                        <div class="h-2 w-full rounded bg-white/20"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

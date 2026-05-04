@@ -1,0 +1,31 @@
+<header class="landing-nav sticky top-0 z-[60] border-b border-white/10">
+  <div class="relative z-[1] mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3.5 md:gap-8">
+    <%= link_to root_path, class: 'landing-nav-brand-link flex shrink-0 items-center text-white', aria: { label: Docuseal.product_name } do %>
+      <%= render 'shared/logo', class: 'h-9 w-auto object-contain shrink-0' %>
+    <% end %>
+    <nav class="hidden flex-1 items-center justify-center gap-8 md:flex" aria-label="Primary">
+      <a href="#landing-products" class="landing-nav-link text-sm font-medium text-slate-400 transition hover:text-white">Products</a>
+      <a href="#landing-solutions" class="landing-nav-link text-sm font-medium text-slate-400 transition hover:text-white">Solutions</a>
+      <a href="#landing-faq" class="landing-nav-link text-sm font-medium text-slate-400 transition hover:text-white">Company</a>
+    </nav>
+    <div class="flex shrink-0 items-center gap-2 md:gap-3">
+      <theme-toggle class="landing-nav-theme inline-flex items-center justify-center">
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
+          <span data-theme-icon="sun">
+            <%= svg_icon('sun', class: 'w-5 h-5') %>
+          </span>
+          <span data-theme-icon="moon" class="hidden">
+            <%= svg_icon('moon', class: 'w-5 h-5') %>
+          </span>
+        </button>
+      </theme-toggle>
+      <% if request.path != new_user_session_path && request.path != setup_index_path %>
+        <%= link_to login_path, class: 'landing-nav-login inline-flex items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-medium text-white/90 transition hover:text-white md:px-3' do %>
+          <%= svg_icon('login', class: 'h-5 w-5 shrink-0') %>
+          <span class="hidden sm:inline"><%= t('sign_in') %></span>
+        <% end %>
+      <% end %>
+      <%= link_to 'Get Started', get_started_path, class: 'landing-nav-cta inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold shadow-lg transition md:px-5' %>
+    </div>
+  </div>
+</header>

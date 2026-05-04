@@ -4,6 +4,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "design_system";
+@import "landing";
 
 body {
   @apply antialiased text-base-content bg-base-100;
@@ -847,25 +848,6 @@ kbd {
   box-shadow: 0 12px 28px rgba(10, 25, 44, 0.12);
 }
 
-.landing-feature-card {
-  border-width: 2px !important;
-  border-style: solid !important;
-  border-color: rgba(18, 35, 60, 0.24) !important;
-  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18) !important;
-}
-
-[data-theme='docuseal-light'] .landing-feature-card {
-  background: #ffffff !important;
-  border-color: #c1cedf !important;
-  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18) !important;
-}
-
-[data-theme='docuseal-dark'] .landing-feature-card,
-[data-theme='docuseal'] .landing-feature-card {
-  border-color: rgba(213, 227, 254, 0.24) !important;
-  box-shadow: 0 14px 30px rgba(1, 14, 33, 0.36) !important;
-}
-
 .modal-box,
 .dropdown-content,
 .menu,
@@ -1603,6 +1585,9 @@ template-builder > div {
 }
 
 template-builder .builder-topbar {
+  display: flex;
+  gap: 0.75rem;
+  min-width: 0;
   min-height: 64px;
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid rgba(197, 198, 205, 0.12);
@@ -1611,6 +1596,9 @@ template-builder .builder-topbar {
 }
 
 template-builder .builder-topbar-left {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
   gap: 0.75rem;
 }
 
@@ -1619,9 +1607,25 @@ template-builder .builder-toolbar-search {
 }
 
 template-builder .builder-template-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
   font-size: clamp(1.35rem, 2.2vw, 2.05rem) !important;
   line-height: 1.1 !important;
   font-weight: 800 !important;
+}
+
+template-builder .builder-template-name [contenteditable] {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+template-builder .builder-template-name:focus-within [contenteditable] {
+  overflow-x: auto;
+  text-overflow: clip;
 }
 
 template-builder .builder-sign-button,
@@ -1798,6 +1802,45 @@ template-builder .builder-documents-rail .document-preview-card {
   border-radius: 12px;
   padding: 0.45rem 0.45rem 0.15rem;
   margin-bottom: 0.55rem;
+  overflow: hidden;
+}
+
+template-builder .builder-documents-rail .document-preview-name {
+  min-width: 0;
+}
+
+template-builder .builder-documents-rail .document-preview-name .document-preview-name-input {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+template-builder .builder-documents-rail .document-preview-name .document-preview-name-input [contenteditable] {
+  display: -webkit-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.2;
+  max-height: calc(1.2em * 2);
+}
+
+template-builder .builder-documents-rail .document-preview-name .document-preview-name-input:focus-within [contenteditable] {
+  display: block;
+  line-clamp: unset;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+  max-height: none;
+  overflow-y: auto;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 template-builder .builder-documents-rail .builder-documents-rail-footer {

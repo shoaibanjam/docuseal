@@ -1,0 +1,33 @@
+<section id="landing-solutions" class="landing-section landing-solutions-grid py-24 md:py-32">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mx-auto max-w-3xl text-center">
+      <span class="landing-cloud-badge mx-auto mb-4 inline-block">Why choose us</span>
+      <h2 class="text-3xl font-bold tracking-tight text-white md:text-4xl">
+        One platform. Many workflows. <span class="landing-gradient-text">Zero compromise.</span>
+      </h2>
+      <p class="mt-4 text-lg text-slate-400">
+        From template design to signed archives, <%= Docuseal.product_name %> connects every step without vendor lock-in.
+      </p>
+    </div>
+
+    <div class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <% solutions = [
+        { icon: 'bolt', title: 'Managed infrastructure', copy: 'Run on our cloud or yours with Docker, Kubernetes, and predictable scaling.' },
+        { icon: 'hub', title: 'Platform driven', copy: 'API-first design with webhooks and embeds so your stack stays in control.' },
+        { icon: 'public', title: 'Global reach', copy: 'Localized experiences and signing flows that work across regions and devices.' },
+        { icon: 'extension', title: 'Integrated analytics', copy: 'Track completion, bottlenecks, and signer behavior from a single dashboard.' },
+        { icon: 'shield', title: 'Enterprise security', copy: 'Encryption, tamper-evident PDFs, and optional SSO for your organization.' },
+        { icon: 'lightbulb', title: 'Business efficiency', copy: 'Conditional fields, formulas, and automation that cut manual work in half.' }
+      ] %>
+      <% solutions.each do |item| %>
+        <div class="landing-solutions-card rounded-2xl border border-white/10 bg-[#0a1220] p-6 transition hover:border-sky-500/25 hover:shadow-lg hover:shadow-sky-500/5">
+          <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500/20 to-violet-500/20 text-sky-300">
+            <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1, 'wght' 500;"><%= item[:icon] %></span>
+          </div>
+          <h3 class="text-lg font-semibold text-white"><%= item[:title] %></h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-400"><%= item[:copy] %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

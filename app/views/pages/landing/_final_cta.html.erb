@@ -1,0 +1,17 @@
+<section class="landing-section landing-final-cta relative overflow-hidden py-24 md:py-32">
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(56,189,248,0.12),transparent)]"></div>
+  <div class="relative mx-auto max-w-7xl px-6 text-center">
+    <div class="landing-final-cta-panel mx-auto max-w-4xl rounded-[28px] border border-white/10 bg-[#0a1220]/90 p-10 shadow-2xl shadow-black/30 backdrop-blur-md md:p-16">
+      <h2 class="text-3xl font-bold tracking-tight text-white md:text-5xl">
+        Ready to <span class="landing-gradient-text">digitize</span> your workflow?
+      </h2>
+      <p class="landing-final-cta-copy mx-auto mt-4 max-w-2xl text-lg text-slate-400">
+        Join thousands of teams who trust <%= Docuseal.product_name %> for mission‑critical signing and document automation.
+      </p>
+      <div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row sm:flex-wrap">
+        <%= link_to 'Get started for free', get_started_path, class: 'landing-btn-gradient inline-flex items-center justify-center rounded-full px-8 py-4 text-base font-semibold text-[#050a14] shadow-lg shadow-sky-500/25 transition hover:brightness-105' %>
+        <%= link_to 'Talk to sales', login_path, class: 'landing-final-cta-secondary inline-flex items-center justify-center rounded-full border-2 border-white/35 px-8 py-4 text-base font-semibold text-white transition hover:bg-white/10' %>
+      </div>
+    </div>
+  </div>
+</section>

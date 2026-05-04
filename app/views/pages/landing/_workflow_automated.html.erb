@@ -1,0 +1,71 @@
+<section class="landing-section landing-workflow-automated bg-white py-20 overflow-hidden">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <h2 class="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">Your Workflow, Automated.</h2>
+        <div class="mt-10 space-y-8">
+          <div class="flex gap-4">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0d1c2f] text-sm font-bold text-white">1</div>
+            <div>
+              <h3 class="text-lg font-semibold text-slate-900">Prepare Template</h3>
+              <p class="mt-2 text-sm leading-relaxed text-slate-500">
+                Drag and drop fields onto your document, then assign roles and validation rules in minutes.
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0d1c2f] text-sm font-bold text-white">2</div>
+            <div>
+              <h3 class="text-lg font-semibold text-slate-900">Send & Sign</h3>
+              <p class="mt-2 text-sm leading-relaxed text-slate-500">
+                Share via email or direct link and let signers complete everything securely on any device.
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0d1c2f] text-sm font-bold text-white">3</div>
+            <div>
+              <h3 class="text-lg font-semibold text-slate-900">Complete & Automate</h3>
+              <p class="mt-2 text-sm leading-relaxed text-slate-500">
+                Signed documents are archived, while webhooks and API events trigger your downstream workflows.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative flex justify-center">
+        <div class="absolute -inset-8 rounded-full bg-emerald-200/30 blur-3xl"></div>
+        <div class="landing-workflow-visual-card relative w-full max-w-md rounded-2xl border border-white/10 bg-[#0d1c2f] p-8 text-center shadow-2xl">
+          <div class="mb-10 flex items-center justify-center gap-5">
+            <div class="flex h-24 w-20 flex-col items-center justify-center rounded-lg border border-white/10 bg-white/5">
+              <%= svg_icon('file_text', class: 'h-8 w-8 text-slate-300') %>
+              <span class="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Draft</span>
+            </div>
+            <%= svg_icon('arrow_right', class: 'h-6 w-6 text-emerald-400/70') %>
+            <div class="relative flex h-24 w-20 flex-col items-center justify-center rounded-lg border-2 border-emerald-400 bg-emerald-500/10">
+              <%= svg_icon('writing_sign', class: 'h-8 w-8 text-emerald-300') %>
+              <span class="mt-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300">Signed</span>
+              <span class="absolute -right-2 -top-2 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#0d1c2f] bg-emerald-400 text-[#0d1c2f]">
+                <%= svg_icon('check', class: 'h-3.5 w-3.5') %>
+              </span>
+            </div>
+          </div>
+
+          <div class="mx-auto mb-8 max-w-[220px] space-y-3">
+            <div class="h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div class="h-full w-3/4 bg-emerald-400/50"></div>
+            </div>
+            <div class="mx-auto h-2 w-2/3 overflow-hidden rounded-full bg-white/10">
+              <div class="h-full w-1/2 bg-emerald-300/30"></div>
+            </div>
+          </div>
+
+          <div class="inline-flex rounded-full bg-emerald-400 px-6 py-2.5 shadow-[0_0_30px_rgba(16,185,129,0.35)]">
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-[#0d1c2f]">Workflow Secured</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

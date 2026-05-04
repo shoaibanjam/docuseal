@@ -1,0 +1,29 @@
+<section id="landing-faq" class="landing-section landing-faq py-24 md:py-32">
+  <div class="mx-auto max-w-3xl px-6">
+    <div class="text-center">
+      <span class="landing-cloud-badge mx-auto mb-4 inline-block">FAQ</span>
+      <h2 class="text-3xl font-bold tracking-tight text-white md:text-4xl">
+        Frequently Asked <span class="landing-gradient-text">Questions</span>
+      </h2>
+    </div>
+
+    <div class="landing-faq-list mt-12 divide-y divide-white/10 border-y border-white/10">
+      <% faqs = [
+        ['Is Docuseal suitable for regulated industries?', 'Yes. You can self-host for full data control, use audit trails, role-based access, and enterprise SSO. Many teams in finance and healthcare run Docuseal on their own infrastructure.'],
+        ['Can I embed signing in my own product?', 'Absolutely. Use our API, webhooks, and embeddable flows to integrate signing into your app with minimal friction.'],
+        ['What file formats are supported?', 'PDF and DOCX templates are supported, with dynamic variables and automated generation for high-volume workflows.'],
+        ['How does pricing work for self-hosted deployments?', 'Open-source self-hosting is free. Cloud and enterprise tiers add managed hosting, support, and advanced compliance features.'],
+        ['Where is my data stored?', 'On self-hosted installs, data stays on your servers. On cloud, data is stored in regions you choose according to our security and privacy policies.']
+      ] %>
+      <% faqs.each do |question, answer| %>
+        <details class="landing-faq-item group py-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-base font-semibold text-white marker:content-none [&::-webkit-details-marker]:hidden">
+            <span><%= question %></span>
+            <span class="landing-faq-chevron flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 text-slate-400 transition group-open:rotate-45 group-open:border-sky-400/40 group-open:text-sky-300" aria-hidden="true">+</span>
+          </summary>
+          <p class="mt-3 pr-10 text-sm leading-relaxed text-slate-400"><%= answer %></p>
+        </details>
+      <% end %>
+    </div>
+  </div>
+</section>

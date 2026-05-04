@@ -1,0 +1,824 @@
+/* Landing page component styles */
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+}
+
+.landing-gradient-text {
+  background-image: linear-gradient(105deg, #38bdf8 0%, #a78bfa 52%, #818cf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.landing-cloud-badge {
+  border-radius: 9999px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.08);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+}
+
+.landing-btn-gradient {
+  background-image: linear-gradient(105deg, #38bdf8 0%, #a78bfa 100%);
+}
+
+/* Landing navbar (CybrosCloud-style: transparent bar, cyan → blue CTA) */
+.landing-nav-cta {
+  color: #020617;
+  background-image: linear-gradient(105deg, #22d3ee 0%, #38bdf8 42%, #3b82f6 100%);
+  box-shadow:
+    0 0 28px rgba(34, 211, 238, 0.35),
+    0 6px 20px rgba(15, 23, 42, 0.35);
+}
+
+.landing-nav-cta:hover {
+  filter: brightness(1.07);
+}
+
+.landing-feature-card {
+  border-width: 2px !important;
+  border-style: solid !important;
+  border-color: rgba(18, 35, 60, 0.24) !important;
+  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18) !important;
+}
+
+[data-theme='docuseal-light'] .landing-feature-card {
+  background: #ffffff !important;
+  border-color: #c1cedf !important;
+  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-feature-card,
+[data-theme='docuseal'] .landing-feature-card {
+  border-color: rgba(213, 227, 254, 0.24) !important;
+  box-shadow: 0 14px 30px rgba(1, 14, 33, 0.36) !important;
+}
+
+/* Landing page: full-bleed + theme-scoped surfaces */
+.page-shell .landing-page,
+.ds-page-shell .landing-page {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* Remove outer shell top padding so the landing nav meets the hero (no stray band). */
+.page-shell.page-stack:has(> .landing-page) {
+  padding-top: 0 !important;
+}
+
+/* Same as :has() above, but reliable when :has is unsupported or cascade order differs. */
+body.docuseal-landing main.page-shell.page-stack {
+  padding-top: 0 !important;
+  background-color: #050a14;
+}
+
+/* Match app chrome bar to landing hero so no lighter “stripe” between bars. */
+body.docuseal-landing .main-navbar {
+  background-color: #050a14 !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-bottom-color: rgba(148, 163, 184, 0.12) !important;
+}
+
+html[data-theme='docuseal-light'] body.docuseal-landing .main-navbar {
+  background-color: #f4f7fb !important;
+  border-bottom-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+html[data-theme='docuseal-light'] body.docuseal-landing main.page-shell.page-stack {
+  background-color: #f4f7fb;
+}
+
+body.docuseal-landing {
+  background-color: #050a14 !important;
+}
+
+html[data-theme='docuseal-light'] body.docuseal-landing {
+  background-color: #f4f7fb !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page,
+[data-theme='docuseal'] .landing-page {
+  background: #050a14 !important;
+  color: #d5e3fe;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-social-proof,
+[data-theme='docuseal'] .landing-page .landing-social-proof {
+  background: #070f1a !important;
+  border-color: rgba(213, 227, 254, 0.1) !important;
+}
+
+/* Sticky landing nav: frosted surface so links stay readable over any section while scrolling */
+[data-theme='docuseal-dark'] .landing-page .landing-nav,
+[data-theme='docuseal'] .landing-page .landing-nav {
+  background: rgba(5, 10, 20, 0.82) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom-color: rgba(148, 163, 184, 0.14) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 8px 32px rgba(0, 0, 0, 0.55);
+  isolation: isolate;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  [data-theme='docuseal-dark'] .landing-page .landing-nav,
+  [data-theme='docuseal'] .landing-page .landing-nav {
+    background: rgba(5, 10, 20, 0.96) !important;
+  }
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-nav-link,
+[data-theme='docuseal'] .landing-page .landing-nav-link {
+  color: #94a3b8 !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-nav-link:hover,
+[data-theme='docuseal'] .landing-page .landing-nav-link:hover {
+  color: #f8fafc !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-nav-login,
+[data-theme='docuseal'] .landing-page .landing-nav-login {
+  color: #f1f5f9 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-nav-login:hover,
+[data-theme='docuseal'] .landing-page .landing-nav-login:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template,
+[data-theme='docuseal-dark'] .landing-page .landing-features-grid,
+[data-theme='docuseal-dark'] .landing-page .landing-solutions-grid,
+[data-theme='docuseal-dark'] .landing-page .landing-workflow-automated,
+[data-theme='docuseal-dark'] .landing-page .landing-modern-workflows,
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid,
+[data-theme='docuseal-dark'] .landing-page .landing-security,
+[data-theme='docuseal-dark'] .landing-page .landing-enterprise-grade-security,
+[data-theme='docuseal-dark'] .landing-page .landing-faq,
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta,
+[data-theme='docuseal'] .landing-page .landing-advanced-template,
+[data-theme='docuseal'] .landing-page .landing-features-grid,
+[data-theme='docuseal'] .landing-page .landing-solutions-grid,
+[data-theme='docuseal'] .landing-page .landing-workflow-automated,
+[data-theme='docuseal'] .landing-page .landing-modern-workflows,
+[data-theme='docuseal'] .landing-page .landing-fields-grid,
+[data-theme='docuseal'] .landing-page .landing-security,
+[data-theme='docuseal'] .landing-page .landing-enterprise-grade-security,
+[data-theme='docuseal'] .landing-page .landing-faq,
+[data-theme='docuseal'] .landing-page .landing-final-cta {
+  background: #050a14 !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .bg-white,
+[data-theme='docuseal-dark'] .landing-page .landing-features-grid .bg-white,
+[data-theme='docuseal-dark'] .landing-page .landing-workflow-automated .bg-white,
+[data-theme='docuseal-dark'] .landing-page .landing-modern-workflows .bg-white,
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .bg-white,
+[data-theme='docuseal-dark'] .landing-page .landing-security .bg-white,
+[data-theme='docuseal-dark'] .landing-page .landing-enterprise-grade-security .bg-white,
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta .bg-white,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .bg-white,
+[data-theme='docuseal'] .landing-page .landing-features-grid .bg-white,
+[data-theme='docuseal'] .landing-page .landing-workflow-automated .bg-white,
+[data-theme='docuseal'] .landing-page .landing-modern-workflows .bg-white,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .bg-white,
+[data-theme='docuseal'] .landing-page .landing-security .bg-white,
+[data-theme='docuseal'] .landing-page .landing-enterprise-grade-security .bg-white,
+[data-theme='docuseal'] .landing-page .landing-final-cta .bg-white {
+  background: #0d1c2f !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-section [class*='text-slate-9'],
+[data-theme='docuseal-dark'] .landing-page .landing-section [class*='text-slate-8'],
+[data-theme='docuseal-dark'] .landing-page .landing-section [class*='text-slate-7'],
+[data-theme='docuseal'] .landing-page .landing-section [class*='text-slate-9'],
+[data-theme='docuseal'] .landing-page .landing-section [class*='text-slate-8'],
+[data-theme='docuseal'] .landing-page .landing-section [class*='text-slate-7'] {
+  color: #d5e3fe !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-section [class*='text-slate-6'],
+[data-theme='docuseal-dark'] .landing-page .landing-section [class*='text-slate-5'],
+[data-theme='docuseal-dark'] .landing-page .landing-section [class*='text-slate-4'],
+[data-theme='docuseal'] .landing-page .landing-section [class*='text-slate-6'],
+[data-theme='docuseal'] .landing-page .landing-section [class*='text-slate-5'],
+[data-theme='docuseal'] .landing-page .landing-section [class*='text-slate-4'] {
+  color: #a8b6cd !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-section [class*='border-slate-2'],
+[data-theme='docuseal-dark'] .landing-page .landing-section [class*='border-slate-1'],
+[data-theme='docuseal'] .landing-page .landing-section [class*='border-slate-2'],
+[data-theme='docuseal'] .landing-page .landing-section [class*='border-slate-1'] {
+  border-color: rgba(213, 227, 254, 0.14) !important;
+}
+
+/* Advanced Template Builder */
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-title,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-title {
+  color: #d5e3fe !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-main-card,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-main-card {
+  background: #0d1c2f !important;
+  border-color: rgba(213, 227, 254, 0.14) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-main-heading,
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-main-list,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-main-heading,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-main-list {
+  color: #d5e3fe !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-main-copy,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-main-copy {
+  color: #a8b6cd !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-auto-heading,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-auto-heading,
+[data-theme='docuseal-light'] .landing-page .landing-advanced-template .atb-auto-heading {
+  color: #27e0ae !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-mapping-card,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-mapping-card {
+  background: #0d1c2f !important;
+  border-color: rgba(213, 227, 254, 0.14) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-mapping-heading,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-mapping-heading {
+  color: #d5e3fe !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-mapping-icon,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-mapping-icon {
+  color: #d5e3fe !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-mapping-copy,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-mapping-copy {
+  color: #a8b6cd !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-advanced-template .atb-preview-image,
+[data-theme='docuseal'] .landing-page .landing-advanced-template .atb-preview-image {
+  filter: saturate(0.72) brightness(0.66) contrast(1.08);
+}
+
+/* Final CTA and footer */
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta-overlay,
+[data-theme='docuseal'] .landing-page .landing-final-cta-overlay {
+  background: rgba(4, 190, 153, 0.16) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta-panel,
+[data-theme='docuseal'] .landing-page .landing-final-cta-panel {
+  background: #0d1c2f !important;
+  border-color: rgba(213, 227, 254, 0.16) !important;
+  box-shadow: 0 16px 34px rgba(1, 14, 33, 0.42) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta-secondary,
+[data-theme='docuseal'] .landing-page .landing-final-cta-secondary {
+  border-color: rgba(213, 227, 254, 0.42) !important;
+  color: #d5e3fe !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta-secondary:hover,
+[data-theme='docuseal'] .landing-page .landing-final-cta-secondary:hover {
+  background: rgba(213, 227, 254, 0.08) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta-primary,
+[data-theme='docuseal'] .landing-page .landing-final-cta-primary {
+  color: #0d1c2f !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-footer,
+[data-theme='docuseal'] .landing-page .landing-footer {
+  background: #051427 !important;
+  border-color: rgba(213, 227, 254, 0.12) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-attribution,
+[data-theme='docuseal'] .landing-page .landing-attribution {
+  background: #040b14;
+  border-top: 1px solid rgba(213, 227, 254, 0.08);
+  color: #a8b6cd;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-attribution a,
+[data-theme='docuseal'] .landing-page .landing-attribution a {
+  color: #69fad2;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-security .landing-security-watermark,
+[data-theme='docuseal'] .landing-page .landing-security .landing-security-watermark {
+  opacity: 0.34;
+  filter: invert(1) brightness(2.22) contrast(2.05) saturate(0);
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-security .landing-security-item-icon,
+[data-theme='docuseal'] .landing-page .landing-security .landing-security-item-icon {
+  color: #54fdc9 !important;
+}
+
+/* Landing page light-theme refinements */
+[data-theme='docuseal-light'] .landing-page {
+  background: #fdf8f5 !important;
+  color: #12233c;
+}
+
+/* Light theme shell palette: keep neutral sections to two tones only */
+[data-theme='docuseal-light'] .landing-page .landing-hero,
+[data-theme='docuseal-light'] .landing-page .landing-features-grid,
+[data-theme='docuseal-light'] .landing-page .landing-modern-workflows,
+[data-theme='docuseal-light'] .landing-page .landing-fields-grid,
+[data-theme='docuseal-light'] .landing-page .landing-footer,
+[data-theme='docuseal-light'] .landing-attribution {
+  background: #fdf8f5 !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-social-proof,
+[data-theme='docuseal-light'] .landing-page .landing-advanced-template,
+[data-theme='docuseal-light'] .landing-page .landing-workflow-automated,
+[data-theme='docuseal-light'] .landing-page .landing-multi-party,
+[data-theme='docuseal-light'] .landing-page .landing-enterprise-grade-security,
+[data-theme='docuseal-light'] .landing-page .landing-security {
+  background: #ffffff !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-item,
+[data-theme='docuseal'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-item {
+  background: #0d1c2f !important;
+  border-color: rgba(213, 227, 254, 0.14) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-item p:first-child,
+[data-theme='docuseal'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-item p:first-child {
+  color: #d5e3fe !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-item p:last-child,
+[data-theme='docuseal'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-item p:last-child {
+  color: #a8b6cd !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-image,
+[data-theme='docuseal'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-image {
+  border-color: rgba(213, 227, 254, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(140deg, rgba(84, 253, 201, 0.14), rgba(255, 255, 255, 0.24));
+  pointer-events: none;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-enterprise-grade-security .landing-enterprise-security-image {
+  filter: brightness(1.5) contrast(0.7) saturate(0.56) grayscale(0.08);
+  position: relative;
+  z-index: 0;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-advanced-template .atb-auto-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 35, 60, 0.12) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-advanced-template .atb-auto-card h3:not(.atb-auto-heading) {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-advanced-template .atb-auto-card p,
+[data-theme='docuseal-light'] .landing-page .landing-advanced-template .atb-auto-card li {
+  color: #51657f !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-advanced-template .atb-main-list li,
+[data-theme='docuseal-light'] .landing-page .landing-advanced-template .atb-main-list li span {
+  color: #51657f !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-modern-workflows .modern-workflows-list li,
+[data-theme='docuseal-light'] .landing-page .landing-modern-workflows .modern-workflows-list li span {
+  color: #51657f !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-modern-workflows .modern-workflows-list li,
+[data-theme='docuseal-dark'] .landing-page .landing-modern-workflows .modern-workflows-list li span,
+[data-theme='docuseal'] .landing-page .landing-modern-workflows .modern-workflows-list li,
+[data-theme='docuseal'] .landing-page .landing-modern-workflows .modern-workflows-list li span {
+  color: #a8b6cd !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-modern-workflows .modern-workflows-card,
+[data-theme='docuseal'] .landing-page .landing-modern-workflows .modern-workflows-card {
+  background: #0d1c2f !important;
+  border-color: rgba(213, 227, 254, 0.16) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-modern-workflows .modern-workflows-icon-box,
+[data-theme='docuseal'] .landing-page .landing-modern-workflows .modern-workflows-icon-box {
+  background: rgba(84, 253, 201, 0.14) !important;
+  color: #54fdc9 !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-multi-party {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-multi-party h2,
+[data-theme='docuseal-light'] .landing-page .landing-multi-party h3 {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-multi-party p {
+  color: #51657f !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-multi-party .multi-party-media-card {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-security .landing-security-watermark {
+  opacity: 0.12;
+  filter: saturate(0) brightness(0.75);
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-security .landing-security-item-icon {
+  color: #00a37d !important;
+}
+
+/* Every Field section: explicit dual-theme treatment */
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-pill,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-pill {
+  background: #0d1c2f !important;
+  border-color: rgba(213, 227, 254, 0.14) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-compliance-badge,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-compliance-badge {
+  background: rgba(84, 253, 201, 0.2) !important;
+  border-color: rgba(84, 253, 201, 0.5) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-compliance-badge-icon,
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-compliance-badge-text,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-compliance-badge-icon,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-compliance-badge-text {
+  color: #7dffd9 !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-pill-label,
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-pill-icon,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-pill-label,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-pill-icon {
+  color: #d5e3fe !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-fields-grid .landing-fields-pill {
+  background: #f8fafe !important;
+  border-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-fields-grid .landing-fields-pill-label,
+[data-theme='docuseal-light'] .landing-page .landing-fields-grid .landing-fields-pill-icon {
+  color: #1e3350 !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-enterprise-panel,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-enterprise-panel {
+  background: #0d1c2f !important;
+  border-color: rgba(213, 227, 254, 0.16) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-enterprise-title,
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-enterprise-item-title,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-enterprise-title,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-enterprise-item-title {
+  color: #d5e3fe !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-enterprise-copy,
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-enterprise-item-copy,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-enterprise-copy,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-enterprise-item-copy {
+  color: #a8b6cd !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-fields-grid .landing-fields-enterprise-chip,
+[data-theme='docuseal'] .landing-page .landing-fields-grid .landing-fields-enterprise-chip {
+  background: rgba(84, 253, 201, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-fields-grid .landing-fields-identity-shield {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 35, 60, 0.12) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-fields-grid .landing-fields-identity-shield-title {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-fields-grid .landing-fields-identity-shield-copy {
+  color: #51657f !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-fields-grid .landing-fields-identity-shield-chip {
+  background: #f3f7fd !important;
+  border-color: rgba(18, 35, 60, 0.12) !important;
+  color: #1e3350 !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero {
+  background: #fdf8f5 !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-title {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-copy {
+  color: #51657f !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-secondary {
+  border-color: #12233c !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-secondary:hover {
+  background: rgba(18, 35, 60, 0.06) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-media {
+  border-color: rgba(18, 35, 60, 0.12) !important;
+  background: #ffffff !important;
+  box-shadow: 0 16px 34px rgba(10, 25, 44, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-media-overlay {
+  background: linear-gradient(to top, rgba(18, 35, 60, 0.08), transparent 45%) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-dashboard-image {
+  filter: brightness(1.48) contrast(0.72) saturate(0.58) grayscale(0.06);
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(84, 253, 201, 0.15), rgba(255, 255, 255, 0.22));
+  pointer-events: none;
+  z-index: 1;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-media > img {
+  position: relative;
+  z-index: 0;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-hero-media-overlay {
+  z-index: 2;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card {
+  background: #f5f9ff !important;
+  border-color: rgba(18, 35, 60, 0.16) !important;
+  box-shadow: 0 16px 34px rgba(10, 25, 44, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .bg-white\/5,
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .bg-white\/10 {
+  background: rgba(18, 35, 60, 0.06) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .border-white\/10 {
+  border-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .text-slate-300,
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .text-slate-400 {
+  color: #3a4e68 !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .text-emerald-300 {
+  color: #019a76 !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .border-emerald-400 {
+  border-color: #2ad6ab !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .bg-emerald-500\/10 {
+  background: rgba(84, 253, 201, 0.22) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .bg-emerald-400 {
+  background: #27e0ae !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .border-\[\#0d1c2f\] {
+  border-color: #f5f9ff !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-workflow-visual-card .text-\[\#0d1c2f\] {
+  color: #0d1c2f !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .multi-party-media-card {
+  background: #ffffff !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .multi-party-media-image {
+  filter: brightness(1.46) contrast(0.7) saturate(0.56) grayscale(0.08);
+}
+
+[data-theme='docuseal-light'] .landing-page .multi-party-media-card {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme='docuseal-light'] .landing-page .multi-party-media-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(140deg, rgba(84, 253, 201, 0.14), rgba(255, 255, 255, 0.24));
+  pointer-events: none;
+}
+
+[data-theme='docuseal-light'] .landing-page .multi-party-media-card .multi-party-media-image {
+  position: relative;
+  z-index: 0;
+}
+
+/* Cloud-style landing (light theme) */
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud {
+  background: #f4f7fb !important;
+  color: #12233c;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-hero,
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-features-grid,
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-solutions-grid,
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-faq,
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-final-cta,
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-footer {
+  background: #f4f7fb !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-nav {
+  background: rgba(255, 255, 255, 0.9) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom-color: rgba(15, 23, 42, 0.1) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 8px 28px rgba(15, 23, 42, 0.1);
+  isolation: isolate;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  [data-theme='docuseal-light'] .landing-page .landing-nav {
+    background: #f4f7fb !important;
+  }
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-nav-brand-link {
+  color: #0f172a !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-nav-link {
+  color: #64748b !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-nav-link:hover {
+  color: #0f172a !important;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-nav-login {
+  color: #334155 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-nav-login:hover {
+  color: #0f172a !important;
+  background: rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-social-proof {
+  background: #e8eef5 !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-products-card,
+[data-theme='docuseal-light'] .landing-page .landing-solutions-card {
+  background: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-features-grid .text-white,
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-solutions-grid .text-white,
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-faq .text-white {
+  color: #0f172a !important;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-faq summary {
+  color: #0f172a !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-faq-list {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-faq-list > .landing-faq-item ~ .landing-faq-item {
+  border-top-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-final-cta-panel {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-final-cta-panel .text-white {
+  color: #0f172a !important;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-final-cta-secondary {
+  border-color: rgba(15, 23, 42, 0.25) !important;
+  color: #0f172a !important;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-footer {
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-footer .text-white {
+  color: #0f172a !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-footer-social {
+  border-color: rgba(15, 23, 42, 0.15) !important;
+  color: #475569 !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-cloud-badge {
+  border-color: rgba(14, 165, 233, 0.35);
+  background: rgba(14, 165, 233, 0.1);
+  color: #0369a1;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-hero .pointer-events-none {
+  opacity: 0.35;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-hero-secondary {
+  border-color: rgba(15, 23, 42, 0.22) !important;
+  color: #0f172a !important;
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-hero-media {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  background: #ffffff !important;
+}
+
+[data-theme='docuseal-light'] .landing-page .landing-faq-chevron {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  color: #64748b !important;
+}
