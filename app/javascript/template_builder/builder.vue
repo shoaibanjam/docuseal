@@ -56,7 +56,7 @@
       id="title_container"
       class="flex justify-between py-1.5 items-center pr-4 top-0 z-30 title-container builder-topbar"
       :class="{ sticky: withStickySubmitters || isBreakpointLg }"
-      :style="{ backgroundColor }"
+      :style="builderSurfaceStyle"
     >
       <div class="flex items-center space-x-3 builder-topbar-left">
         <a
@@ -80,7 +80,7 @@
           name="buttons"
         />
         <template v-else>
-          <theme-toggle class="hidden md:inline-flex">
+          <theme-toggle class="hidden md:inline-flex items-center justify-center">
             <button
               type="button"
               class="theme-toggle-btn builder-theme-toggle-btn"
@@ -211,7 +211,7 @@
               </label>
               <ul
                 tabindex="0"
-                class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-right builder-save-dropdown-menu"
+              class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-center builder-save-dropdown-menu"
               >
                 <li>
                   <a
@@ -319,7 +319,7 @@
         />
         <div
           class="sticky bottom-0 py-2 space-y-2 builder-documents-rail-footer"
-          :style="{ backgroundColor }"
+          :style="builderSurfaceStyle"
         >
           <Upload
             v-if="editable && withUploadButton"
@@ -491,12 +491,12 @@
         v-if="withFieldsList && !isMobile"
         id="fields_list_container"
         class="relative w-80 flex-none mt-1 pr-4 pl-0.5 hidden md:block fields-list-container builder-tools-panel"
-        :class="drawField || drawCustomField ? 'overflow-hidden' : 'overflow-y-auto overflow-x-visible'"
+        :class="showDrawField || drawField || drawCustomField ? 'overflow-hidden' : 'overflow-y-auto overflow-x-visible'"
       >
         <div
           v-if="showDrawField || drawField || drawCustomField"
-          class="sticky inset-0 h-full z-20"
-          :style="{ backgroundColor }"
+          class="sticky inset-0 h-full z-20 builder-draw-overlay"
+          :style="builderSurfaceStyle"
         >
           <div class="bg-base-200 rounded-lg p-5 text-center space-y-4 draw-field-container">
             <p v-if="(drawField?.type || drawFieldType || drawCustomField?.type) === 'strikethrough'">
@@ -523,7 +523,7 @@
             </div>
           </div>
         </div>
-        <div>
+        <div v-show="!(showDrawField || drawField || drawCustomField)">
           <Fields
             ref="fields"
             :fields="template.fields"
@@ -1091,6 +1091,18 @@ export default {
       return this.template.schema.map((item) => {
         return this.template.documents.find(doc => doc.uuid === item.attachment_uuid)
       })
+    },
+    builderSurfaceStyle () {
+      const defaultBackgroundColor = '#051427'
+      const color = (this.backgroundColor || '').trim().toLowerCase()
+
+      // Use CSS theme styles by default; only apply inline background when a
+      // custom non-default color is explicitly passed.
+      if (!color || color === defaultBackgroundColor) {
+        return {}
+      }
+
+      return { backgroundColor: this.backgroundColor }
     }
   },
   created () {

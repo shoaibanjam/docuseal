@@ -11,6 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "access_tokens", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "sha256", null: false
@@ -115,9 +118,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
     t.bigint "template_id"
     t.datetime "updated_at", null: false
     t.string "verification_method"
-    t.index ["account_id", "completed_at"], name: "index_completed_submitters_account_id_completed_at_is_first", where: "is_first = TRUE"
+    t.index ["account_id", "completed_at"], name: "index_completed_submitters_account_id_completed_at_is_first", where: "(is_first = true)"
     t.index ["account_id", "completed_at"], name: "index_completed_submitters_on_account_id_and_completed_at"
-    t.index ["submission_id"], name: "index_completed_submitters_on_submission_id", unique: true, where: "is_first = TRUE"
+    t.index ["submission_id"], name: "index_completed_submitters_on_submission_id", unique: true, where: "(is_first = true)"
     t.index ["submitter_id"], name: "index_completed_submitters_on_submitter_id", unique: true
   end
 
@@ -160,7 +163,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
     t.string "event_name", null: false
     t.integer "submitter_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["submitter_id", "event_name"], name: "index_document_generation_events_on_submitter_id_and_event_name", unique: true, where: "event_name IN ('start', 'complete')"
+    t.index ["submitter_id", "event_name"], name: "index_document_generation_events_on_submitter_id_and_event_name", unique: true, where: "((event_name)::text = ANY ((ARRAY['start'::character varying, 'complete'::character varying])::text[]))"
     t.index ["submitter_id"], name: "index_document_generation_events_on_submitter_id"
   end
 
@@ -197,7 +200,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
     t.string "tag", null: false
     t.index ["account_id", "event_datetime"], name: "index_email_events_on_account_id_and_event_datetime"
     t.index ["email"], name: "index_email_events_on_email"
-    t.index ["email"], name: "index_email_events_on_email_event_types", where: "event_type IN ('bounce', 'soft_bounce', 'permanent_bounce', 'complaint', 'soft_complaint')"
+    t.index ["email"], name: "index_email_events_on_email_event_types", where: "((event_type)::text = ANY ((ARRAY['bounce'::character varying, 'soft_bounce'::character varying, 'permanent_bounce'::character varying, 'complaint'::character varying, 'soft_complaint'::character varying])::text[]))"
     t.index ["emailable_type", "emailable_id"], name: "index_email_events_on_emailable"
     t.index ["message_id"], name: "index_email_events_on_message_id"
   end
@@ -241,7 +244,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
     t.string "event_name", null: false
     t.string "key", null: false
     t.datetime "updated_at", null: false
-    t.index ["event_name", "key"], name: "index_lock_events_on_event_name_and_key", unique: true, where: "event_name IN ('start', 'complete')"
+    t.index ["event_name", "key"], name: "index_lock_events_on_event_name_and_key", unique: true, where: "((event_name)::text = ANY ((ARRAY['start'::character varying, 'complete'::character varying])::text[]))"
     t.index ["key"], name: "index_lock_events_on_key"
   end
 
@@ -310,7 +313,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
     t.integer "submission_id", null: false
     t.integer "submitter_id"
     t.datetime "updated_at", null: false
-    t.index ["account_id", "created_at"], name: "index_submissions_events_on_sms_event_types", where: "event_type IN ('send_sms', 'send_2fa_sms')"
+    t.index ["account_id", "created_at"], name: "index_submissions_events_on_sms_event_types", where: "((event_type)::text = ANY ((ARRAY['send_sms'::character varying, 'send_2fa_sms'::character varying])::text[]))"
     t.index ["account_id"], name: "index_submission_events_on_account_id"
     t.index ["created_at"], name: "index_submission_events_on_created_at"
     t.index ["submission_id"], name: "index_submission_events_on_submission_id"
@@ -336,8 +339,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
     t.text "variables"
     t.text "variables_schema"
     t.index ["account_id", "id"], name: "index_submissions_on_account_id_and_id"
-    t.index ["account_id", "template_id", "id"], name: "index_submissions_on_account_id_and_template_id_and_id", where: "archived_at IS NULL"
-    t.index ["account_id", "template_id", "id"], name: "index_submissions_on_account_id_and_template_id_and_id_archived", where: "archived_at IS NOT NULL"
+    t.index ["account_id", "template_id", "id"], name: "index_submissions_on_account_id_and_template_id_and_id", where: "(archived_at IS NULL)"
+    t.index ["account_id", "template_id", "id"], name: "index_submissions_on_account_id_and_template_id_and_id_archived", where: "(archived_at IS NOT NULL)"
     t.index ["created_by_user_id"], name: "index_submissions_on_created_by_user_id"
     t.index ["slug"], name: "index_submissions_on_slug", unique: true
     t.index ["template_id"], name: "index_submissions_on_template_id"
@@ -420,8 +423,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
     t.text "submitters", null: false
     t.datetime "updated_at", null: false
     t.text "variables_schema"
-    t.index ["account_id", "folder_id", "id"], name: "index_templates_on_account_id_and_folder_id_and_id", where: "archived_at IS NULL"
-    t.index ["account_id", "id"], name: "index_templates_on_account_id_and_id_archived", where: "archived_at IS NOT NULL"
+    t.index ["account_id", "folder_id", "id"], name: "index_templates_on_account_id_and_folder_id_and_id", where: "(archived_at IS NULL)"
+    t.index ["account_id", "id"], name: "index_templates_on_account_id_and_id_archived", where: "(archived_at IS NOT NULL)"
     t.index ["account_id"], name: "index_templates_on_account_id"
     t.index ["author_id"], name: "index_templates_on_author_id"
     t.index ["external_id"], name: "index_templates_on_external_id"
@@ -502,7 +505,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_123000) do
     t.string "uuid", null: false
     t.bigint "webhook_url_id", null: false
     t.index ["uuid", "webhook_url_id"], name: "index_webhook_events_on_uuid_and_webhook_url_id", unique: true
-    t.index ["webhook_url_id", "id"], name: "index_webhook_events_error", where: "status = 'error'"
+    t.index ["webhook_url_id", "id"], name: "index_webhook_events_error", where: "((status)::text = 'error'::text)"
     t.index ["webhook_url_id", "id"], name: "index_webhook_events_on_webhook_url_id_and_id"
   end
 

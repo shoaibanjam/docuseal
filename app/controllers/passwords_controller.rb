@@ -16,8 +16,12 @@ class PasswordsController < Devise::PasswordsController
       next if Docuseal.multitenant?
 
       # Keep validation feedback for invalid input (e.g., blank email),
-      # but hide account existence checks to avoid user enumeration.
-      resource.errors.delete(:email, :not_found)
+      # but replace the account existence check with a friendly signup hint.
+      if resource.errors.of_kind?(:email, :not_found)
+        resource.errors.delete(:email, :not_found)
+        resource.errors.add(:base, I18n.t('passwords.email_not_registered_try_signup',
+                                          default: 'This email is not registered. You can try signup.'))
+      end
     end
   end
 

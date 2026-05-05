@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html data-theme="docuseal-dark" lang="<%= I18n.locale %>">
+<% initial_theme = cookies['cybros-theme'] == 'docuseal-light' ? 'docuseal-light' : 'docuseal-dark' %>
+<html data-theme="<%= initial_theme %>" lang="<%= I18n.locale %>">
   <head>
     <%= render 'layouts/head_tags' %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
