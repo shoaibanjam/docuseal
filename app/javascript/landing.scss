@@ -1,5 +1,46 @@
 /* Landing page component styles */
 
+:root {
+  --cy-primary-50: #e3e7ec;
+  --cy-primary-100: #b9c2cf;
+  --cy-primary-200: #8a9aaf;
+  --cy-primary-300: #5b728f;
+  --cy-primary-400: #38567a;
+  --cy-primary-500: #0a192c;
+  --cy-primary-600: #091526;
+  --cy-primary-700: #07111f;
+  --cy-primary-800: #050d18;
+  --cy-primary-900: #03080f;
+
+  --cy-secondary-50: #e0f7f3;
+  --cy-secondary-100: #b3ece1;
+  --cy-secondary-200: #80e0ce;
+  --cy-secondary-300: #4dd4bb;
+  --cy-secondary-400: #26cbb0;
+  --cy-secondary-500: #04be99;
+  --cy-secondary-600: #03a989;
+  --cy-secondary-700: #029176;
+  --cy-secondary-800: #017964;
+  --cy-secondary-900: #00564a;
+
+  --cy-neutral-bg: #0a192c;
+  --cy-neutral-surface: #112240;
+  --cy-neutral-elevated: #1a2e4a;
+  --cy-neutral-border: #2a3f5f;
+  --cy-text-primary: #e6edf3;
+  --cy-text-secondary: #9fb3c8;
+
+  --cy-success: #22c55e;
+  --cy-error: #ef4444;
+  --cy-warning: #f59e0b;
+  --cy-info: #3b82f6;
+
+  --cy-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.2);
+  --cy-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --cy-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --cy-shadow-xl: 0 16px 34px rgba(0, 0, 0, 0.45);
+}
+
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   display: inline-block;
@@ -7,7 +48,7 @@
 }
 
 .landing-gradient-text {
-  background-image: linear-gradient(105deg, #38bdf8 0%, #a78bfa 52%, #818cf8 100%);
+  background-image: linear-gradient(105deg, #26cbb0 0%, #04be99 52%, #80e0ce 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -15,27 +56,36 @@
 
 .landing-cloud-badge {
   border-radius: 9999px;
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(4, 190, 153, 0.35);
+  background: rgba(4, 190, 153, 0.1);
   padding: 0.35rem 0.85rem;
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #7dd3fc;
+  color: #80e0ce;
 }
 
 .landing-btn-gradient {
-  background-image: linear-gradient(105deg, #38bdf8 0%, #a78bfa 100%);
+  background-image: linear-gradient(105deg, #04be99 0%, #26cbb0 100%);
+  box-shadow: var(--cy-shadow-md), 0 0 18px rgba(4, 190, 153, 0.28);
+}
+
+.landing-btn-gradient:hover {
+  filter: brightness(1.06);
+}
+
+.landing-btn-gradient:active {
+  transform: translateY(1px);
 }
 
 /* Landing navbar (CybrosCloud-style: transparent bar, cyan → blue CTA) */
 .landing-nav-cta {
-  color: #020617;
-  background-image: linear-gradient(105deg, #22d3ee 0%, #38bdf8 42%, #3b82f6 100%);
+  color: #07111f;
+  background-image: linear-gradient(105deg, #04be99 0%, #26cbb0 100%);
   box-shadow:
-    0 0 28px rgba(34, 211, 238, 0.35),
-    0 6px 20px rgba(15, 23, 42, 0.35);
+    0 0 28px rgba(4, 190, 153, 0.35),
+    0 6px 20px rgba(3, 8, 15, 0.45);
 }
 
 .landing-nav-cta:hover {
@@ -45,8 +95,8 @@
 .landing-feature-card {
   border-width: 2px !important;
   border-style: solid !important;
-  border-color: rgba(18, 35, 60, 0.24) !important;
-  box-shadow: 0 14px 30px rgba(10, 25, 44, 0.18) !important;
+  border-color: rgba(42, 63, 95, 0.7) !important;
+  box-shadow: var(--cy-shadow-lg) !important;
 }
 
 [data-theme='docuseal-light'] .landing-feature-card {
@@ -77,12 +127,12 @@
 /* Same as :has() above, but reliable when :has is unsupported or cascade order differs. */
 body.docuseal-landing main.page-shell.page-stack {
   padding-top: 0 !important;
-  background-color: #050a14;
+  background-color: var(--cy-neutral-bg);
 }
 
 /* Match app chrome bar to landing hero so no lighter “stripe” between bars. */
 body.docuseal-landing .main-navbar {
-  background-color: #050a14 !important;
+  background-color: var(--cy-neutral-bg) !important;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   border-bottom-color: rgba(148, 163, 184, 0.12) !important;
@@ -98,7 +148,7 @@ html[data-theme='docuseal-light'] body.docuseal-landing main.page-shell.page-sta
 }
 
 body.docuseal-landing {
-  background-color: #050a14 !important;
+  background-color: var(--cy-neutral-bg) !important;
 }
 
 html[data-theme='docuseal-light'] body.docuseal-landing {
@@ -107,23 +157,23 @@ html[data-theme='docuseal-light'] body.docuseal-landing {
 
 [data-theme='docuseal-dark'] .landing-page,
 [data-theme='docuseal'] .landing-page {
-  background: #050a14 !important;
-  color: #d5e3fe;
+  background: var(--cy-neutral-bg) !important;
+  color: var(--cy-text-primary);
 }
 
 [data-theme='docuseal-dark'] .landing-page .landing-social-proof,
 [data-theme='docuseal'] .landing-page .landing-social-proof {
-  background: #070f1a !important;
-  border-color: rgba(213, 227, 254, 0.1) !important;
+  background: #0d2038 !important;
+  border-color: rgba(42, 63, 95, 0.7) !important;
 }
 
 /* Sticky landing nav: frosted surface so links stay readable over any section while scrolling */
 [data-theme='docuseal-dark'] .landing-page .landing-nav,
 [data-theme='docuseal'] .landing-page .landing-nav {
-  background: rgba(5, 10, 20, 0.82) !important;
+  background: rgba(10, 25, 44, 0.86) !important;
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
   backdrop-filter: blur(14px) saturate(1.4);
-  border-bottom-color: rgba(148, 163, 184, 0.14) !important;
+  border-bottom-color: rgba(42, 63, 95, 0.8) !important;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.05) inset,
     0 8px 32px rgba(0, 0, 0, 0.55);
@@ -139,12 +189,12 @@ html[data-theme='docuseal-light'] body.docuseal-landing {
 
 [data-theme='docuseal-dark'] .landing-page .landing-nav-link,
 [data-theme='docuseal'] .landing-page .landing-nav-link {
-  color: #94a3b8 !important;
+  color: var(--cy-text-secondary) !important;
 }
 
 [data-theme='docuseal-dark'] .landing-page .landing-nav-link:hover,
 [data-theme='docuseal'] .landing-page .landing-nav-link:hover {
-  color: #f8fafc !important;
+  color: var(--cy-secondary-300) !important;
 }
 
 [data-theme='docuseal-dark'] .landing-page .landing-nav-login,
@@ -310,7 +360,14 @@ html[data-theme='docuseal-light'] body.docuseal-landing {
 
 [data-theme='docuseal-dark'] .landing-page .landing-final-cta-primary,
 [data-theme='docuseal'] .landing-page .landing-final-cta-primary {
-  color: #0d1c2f !important;
+  color: #07111f !important;
+}
+
+.landing-page a:focus-visible,
+.landing-page button:focus-visible,
+.landing-page summary:focus-visible {
+  outline: 2px solid var(--cy-secondary-400);
+  outline-offset: 2px;
 }
 
 [data-theme='docuseal-dark'] .landing-page .landing-footer,
