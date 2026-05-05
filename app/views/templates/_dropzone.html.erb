@@ -2,21 +2,30 @@
   <input type="hidden" name="form_id" value="<%= form_id %>">
   <button type="submit" class="hidden"></button>
   <file-dropzone data-submit-on-upload="true" class="w-full">
-    <label for="file_dropzone_input" class="ds-templates-upload-zone group w-full block h-52 relative rounded-xl border-2 border-dashed border-white/20 bg-[#0a1b30] hover:bg-[#10243c] hover:border-secondary hover:shadow-[0_0_0_1px_rgba(4,190,153,0.3),0_14px_34px_rgba(3,14,32,0.45)] transition-all duration-200" data-target="file-dropzone.area">
-      <div class="absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center p-2 pointer-events-none">
+    <label for="file_dropzone_input" class="ds-templates-upload-zone tpl-dropzone group w-full block relative transition-all duration-200" data-target="file-dropzone.area">
+      <div class="tpl-dropzone-content">
         <div class="flex flex-col items-center text-center">
-          <span data-target="file-dropzone.icon" class="flex flex-col items-center <%= 'mb-5' if Docuseal.multitenant? %>">
-            <span>
-              <%= svg_icon('cloud_upload', class: 'w-10 h-10 text-primary-content/80 group-hover:text-secondary transition-colors duration-200') %>
+          <span data-target="file-dropzone.icon" class="flex flex-col items-center">
+            <span class="tpl-dropzone-icon-wrap">
+              <%= svg_icon('cloud_upload', class: 'tpl-dropzone-icon w-12 h-12 transition-all duration-200') %>
             </span>
-            <div class="font-medium mb-1 text-primary-content/90 group-hover:text-secondary transition-colors duration-200">
+            <div class="tpl-dropzone-title">
               <%= t('upload_a_new_document') %>
             </div>
-            <div class="text-sm text-primary-content/70 group-hover:text-primary-content transition-colors duration-200">
+            <div class="tpl-dropzone-subtitle">
               <%= t('click_to_upload_or_drag_and_drop_html') %>
             </div>
+            <div class="tpl-dropzone-formats">
+              PDF, PNG, JPG, DOC, DOCX
+            </div>
+            <div class="tpl-dropzone-browse-btn">
+              <span class="tpl-dropzone-browse-btn-inner">
+                <%= svg_icon('upload', class: 'w-4 h-4') %>
+                Browse Files
+              </span>
+            </div>
             <% if Docuseal.multitenant? %>
-              <a class="flex absolute bottom-4 items-center text-sm mt-2 pointer-events-auto" href="<%= new_template_path(modal_tab: 'google_drive') %>" data-turbo-frame="modal">
+              <a class="tpl-dropzone-gdrive-link pointer-events-auto" href="<%= new_template_path(modal_tab: 'google_drive') %>" data-turbo-frame="modal">
                 <span><%= t('or_add_from') %></span>
                 <%= svg_icon('brand_gdrive', class: 'w-4 h-4 ml-1') %>
                 <span class="ml-1 font-medium hover:underline">Google Drive</span>
@@ -24,9 +33,14 @@
             <% end %>
           </span>
           <span data-target="file-dropzone.loading" class="flex flex-col items-center hidden">
-            <%= svg_icon('loader', class: 'w-10 h-10 animate-spin') %>
-            <div class="font-medium mb-1">
+            <span class="tpl-dropzone-icon-wrap">
+              <%= svg_icon('loader', class: 'w-12 h-12 animate-spin') %>
+            </span>
+            <div class="tpl-dropzone-title">
               <%= t('uploading') %>...
+            </div>
+            <div class="tpl-dropzone-progress">
+              <div class="tpl-dropzone-progress-bar"></div>
             </div>
           </span>
         </div>

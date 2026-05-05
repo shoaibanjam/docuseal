@@ -1,19 +1,39 @@
-<%= render 'shared/turbo_modal', title: t('webhook_secret') do %>
-  <%= form_for @webhook_url, url: webhook_secret_path, method: :patch, html: { class: 'space-y-4' }, data: { turbo_frame: :_top } do |f| %>
-    <div class="space-y-2">
-      <%= f.fields_for :secret, Struct.new(:key, :value).new(*@webhook_url.secret.to_a.first) do |ff| %>
-        <div class="form-control">
-          <%= ff.label :key, t('key'), class: 'label' %>
-          <%= ff.text_field :key, class: 'base-input', placeholder: 'X-Example-Header' %>
-        </div>
-        <div class="form-control">
-          <%= ff.label :value, t('value'), class: 'label' %>
-          <%= ff.text_field :value, class: 'base-input' %>
-        </div>
-      <% end %>
-    </div>
-    <div class="form-control pt-2">
-      <%= f.button button_title, class: 'base-button' %>
+<%= render 'shared/turbo_modal',
+      title: t('webhook_secret'),
+      enhanced_modal: true do %>
+  <%= form_for @webhook_url,
+        url: webhook_secret_path(@webhook_url),
+        method: :patch,
+        html: { class: 'users-modal-form webhook-secret-modal-form' },
+        data: { turbo_frame: :_top } do |f| %>
+    <div class="users-modal-editor">
+      <p id="webhook-secret-description" class="signature-editor__lead users-modal-editor__lead">
+        <%= t(
+              'webhook_secret_modal_intro',
+              default: 'Set a custom header name and value. We send them with each webhook POST so your endpoint can verify requests.'
+            ) %>
+      </p>
+      <div class="users-modal-editor__fields space-y-4">
+        <%= f.fields_for :secret, Struct.new(:key, :value).new(*@webhook_url.secret.to_a.first) do |ff| %>
+          <div class="form-control">
+            <%= ff.label :key, t('key'), class: 'label' %>
+            <%= ff.text_field :key,
+                  class: 'base-input w-full',
+                  placeholder: 'X-Example-Header',
+                  aria: { describedby: 'webhook-secret-description' } %>
+          </div>
+          <div class="form-control">
+            <%= ff.label :value, t('value'), class: 'label' %>
+            <%= ff.text_field :value, class: 'base-input w-full' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="signature-editor__actions users-modal-editor__actions">
+        <button type="button" class="signature-editor__cancel btn btn-ghost" data-turbo-modal-close>
+          <%= t('cancel', default: 'Cancel') %>
+        </button>
+        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button profile-settings-btn-primary signature-editor__save' %>
+      </div>
     </div>
   <% end %>
 <% end %>

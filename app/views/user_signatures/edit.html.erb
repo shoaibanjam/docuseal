@@ -1,55 +1,96 @@
-<%= render 'shared/turbo_modal', title: t('update_signature') do %>
+<%= render 'shared/turbo_modal',
+  title: t('update_signature'),
+  signature_editor: true do %>
   <% options = [[t('draw'), 'draw'], [t('upload'), 'upload']] %>
-  <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="relative text-center mt-4 block">
-    <div class="join">
-      <% options.each_with_index do |(label, value), index| %>
-        <span>
-          <%= radio_button_tag 'option', value, value == 'draw', class: 'peer hidden', data: { action: 'change:toggle-visible#trigger' } %>
-          <label for="option_<%= value %>" class="<%= '!rounded-s-full' if index.zero? %> btn btn-focus btn-sm join-item md:w-28 peer-checked:btn-active normal-case">
-            <%= label %>
-          </label>
-        </span>
+  <div class="signature-editor">
+    <p class="signature-editor__lead" id="signature-modal-description">
+      <%= t('signature_editor_intro', default: 'Draw with your pointer or stylus, or upload a PNG or JPG image of your signature.') %>
+    </p>
+
+    <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="signature-editor__toggle block w-full">
+      <div class="signature-editor__segmented" role="radiogroup" aria-label="<%= t('signature_editor_mode_label', default: 'How to add your signature') %>">
+        <% options.each do |(label, value)| %>
+          <span class="signature-editor__segment-wrap">
+            <%= radio_button_tag 'option',
+              value,
+              value == 'draw',
+              class: 'peer hidden signature-editor__segment-input',
+              data: { action: 'change:toggle-visible#trigger' },
+              id: "option_#{value}" %>
+            <label for="option_<%= value %>" class="signature-editor__segment">
+              <% if value == 'draw' %>
+                <%= svg_icon('pencil', class: 'signature-editor__segment-icon') %>
+              <% else %>
+                <%= svg_icon('cloud_upload', class: 'signature-editor__segment-icon') %>
+              <% end %>
+              <span class="signature-editor__segment-text"><%= label %></span>
+            </label>
+          </span>
+        <% end %>
+      </div>
+    </toggle-visible>
+
+    <div id="draw" class="signature-editor__panel signature-editor__panel--draw" aria-labelledby="signature-draw-heading" role="region">
+      <%= form_for @user_config, url: user_signature_path, method: :put, data: { turbo_frame: :_top }, html: { autocomplete: :off, enctype: 'multipart/form-data', class: 'signature-editor__draw-form' } do |f| %>
+        <signature-form class="signature-editor__form block w-full">
+          <h3 id="signature-draw-heading" class="signature-editor__section-label sr-only"><%= t('signature_editor_draw_section', default: 'Draw signature') %></h3>
+          <div class="signature-editor__canvas-card">
+            <div class="signature-editor__canvas-toolbar">
+              <span class="signature-editor__canvas-label">
+                <%= svg_icon('pencil', class: 'signature-editor__canvas-label-ico') %>
+                <%= t('signature_editor_draw_below', default: 'Draw your signature below') %>
+              </span>
+              <a class="signature-editor__clear link" data-target="signature-form.clear" href="#" role="button">
+                <%= svg_icon('trash', class: 'signature-editor__clear-ico') %>
+                <%= t('clear') %>
+              </a>
+            </div>
+            <div class="signature-editor__canvas-frame">
+              <canvas data-target="signature-form.canvas" class="signature-editor__canvas-surface w-full rounded-lg" aria-label="<%= t('signature_editor_canvas_label', default: 'Signature drawing area') %>"></canvas>
+            </div>
+            <input name="file" class="hidden" data-target="signature-form.input" type="file" accept="image/png,image/jpeg,image/jpg">
+          </div>
+          <div class="signature-editor__actions">
+            <button type="button" class="signature-editor__cancel btn btn-ghost" data-turbo-modal-close>
+              <%= t('cancel', default: 'Cancel') %>
+            </button>
+            <%= f.button button_title(title: t('save'), disabled_with: t('saving')),
+              class: 'base-button signature-editor__save',
+              data: { target: 'signature-form.button' },
+              disabled: true,
+              aria: { describedby: 'signature-modal-description' } %>
+          </div>
+        </signature-form>
       <% end %>
     </div>
-  </toggle-visible>
-  <div id="draw" class="mt-3">
-    <%= form_for @user_config, url: user_signature_path, method: :put, data: { turbo_frame: :_top }, html: { autocomplete: :off, enctype: 'multipart/form-data' } do |f| %>
-      <signature-form class="relative block">
-        <a class="absolute top-1 right-1 link text-sm" data-target="signature-form.clear" href="#"><%= t('clear') %></a>
-        <canvas data-target="signature-form.canvas" class="bg-white border border-neutral-300 w-full rounded"></canvas>
-        <input name="file" class="hidden" data-target="signature-form.input" type="file" accept="image/png,image/jpeg,image/jpg">
-        <div class="form-control mt-4">
-          <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button', data: { target: 'signature-form.button' } %>
-        </div>
-      </signature-form>
-    <% end %>
-  </div>
-  <div id="upload" class="hidden mt-3">
-    <%= form_for @user_config, url: user_signature_path, method: :put, data: { turbo_frame: :_top }, html: { autocomplete: :off, enctype: 'multipart/form-data' } do |f| %>
-      <file-dropzone data-submit-on-upload="true" class="w-full">
-        <label for="file" class="w-full block h-32 relative bg-base-200 hover:bg-base-200/70 rounded-md border border-base-content border-dashed">
-          <div class="absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center p-2">
-            <div class="flex flex-col items-center text-center">
-              <span data-target="file-dropzone.icon">
-                <%= svg_icon('cloud_upload', class: 'w-10 h-10') %>
+
+    <div id="upload" class="signature-editor__panel signature-editor__panel--upload hidden" role="region" aria-labelledby="signature-upload-heading">
+      <%= form_for @user_config, url: user_signature_path, method: :put, data: { turbo_frame: :_top }, html: { autocomplete: :off, enctype: 'multipart/form-data', class: 'signature-editor__upload-form' } do |f| %>
+        <h3 id="signature-upload-heading" class="signature-editor__section-label sr-only"><%= t('signature_editor_upload_section', default: 'Upload signature') %></h3>
+        <file-dropzone data-submit-on-upload="true" class="signature-editor__dropzone-root w-full block">
+          <label for="file" class="signature-editor__dropzone">
+            <div class="signature-editor__dropzone-inner">
+              <span class="signature-editor__dropzone-icon-wrap" data-target="file-dropzone.icon">
+                <%= svg_icon('cloud_upload', class: 'signature-editor__dropzone-icon') %>
               </span>
-              <span data-target="file-dropzone.loading" class="hidden">
-                <%= svg_icon('loader', class: 'w-10 h-10 animate-spin') %>
+              <span data-target="file-dropzone.loading" class="hidden signature-editor__dropzone-loading">
+                <%= svg_icon('loader', class: 'signature-editor__dropzone-loader animate-spin') %>
               </span>
-              <div class="font-medium mb-1">
-                <%= t('upload_signature') %>
-              </div>
-              <div class="text-xs">
-                <%= t('click_to_upload_or_drag_and_drop_html') %>
-              </div>
+              <span class="signature-editor__dropzone-title"><%= t('upload_signature') %></span>
+              <span class="signature-editor__dropzone-hint"><%= t('click_to_upload_or_drag_and_drop_html') %></span>
+              <span class="signature-editor__formats"><%= t('signature_editor_formats_hint', default: 'PNG or JPG · max quality recommended') %></span>
             </div>
             <input id="file" name="file" class="hidden" data-action="change:file-dropzone#onSelectFiles" data-target="file-dropzone.input" type="file" accept="image/png,image/jpeg,image/jpg">
-          </div>
-        </label>
-      </file-dropzone>
-      <div class="form-control mt-4">
-        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
-      </div>
-    <% end %>
+          </label>
+        </file-dropzone>
+        <div class="signature-editor__actions">
+          <button type="button" class="signature-editor__cancel btn btn-ghost" data-turbo-modal-close>
+            <%= t('cancel', default: 'Cancel') %>
+          </button>
+          <%= f.button button_title(title: t('save'), disabled_with: t('saving')),
+            class: 'base-button signature-editor__save signature-editor__save--upload' %>
+        </div>
+      <% end %>
+    </div>
   </div>
 <% end %>

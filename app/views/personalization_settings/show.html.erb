@@ -1,36 +1,107 @@
-<div class="settings-layout">
-  <aside class="settings-sidebar">
-    <%= render 'shared/settings_nav' %>
-  </aside>
-  <div class="settings-main">
-    <h1 class="ds-heading-2 flex items-center gap-2">
-      <%= svg_icon('adjustments', class: 'w-5 h-5') %>
-      <span><%= t('personalization') %></span>
-    </h1>
-    <section class="settings-card">
-      <h2 class="settings-card-title mb-5">
-        <%= t('email_templates') %>
-      </h2>
-      <div class="space-y-4">
-        <%= render 'signature_request_email_form' %>
-        <%= render 'documents_copy_email_form' %>
-        <%= render 'submitter_completed_email_form' %>
+<div class="settings-layout profile-settings-page personalization-settings-page">
+  <div class="settings-main profile-settings-main">
+    <header class="settings-page-header profile-settings-header personalization-settings-header">
+      <div class="settings-page-header-top">
+        <div class="settings-page-avatar profile-settings-avatar personalization-settings-page__avatar" aria-hidden="true">
+          <%= svg_icon('sparkles', class: 'w-7 h-7 shrink-0') %>
+        </div>
+        <div class="profile-settings-header-text">
+          <p class="personalization-settings-eyebrow">
+            <%= t('personalization_settings_eyebrow', default: 'Branding & messaging') %>
+          </p>
+          <h1 class="ds-heading-2 profile-settings-title">
+            <%= t('personalization') %>
+          </h1>
+          <p class="settings-page-subtitle profile-settings-intro personalization-settings-intro">
+            <%= t(
+                  'personalization_settings_intro',
+                  default: 'Customize outbound emails, logo, submission flow, and embed styling for your workspace.'
+                ) %>
+          </p>
+        </div>
       </div>
-    </section>
-    <section class="settings-card">
-      <h2 class="text-lg font-semibold text-base-content mb-5"><%= t('company_logo') %></h2>
-      <%= render 'logo_form' %>
-    </section>
-    <section class="settings-card">
-      <h2 class="text-lg font-semibold text-base-content mb-5"><%= t('submission_form') %></h2>
-      <div class="space-y-4">
-        <%= render 'form_completed_message_form' %>
-        <%= render 'form_completed_button_form' %>
-        <%= render 'form_policy_links_form' %>
-      </div>
-    </section>
-    <section class="settings-card">
-      <h2 class="text-lg font-semibold text-base-content mb-5"><%= t('form_customization', default: 'Form Customization') %></h2>
-      <%= render 'form_customization_settings' %>
-    </section>
+    </header>
+
+    <div class="personalization-settings-grid">
+      <section class="settings-card profile-settings-card profile-settings-card--personalization-email">
+        <div class="settings-card-header">
+          <div>
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('mail', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+              <span><%= t('email_templates') %></span>
+            </h2>
+            <p class="settings-card-subtitle">
+              <%= t(
+                    'personalization_email_templates_hint',
+                    default: 'Subjects and bodies for messages sent to submitters and recipients.'
+                  ) %>
+            </p>
+          </div>
+        </div>
+        <div class="personalization-settings-card-body space-y-6">
+          <%= render 'signature_request_email_form' %>
+          <%= render 'documents_copy_email_form' %>
+          <%= render 'submitter_completed_email_form' %>
+        </div>
+      </section>
+
+      <section class="settings-card profile-settings-card profile-settings-card--personalization-submission">
+        <div class="settings-card-header">
+          <div>
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('forms', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+              <span><%= t('submission_form') %></span>
+            </h2>
+            <p class="settings-card-subtitle">
+              <%= t(
+                    'personalization_submission_form_hint',
+                    default: 'Completion messaging, buttons, and policy links shown after submit.'
+                  ) %>
+            </p>
+          </div>
+        </div>
+        <div class="personalization-settings-card-body space-y-6">
+          <%= render 'form_completed_message_form' %>
+          <%= render 'form_completed_button_form' %>
+          <%= render 'form_policy_links_form' %>
+        </div>
+      </section>
+
+      <section class="settings-card profile-settings-card profile-settings-card--personalization-logo">
+        <div class="settings-card-header">
+          <div>
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('photo', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+              <span><%= t('company_logo') %></span>
+            </h2>
+            <p class="settings-card-subtitle">
+              <%= t(
+                    'personalization_logo_hint',
+                    default: 'Shown on signing pages and in emails when enabled.'
+                  ) %>
+            </p>
+          </div>
+        </div>
+        <%= render 'logo_form' %>
+      </section>
+
+      <section class="settings-card profile-settings-card profile-settings-card--personalization-custom">
+        <div class="settings-card-header">
+          <div>
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('adjustments_horizontal', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+              <span><%= t('form_customization', default: 'Form Customization') %></span>
+            </h2>
+            <p class="settings-card-subtitle">
+              <%= t(
+                    'personalization_form_customization_hint',
+                    default: 'Fine-grained options for how forms behave and appear.'
+                  ) %>
+            </p>
+          </div>
+        </div>
+        <%= render 'form_customization_settings' %>
+      </section>
+    </div>
+  </div>
 </div>

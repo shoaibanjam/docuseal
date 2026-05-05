@@ -2,69 +2,65 @@
 <% filter_params = params.permit(Submissions::Filter::ALLOWED_PARAMS).compact_blank %>
 <% is_show_tabs = @pagy.pages > 1 || params[:q].present? || params[:status].present? || filter_params.present? %>
 <% if @pagy.count.nil? || !@pagy.count.zero? || params[:q].present? || params[:status].present? || filter_params.present? %>
-  <div class="<%= is_show_tabs ? 'mb-4' : 'mb-6' %>">
-    <div class="flex justify-between items-center md:items-end">
-      <div>
-        <h2 class="text-3xl font-bold md:block <%= 'hidden' if params[:q].present? %>">
-          <%= t('submissions') %>
-        </h2>
-      </div>
-      <div class="flex justify-end space-x-2">
-        <% if params[:q].present? || params[:status].present? || filter_params.present? || @pagy.pages > 1 %>
-          <%= render 'shared/search_input', title_selector: 'h2' %>
+  <div class="tpl-show-submissions-header">
+    <h2 class="tpl-show-section-title <%= 'hidden' if params[:q].present? %>">
+      <%= t('submissions') %>
+    </h2>
+    <div class="tpl-show-submissions-toolbar">
+      <% if params[:q].present? || params[:status].present? || filter_params.present? || @pagy.pages > 1 %>
+        <%= render 'shared/search_input', title_selector: 'h2' %>
+      <% end %>
+      <%= link_to new_template_submissions_export_path(@template, params.permit(:q, *Submissions::Filter::ALLOWED_PARAMS)), class: 'tpl-show-icon-btn hidden md:flex', data: { turbo_frame: 'modal' } do %>
+        <%= svg_icon('download', class: 'w-5 h-5 stroke-2') %>
+        <span><%= t('export') %></span>
+      <% end %>
+      <% if !@template.archived_at? && can?(:create, Submission) %>
+        <%= link_to new_template_submission_path(@template), id: 'add_recipients_button', class: 'tpl-show-action-btn tpl-show-action-btn--primary', data: { turbo_frame: 'modal' } do %>
+          <%= svg_icon('plus', class: 'w-5 h-5 stroke-2') %>
+          <span><%= t('add_recipients_html') %></span>
         <% end %>
-        <%= link_to new_template_submissions_export_path(@template, params.permit(:q, *Submissions::Filter::ALLOWED_PARAMS)), class: 'hidden md:flex btn btn-ghost text-base', data: { turbo_frame: 'modal' } do %>
-          <%= svg_icon('download', class: 'w-6 h-6 stroke-2') %>
-          <span><%= t('export') %></span>
-        <% end %>
-        <% if !@template.archived_at? && can?(:create, Submission) %>
-          <%= link_to new_template_submission_path(@template), id: 'add_recipients_button', class: 'white-button !border', data: { turbo_frame: 'modal' } do %>
-            <%= svg_icon('plus', class: 'w-6 h-6 stroke-2') %>
-            <%= t('add_recipients_html') %>
-          <% end %>
-        <% end %>
-      </div>
+      <% end %>
     </div>
   </div>
 <% end %>
 <% if is_show_tabs %>
-  <div class="flex items-center flex-col md:flex-row md:flex-wrap gap-2 mb-4">
-    <div class="flex items-center md:items-end flex-col md:flex-row gap-2 w-full md:w-fit">
-      <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="ds-submissions-tab <%= params[:status].blank? ? 'border-secondary' : 'border-white/10' %> flex h-10 px-2 py-1 text-lg items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-48 hover:border-secondary/70 bg-[#0d1c2f]">
-        <div class="flex items-center space-x-1">
-          <%= svg_icon('list', class: 'w-5 h-5') %>
-          <span class="font-normal"><%= t('all') %></span>
+  <div class="tpl-show-tabs">
+    <div class="tpl-show-tabs-row">
+      <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="tpl-show-tab ds-submissions-tab <%= params[:status].blank? ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+        <div class="tpl-show-tab-label">
+          <%= svg_icon('list', class: 'w-4 h-4') %>
+          <span><%= t('all') %></span>
         </div>
         <% unless can?(:manage, :countless) %>
-          <div class="badge badge-neutral badge-outline font-medium submission-status-count">
+          <div class="tpl-show-tab-count submission-status-count">
             <%= params[:status].blank? && filter_params.blank? ? @pagy.count : @base_submissions.unscope(:group, :order).select(:id).distinct.count %>
           </div>
         <% end %>
       </a>
-      <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="ds-submissions-tab <%= params[:status] == 'pending' ? 'border-secondary' : 'border-white/10' %> flex h-10 px-2 py-1 text-lg items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-48 hover:border-secondary/70 bg-[#0d1c2f]">
-        <div class="flex items-center space-x-1">
-          <%= svg_icon('clock', class: 'w-5 h-5') %>
-          <span class="font-normal"><%= t('pending') %></span>
+      <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="tpl-show-tab ds-submissions-tab <%= params[:status] == 'pending' ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+        <div class="tpl-show-tab-label">
+          <%= svg_icon('clock', class: 'w-4 h-4') %>
+          <span><%= t('pending') %></span>
         </div>
         <% unless can?(:manage, :countless) %>
-          <div class="badge badge-neutral badge-outline font-medium submission-status-count">
+          <div class="tpl-show-tab-count submission-status-count">
             <%= params[:status] == 'pending' && filter_params.blank? ? @pagy.count : @base_submissions.pending.unscope(:group, :order).select(:id).distinct.count %>
           </div>
         <% end %>
       </a>
-      <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="ds-submissions-tab <%= params[:status] == 'completed' ? 'border-secondary' : 'border-white/10' %> flex h-10 px-2 py-1 text-lg items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-48 hover:border-secondary/70 bg-[#0d1c2f]">
-        <div class="flex items-center space-x-1">
-          <%= svg_icon('circle_check', class: 'w-5 h-5') %>
-          <span class="font-normal"><%= t('completed') %></span>
+      <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="tpl-show-tab ds-submissions-tab <%= params[:status] == 'completed' ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+        <div class="tpl-show-tab-label">
+          <%= svg_icon('circle_check', class: 'w-4 h-4') %>
+          <span><%= t('completed') %></span>
         </div>
         <% unless can?(:manage, :countless) %>
-          <div class="badge badge-neutral badge-outline font-medium submission-status-count">
+          <div class="tpl-show-tab-count submission-status-count">
             <%= params[:status] == 'completed' && filter_params.blank? ? @pagy.count : @base_submissions.completed.unscope(:group, :order).select(:id).distinct.count %>
           </div>
         <% end %>
       </a>
     </div>
-    <div class="flex items-end flex-col md:flex-row gap-2 w-full md:w-fit">
+    <div class="tpl-show-filters-row">
       <%= render 'submissions_filters/applied_filters', filter_params: %>
       <%= render 'submissions_filters/filter_button', filter_params: %>
       <% unless @template.archived_at? %>
@@ -74,55 +70,52 @@
   </div>
 <% end %>
 <% if @submissions.present? %>
-  <div class="space-y-4">
+  <div class="tpl-show-submissions-list space-y-4">
     <%= render partial: 'submission', collection: @submissions, locals: { template: @template } %>
   </div>
 <% else %>
-  <div class="card bg-base-200">
-    <div class="card-body text-center px-4 py-16">
-      <div class="max-w-lg mx-auto">
-        <p class="text-3xl font-bold text-base-content">
-          <%= t('there_are_no_submissions') %>
-        </p>
-        <% if @template.archived_at.blank? && params[:q].blank? && filter_params.blank? %>
-          <div class="mt-4">
-            <p class="templates-empty-subtitle"><%= t('send_an_invitation_to_fill_and_complete_the_form') %></p>
-            <div class="space-y-2 flex flex-col">
-              <% if can?(:create, Submission) %>
-                <%= link_to new_template_submission_path(@template, with_link: true), id: 'send_to_recipients_button', class: 'base-button mt-6', data: { turbo_frame: 'modal' } do %>
-                  <%= svg_icon('plus', class: 'w-6 h-6 stroke-2') %>
-                  <span class="mr-1"><%= t('send_to_recipients') %></span>
-                <% end %>
-              <% end %>
-              <% if Templates.filter_undefined_submitters(@template.submitters).size == 1 && @template.variables_schema.blank? %>
-                <%= button_to start_form_path(@template.slug), params: { selfsign: true }, method: :put, class: 'white-button w-full', form: { style: 'display: inline', target: '_blank', data: { turbo: false } } do %>
-                  <%= svg_icon('writing', class: 'w-6 h-6') %>
-                  <span class="mr-1"><%= t('sign_it_yourself') %></span>
-                <% end %>
-              <% else %>
-                <%= link_to new_template_submission_path(@template, selfsign: true), id: 'sign_yourself_button', class: 'white-button mt-6', data: { turbo_frame: 'modal' } do %>
-                  <%= svg_icon('writing', class: 'w-6 h-6') %>
-                  <span class="mr-1"><%= t('sign_it_yourself') %></span>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
+  <div class="tpl-show-empty-state">
+    <div class="tpl-show-empty-icon">
+      <%= svg_icon('inbox', class: 'w-10 h-10') %>
+    </div>
+    <p class="tpl-show-empty-title">
+      <%= t('there_are_no_submissions') %>
+    </p>
+    <% if @template.archived_at.blank? && params[:q].blank? && filter_params.blank? %>
+      <p class="tpl-show-empty-subtitle templates-empty-subtitle"><%= t('send_an_invitation_to_fill_and_complete_the_form') %></p>
+      <div class="tpl-show-empty-actions">
+        <% if can?(:create, Submission) %>
+          <%= link_to new_template_submission_path(@template, with_link: true), id: 'send_to_recipients_button', class: 'tpl-show-action-btn tpl-show-action-btn--primary', data: { turbo_frame: 'modal' } do %>
+            <%= svg_icon('plus', class: 'w-5 h-5 stroke-2') %>
+            <span><%= t('send_to_recipients') %></span>
+          <% end %>
+        <% end %>
+        <% if Templates.filter_undefined_submitters(@template.submitters).size == 1 && @template.variables_schema.blank? %>
+          <%= button_to start_form_path(@template.slug), params: { selfsign: true }, method: :put, class: 'tpl-show-action-btn tpl-show-action-btn--outline w-full md:w-auto', form: { style: 'display: inline', target: '_blank', data: { turbo: false } } do %>
+            <%= svg_icon('writing', class: 'w-5 h-5') %>
+            <span><%= t('sign_it_yourself') %></span>
+          <% end %>
+        <% else %>
+          <%= link_to new_template_submission_path(@template, selfsign: true), id: 'sign_yourself_button', class: 'tpl-show-action-btn tpl-show-action-btn--outline', data: { turbo_frame: 'modal' } do %>
+            <%= svg_icon('writing', class: 'w-5 h-5') %>
+            <span><%= t('sign_it_yourself') %></span>
+          <% end %>
         <% end %>
       </div>
-    </div>
+    <% end %>
   </div>
 <% end %>
 <% view_archived_html = capture do %>
   <% if (can?(:manage, :countless) || @template.submissions.where.not(archived_at: nil).exists?) && !@template.archived_at? %>
     <div>
-      <a href="<%= template_archived_index_path(@template) %>" class="link text-sm"><%= t('view_archived') %></a>
+      <a href="<%= template_archived_index_path(@template) %>" class="tpl-show-archived-link"><%= t('view_archived') %></a>
     </div>
   <% end %>
 <% end %>
 <% if @pagy.pages > 1 %>
   <%= render 'shared/pagination', pagy: @pagy, items_name: 'submissions', left_additional_html: view_archived_html %>
 <% else %>
-  <div class="mt-2">
+  <div class="mt-4">
     <%= view_archived_html %>
   </div>
 <% end %>

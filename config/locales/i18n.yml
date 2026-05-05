@@ -258,6 +258,9 @@ en: &en
   click_to_upload_or_drag_and_drop_files_html: '<span class="font-medium">Click to upload</span> or drag and drop files'
   signing_certificates: Signing Certificates
   upload_cert: Upload Cert
+  esign_placeholder_certificate_name: 'e.g. Production PKCS #12'
+  esign_placeholder_certificate_password: Leave blank if the certificate file has no password
+  esign_upload_file_hint_title: 'Choose a .p12, .pfx, or .der file'
   valid_to: Valid To
   status: Status
   make_default: Make Default
@@ -318,6 +321,17 @@ en: &en
   button_title: Button title
   button_url: Button URL
   upload_logo: Upload Logo
+  personalization_placeholder_email_subject: 'e.g. Please sign {{template.name}} from {{account.name}}'
+  personalization_placeholder_completed_email_subject: 'e.g. Completed — {{template.name}}'
+  personalization_placeholder_reply_to: notifications@company.com
+  personalization_placeholder_form_completed_title: 'e.g. Thank you!'
+  personalization_placeholder_form_completed_body: 'Add a short message shown after the form is submitted…'
+  personalization_placeholder_redirect_button_title: 'e.g. Open dashboard'
+  personalization_placeholder_redirect_button_url: 'https://example.com/welcome'
+  personalization_placeholder_policy_links_body: '[Privacy Policy](https://example.com/privacy)'
+  personalization_placeholder_logo_file_title: 'Choose PNG, JPG, or SVG (recommended max height ~64px)'
+  personalization_placeholder_email_body_html: 'Paste full HTML email content…'
+  personalization_placeholder_email_body_markdown: 'Write the email body in Markdown (bold, links, variables from the menu…)…'
   show_confetti_on_successful_completion: Show confetti on successful completion
   attach_audit_log_pdf: Attach audit log PDF
   attach_documents: Attach documents
@@ -519,6 +533,29 @@ en: &en
   superadmin: Superadmin
   edit_user: Edit User
   new_user: New User
+  users_placeholder_first_name: 'e.g. Alex'
+  users_placeholder_last_name: 'e.g. Rivera'
+  users_placeholder_email: colleague@company.com
+  users_placeholder_password: Set an initial password
+  users_placeholder_role_select: Workspace role for this user
+  users_placeholder_2fa_select: Whether two-factor authentication is required at login
+  api_settings_eyebrow: REST API
+  api_settings_intro: Authenticate requests with your secret token and explore common curl examples below.
+  api_settings_token_hint: Use this value in the X-Auth-Token header. Rotate if it may have been exposed.
+  webhook_settings_eyebrow: Automation
+  webhook_settings_index_intro: Select an endpoint to edit delivery and events, or add a new webhook URL.
+  webhook_settings_show_intro: Configure your receiver URL, optional signing secret, and which events to send.
+  webhook_settings_new_intro: Paste the HTTPS endpoint that should receive POST payloads for each selected event.
+  webhook_field_label_url: Webhook URL
+  there_are_no_webhooks_yet: No webhooks yet.
+  webhook_secret_modal_intro: Set a custom header name and value. We send them with each webhook POST so your endpoint can verify requests.
+  templates_dashboard_eyebrow: Document library
+  templates_dashboard_intro: Organize folders, upload files, and open any template to edit fields or send for signing.
+  templates_dashboard_folders_heading: Folders
+  templates_dashboard_templates_heading: Templates
+  templates_dashboard_empty_search_hint: Try another keyword or clear search to see all templates.
+  x_auth_token: X-Auth-Token
+  reveal_access_token_intro: Confirm your password to view and copy your full API token.
   unarchive: Unarchive
   last_session: Last session
   unlock_more_user_roles_with_docuseal_pro: Unlock more user roles with Trustseal Pro.

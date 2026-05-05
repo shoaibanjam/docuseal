@@ -25,11 +25,20 @@ export default actionable(class extends HTMLElement {
   onClick = (e) => {
     const isCloseButton = e.target.closest('[data-turbo-modal-close]')
     const isOutsideContent = !e.target.closest('[data-turbo-modal-content]')
-    if (isCloseButton || isOutsideContent) {
+    if (!(isCloseButton || isOutsideContent)) {
+      return
+    }
+
+    if (!this.confirmDiscardIfNeeded()) {
       e.preventDefault()
       e.stopPropagation()
-      this.close()
+
+      return
     }
+
+    e.preventDefault()
+    e.stopPropagation()
+    this.close()
   }
 
   onSubmit = (e) => {
@@ -40,6 +49,8 @@ export default actionable(class extends HTMLElement {
 
   onEscKey = (e) => {
     if (e.code === 'Escape') {
+      if (!this.confirmDiscardIfNeeded()) return
+
       this.close()
     }
   }
@@ -48,5 +59,13 @@ export default actionable(class extends HTMLElement {
     e?.preventDefault()
 
     this.remove()
+  }
+
+  confirmDiscardIfNeeded () {
+    if (this.dataset.unsavedSignature !== 'true') return true
+
+    const message = this.dataset.unsavedClosePrompt || ''
+
+    return window.confirm(message)
   }
 })

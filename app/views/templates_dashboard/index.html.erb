@@ -1,116 +1,179 @@
 <% has_archived = can?(:manage, :countless) || current_account.templates.where.not(archived_at: nil).exists? %>
 <% show_dropzone = params[:q].blank? && @pagy.pages == 1 && ((@template_folders.size < 10 && @templates.size.zero?) || (@template_folders.size < 7 && @templates.size < 4) || (@template_folders.size < 4 && @templates.size < 7)) %>
 <% if Docuseal.demo? %><%= render 'shared/demo_alert' %><% end %>
-<dashboard-dropzone>
-  <%= form_for '', url: '', id: form_id = SecureRandom.uuid, method: :post, class: 'hidden', data: { target: 'dashboard-dropzone.form' }, html: { enctype: 'multipart/form-data' } do %>
-    <input name="form_id" value="<%= form_id %>">
-    <button type="submit"></button>
-    <input id="dashboard_dropzone_input" name="files[]" type="file" multiple>
-  <% end %>
-  <div class="ds-page-header w-full relative">
-    <% unless show_dropzone %>
-      <%= render 'templates/dashboard_dropzone', style: 'height: 114px' %>
-    <% end %>
-    <%= render 'templates/dashboard_folder_dropzone', style: 'height: 114px' %>
-    <div class="flex items-center flex-grow min-w-0 text-primary-content">
-      <% if has_archived || @pagy.count.nil? || @pagy.count > 0 || @template_folders.present? %>
-        <div class="mr-2">
-          <%= render 'dashboard/toggle_view', selected: 'templates' %>
-        </div>
+<div class="settings-layout profile-settings-page templates-dashboard-page">
+  <div class="settings-main profile-settings-main templates-dashboard-main">
+    <dashboard-dropzone class="templates-dashboard-dropzone block min-w-0">
+      <%= form_for '', url: '', id: form_id = SecureRandom.uuid, method: :post, class: 'hidden', data: { target: 'dashboard-dropzone.form' }, html: { enctype: 'multipart/form-data' } do %>
+        <input name="form_id" value="<%= form_id %>">
+        <button type="submit"></button>
+        <input id="dashboard_dropzone_input" name="files[]" type="file" multiple>
       <% end %>
-      <h1 class="ds-page-title text-primary-content truncate md:block <%= 'hidden' if params[:q].present? %>">
-        <%= t('document_templates_html') %>
-      </h1>
-    </div>
-    <div class="flex space-x-2">
-      <% if params[:q].present? || @pagy.pages > 1 || @template_folders.present? %>
-        <%= render 'shared/search_input' %>
-      <% end %>
-      <% if can?(:create, ::Template) %>
-        <span class="hidden sm:block">
-          <%= render 'templates/upload_button' %>
-        </span>
-        <%= link_to new_template_path, class: 'white-button ds-templates-create-btn !border gap-2', data: { turbo_frame: :modal } do %>
-          <%= svg_icon('plus', class: 'w-6 h-6 stroke-2') %>
-          <span class="hidden md:block"><%= t('create') %></span>
+
+      <header class="templates-dashboard-header relative w-full">
+        <% unless show_dropzone %>
+          <%= render 'templates/dashboard_dropzone', style: 'height: 114px' %>
         <% end %>
-      <% end %>
-    </div>
-  </div>
-  <% view_archived_html = capture do %>
-    <% if has_archived %>
-      <div>
-        <a href="<%= templates_archived_index_path %>" class="link text-sm"><%= t('view_archived') %></a>
-      </div>
-    <% end %>
-  <% end %>
-  <% templates_order_select_html = capture do %>
-    <% if params[:q].blank? && @pagy.pages > 1 %>
-      <%= render 'shared/templates_order_select', with_recently_used: @pagy.count.present? && @pagy.count < 10_000 && !can?(:manage, :countless), selected_order: %>
-    <% end %>
-  <% end %>
-  <% if @template_folders.present? %>
-    <div class="grid gap-4 md:grid-cols-3 <%= 'mb-6' if @templates.present? %>">
-      <%= render partial: 'template_folders/folder', collection: @template_folders, as: :folder %>
-    </div>
-  <% end %>
-  <% if @templates.present? %>
-    <div class="grid gap-4 md:grid-cols-3">
-      <%= render partial: 'templates/template', collection: @templates %>
-      <% if (show_dropzone && current_user.created_at > 2.weeks.ago && current_user == true_user) || params[:tour] == 'true' %>
-        <% user_config = current_user.user_configs.find_or_initialize_by(key: UserConfig::SHOW_APP_TOUR) %>
-        <% if user_config.new_record? || user_config.value || params[:tour] == 'true' %>
-          <div class="hidden md:block">
-            <app-tour id="app_tour" data-show-tour="<%= params[:tour] == 'true' || user_config.value %>" data-type="dashboard" data-next-page-path="<%= @templates.first && can?(:edit, @templates.first) ? edit_template_path(@templates.first, params.permit(:tour)) : settings_account_path %>" data-i18n="<%= t('app_tour').to_json %>"></app-tour>
-            <% if user_config.new_record? && !params.key?(:tour) %>
-              <div id="app_tour_manager" class="h-36 rounded-2xl pt-3 px-7 w-full border border-dashed border-base-300">
-                <div class="text-xl text-center font-semibold text-base-content">
-                  <%= t('welcome_to_docuseal') %>
-                </div>
-                <div class="my-2 text-center text-xs text-base-content/70">
-                  <%= t('start_a_quick_tour_to_learn_how_to_create_an_send_your_first_document') %>
-                </div>
-                <div class="flex gap-2 mt-3 w-full">
-                  <remove-on-event data-on="submit" data-selector-id="app_tour_manager" class="block w-full">
-                    <%= button_to button_title(title: t('skip'), icon_disabled: svg_icon('loader', class: 'w-4 h-4 animate-spin')), user_configs_path, params: { user_config: { key: UserConfig::SHOW_APP_TOUR, value: false } }, class: 'btn btn-sm btn-outline w-full', form_class: 'flex-1', method: :post %>
-                  </remove-on-event>
-                  <app-tour-start class="block w-full">
-                    <%= button_to t('start_tour'), user_configs_path, params: { user_config: { key: UserConfig::SHOW_APP_TOUR, value: true } }, class: 'btn btn-sm btn-warning w-full', form_class: 'flex-1', method: :post %>
-                  </app-tour-start>
-                </div>
+        <%= render 'templates/dashboard_folder_dropzone', style: 'height: 114px' %>
+
+        <div class="settings-page-header profile-settings-header templates-dashboard-hero">
+          <div class="settings-page-header-top templates-dashboard-header-top flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-8">
+            <div class="flex gap-4 md:gap-5 items-start min-w-0 flex-1">
+              <div class="settings-page-avatar profile-settings-avatar templates-dashboard-page__avatar shrink-0" aria-hidden="true">
+                <%= svg_icon('files', class: 'w-7 h-7 shrink-0') %>
               </div>
-            <% end %>
+              <div class="profile-settings-header-text min-w-0">
+                <p class="templates-dashboard-eyebrow">
+                  <%= t('templates_dashboard_eyebrow', default: 'Document library') %>
+                </p>
+                <h1 class="ds-heading-2 profile-settings-title <%= 'hidden' if params[:q].present? %>">
+                  <%= t('document_templates_html') %>
+                </h1>
+                <p class="settings-page-subtitle profile-settings-intro templates-dashboard-intro <%= 'hidden' if params[:q].present? %>">
+                  <%= t(
+                        'templates_dashboard_intro',
+                        default: 'Organize folders, upload files, and open any template to edit fields or send for signing.'
+                      ) %>
+                </p>
+              </div>
+            </div>
+
+            <div class="templates-dashboard-toolbar flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full lg:w-auto lg:max-w-[26rem] xl:max-w-none shrink-0">
+            
+              <div class="templates-dashboard-actions flex flex-wrap items-center gap-2 justify-start sm:justify-end flex-1 min-w-[10rem]">
+                <% if params[:q].present? || @pagy.pages > 1 || @template_folders.present? %>
+                  <div class="flex-1 min-w-[12rem] max-w-full sm:max-w-xs md:max-w-sm">
+                    <%= render 'shared/search_input' %>
+                  </div>
+                <% end %>
+                <% if can?(:create, ::Template) %>
+                  <span class="hidden sm:inline-flex templates-dashboard-upload-wrap">
+                    <%= render 'templates/upload_button' %>
+                  </span>
+                  <%= link_to new_template_path, class: 'base-button profile-settings-btn-primary gap-2 whitespace-nowrap shrink-0', data: { turbo_frame: :modal } do %>
+                    <%= svg_icon('plus', class: 'w-5 h-5 stroke-2 shrink-0') %>
+                    <span class="hidden md:inline"><%= t('create') %></span>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <% view_archived_html = capture do %>
+        <% if has_archived %>
+          <div class="templates-dashboard-archived-link">
+            <a href="<%= templates_archived_index_path %>" class="link link-hover text-sm font-medium">
+              <%= t('view_archived') %>
+            </a>
           </div>
         <% end %>
       <% end %>
-    </div>
-  <% end %>
-</dashboard-dropzone>
-<% if show_dropzone %>
-  <%= render 'templates/dropzone' %>
-<% end %>
-<% if @templates.present? || @template_folders.present? || params[:q].blank? %>
-  <% if @pagy.pages > 1 %>
-    <%= render 'shared/pagination', pagy: @pagy, items_name: @templates.present? ? 'templates' : 'template_folders', left_additional_html: view_archived_html, right_additional_html: templates_order_select_html %>
-  <% else %>
-    <div class="mt-2">
-      <%= view_archived_html %>
-    </div>
-  <% end %>
-<% elsif params[:q].present? %>
-  <div class="text-center">
-    <div class="mt-16 text-3xl font-semibold">
-      <%= t('templates_not_found') %>
-    </div>
+      <% templates_order_select_html = capture do %>
+        <% if params[:q].blank? && @pagy.pages > 1 %>
+          <%= render 'shared/templates_order_select', with_recently_used: @pagy.count.present? && @pagy.count < 10_000 && !can?(:manage, :countless), selected_order: %>
+        <% end %>
+      <% end %>
+
+      <% if @template_folders.present? %>
+        <section class="templates-dashboard-section templates-dashboard-section--folders" aria-labelledby="templates-dashboard-folders-heading">
+          <div class="templates-dashboard-section-head">
+            <h2 id="templates-dashboard-folders-heading" class="templates-dashboard-section-title">
+              <%= t('templates_dashboard_folders_heading', default: 'Folders') %>
+            </h2>
+          </div>
+          <div class="templates-dashboard-grid templates-dashboard-grid--folders grid gap-5 md:gap-6 md:grid-cols-2 xl:grid-cols-3 <%= 'mb-8 md:mb-10' if @templates.present? %>">
+            <%= render partial: 'template_folders/folder', collection: @template_folders, as: :folder %>
+          </div>
+        </section>
+      <% end %>
+
+      <% if @templates.present? %>
+        <section class="templates-dashboard-section templates-dashboard-section--templates" aria-labelledby="templates-dashboard-templates-heading">
+          <div class="templates-dashboard-section-head">
+            <h2 id="templates-dashboard-templates-heading" class="templates-dashboard-section-title">
+              <%= @template_folders.present? ? t('templates_dashboard_templates_heading', default: 'Templates') : t('templates_dashboard_recent_heading', default: 'Recent uploads') %>
+            </h2>
+          </div>
+          <div class="templates-dashboard-grid templates-dashboard-grid--templates grid gap-5 md:gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <%= render partial: 'templates/template', collection: @templates %>
+            <% if (show_dropzone && current_user.created_at > 2.weeks.ago && current_user == true_user) || params[:tour] == 'true' %>
+              <% user_config = current_user.user_configs.find_or_initialize_by(key: UserConfig::SHOW_APP_TOUR) %>
+              <% if user_config.new_record? || user_config.value || params[:tour] == 'true' %>
+                <div class="hidden md:block">
+                  <app-tour id="app_tour" data-show-tour="<%= params[:tour] == 'true' || user_config.value %>" data-type="dashboard" data-next-page-path="<%= @templates.first && can?(:edit, @templates.first) ? edit_template_path(@templates.first, params.permit(:tour)) : settings_account_path %>" data-i18n="<%= t('app_tour').to_json %>"></app-tour>
+                  <% if user_config.new_record? && !params.key?(:tour) %>
+                    <div id="app_tour_manager" class="settings-card profile-settings-card templates-dashboard-tour-card border border-dashed rounded-2xl pt-4 pb-5 px-6 md:px-7 w-full h-auto min-h-[9rem] flex flex-col justify-center">
+                      <div class="templates-dashboard-tour-title text-lg md:text-xl text-center font-semibold">
+                        <%= t('welcome_to_docuseal') %>
+                      </div>
+                      <div class="templates-dashboard-tour-lede my-2 text-center text-xs md:text-sm leading-relaxed max-w-sm mx-auto">
+                        <%= t('start_a_quick_tour_to_learn_how_to_create_an_send_your_first_document') %>
+                      </div>
+                      <div class="flex gap-2 mt-4 w-full max-w-sm mx-auto">
+                        <remove-on-event data-on="submit" data-selector-id="app_tour_manager" class="block w-full">
+                          <%= button_to button_title(title: t('skip'), icon_disabled: svg_icon('loader', class: 'w-4 h-4 animate-spin')), user_configs_path, params: { user_config: { key: UserConfig::SHOW_APP_TOUR, value: false } }, class: 'white-button profile-settings-btn-outline btn-sm w-full', form_class: 'flex-1', method: :post %>
+                        </remove-on-event>
+                        <app-tour-start class="block w-full">
+                          <%= button_to t('start_tour'), user_configs_path, params: { user_config: { key: UserConfig::SHOW_APP_TOUR, value: true } }, class: 'base-button profile-settings-btn-primary btn-sm w-full', form_class: 'flex-1', method: :post %>
+                        </app-tour-start>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+    </dashboard-dropzone>
+
+    <% if show_dropzone %>
+      <%= render 'templates/dropzone' %>
+    <% end %>
+
+    <% if @templates.present? || @template_folders.present? || params[:q].blank? %>
+      <% if @pagy.pages > 1 %>
+        <div class="templates-dashboard-pagination-wrap pt-6 mt-2 md:mt-4">
+          <%= render 'shared/pagination', pagy: @pagy, items_name: @templates.present? ? 'templates' : 'template_folders', left_additional_html: view_archived_html, right_additional_html: templates_order_select_html %>
+        </div>
+      <% else %>
+        <div class="templates-dashboard-footer-meta mt-6 md:mt-8 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <%= view_archived_html %>
+        </div>
+      <% end %>
+    <% elsif params[:q].present? %>
+      <div class="templates-dashboard-empty-state settings-card profile-settings-card rounded-2xl px-6 py-12 md:py-14 md:px-10 text-center max-w-xl mx-auto mt-6 md:mt-10">
+        <div class="templates-dashboard-empty-icon mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border">
+          <%= svg_icon('search', class: 'w-7 h-7 templates-dashboard-empty-icon-svg') %>
+        </div>
+        <p class="templates-dashboard-empty-title text-lg md:text-xl font-semibold tracking-tight">
+          <%= t('templates_not_found') %>
+        </p>
+        <p class="templates-dashboard-empty-hint mt-2 text-sm leading-relaxed">
+          <%= t('templates_dashboard_empty_search_hint', default: 'Try another keyword or clear search to see all templates.') %>
+        </p>
+        <div class="mt-6">
+          <a href="<%= url_for(params: request.query_parameters.except('q')) %>" class="base-button profile-settings-btn-primary inline-flex items-center justify-center gap-2">
+            <%= t('clear') %>
+          </a>
+        </div>
+      </div>
+      <% if @related_submissions.present? %>
+        <section class="templates-dashboard-related mt-10 md:mt-14" aria-labelledby="templates-dashboard-related-submissions">
+          <div class="templates-dashboard-section-head mb-4 md:mb-5">
+            <h2 id="templates-dashboard-related-submissions" class="templates-dashboard-section-title">
+              <%= t('submissions') %>
+            </h2>
+          </div>
+          <div class="space-y-4">
+            <%= render partial: 'templates/submission', collection: @related_submissions, locals: { with_template: true } %>
+          </div>
+          <%= render 'shared/pagination', pagy: @related_submissions_pagy, items_name: 'submissions', next_page_path: submissions_path(q: params[:q]) %>
+        </section>
+      <% end %>
+    <% end %>
   </div>
-  <% if @related_submissions.present? %>
-    <h1 class="text-2xl md:text-3xl sm:text-4xl font-bold mt-8 md:mt-4">
-      <%= t('submissions') %>
-    </h1>
-    <div class="space-y-4 mt-4">
-      <%= render partial: 'templates/submission', collection: @related_submissions, locals: { with_template: true } %>
-    </div>
-    <%= render 'shared/pagination', pagy: @related_submissions_pagy, items_name: 'submissions', next_page_path: submissions_path(q: params[:q]) %>
-  <% end %>
-<% end %>
+</div>
 <%= render 'shared/review_form' %>

@@ -1,14 +1,39 @@
-<%= render 'shared/turbo_modal', title: t('reveal_api_key') do %>
-  <%= form_tag settings_reveal_access_token_path, enctype: 'multipart/form-data', data: { turbo_frame: :_top } do %>
-    <div class="form-control">
-      <%= label_tag :password, t('enter_your_password_to_reveal_the_api_key'), class: 'label' %>
-      <%= password_field_tag :password, nil, class: 'base-input', autocomplete: 'current-password', required: true, autofocus: true, placeholder: t('password') %>
-      <% if local_assigns[:error_message].present? %>
-        <span class="label-text-alt text-red-400 mt-1"><%= local_assigns[:error_message] %></span>
-      <% end %>
-    </div>
-    <div class="form-control mt-4">
-      <%= submit_tag t('submit'), class: 'base-button' %>
+<%= render 'shared/turbo_modal',
+  title: t('reveal_api_key'),
+  enhanced_modal: true do %>
+  <%= form_tag settings_reveal_access_token_path,
+        multipart: true,
+        html: { class: 'users-modal-form reveal-access-token-form' },
+        data: { turbo_frame: :_top } do %>
+    <div class="users-modal-editor reveal-access-token-editor">
+      <p id="reveal-access-token-description" class="signature-editor__lead users-modal-editor__lead">
+        <%= t(
+              'reveal_access_token_intro',
+              default: 'Confirm your password to view and copy your full API token.'
+            ) %>
+      </p>
+      <div class="users-modal-editor__fields">
+        <div class="form-control">
+          <%= label_tag :password, t('enter_your_password_to_reveal_the_api_key'), class: 'label' %>
+          <%= password_field_tag :password,
+                nil,
+                class: 'base-input w-full',
+                autocomplete: 'current-password',
+                required: true,
+                autofocus: true,
+                placeholder: t('password'),
+                aria: { describedby: 'reveal-access-token-description' } %>
+          <% if local_assigns[:error_message].present? %>
+            <span class="label-text-alt mt-1 text-error" role="alert"><%= local_assigns[:error_message] %></span>
+          <% end %>
+        </div>
+      </div>
+      <div class="signature-editor__actions users-modal-editor__actions">
+        <button type="button" class="signature-editor__cancel btn btn-ghost" data-turbo-modal-close>
+          <%= t('cancel', default: 'Cancel') %>
+        </button>
+        <%= submit_tag t('submit'), class: 'base-button profile-settings-btn-primary signature-editor__save' %>
+      </div>
     </div>
   <% end %>
 <% end %>

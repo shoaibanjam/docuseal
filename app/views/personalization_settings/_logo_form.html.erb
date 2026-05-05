@@ -32,11 +32,19 @@
             <%= t('click_to_upload_or_drag_and_drop_html') %>
           </div>
         </div>
-        <input id="logo_file" name="file" class="hidden" data-action="change:file-dropzone#onSelectFiles" data-target="file-dropzone.input" type="file" accept="image/png,image/jpeg,image/jpg,image/svg+xml">
+        <input id="logo_file"
+               name="file"
+               class="hidden"
+               data-action="change:file-dropzone#onSelectFiles"
+               data-target="file-dropzone.input"
+               type="file"
+               accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+               title="<%= t('personalization_placeholder_logo_file_title') %>"
+               aria-label="<%= t('personalization_placeholder_logo_file_title') %>">
       </div>
     </label>
   </file-dropzone>
   <div class="form-control">
-    <%= f.button button_title(title: t('upload_logo'), disabled_with: t('saving')), class: 'base-button' %>
+    <%= f.button button_title(title: t('upload_logo'), disabled_with: t('saving')), class: 'base-button profile-settings-btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2' %>
   </div>
 <% end %>

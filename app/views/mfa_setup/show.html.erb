@@ -1,6 +1,11 @@
-<div class="max-w-lg mx-auto px-2">
-  <h1 class="text-4xl font-bold text-center mt-8">
-    <%= t('setup_2fa') %>
-  </h1>
-  <%= render 'mfa_setup/form' %>
+<div class="mfa-setup-show max-w-xl mx-auto px-4 py-10">
+  <header class="mb-8 text-center">
+    <h1 class="text-[1.35rem] font-semibold tracking-tight text-base-content mb-2">
+      <%= t('setup_2fa') %>
+    </h1>
+    <p class="text-sm text-base-content/70 max-w-md mx-auto">
+      <%= t('mfa_setup_show_intro', default: 'Scan the code with your authenticator app and confirm with a one-time code.') %>
+    </p>
+  </header>
+  <%= render partial: 'mfa_setup/form', locals: { mfa_modal: false } %>
 </div>

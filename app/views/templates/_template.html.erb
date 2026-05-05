@@ -1,38 +1,46 @@
-<div class="min-h-44 h-auto relative group">
-  <a href="<%= template_path(template) %>" class="template-dashboard-card flex h-full flex-col rounded-2xl pt-4 px-4 pb-4 w-full bg-[#0d1c2f] border border-white/10 shadow-soft-lg transition-all duration-200 before:border-2 before:border-base-300/60 before:border-dashed before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:hidden before:rounded-2xl" data-targets="dashboard-dropzone.templateCards">
-    <div class="template-dashboard-card-title text-[#e7f7ff] text-lg font-semibold mb-3 shrink-0 transition-colors duration-200" style="line-height: 1.5rem; min-height: 1.5rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;">
+<% file_ext = template.documents.first&.filename.to_s.split('.').last&.upcase.presence || 'PDF' %>
+<div class="tpl-card-wrap group relative">
+  <a href="<%= template_path(template) %>" class="template-dashboard-card tpl-card flex h-full flex-col w-full transition-all duration-200" data-targets="dashboard-dropzone.templateCards" tabindex="0">
+    <div class="tpl-card-preview-area">
+      <div class="tpl-card-badge"><%= file_ext %></div>
+      <%= svg_icon('file_text', class: 'template-dashboard-card-icon tpl-card-file-icon w-10 h-10 transition-colors duration-200') %>
       <% if template.template_accesses.present? %>
-        <%= svg_icon('lock', class: 'w-5 h-5 inline -translate-y-[3px] mr-1') %>
+        <div class="tpl-card-lock-indicator">
+          <%= svg_icon('lock', class: 'w-3.5 h-3.5') %>
+        </div>
       <% end %>
-      <% template.name.split(/(_)/).each do |item| %><%= item %><wbr><% end %>
     </div>
-    <div class="template-dashboard-card-preview w-full h-14 rounded-2xl bg-[#051427] border border-white/10 flex items-center justify-center mb-3 shrink-0 transition-colors duration-200">
-      <%= svg_icon('file_text', class: 'template-dashboard-card-icon w-8 h-8 opacity-80 transition-colors duration-200') %>
-    </div>
-    <div class="pt-1 space-y-1 mt-auto" data-targets="dashboard-dropzone.hiddenOnDrag">
-      <p class="template-dashboard-card-meta flex items-center space-x-1 text-xs text-base-content/60 transition-colors duration-200">
-        <%= svg_icon('user', class: 'w-4 h-4') %>
-        <span><%= template.author.full_name.presence || template.author.email.to_s.sub(/\+\w+@/, '@') %></span>
-        <% if template.account_id != current_account.id %>
-          <span class="badge badge-neutral badge-outline badge-sm text-[10px] uppercase"><%= t('shared') %></span>
-        <% end %>
-      </p>
-      <p class="template-dashboard-card-meta flex text-xs text-base-content/60 transition-colors duration-200">
-        <span class="flex items-center space-x-1 w-1/2">
-          <%= svg_icon('calendar', class: 'w-4 h-4') %>
+
+    <div class="tpl-card-body">
+      <h3 class="template-dashboard-card-title tpl-card-name" title="<%= template.name %>">
+        <% template.name.split(/(_)/).each do |item| %><%= item %><wbr><% end %>
+      </h3>
+
+      <div class="tpl-card-meta" data-targets="dashboard-dropzone.hiddenOnDrag">
+        <p class="template-dashboard-card-meta tpl-card-meta-row">
+          <%= svg_icon('user', class: 'w-3.5 h-3.5 shrink-0') %>
+          <span class="truncate"><%= template.author.full_name.presence || template.author.email.to_s.sub(/\+\w+@/, '@') %></span>
+          <% if template.account_id != current_account.id %>
+            <span class="tpl-card-shared-badge"><%= t('shared') %></span>
+          <% end %>
+        </p>
+        <p class="template-dashboard-card-meta tpl-card-meta-row">
+          <%= svg_icon('calendar', class: 'w-3.5 h-3.5 shrink-0') %>
           <span><%= l(template.created_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale) %></span>
-        </span>
-        <% if template.archived_at? %>
-          <span class="flex items-center space-x-1 w-1/2">
-            <%= svg_icon('folder', class: 'w-4 h-4 flex-shrink-0') %>
+          <% if template.archived_at? %>
+            <span class="tpl-card-meta-divider"></span>
+            <%= svg_icon('folder', class: 'w-3.5 h-3.5 shrink-0') %>
             <span class="truncate"><%= template.folder.full_name %></span>
-          </span>
-        <% end %>
-      </p>
+          <% end %>
+        </p>
+      </div>
     </div>
+
+    <div class="before:border-2 before:border-base-300/60 before:border-dashed before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:hidden before:rounded-2xl"></div>
   </a>
-  <div class="absolute top-0 bottom-0 w-0 items-center hidden md:flex opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none group-hover:pointer-events-auto" style="right: 37px" data-targets="dashboard-dropzone.hiddenOnDrag">
-    <div class="space-y-1">
+
+  <div class="tpl-card-actions hidden md:flex" data-targets="dashboard-dropzone.hiddenOnDrag">
+    <div class="tpl-card-actions-menu">
       <% if can?(:update, template) && !template.archived_at? && template.account_id == current_account.id %>
         <span class="tooltip tooltip-left" data-tip="<%= t('move') %>">
           <a href="<%= edit_template_folder_path(template.id) %>" data-turbo-frame="modal" class="btn btn-xs btn-circle template-action-btn" aria-label="<%= t('move') %>">

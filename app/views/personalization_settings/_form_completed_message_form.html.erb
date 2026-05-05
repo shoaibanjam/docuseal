@@ -11,17 +11,23 @@
       <%= f.fields_for :value, Struct.new(:title, :body).new(*(f.object.value || {}).values_at('title', 'body')) do |ff| %>
         <div class="form-control">
           <%= ff.label :title, t('title'), class: 'label' %>
-          <%= ff.text_field :title, class: 'base-input', dir: 'auto' %>
+          <%= ff.text_field :title,
+                class: 'base-input',
+                dir: 'auto',
+                placeholder: t('personalization_placeholder_form_completed_title') %>
         </div>
         <div class="form-control">
           <%= ff.label :body, t('body'), class: 'label' %>
           <autoresize-textarea>
-            <%= ff.text_area :body, class: 'base-input w-full py-2', dir: 'auto' %>
+            <%= ff.text_area :body,
+                  class: 'base-input w-full py-2',
+                  dir: 'auto',
+                  placeholder: t('personalization_placeholder_form_completed_body') %>
           </autoresize-textarea>
         </div>
       <% end %>
       <div class="form-control pt-2">
-        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
+        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button profile-settings-btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2' %>
       </div>
     <% end %>
   </div>

@@ -1,30 +1,58 @@
-<div class="settings-layout">
-  <aside class="settings-sidebar">
-    <%= render 'shared/settings_nav' %>
-  </aside>
-  <div class="settings-main">
-    <div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-center">
-      <h1 class="ds-heading-2 flex items-center gap-2">
-        <%= svg_icon('api', class: 'w-5 h-5') %>
-        <span>Webhooks</span>
-      </h1>
-      <div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-center">
-        <%= render 'shared/test_mode_toggle' %>
-        <% if @webhook_url.persisted? %>
-          <%= link_to new_settings_webhook_path, class: 'md:ml-3 white-button gap-2 w-full md:w-fit', data: { turbo_frame: 'modal' } do %>
-            <%= svg_icon('plus', class: 'w-6 h-6') %>
-            <span><%= t('new_webhook') %></span>
+<div class="settings-layout profile-settings-page webhook-settings-page">
+  <div class="settings-main profile-settings-main">
+    <header class="settings-page-header profile-settings-header webhook-settings-header">
+      <div class="settings-page-header-top">
+        <div class="settings-page-avatar profile-settings-avatar webhook-settings-page__avatar" aria-hidden="true">
+          <%= svg_icon('world', class: 'w-7 h-7 shrink-0') %>
+        </div>
+        <div class="profile-settings-header-text">
+          <p class="webhook-settings-eyebrow">
+            <%= t('webhook_settings_eyebrow', default: 'Automation') %>
+          </p>
+          <h1 class="ds-heading-2 profile-settings-title break-all">
+            <%= @webhook_url.url.presence || t('webhook_settings') %>
+          </h1>
+          <p class="settings-page-subtitle profile-settings-intro webhook-settings-intro">
+            <%= t(
+                  'webhook_settings_show_intro',
+                  default: 'Configure your receiver URL, optional signing secret, and which events to send.'
+                ) %>
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="webhook-settings-toolbar mt-6 flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-4">
+      <div class="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3">
+        <% if current_account.webhook_urls.size > 1 %>
+          <%= link_to settings_webhooks_path, class: 'white-button profile-settings-btn-outline btn-sm gap-2 whitespace-nowrap' do %>
+            <%= svg_icon('arrow_left', class: 'size-4 shrink-0') %>
+            <%= t('webhook_settings') %>
           <% end %>
         <% end %>
+        <%= render 'shared/test_mode_toggle' %>
       </div>
+      <% if @webhook_url.persisted? %>
+        <%= link_to new_settings_webhook_path, class: 'base-button profile-settings-btn-primary whitespace-nowrap gap-2 self-start sm:self-auto', data: { turbo_frame: :modal } do %>
+          <%= svg_icon('plus', class: 'size-5 shrink-0') %>
+          <%= t('new_webhook') %>
+        <% end %>
+      <% end %>
     </div>
-    <section class="settings-card">
-        <div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-end md:relative">
-          <%= label_tag :url, 'Webhook URL', class: 'text-sm font-semibold' %>
+
+    <div class="webhook-settings-stack mt-8 space-y-6">
+      <section class="settings-card profile-settings-card">
+        <div class="settings-card-header flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div class="min-w-0">
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('link', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+              <span><%= t('webhook_field_label_url', default: 'Webhook URL') %></span>
+            </h2>
+          </div>
           <% if @webhook_url.persisted? %>
-            <div class="flex items-center space-x-2 md:absolute md:right-0">
-              <%= link_to webhook_secret_path(@webhook_url), class: 'white-button btn-sm', data: { turbo_frame: 'modal' } do %>
-                <%= svg_icon('lock', class: 'w-4 h-4') %>
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+              <%= link_to webhook_secret_path(@webhook_url), class: 'white-button profile-settings-btn-outline btn-sm gap-2', data: { turbo_frame: :modal } do %>
+                <%= svg_icon('lock', class: 'w-4 h-4 shrink-0') %>
                 <span><%= @webhook_url.secret.present? ? t('edit_secret') : t('add_secret') %></span>
               <% end %>
               <div class="tooltip tooltip-left md:tooltip-top" data-tip="<%= t('delete_webhook') %>">
@@ -35,13 +63,17 @@
             </div>
           <% end %>
         </div>
-        <%= form_for @webhook_url, url: @webhook_url.persisted? ? settings_webhook_path(@webhook_url) : settings_webhooks_path, html: { autocomplete: 'off' } do |f| %>
-          <div class="flex flex-row flex-wrap space-y-2 md:space-y-0 md:flex-nowrap md:space-x-2">
-            <%= f.url_field :url, class: 'input font-mono input-bordered w-full', placeholder: 'https://example.com/hook', required: true %>
-            <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button w-full md:w-32' %>
+        <%= form_for @webhook_url, url: @webhook_url.persisted? ? settings_webhook_path(@webhook_url) : settings_webhooks_path, html: { autocomplete: 'off', class: 'mt-4 space-y-4' } do |f| %>
+          <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-stretch md:gap-3">
+            <%= f.url_field :url,
+                  class: 'base-input font-mono w-full md:flex-1 md:min-w-[12rem]',
+                  placeholder: 'https://example.com/hook',
+                  required: true %>
+            <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button profile-settings-btn-primary w-full shrink-0 md:w-auto md:min-w-[8rem]' %>
           </div>
           <% unless @webhook_url.persisted? %>
-            <div class="space-y-2 mt-4">
+            <div class="space-y-2 pt-2 border-t border-base-300">
+              <p class="text-sm font-medium text-base-content"><%= t('events', default: 'Events') %></p>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-x-4 gap-y-2">
                 <%= f.collection_check_boxes(:events, WebhookUrl::EVENTS, :to_s, :to_s, include_hidden: false) do |b| %>
                   <div class="flex min-w-0">
@@ -58,92 +90,95 @@
           <% end %>
         <% end %>
         <% if @webhook_url.persisted? %>
-          <%= form_for @webhook_url, url: webhook_preference_path(@webhook_url), method: :put, html: { autocomplete: 'off', class: 'mt-4' } do |f| %>
-            <div class="space-y-2">
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-x-4 gap-y-2">
-                <% WebhookUrl::EVENTS.each do |event| %>
-                  <%= f.fields_for :events do |ff| %>
-                    <div class="flex min-w-0">
-                      <label class="flex min-w-0 items-start gap-2 cursor-pointer">
-                        <submit-form data-on="change" class="flex shrink-0 pt-0.5">
-                          <%= ff.check_box event, class: 'base-checkbox', checked: @webhook_url.events.include?(event) %>
-                        </submit-form>
-                        <span class="min-w-0 break-all leading-5"><%= event %></span>
-                      </label>
-                    </div>
-                  <% end %>
+          <%= form_for @webhook_url, url: webhook_preference_path(@webhook_url), method: :put, html: { autocomplete: 'off', class: 'mt-6 pt-6 border-t border-base-300 space-y-3' } do |f| %>
+            <p class="text-sm font-medium text-base-content"><%= t('events', default: 'Events') %></p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-x-4 gap-y-2">
+              <% WebhookUrl::EVENTS.each do |event| %>
+                <%= f.fields_for :events do |ff| %>
+                  <div class="flex min-w-0">
+                    <label class="flex min-w-0 items-start gap-2 cursor-pointer">
+                      <submit-form data-on="change" class="flex shrink-0 pt-0.5">
+                        <%= ff.check_box event, class: 'base-checkbox', checked: @webhook_url.events.include?(event) %>
+                      </submit-form>
+                      <span class="min-w-0 break-all leading-5"><%= event %></span>
+                    </label>
+                  </div>
                 <% end %>
-              </div>
+              <% end %>
             </div>
           <% end %>
         <% end %>
-    </section>
-    <% if @webhook_events.present? || params[:status].present? %>
-      <section class="settings-card">
-        <h2 id="log" class="text-lg font-semibold text-base-content mb-4"><%= t('events_log') %></h2>
-        <div class="tabs border-b mt-4">
-          <%= link_to t('all'), url_for(params: request.query_parameters.except('status', 'page')), style: 'margin-bottom: -1px', class: "tab h-10 text-base #{params[:status].blank? ? 'tab-active tab-bordered' : 'pb-[3px]'}" %>
-          <%= link_to t('succeeded'), url_for(params: request.query_parameters.except('page').merge('status' => 'success')), style: 'margin-bottom: -1px', class: "tab h-10 text-base #{params[:status] == 'success' ? 'tab-active tab-bordered' : 'pb-[3px]'}" %>
-          <%= link_to t('failed'), url_for(params: request.query_parameters.except('page').merge('status' => 'error')), style: 'margin-bottom: -1px', class: "tab h-10 text-base #{params[:status] == 'error' ? 'tab-active tab-bordered' : 'pb-[3px]'}" %>
-        </div>
-        <% if @webhook_events.present? %>
-          <div class="divide-y divide-base-300 rounded-lg">
-            <%= render partial: 'webhook_events/event_row', collection: @webhook_events, as: :webhook_event, locals: { webhook_url: @webhook_url } %>
+      </section>
+
+      <% if @webhook_events.present? || params[:status].present? %>
+        <section class="settings-card profile-settings-card">
+          <div class="settings-card-header">
+            <h2 id="log" class="settings-card-title"><%= t('events_log') %></h2>
           </div>
-        <% else %>
-          <div class="text-center py-4">
-            <%= t('there_are_no_events') %>
+          <div class="tabs webhook-settings-tabs border-b mt-4">
+            <%= link_to t('all'), url_for(params: request.query_parameters.except('status', 'page')), style: 'margin-bottom: -1px', class: "tab h-10 text-base #{params[:status].blank? ? 'tab-active tab-bordered' : 'pb-[3px]'}" %>
+            <%= link_to t('succeeded'), url_for(params: request.query_parameters.except('page').merge('status' => 'success')), style: 'margin-bottom: -1px', class: "tab h-10 text-base #{params[:status] == 'success' ? 'tab-active tab-bordered' : 'pb-[3px]'}" %>
+            <%= link_to t('failed'), url_for(params: request.query_parameters.except('page').merge('status' => 'error')), style: 'margin-bottom: -1px', class: "tab h-10 text-base #{params[:status] == 'error' ? 'tab-active tab-bordered' : 'pb-[3px]'}" %>
           </div>
-        <% end %>
-        <% if @pagy.pages > 1 %>
-          <div class="flex my-4 justify-center md:justify-between">
-            <div class="hidden md:block text-sm">
-              <%= "#{@pagy.from}-#{@pagy.to} events" %>
+          <% if @webhook_events.present? %>
+            <div class="divide-y divide-base-300 rounded-lg border border-base-300 mt-4 overflow-hidden">
+              <%= render partial: 'webhook_events/event_row', collection: @webhook_events, as: :webhook_event, locals: { webhook_url: @webhook_url } %>
             </div>
-            <div class="flex items-center space-x-1.5">
-              <div class="join">
-                <% if @pagy.previous %>
-                  <%= link_to '«', url_for(params: request.query_parameters.merge('page' => @pagy.previous), anchor: 'log'), class: 'join-item btn min-h-full h-10' %>
-                <% else %>
-                  <span class="join-item btn btn-disabled !bg-base-200 min-h-full h-10">«</span>
-                <% end %>
-                <span class="join-item btn font-medium uppercase min-h-full h-10">
-                  <%= "Page #{@pagy.page}" %>
+          <% else %>
+            <div class="text-center py-8 text-base-content/70">
+              <%= t('there_are_no_events') %>
+            </div>
+          <% end %>
+          <% if @pagy.pages > 1 %>
+            <div class="flex my-4 justify-center md:justify-between items-center gap-4 flex-wrap">
+              <div class="hidden md:block text-sm text-base-content/70">
+                <%= "#{@pagy.from}-#{@pagy.to} events" %>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <div class="join">
+                  <% if @pagy.previous %>
+                    <%= link_to '«', url_for(params: request.query_parameters.merge('page' => @pagy.previous), anchor: 'log'), class: 'join-item btn min-h-full h-10' %>
+                  <% else %>
+                    <span class="join-item btn btn-disabled !bg-base-200 min-h-full h-10">«</span>
+                  <% end %>
+                  <span class="join-item btn font-medium uppercase min-h-full h-10">
+                    <%= "Page #{@pagy.page}" %>
+                  </span>
+                  <% if @pagy.next %>
+                    <%= link_to '»', url_for(params: request.query_parameters.merge('page' => @pagy.next), anchor: 'log'), class: 'join-item btn min-h-full h-10' %>
+                  <% else %>
+                    <span class="join-item btn btn-disabled !bg-base-200 min-h-full h-10">»</span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </section>
+      <% elsif (submitter = current_account.submitters.where.not(completed_at: nil).order(:id).last) && can?(:read, submitter) %>
+        <section class="settings-card profile-settings-card">
+          <div class="collapse collapse-open webhook-settings-docs-collapse bg-base-100 rounded-xl border border-base-300 px-1 shadow-soft">
+            <div class="p-4 text-xl font-medium">
+              <div class="flex flex-col gap-3 md:flex-row md:justify-between md:items-center md:h-8">
+                <span>
+                  <%= t('submission_example_payload') %>
                 </span>
-                <% if @pagy.next %>
-                  <%= link_to '»', url_for(params: request.query_parameters.merge('page' => @pagy.next), anchor: 'log'), class: 'join-item btn min-h-full h-10' %>
-                <% else %>
-                  <span class="join-item btn btn-disabled !bg-base-200 min-h-full h-10">»</span>
+                <% if @webhook_url.url.present? && @webhook_url.events.include?('form.completed') %>
+                  <%= button_to button_title(title: 'Test Webhook', disabled_with: t('sending'), icon_disabled: svg_icon('loader', class: 'w-4 h-4 animate-spin')), settings_webhook_resend_path(@webhook_url), class: 'white-button profile-settings-btn-outline btn-sm shrink-0', method: :post %>
                 <% end %>
               </div>
             </div>
-          </div>
-        <% end %>
-      </section>
-    <% elsif (submitter = current_account.submitters.where.not(completed_at: nil).order(:id).last) && can?(:read, submitter) %>
-      <section class="settings-card">
-      <div class="collapse collapse-open bg-base-100 rounded-xl border border-base-300 shadow-soft px-1">
-          <div class="p-4 text-xl font-medium">
-            <div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:h-8">
-              <span>
-                <%= t('submission_example_payload') %>
-              </span>
-              <% if @webhook_url.url.present? && @webhook_url.events.include?('form.completed') %>
-                <%= button_to button_title(title: 'Test Webhook', disabled_with: t('sending'), icon_disabled: svg_icon('loader', class: 'w-4 h-4 animate-spin')), settings_webhook_resend_path(@webhook_url), class: 'btn btn-neutral btn-outline btn-sm', method: :post %>
-              <% end %>
+            <div class="collapse-content" style="display: inherit">
+              <div class="mockup-code api-docs-code relative">
+                <span class="top-0 right-0 absolute">
+                  <%= render 'shared/clipboard_copy', icon: 'copy', text: code = JSON.pretty_generate({ event_type: 'form.completed', timestamp: Time.current.iso8601, data: Submitters::SerializeForWebhook.call(submitter) }).gsub(/^/, '  ').sub(/^\s+/, ''), class: 'btn btn-ghost api-docs-copy-btn', icon_class: 'w-6 h-6', copy_title: t('copy'), copied_title: t('copied') %>
+                </span>
+                <pre class="api-docs-pre api-docs-pre--dark overflow-x-auto"><code class="api-docs-code-content api-docs-code-content--dark block min-w-max"><%== HighlightCode.call(code, 'JSON', theme: 'base16.dark') %></code></pre>
+                <pre class="api-docs-pre api-docs-pre--light overflow-x-auto"><code class="api-docs-code-content api-docs-code-content--light block min-w-max"><%== HighlightCode.call(code, 'JSON', theme: 'base16.light') %></code></pre>
+              </div>
             </div>
           </div>
-          <div class="collapse-content" style="display: inherit">
-            <div class="mockup-code api-docs-code relative">
-              <span class="top-0 right-0 absolute">
-                <%= render 'shared/clipboard_copy', icon: 'copy', text: code = JSON.pretty_generate({ event_type: 'form.completed', timestamp: Time.current.iso8601, data: Submitters::SerializeForWebhook.call(submitter) }).gsub(/^/, '  ').sub(/^\s+/, ''), class: 'btn btn-ghost api-docs-copy-btn', icon_class: 'w-6 h-6', copy_title: t('copy'), copied_title: t('copied') %>
-              </span>
-              <pre class="api-docs-pre api-docs-pre--dark overflow-x-auto"><code class="api-docs-code-content api-docs-code-content--dark block min-w-max"><%== HighlightCode.call(code, 'JSON', theme: 'base16.dark') %></code></pre>
-              <pre class="api-docs-pre api-docs-pre--light overflow-x-auto"><code class="api-docs-code-content api-docs-code-content--light block min-w-max"><%== HighlightCode.call(code, 'JSON', theme: 'base16.light') %></code></pre>
-            </div>
-          </div>
-        </div>
-      </section>
-    <% end %>
+        </section>
+      <% end %>
+    </div>
   </div>
 </div>

@@ -1,9 +1,12 @@
 export default class extends HTMLElement {
-  connectedCallback () {
+  connectedCallback() {
     this.querySelectorAll('a').forEach((link) => {
-      if (document.location.pathname.startsWith(link.pathname) && !link.getAttribute('href').startsWith('http')) {
-        link.classList.add('bg-base-300')
+      if (
+        document.location.pathname.startsWith(link.pathname) &&
+        !link.getAttribute('href').startsWith('http')
+      ) {
+        link.classList.add('settings-nav-link--active');
       }
-    })
+    });
   }
 }

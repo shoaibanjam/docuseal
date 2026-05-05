@@ -1,13 +1,39 @@
-<%= render 'shared/turbo_modal', title: t('remove_2fa') do %>
+<%= render 'shared/turbo_modal',
+  title: t('remove_2fa'),
+  enhanced_modal: true do %>
   <%= form_for '', url: mfa_setup_path, method: :delete, data: { turbo_frame: :_top } do |f| %>
-    <div class="form-control my-6 space-y-2">
-      <%= f.text_field :otp_attempt, required: true, placeholder: 'XXX-XXX', class: 'base-input text-center' %>
-      <span>
-        <%= @error_message %>
-      </span>
-    </div>
-    <div class="form-control mt-4">
-      <%= f.button button_title(title: t('remove_2fa')), class: 'base-button' %>
+    <div class="mfa-setup-editor">
+      <p id="mfa-remove-modal-description" class="signature-editor__lead">
+        <%= t('mfa_remove_modal_intro',
+          default: 'Enter the 6‑digit code from your authenticator app to confirm removing two-factor authentication from your account.') %>
+      </p>
+      <div class="form-control mfa-setup-editor__field">
+        <%= f.label :otp_attempt, t('two_factor_code', default: 'Authentication code'), class: 'label' %>
+        <%= f.text_field :otp_attempt,
+          required: true,
+          autocomplete: 'one-time-code',
+          inputmode: 'numeric',
+          pattern: '[0-9\s-]*',
+          maxlength: 12,
+          placeholder: t('mfa_code_placeholder', default: 'XXX-XXX'),
+          class: 'base-input text-center tracking-wide',
+          aria: {
+            describedby: [
+              'mfa-remove-modal-description',
+              ('mfa-remove-error' if @error_message.present?)
+            ].compact.join(' ')
+          } %>
+        <% if @error_message.present? %>
+          <span id="mfa-remove-error" class="label-text-alt mfa-setup-editor__error" role="alert"><%= @error_message %></span>
+        <% end %>
+      </div>
+      <div class="signature-editor__actions mfa-setup-editor__actions">
+        <button type="button" class="signature-editor__cancel btn btn-ghost" data-turbo-modal-close>
+          <%= t('cancel', default: 'Cancel') %>
+        </button>
+        <%= f.button button_title(title: t('remove_2fa')),
+          class: 'base-button btn-outline btn-error' %>
+      </div>
     </div>
   <% end %>
 <% end %>

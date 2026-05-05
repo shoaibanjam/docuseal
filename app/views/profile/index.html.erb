@@ -1,78 +1,150 @@
-<div class="settings-layout">
-  <aside class="settings-sidebar">
-    <%= render 'shared/settings_nav' %>
-  </aside>
-  <div class="settings-main">
-    <h1 class="ds-heading-2">
-      <%= t('profile') %>
-    </h1>
-    <div class="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start">
-      <div class="space-y-6">
-        <section class="settings-card">
+<div class="settings-layout profile-settings-page">
+  <div class="settings-main profile-settings-main">
+    <header class="settings-page-header profile-settings-header">
+      <div class="settings-page-header-top">
+        <div class="settings-page-avatar profile-settings-avatar">
+          <span><%= current_user.first_name.to_s[0].to_s.upcase %><%= current_user.last_name.to_s[0].to_s.upcase %></span>
+        </div>
+        <div class="profile-settings-header-text">
+          <h1 class="ds-heading-2 profile-settings-title">
+            <%= t('profile') %>
+          </h1>
+          <p class="settings-page-subtitle profile-settings-intro">
+            <%= t('profile_settings_intro', default: 'Manage how you appear in documents, signatures, notifications, and account security.') %>
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="settings-profile-columns profile-settings-grid">
+      <div class="settings-profile-main profile-settings-column profile-settings-column--primary">
+        <section class="settings-card profile-settings-card profile-settings-card--personal">
           <div class="settings-card-header">
-            <h2 class="settings-card-title flex items-center gap-2">
-              <%= svg_icon('user', class: 'w-5 h-5') %>
-              <span><%= t('personal_details', default: 'Personal Details') %></span>
-            </h2>
+            <div>
+              <h2 class="settings-card-title flex items-center gap-2.5">
+                <%= svg_icon('user', class: 'profile-settings-card-icon shrink-0') %>
+                <span><%= t('personal_details', default: 'Personal Details') %></span>
+              </h2>
+              <p class="settings-card-subtitle">
+                <%= t('profile_personal_details_hint', default: 'Your name and email are shown on documents and audit trails.') %>
+              </p>
+            </div>
           </div>
-          <%= form_for current_user, url: update_contact_settings_profile_index_path, method: :patch, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
-            <div class="grid md:grid-cols-2 gap-4">
+          <%= form_for current_user, url: update_contact_settings_profile_index_path, method: :patch, html: { autocomplete: 'off', class: 'space-y-6' } do |f| %>
+            <div class="grid gap-6 sm:grid-cols-2">
               <div class="form-control">
                 <%= f.label :first_name, t('first_name'), class: 'label' %>
-                <%= f.text_field :first_name, required: true, class: 'base-input', dir: 'auto' %>
+                <%= f.text_field :first_name,
+                  required: true,
+                  class: 'base-input',
+                  dir: 'auto',
+                  placeholder: t('profile_placeholder_first_name', default: 'Alex') %>
               </div>
               <div class="form-control">
                 <%= f.label :last_name, t('last_name'), class: 'label' %>
-                <%= f.text_field :last_name, required: false, class: 'base-input', dir: 'auto' %>
+                <%= f.text_field :last_name,
+                  required: false,
+                  class: 'base-input',
+                  dir: 'auto',
+                  placeholder: t('profile_placeholder_last_name', default: 'Rivera') %>
               </div>
             </div>
             <div class="form-control">
               <%= f.label :email, t('email'), class: 'label' %>
-              <%= f.email_field :email, autocomplete: 'off', class: 'base-input' %>
+              <%= f.email_field :email,
+                autocomplete: 'off',
+                class: 'base-input',
+                placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
               <% if current_user.try(:pending_reconfirmation?) %>
                 <label class="label">
                   <span class="label-text-alt"><%= t('email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm', email: f.object.unconfirmed_email) %></span>
                 </label>
               <% end %>
             </div>
-            <div class="form-control pt-3">
-              <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button w-full md:w-auto flex items-center justify-center gap-2' do %>
-                <%= svg_icon('save', class: 'w-5 h-5') %>
-                <span><%= t('update') %></span>
+            <div class="settings-card-actions profile-settings-card-actions">
+              <%= f.button button_title(title: t('profile_save_changes', default: 'Save Changes'), disabled_with: t('updating')), class: 'base-button profile-settings-btn-primary w-full sm:w-auto flex items-center justify-center gap-2' do %>
+                <%= svg_icon('save', class: 'w-4 h-4') %>
+                <span><%= t('profile_save_changes', default: 'Save Changes') %></span>
               <% end %>
             </div>
           <% end %>
         </section>
 
         <% if true_user == current_user && !current_account.testing? %>
-          <section class="settings-card">
+          <section class="settings-card profile-settings-card profile-settings-card--password">
             <div class="settings-card-header">
-              <h2 class="settings-card-title flex items-center gap-2">
-                <%= svg_icon('lock', class: 'w-5 h-5') %>
-                <span><%= t('change_password') %></span>
-              </h2>
+              <div>
+                <h2 class="settings-card-title flex items-center gap-2.5">
+                  <%= svg_icon('lock', class: 'profile-settings-card-icon shrink-0') %>
+                  <span><%= t('change_password') %></span>
+                </h2>
+                <p class="settings-card-subtitle">
+                  <%= t('profile_change_password_hint', default: "Use a strong passphrase you don't reuse elsewhere.") %>
+                </p>
+              </div>
             </div>
-            <%= form_for current_user, url: update_password_settings_profile_index_path, method: :patch, html: { autocomplete: 'off' } do |f| %>
-              <%= f.label :password, t('new_password'), class: 'label' %>
-              <%= f.password_field :password, autocomplete: 'off', class: 'base-input peer w-full', required: true %>
-              <div class="<%= 'peer-invalid:hidden' if current_user.errors.blank? %> space-y-4 mt-4">
+            <%= form_for current_user, url: update_password_settings_profile_index_path, method: :patch, html: { autocomplete: 'off', class: 'space-y-6', id: 'profile_password_form' } do |f| %>
+              <div class="form-control">
+                <%= f.label :password, t('new_password'), class: 'label' %>
+                <%= f.password_field :password,
+                  autocomplete: 'new-password',
+                  class: 'base-input peer w-full',
+                  required: true,
+                  id: 'profile_user_password',
+                  placeholder: t('profile_placeholder_new_password', default: '••••••••••••') %>
+                <profile-password-strength
+                  class="profile-password-strength mt-3 block"
+                  data-i18n-empty="<%= t('profile_password_strength_hint', default: 'Password strength') %>"
+                  data-i18n-weak="<%= t('profile_password_weak', default: 'Weak') %>"
+                  data-i18n-fair="<%= t('profile_password_fair', default: 'Fair') %>"
+                  data-i18n-good="<%= t('profile_password_good', default: 'Good') %>"
+                  data-i18n-strong="<%= t('profile_password_strong', default: 'Strong') %>"
+                  data-password-input-id="profile_user_password"
+                >
+                  <div
+                    class="profile-password-strength-meter"
+                    role="meter"
+                    aria-label="<%= t('profile_password_strength_meter', default: 'Password strength') %>"
+                    aria-valuemin="0"
+                    aria-valuemax="4"
+                    aria-valuenow="0"
+                  >
+                    <div class="profile-password-strength-track">
+                      <div class="profile-password-strength-fill" data-password-strength-fill data-strength-level="empty"></div>
+                    </div>
+                    <span class="profile-password-strength-label" data-password-strength-label><%= t('profile_password_strength_hint', default: 'Password strength') %></span>
+                  </div>
+                </profile-password-strength>
+              </div>
+
+              <div class="<%= 'peer-invalid:hidden' if current_user.errors.blank? %> space-y-6">
                 <div class="form-control">
                   <%= f.label :password_confirmation, t('confirm_password'), class: 'label' %>
-                  <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'base-input' %>
+                  <%= f.password_field :password_confirmation,
+                    autocomplete: 'new-password',
+                    class: 'base-input',
+                    placeholder: t('profile_placeholder_confirm_password', default: '••••••••••••') %>
                 </div>
-                <div class="form-control">
-                  <%= f.label :current_password, t('current_password'), class: 'label' %>
-                  <%= f.password_field :current_password, autocomplete: 'current-password', class: 'base-input' %>
-                  <% if Accounts.can_send_emails?(current_account) %>
-                    <span class="label-text-alt mt-1">
-                      <%= t('dont_remember_your_current_password_click_here_to_reset_it_html') %>
-                    </span>
-                  <% end %>
+
+                <div class="form-control profile-settings-current-password">
+                  <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                    <%= f.label :current_password, t('current_password'), class: 'label !pb-0' %>
+                    <% if Accounts.can_send_emails?(current_account) %>
+                      <span class="label-text-alt sm:text-end profile-settings-forgot-link [&_label]:cursor-pointer [&_label]:underline whitespace-normal">
+                        <%= t('dont_remember_your_current_password_click_here_to_reset_it_html').html_safe %>
+                      </span>
+                    <% end %>
+                  </div>
+                  <%= f.password_field :current_password,
+                    autocomplete: 'current-password',
+                    class: 'base-input',
+                    placeholder: t('profile_placeholder_current_password', default: '••••••••••••') %>
                 </div>
-                <div class="form-control pt-2">
-                  <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button w-full md:w-auto flex items-center justify-center gap-2' do %>
-                    <%= svg_icon('lock', class: 'w-5 h-5') %>
-                    <span><%= t('update') %></span>
+
+                <div class="settings-card-actions profile-settings-card-actions">
+                  <%= f.button button_title(title: t('profile_update_password', default: 'Update password'), disabled_with: t('updating')), class: 'base-button profile-settings-btn-primary w-full sm:w-auto flex items-center justify-center gap-2' do %>
+                    <%= svg_icon('lock', class: 'w-4 h-4') %>
+                    <span><%= t('profile_update_password', default: 'Update password') %></span>
                   <% end %>
                 </div>
               </div>
@@ -82,87 +154,150 @@
         <% end %>
       </div>
 
-      <div class="space-y-6">
+      <aside class="settings-profile-secondary profile-settings-column profile-settings-column--secondary">
         <%= render 'email_configs' %>
 
-        <section class="settings-card">
+        <section class="settings-card profile-settings-card profile-settings-card--identity">
           <div class="settings-card-header">
-            <h2 class="settings-card-title flex items-center gap-2">
-              <%= svg_icon('writing_sign', class: 'w-5 h-5') %>
-              <span><%= t('signature') %></span>
-            </h2>
-          </div>
-          <% signature = UserConfigs.load_signature(current_user) %>
-          <% if signature %>
-            <div class="flex justify-center mb-4 relative">
-              <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_signature_path, method: :delete, class: 'right-0 top-0 absolute link' %>
-              <img src="<%= signature.url %>" style="max-height: 200px; width: auto" width="<%= signature.metadata['width'] %>" height="<%= signature.metadata['height'] %>">
+            <div>
+              <h2 class="settings-card-title flex items-center gap-2.5">
+                <%= svg_icon('writing_sign', class: 'profile-settings-card-icon shrink-0') %>
+                <span><%= t('profile_identity_heading', default: 'Identity') %></span>
+              </h2>
+              <p class="settings-card-subtitle">
+                <%= t('profile_identity_hint', default: 'Signature and initials appear when you sign documents.') %>
+              </p>
             </div>
-          <% end %>
-          <a href="<%= edit_user_signature_path %>" data-turbo-frame="modal" class="base-button w-full">
-            <span class="flex items-center justify-center gap-2 w-full">
-              <%= svg_icon('writing_sign', class: 'w-5 h-5 flex-shrink-0') %>
-              <span class="whitespace-nowrap"><%= t('update_signature') %></span>
-            </span>
-          </a>
-        </section>
+          </div>
 
-        <section class="settings-card">
-          <div class="settings-card-header">
-            <h2 class="settings-card-title flex items-center gap-2">
-              <%= svg_icon('rubber_stamp', class: 'w-5 h-5') %>
-              <span><%= t('initials') %></span>
-            </h2>
-          </div>
-          <% initials = UserConfigs.load_initials(current_user) %>
-          <% if initials %>
-            <div class="flex justify-center mb-4 relative">
-              <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_initials_path, method: :delete, class: 'right-0 top-0 absolute link' %>
-              <img src="<%= initials.url %>" style="max-height: 200px; width: auto" width="<%= initials.metadata['width'] %>" height="<%= initials.metadata['height'] %>">
+          <div class="profile-identity-stack">
+            <div class="profile-identity-row">
+              <div class="profile-identity-label">
+                <%= svg_icon('writing_sign', class: 'w-4 h-4 shrink-0') %>
+                <span><%= t('signature') %></span>
+              </div>
+              <% signature = UserConfigs.load_signature(current_user) %>
+              <% if signature %>
+                <div class="settings-media-preview profile-identity-preview">
+                  <%= button_to button_title(
+                        title: t('remove'),
+                        disabled_with: t('removing'),
+                        icon: svg_icon('trash', class: 'w-3.5 h-3.5 shrink-0'),
+                        icon_disabled: svg_icon('loader', class: 'w-3.5 h-3.5 shrink-0 animate-spin')
+                      ),
+                      user_signature_path,
+                      method: :delete,
+                      class: 'settings-media-remove-btn',
+                      form: { class: 'settings-media-remove-form' },
+                      title: t('profile_remove_signature', default: 'Remove signature'),
+                      data: {
+                        turbo_confirm: t('profile_remove_signature_body', default: 'Your saved signature will be removed from your profile. You can add a new one anytime.'),
+                        turbo_confirm_title: t('profile_remove_signature_title', default: 'Remove signature?'),
+                        turbo_confirm_accept: t('remove'),
+                        turbo_confirm_cancel: t('cancel', default: 'Cancel'),
+                        turbo_confirm_variant: 'danger'
+                      } %>
+                  <img src="<%= signature.url %>" alt="" loading="lazy" width="<%= signature.metadata['width'] %>" height="<%= signature.metadata['height'] %>">
+                </div>
+              <% else %>
+                <div class="profile-identity-empty"><%= t('profile_no_signature_yet', default: 'No signature yet') %></div>
+              <% end %>
+              <a href="<%= edit_user_signature_path %>" data-turbo-frame="modal" class="base-button profile-settings-btn-secondary w-full">
+                <span class="flex items-center justify-center gap-2 w-full">
+                  <%= svg_icon('writing_sign', class: 'w-4 h-4 flex-shrink-0') %>
+                  <span class="whitespace-nowrap"><%= t('profile_edit_signature', default: 'Edit signature') %></span>
+                </span>
+              </a>
             </div>
-          <% end %>
-          <a href="<%= edit_user_initials_path %>" data-turbo-frame="modal" class="base-button w-full flex items-center justify-center gap-2">
-            <%= svg_icon('rubber_stamp', class: 'w-5 h-5') %>
-            <span><%= t('update_initials') %></span>
-          </a>
+
+            <div class="profile-identity-divider" aria-hidden="true"></div>
+
+            <div class="profile-identity-row">
+              <div class="profile-identity-label">
+                <%= svg_icon('rubber_stamp', class: 'w-4 h-4 shrink-0') %>
+                <span><%= t('initials') %></span>
+              </div>
+              <% initials = UserConfigs.load_initials(current_user) %>
+              <% if initials %>
+                <div class="settings-media-preview profile-identity-preview">
+                  <%= button_to button_title(
+                        title: t('remove'),
+                        disabled_with: t('removing'),
+                        icon: svg_icon('trash', class: 'w-3.5 h-3.5 shrink-0'),
+                        icon_disabled: svg_icon('loader', class: 'w-3.5 h-3.5 shrink-0 animate-spin')
+                      ),
+                      user_initials_path,
+                      method: :delete,
+                      class: 'settings-media-remove-btn',
+                      form: { class: 'settings-media-remove-form' },
+                      title: t('profile_remove_initials', default: 'Remove initials'),
+                      data: {
+                        turbo_confirm: t('profile_remove_initials_body', default: 'Your saved initials will be removed from your profile. You can add new ones anytime.'),
+                        turbo_confirm_title: t('profile_remove_initials_title', default: 'Remove initials?'),
+                        turbo_confirm_accept: t('remove'),
+                        turbo_confirm_cancel: t('cancel', default: 'Cancel'),
+                        turbo_confirm_variant: 'danger'
+                      } %>
+                  <img src="<%= initials.url %>" alt="" loading="lazy" width="<%= initials.metadata['width'] %>" height="<%= initials.metadata['height'] %>">
+                </div>
+              <% else %>
+                <div class="profile-identity-empty"><%= t('profile_no_initials_yet', default: 'No initials yet') %></div>
+              <% end %>
+              <a href="<%= edit_user_initials_path %>" data-turbo-frame="modal" class="base-button profile-settings-btn-secondary w-full flex items-center justify-center gap-2">
+                <%= svg_icon('rubber_stamp', class: 'w-4 h-4') %>
+                <span><%= t('profile_edit_initials', default: 'Edit initials') %></span>
+              </a>
+            </div>
+          </div>
         </section>
 
         <% if true_user == current_user && !current_account.testing? %>
-          <section class="settings-card">
+          <section class="settings-card profile-settings-card profile-settings-card--security">
             <div class="settings-card-header">
-              <h2 class="settings-card-title flex items-center gap-2">
-                <%= svg_icon('2fa', class: 'w-5 h-5') %>
-                <span><%= t('two_factor_authentication') %></span>
-              </h2>
+              <div class="w-full">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <h2 class="settings-card-title flex items-center gap-2.5">
+                      <%= svg_icon('2fa', class: 'profile-settings-card-icon shrink-0') %>
+                      <span><%= t('two_factor_authentication') %></span>
+                    </h2>
+                    <p class="settings-card-subtitle">
+                      <%= t('profile_2fa_hint', default: 'Protect your account even if your password is exposed.') %>
+                    </p>
+                  </div>
+                  <div class="profile-security-badge-wrap shrink-0">
+                    <% if current_user.otp_required_for_login %>
+                      <span class="profile-status-badge profile-status-badge--success">
+                        <%= svg_icon('circle_check', class: 'w-3.5 h-3.5') %>
+                        <%= t('enabled') %>
+                      </span>
+                    <% else %>
+                      <span class="profile-status-badge profile-status-badge--warning">
+                        <%= svg_icon('info_circle', class: 'w-3.5 h-3.5') %>
+                        <%= t('disabled') %>
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="space-y-4">
+
+            <div class="profile-security-body space-y-5">
               <% if current_user.otp_required_for_login %>
-                <p class="flex items-center space-x-1">
-                  <%= svg_icon('circle_check', class: 'stroke-success inline flex-none w-5 h-5') %>
-                  <span class="profile-2fa-status-text">
-                    <%= t('2fa_has_been_configured') %>
-                  </span>
-                </p>
-                <a href="<%= edit_mfa_setup_path %>" data-turbo-frame="modal" class="white-button w-full flex items-center justify-center gap-2 !px-8">
-                  <%= svg_icon('lock', class: 'w-5 h-5') %>
+                <a href="<%= edit_mfa_setup_path %>" data-turbo-frame="modal" class="white-button profile-settings-btn-outline w-full flex items-center justify-center gap-2 !px-8">
+                  <%= svg_icon('lock', class: 'w-4 h-4') %>
                   <span><%= t('remove_2fa') %></span>
                 </a>
               <% else %>
-                <p class="flex items-center space-x-1">
-                  <%= svg_icon('info_circle', class: 'stroke-warning inline flex-none w-5 h-5') %>
-                  <span class="profile-2fa-status-text">
-                    <%= t('2fa_is_not_configured') %>
-                  </span>
-                </p>
-                <a href="<%= new_mfa_setup_path %>" data-turbo-frame="modal" class="base-button w-full flex items-center justify-center gap-2 !px-8">
-                  <%= svg_icon('lock', class: 'w-5 h-5') %>
-                  <span><%= t('set_up_2fa') %></span>
+                <a href="<%= new_mfa_setup_path %>" data-turbo-frame="modal" class="base-button profile-settings-btn-primary w-full flex items-center justify-center gap-2 !px-8">
+                  <%= svg_icon('shield_check', class: 'w-4 h-4') %>
+                  <span><%= t('profile_enable_2fa', default: 'Enable 2FA') %></span>
                 </a>
               <% end %>
             </div>
           </section>
         <% end %>
-      </div>
+      </aside>
     </div>
   </div>
 </div>

@@ -1,195 +1,296 @@
-<div class="settings-layout">
-  <aside class="settings-sidebar">
-    <%= render 'shared/settings_nav' %>
-  </aside>
-  <div class="settings-main">
-    <h1 class="ds-heading-2 flex items-center gap-2">
-      <%= svg_icon('certificate', class: 'w-5 h-5') %>
-      <span><%= t('pdf_signature') %></span>
-    </h1>
-    <section class="settings-card">
-    <div class="max-w-xl">
-      <h2 class="settings-card-title mb-4"><%= t('verify_signed_pdf') %></h2>
-      <div id="result">
-        <p class="mb-2 settings-card-subtitle esign-helper-text">
-          <%= t('upload_signed_pdf_file_to_validate_its_signature_') %>
-        </p>
+<div class="settings-layout profile-settings-page esign-settings-page">
+  <div class="settings-main profile-settings-main">
+    <header class="settings-page-header profile-settings-header esign-settings-header">
+      <div class="settings-page-header-top">
+        <div class="settings-page-avatar profile-settings-avatar esign-settings-page__avatar" aria-hidden="true">
+          <%= svg_icon('certificate', class: 'w-7 h-7 shrink-0') %>
+        </div>
+        <div class="profile-settings-header-text">
+          <p class="esign-settings-eyebrow">
+            <%= t('esign_settings_eyebrow', default: 'Trust & signatures') %>
+          </p>
+          <h1 class="ds-heading-2 profile-settings-title">
+            <%= t('pdf_signature') %>
+          </h1>
+          <p class="settings-page-subtitle profile-settings-intro esign-settings-intro">
+            <%= t(
+                  'esign_settings_intro',
+                  default: 'Verify PDFs, manage certificates, and adjust signing defaults.'
+                ) %>
+          </p>
+        </div>
       </div>
-      <%= form_for '', url: verify_pdf_signature_index_path, method: :post, html: { enctype: 'multipart/form-data' } do |f| %>
-        <%= f.button type: 'submit', class: 'flex' do %>
-          <div class="disabled mb-3">
-            <%= svg_icon('loader', class: 'w-5 h-5 animate-spin inline') %>
-            <%= "#{t('analyzing')}..." %>
+    </header>
+
+    <% esign_timestamp_section_visible =
+         !Docuseal.multitenant? &&
+           can?(:manage,
+             EncryptedConfig.find_or_initialize_by(
+               account: current_account,
+               key: EncryptedConfig::TIMESTAMP_SERVER_URL_KEY
+             )) %>
+
+    <div class="esign-settings-grid">
+      <section class="settings-card profile-settings-card profile-settings-card--esign-verify min-w-0">
+        <div class="settings-card-header">
+          <div>
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('cloud_upload', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+              <span><%= t('verify_signed_pdf') %></span>
+            </h2>
+            <p class="settings-card-subtitle">
+              <%= t(
+                    'esign_verify_section_hint',
+                    default: 'Upload one or more PDFs to check embedded signature validity.'
+                  ) %>
+            </p>
           </div>
-        <% end %>
-        <file-dropzone data-name="verify_attachments" data-submit-on-upload="true" class="w-full">
-          <label for="file" class="w-full block h-32 relative bg-base-200 hover:bg-base-200/70 rounded-md border border-base-content border-dashed">
-            <div class="absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center p-2">
-              <div class="flex flex-col items-center text-center">
-                <span data-target="file-dropzone.icon">
-                  <%= svg_icon('cloud_upload', class: 'w-10 h-10') %>
-                </span>
-                <span data-target="file-dropzone.loading" class="hidden">
-                  <%= svg_icon('loader', class: 'w-10 h-10 animate-spin') %>
-                </span>
-                <div class="font-medium mb-1">
-                  <%= t('verify_signed_pdf') %>
-                </div>
-                <div class="text-xs">
-                  <%= t('click_to_upload_or_drag_and_drop_files_html') %>
-                </div>
-              </div>
-              <input id="file" name="files[]" class="hidden" data-action="change:file-dropzone#onSelectFiles" data-target="file-dropzone.input" type="file" accept="application/pdf" multiple>
-            </div>
-          </label>
-        </file-dropzone>
-      <% end %>
-    </div>
-    </section>
-    <section class="settings-card">
-    <div class="flex flex-col md:flex-row gap-2 md:justify-between md:items-end mb-4">
-      <h2 class="settings-card-title">
-        <%= t('signing_certificates') %>
-      </h2>
-      <% if can?(:create, @encrypted_config) %>
-        <%= link_to new_settings_esign_path, class: 'btn btn-primary btn-md', data: { turbo_frame: 'modal' } do %>
-          <%= svg_icon('plus', class: 'w-6 h-6') %>
-          <span><%= t('upload_cert') %></span>
-        <% end %>
-      <% end %>
-    </div>
-    <%= render 'alert' %>
-    <div class="overflow-x-auto md:overflow-visible">
-      <table class="table w-full table-lg rounded-b-none">
-        <thead class="bg-base-200 esign-table-head">
-          <tr class="uppercase esign-table-head-row">
-            <th>
-              <%= t('name') %>
-            </th>
-            <th>
-              <%= t('valid_to') %>
-            </th>
-            <th>
-              <%= t('status') %>
-            </th>
-            <th class="text-right" width="1px">
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @pkcs_list.each do |item| %>
-            <% next if item['pkcs'].blank? %>
-            <tr scope="row" class="group">
-              <td>
-                <%= item['name'] %>
-              </td>
-              <td>
-                <%= l(item['pkcs'].certificate.not_after.to_date, format: :long, locale: current_account.locale) %>
-              </td>
-              <td>
-                <% if item['status'] == 'default' %>
-                  <span class="badge badge-lg badge-info badge-outline">
-                    <%= t('default') %>
-                  </span>
-                <% elsif can?(:update, @encrypted_config) %>
-                  <%= button_to settings_esign_path, method: :put, params: { name: item['name'] }, class: 'btn btn-outline btn-neutral btn-xs whitespace-nowrap ds-esign-neutral-action', title: t('make_default'), data: { turbo_confirm: t('are_you_sure_') } do %>
-                    <%= t('make_default') %>
-                  <% end %>
-                <% end %>
-              </td>
-              <td>
-                <% if item['name'] != EsignSettingsController::DEFAULT_CERT_NAME && item['status'] != 'default' &&  can?(:destroy, @encrypted_config) %>
-                  <%= button_to settings_esign_path, params: { name: item['name'] }, method: :delete, class: 'btn btn-outline btn-error btn-xs', title: t('remove'), data: { turbo_confirm: t('are_you_sure_') } do %>
-                    <%= t('remove') %>
-                  <% end %>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-          <% unless Docuseal.multitenant? %>
-            <%= render 'default_signature_row' %>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    </section>
-    <% encrypted_config = EncryptedConfig.find_or_initialize_by(account: current_account, key: EncryptedConfig::TIMESTAMP_SERVER_URL_KEY) %>
-    <% if !Docuseal.multitenant? && can?(:manage, encrypted_config) %>
-      <section class="settings-card">
-        <div class="flex justify-between items-end mb-4">
-          <h2 class="text-lg font-semibold text-base-content">
-            <%= t('timestamp_server') %>
-          </h2>
         </div>
-        <%= form_for encrypted_config, url: timestamp_server_index_path, method: :post, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
-          <div class="form-control">
-            <%= f.label :value, class: 'label' do %>
-              <span class="flex items-center space-x-1">
-                <span>
-                  <%= t('timeserver_url') %>
-                </span>
-                <span class="tooltip" data-tip="<%= t('url_of_the_trusted_rfc_3161_timeserver_to_be_used_to_generate_timestamp_signatures') %>">
-                  <%= svg_icon('info_circle', class: 'w-4 h-4') %>
-                </span>
-              </span>
+
+        <div class="esign-verify-card-body">
+          <div class="esign-verify-flow">
+            <div id="result">
+              <p class="esign-verify-lede esign-helper-text">
+                <%= t('upload_signed_pdf_file_to_validate_its_signature_') %>
+              </p>
+            </div>
+            <%= form_for '', url: verify_pdf_signature_index_path, method: :post, html: { enctype: 'multipart/form-data', class: 'esign-verify-form' } do |f| %>
+              <%= f.button type: 'submit', class: 'flex' do %>
+                <div class="disabled mb-3">
+                  <%= svg_icon('loader', class: 'w-5 h-5 animate-spin inline') %>
+                  <%= "#{t('analyzing')}..." %>
+                </div>
+              <% end %>
+              <file-dropzone data-name="verify_attachments" data-submit-on-upload="true" class="w-full">
+                <label for="file" class="esign-verify-dropzone-label esign-verify-dropzone-label--spacious block w-full relative rounded-xl overflow-hidden cursor-pointer">
+                  <div class="absolute inset-0 flex items-center justify-center p-4">
+                    <div class="flex flex-col items-center text-center gap-2">
+                      <span data-target="file-dropzone.icon">
+                        <%= svg_icon('cloud_upload', class: 'w-10 h-10 esign-verify-dropzone-icon') %>
+                      </span>
+                      <span data-target="file-dropzone.loading" class="hidden">
+                        <%= svg_icon('loader', class: 'w-10 h-10 animate-spin esign-verify-dropzone-icon') %>
+                      </span>
+                      <div class="font-medium text-sm leading-snug">
+                        <%= t('verify_signed_pdf') %>
+                      </div>
+                      <div class="text-xs leading-relaxed max-w-xs esign-verify-dropzone-hint">
+                        <%= t('click_to_upload_or_drag_and_drop_files_html') %>
+                      </div>
+                    </div>
+                    <input id="file" name="files[]" class="hidden" data-action="change:file-dropzone#onSelectFiles" data-target="file-dropzone.input" type="file" accept="application/pdf" multiple>
+                  </div>
+                </label>
+              </file-dropzone>
             <% end %>
-            <%= f.url_field :value, autocomplete: 'off', class: 'base-input', placeholder: "URL (#{t('optional')})" %>
           </div>
-          <div class="form-control pt-2">
-            <%= f.button button_title(title: t('save'), disabled_with: t('updating')), class: 'base-button' %>
-          </div>
-        <% end %>
-      </section>
-    <% end %>
-    <% account_config = AccountConfig.where(account: current_account, key: AccountConfig::ESIGNING_PREFERENCE_KEY).first_or_initialize(value: 'single') %>
-    <% if can?(:manage, account_config) %>
-      <section class="settings-card">
-        <div class="flex justify-between items-end mb-4">
-          <h2 class="text-lg font-semibold text-base-content">
-            <%= t('preferences') %>
-          </h2>
         </div>
-        <% if can?(:manage, account_config) && (can?(:manage, :personalization_advanced) || account_config.persisted?) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between py-2.5">
-              <span>
-                <%= t('apply_multiple_pdf_digital_signatures_in_the_document_per_each_signer') %>
-              </span>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, { class: 'toggle', checked: account_config.value == 'multiple' }, 'multiple', 'single' %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::FLATTEN_RESULT_PDF_KEY) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between py-2.5">
-              <span>
-                <%= t('remove_pdf_form_fillable_fields_from_the_signed_pdf_flatten_form') %>
-              </span>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, { class: 'toggle', checked: account_config.value != false } %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::DOCUMENT_FILENAME_FORMAT_KEY) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="py-2.5">
-              <span>
-                <%= t('document_download_filename_format') %>
-              </span>
-              <submit-form data-on="change" class="block mt-3">
-                <%= f.select :value, [["#{I18n.t('document_name')}.pdf", '{document.name}'], ["#{I18n.t('document_name')} - #{I18n.t(:signed)}.pdf", '{document.name} - {submission.status}'], ["#{I18n.t('document_name')} - name@domain.com.pdf", '{document.name} - {submission.submitters}'], ["#{I18n.t('document_name')} - name@domain.com - #{I18n.l(Time.current.beginning_of_year.in_time_zone(current_account.timezone), format: :short)}.pdf", '{document.name} - {submission.submitters} - {submission.completed_at}']], {}, class: 'base-select' %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
       </section>
-    <% end %>
+
+      <section class="settings-card profile-settings-card profile-settings-card--esign-certificates min-w-0">
+        <div class="settings-card-header flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+          <div class="min-w-0 flex-1">
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('certificate', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+              <span><%= t('signing_certificates') %></span>
+            </h2>
+            <p class="settings-card-subtitle">
+              <%= t(
+                    'esign_certificates_section_hint',
+                    default: 'Certificates used when applying PKCS signatures to PDFs.'
+                  ) %>
+            </p>
+          </div>
+          <% if can?(:create, @encrypted_config) %>
+            <%= link_to new_settings_esign_path,
+                  class: 'base-button profile-settings-btn-primary inline-flex w-full sm:w-auto items-center justify-center gap-2 shrink-0 h-11 px-5',
+                  data: { turbo_frame: 'modal' } do %>
+              <%= svg_icon('plus', class: 'w-5 h-5 shrink-0') %>
+              <span><%= t('upload_cert') %></span>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="esign-settings-cert-panel">
+          <%= render 'alert' %>
+
+          <div class="esign-settings-table-shell">
+            <div class="overflow-x-auto md:overflow-visible">
+              <table class="table table-lg w-full rounded-none border-0 esign-settings-table">
+            <thead class="esign-table-head">
+              <tr class="uppercase esign-table-head-row text-xs tracking-wide">
+                <th scope="col"><%= t('name') %></th>
+                <th scope="col"><%= t('valid_to') %></th>
+                <th scope="col"><%= t('status') %></th>
+                <th scope="col" class="text-right w-px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @pkcs_list.each do |item| %>
+                <% next if item['pkcs'].blank? %>
+                <tr scope="row" class="group">
+                  <td><%= item['name'] %></td>
+                  <td>
+                    <%= l(item['pkcs'].certificate.not_after.to_date, format: :long, locale: current_account.locale) %>
+                  </td>
+                  <td>
+                    <% if item['status'] == 'default' %>
+                      <span class="badge badge-lg badge-info badge-outline">
+                        <%= t('default') %>
+                      </span>
+                    <% elsif can?(:update, @encrypted_config) %>
+                      <%= button_to settings_esign_path,
+                            method: :put,
+                            params: { name: item['name'] },
+                            class: 'btn btn-outline btn-neutral btn-xs whitespace-nowrap ds-esign-neutral-action',
+                            title: t('make_default'),
+                            data: { turbo_confirm: t('are_you_sure_') } do %>
+                        <%= t('make_default') %>
+                      <% end %>
+                    <% end %>
+                  </td>
+                  <td class="text-right whitespace-nowrap">
+                    <% if item['name'] != EsignSettingsController::DEFAULT_CERT_NAME && item['status'] != 'default' && can?(:destroy, @encrypted_config) %>
+                      <%= button_to settings_esign_path,
+                            params: { name: item['name'] },
+                            method: :delete,
+                            class: 'btn btn-outline btn-error btn-xs',
+                            title: t('remove'),
+                            data: { turbo_confirm: t('are_you_sure_') } do %>
+                        <%= t('remove') %>
+                      <% end %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+              <% unless Docuseal.multitenant? %>
+                <%= render 'default_signature_row' %>
+              <% end %>
+            </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <% encrypted_config = EncryptedConfig.find_or_initialize_by(account: current_account, key: EncryptedConfig::TIMESTAMP_SERVER_URL_KEY) %>
+      <% if !Docuseal.multitenant? && can?(:manage, encrypted_config) %>
+        <section class="settings-card profile-settings-card profile-settings-card--esign-timestamp min-w-0">
+          <div class="settings-card-header">
+            <div>
+              <h2 class="settings-card-title flex items-center gap-2.5">
+                <%= svg_icon('clock', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+                <span><%= t('timestamp_server') %></span>
+              </h2>
+              <p class="settings-card-subtitle">
+                <%= t(
+                      'esign_timestamp_section_hint',
+                      default: 'Optional RFC 3161 time stamping URL for long-term validation.'
+                    ) %>
+              </p>
+            </div>
+          </div>
+
+          <%= form_for encrypted_config, url: timestamp_server_index_path, method: :post, html: { autocomplete: 'off', class: 'esign-timestamp-form space-y-5' } do |f| %>
+            <div class="form-control">
+              <%= f.label :value, class: 'label' do %>
+                <span class="flex items-center gap-1.5">
+                  <span><%= t('timeserver_url') %></span>
+                  <span class="tooltip" data-tip="<%= t('url_of_the_trusted_rfc_3161_timeserver_to_be_used_to_generate_timestamp_signatures') %>">
+                    <%= svg_icon('info_circle', class: 'w-4 h-4 opacity-80') %>
+                  </span>
+                </span>
+              <% end %>
+              <%= f.url_field :value,
+                    autocomplete: 'off',
+                    class: 'base-input',
+                    placeholder: t('esign_placeholder_timestamp_url', default: 'https://freetsa.org/tsr') %>
+            </div>
+            <div class="settings-card-actions profile-settings-card-actions esign-settings-save">
+              <%= f.button button_title(
+                    title: t('save'),
+                    disabled_with: t('updating'),
+                    icon: svg_icon('save', class: 'w-4 h-4')
+                  ),
+                  class: 'base-button profile-settings-btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2' %>
+            </div>
+          <% end %>
+        </section>
+      <% end %>
+
+      <% account_config = AccountConfig.where(account: current_account, key: AccountConfig::ESIGNING_PREFERENCE_KEY).first_or_initialize(value: 'single') %>
+      <% if can?(:manage, account_config) %>
+        <section class="<%= ['settings-card', 'profile-settings-card', 'profile-settings-card--esign-prefs', 'min-w-0', ('xl:col-span-2' unless esign_timestamp_section_visible)].compact.join(' ') %>">
+          <div class="settings-card-header">
+            <div>
+              <h2 class="settings-card-title flex items-center gap-2.5">
+                <%= svg_icon('adjustments_horizontal', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+                <span><%= t('preferences') %></span>
+              </h2>
+              <p class="settings-card-subtitle">
+                <%= t(
+                      'esign_prefs_section_hint',
+                      default: 'Defaults for how PDFs are signed and exported.'
+                    ) %>
+              </p>
+            </div>
+          </div>
+
+          <div class="esign-settings-prefs-stack">
+            <% if can?(:manage, account_config) && (can?(:manage, :personalization_advanced) || account_config.persisted?) %>
+              <%= form_for account_config, url: account_configs_path, method: :post, html: { class: 'esign-settings-pref-form' } do |f| %>
+                <%= f.hidden_field :key %>
+                <div class="esign-settings-pref-row">
+                  <span class="esign-settings-label-text">
+                    <%= t('apply_multiple_pdf_digital_signatures_in_the_document_per_each_signer') %>
+                  </span>
+                  <submit-form data-on="change" class="flex shrink-0">
+                    <%= f.check_box :value, { class: 'toggle toggle-sm', checked: account_config.value == 'multiple' }, 'multiple', 'single' %>
+                  </submit-form>
+                </div>
+              <% end %>
+            <% end %>
+
+            <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::FLATTEN_RESULT_PDF_KEY) %>
+            <% if can?(:manage, account_config) %>
+              <%= form_for account_config, url: account_configs_path, method: :post, html: { class: 'esign-settings-pref-form' } do |f| %>
+                <%= f.hidden_field :key %>
+                <div class="esign-settings-pref-row">
+                  <span class="esign-settings-label-text">
+                    <%= t('remove_pdf_form_fillable_fields_from_the_signed_pdf_flatten_form') %>
+                  </span>
+                  <submit-form data-on="change" class="flex shrink-0">
+                    <%= f.check_box :value, { class: 'toggle toggle-sm', checked: account_config.value != false } %>
+                  </submit-form>
+                </div>
+              <% end %>
+            <% end %>
+
+            <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::DOCUMENT_FILENAME_FORMAT_KEY) %>
+            <% if can?(:manage, account_config) %>
+              <%= form_for account_config, url: account_configs_path, method: :post, html: { class: 'esign-settings-pref-form esign-settings-filename-form' } do |f| %>
+                <%= f.hidden_field :key %>
+                <div class="esign-settings-pref-field">
+                  <span class="esign-settings-label-text block mb-2.5">
+                    <%= t('document_download_filename_format') %>
+                  </span>
+                  <submit-form data-on="change" class="block w-full max-w-2xl">
+                    <%= f.select :value,
+                          [
+                            ["#{I18n.t('document_name')}.pdf", '{document.name}'],
+                            ["#{I18n.t('document_name')} - #{I18n.t(:signed)}.pdf", '{document.name} - {submission.status}'],
+                            ["#{I18n.t('document_name')} - name@domain.com.pdf", '{document.name} - {submission.submitters}'],
+                            ["#{I18n.t('document_name')} - name@domain.com - #{I18n.l(Time.current.beginning_of_year.in_time_zone(current_account.timezone), format: :short)}.pdf", '{document.name} - {submission.submitters} - {submission.completed_at}']
+                          ],
+                          {},
+                          class: 'base-select w-full' %>
+                  </submit-form>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+    </div>
+  </div>
 </div>

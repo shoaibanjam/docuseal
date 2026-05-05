@@ -1,40 +1,82 @@
-<div class="settings-layout">
-  <aside class="settings-sidebar">
-    <%= render 'shared/settings_nav' %>
-  </aside>
-  <div class="settings-main">
-    <h1 class="ds-heading-2 flex items-center gap-2">
-      <%= svg_icon('mail', class: 'w-5 h-5') %>
-      <span><%= t('email_notifications') %></span>
-    </h1>
-    <section class="settings-card">
-      <h2 class="settings-card-title mb-5 flex items-center gap-2">
-        <%= svg_icon('bell', class: 'w-5 h-5') rescue nil %>
-        <span><%= t('notification_preferences', default: 'Notification Preferences') %></span>
-      </h2>
-    <div class="mt-2 mb-1">
-      <% user_config = UserConfig.find_or_initialize_by(user: current_user, key: UserConfig::RECEIVE_COMPLETED_EMAIL) %>
-      <% if can?(:manage, user_config) %>
-        <%= form_for user_config, url: user_configs_path, method: :post do |f| %>
-          <%= f.hidden_field :key %>
-          <div class="flex items-center justify-between">
-            <span>
-              <%= t('receive_notification_emails_on_completed_submission') %>
-            </span>
-            <submit-form data-on="change" class="flex">
-              <%= f.check_box :value, class: 'toggle', checked: user_config.value != false %>
-            </submit-form>
+<div class="settings-layout profile-settings-page notifications-settings-page">
+  <div class="settings-main profile-settings-main">
+    <header class="settings-page-header profile-settings-header notifications-settings-header">
+      <div class="settings-page-header-top">
+        <div class="settings-page-avatar profile-settings-avatar notifications-settings-page__avatar" aria-hidden="true">
+          <%= svg_icon('email_check', class: 'w-7 h-7 shrink-0') %>
+        </div>
+        <div class="profile-settings-header-text">
+          <p class="notifications-settings-eyebrow">
+            <%= t('notifications_settings_eyebrow', default: 'Stay informed') %>
+          </p>
+          <h1 class="ds-heading-2 profile-settings-title">
+            <%= t('email_notifications') %>
+          </h1>
+          <p class="settings-page-subtitle profile-settings-intro notifications-settings-intro">
+            <%= t(
+                  'notifications_settings_intro',
+                  default: 'Completion emails, optional BCC copies, and how often to remind signers.'
+                ) %>
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="notifications-settings-stack space-y-8">
+      <section class="settings-card profile-settings-card profile-settings-card--notifications-prefs">
+        <div class="settings-card-header">
+          <div>
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('email_check', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+              <span><%= t('notification_preferences', default: 'Notification Preferences') %></span>
+            </h2>
+            <p class="settings-card-subtitle">
+              <%= t(
+                    'notifications_prefs_section_hint',
+                    default: 'When you are notified and who receives a blind copy.'
+                  ) %>
+            </p>
           </div>
-        <% end %>
-      <% end %>
+        </div>
+
+        <div class="notifications-settings-prefs-inner">
+          <% user_config = UserConfig.find_or_initialize_by(user: current_user, key: UserConfig::RECEIVE_COMPLETED_EMAIL) %>
+          <% if can?(:manage, user_config) %>
+            <%= form_for user_config, url: user_configs_path, method: :post, html: { class: 'notifications-settings-completed-form' } do |f| %>
+              <%= f.hidden_field :key %>
+              <div class="notifications-settings-completed-row">
+                <span class="notifications-settings-label-text">
+                  <%= t('receive_notification_emails_on_completed_submission') %>
+                </span>
+                <submit-form data-on="change" class="flex shrink-0">
+                  <%= f.check_box :value, class: 'toggle toggle-sm', checked: user_config.value != false %>
+                </submit-form>
+              </div>
+            <% end %>
+          <% end %>
+
+          <%= render 'bcc_form', config: @bcc_config %>
+        </div>
+      </section>
+
+      <section class="settings-card profile-settings-card profile-settings-card--notifications-reminders">
+        <div class="settings-card-header">
+          <div>
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('clock', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+              <span><%= t('sign_request_email_reminders') %></span>
+            </h2>
+            <p class="settings-card-subtitle">
+              <%= t(
+                    'notifications_reminders_section_hint',
+                    default: 'Up to three reminder sends before a request expires.'
+                  ) %>
+            </p>
+          </div>
+        </div>
+
+        <%= render 'reminder_form', config: @reminder_config %>
+      </section>
     </div>
-    <%= render 'bcc_form', config: @bcc_config %>
-    </section>
-    <section class="settings-card">
-      <h2 class="text-lg font-semibold text-base-content mb-5">
-        <%= t('sign_request_email_reminders') %>
-      </h2>
-    <%= render 'reminder_banner' %>
-    <%= render 'reminder_form', config: @reminder_config %>
-    </section>
+  </div>
 </div>

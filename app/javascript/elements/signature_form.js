@@ -31,37 +31,92 @@ export default targetable(class extends HTMLElement {
       e.preventDefault()
 
       this.pad.clear()
+      this.syncSignatureState()
     })
+
+    this.pad.addEventListener('beginStroke', () => this.syncSignatureState())
+
+    this.pad.addEventListener('endStroke', () => this.syncSignatureState())
 
     this.button.addEventListener('click', (e) => {
       e.preventDefault()
 
+      if (this.pad.isEmpty()) {
+        this.syncSignatureState()
+
+        return
+      }
+
+      this.button.classList.add('signature-editor__save--submitting')
       this.button.disabled = true
 
       this.submit()
     })
-  }
 
-  async submit () {
-    const blob = await cropCanvasAndExportToPNG(this.canvas)
-    const file = new File([blob], 'signature.png', { type: 'image/png' })
+    this.formEl = this.closest('form')
+    this.formEl?.addEventListener('turbo:submit-end', this.onFormSubmitEnd)
 
-    const dataTransfer = new DataTransfer()
-
-    dataTransfer.items.add(file)
-
-    this.input.files = dataTransfer.files
-
-    if (this.input.webkitEntries.length) {
-      this.input.dataset.file = `${dataTransfer.files[0].name}`
-    }
-
-    this.closest('form').requestSubmit()
+    this.syncSignatureState()
   }
 
   disconnectedCallback () {
     if (this.resizeObserver) {
       this.resizeObserver.disconnect()
+    }
+
+    this.formEl?.removeEventListener('turbo:submit-end', this.onFormSubmitEnd)
+  }
+
+  onFormSubmitEnd = (e) => {
+    if (e.detail?.success) {
+      this.markModalClean()
+    } else {
+      this.syncSignatureState()
+    }
+  }
+
+  syncSignatureState () {
+    const hasInk = this.pad && !this.pad.isEmpty()
+
+    this.button.classList.remove('signature-editor__save--submitting')
+    this.button.disabled = !hasInk
+    this.toggleUnsaved(hasInk)
+  }
+
+  toggleUnsaved (dirty) {
+    const modal = this.closest('turbo-modal')
+
+    if (!modal) return
+
+    if (dirty) {
+      modal.setAttribute('data-unsaved-signature', 'true')
+    } else {
+      modal.removeAttribute('data-unsaved-signature')
+    }
+  }
+
+  markModalClean () {
+    this.toggleUnsaved(false)
+  }
+
+  async submit () {
+    try {
+      const blob = await cropCanvasAndExportToPNG(this.canvas)
+      const file = new File([blob], 'signature.png', { type: 'image/png' })
+
+      const dataTransfer = new DataTransfer()
+
+      dataTransfer.items.add(file)
+
+      this.input.files = dataTransfer.files
+
+      if (this.input.webkitEntries.length) {
+        this.input.dataset.file = `${dataTransfer.files[0].name}`
+      }
+
+      this.closest('form').requestSubmit()
+    } catch {
+      this.syncSignatureState()
     }
   }
 

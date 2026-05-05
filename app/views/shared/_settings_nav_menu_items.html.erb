@@ -1,0 +1,110 @@
+<%# expects local `nav_link_classes` %>
+<li>
+  <%= link_to settings_profile_index_path, class: nav_link_classes do %>
+    <span class="settings-nav-icon-wrap"><%= svg_icon('user', class: 'settings-nav-icon') %></span>
+    <span><%= t('profile') %></span>
+  <% end %>
+</li>
+<li>
+  <%= link_to settings_account_path, class: nav_link_classes do %>
+    <span class="settings-nav-icon-wrap"><%= svg_icon('building', class: 'settings-nav-icon') %></span>
+    <span><%= t('account') %></span>
+  <% end %>
+</li>
+<% unless Docuseal.multitenant? %>
+  <%# Per-account SMTP is independent of optional global SMTP_* (e.g. auth emails from .env). %>
+  <% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::EMAIL_SMTP_KEY, account: current_account)) && true_user == current_user %>
+    <li>
+      <%= link_to settings_email_index_path, class: nav_link_classes do %>
+        <span class="settings-nav-icon-wrap"><%= svg_icon('mail', class: 'settings-nav-icon') %></span>
+        <span><%= t('email') %></span>
+      <% end %>
+    </li>
+  <% end %>
+  <% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::FILES_STORAGE_KEY, account: current_account)) && true_user == current_user && ENV['S3_ATTACHMENTS_BUCKET'].blank? && ENV['GCS_BUCKET'].blank? && ENV['AZURE_CONTAINER'].blank? %>
+    <li>
+      <%= link_to settings_storage_index_path, class: nav_link_classes do %>
+        <span class="settings-nav-icon-wrap"><%= svg_icon('cloud_upload', class: 'settings-nav-icon') %></span>
+        <span><%= t('storage') %></span>
+      <% end %>
+    </li>
+  <% end %>
+<% end %>
+<% if can?(:read, AccountConfig) %>
+  <li>
+    <%= link_to settings_notifications_path, class: nav_link_classes do %>
+      <span class="settings-nav-icon-wrap"><%= svg_icon('mail_opened', class: 'settings-nav-icon') %></span>
+      <span><%= t('notifications') %></span>
+    <% end %>
+  </li>
+<% end %>
+<% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::ESIGN_CERTS_KEY, account: current_account)) %>
+  <li>
+    <%= link_to settings_esign_path, class: nav_link_classes do %>
+      <span class="settings-nav-icon-wrap"><%= svg_icon('writing_sign', class: 'settings-nav-icon') %></span>
+      <span><%= t('e_signature') %></span>
+    <% end %>
+  </li>
+<% end %>
+<% if can?(:read, AccountConfig) %>
+  <li>
+    <%= link_to settings_personalization_path, class: nav_link_classes do %>
+      <span class="settings-nav-icon-wrap"><%= svg_icon('adjustments', class: 'settings-nav-icon') %></span>
+      <span><%= t('personalization') %></span>
+    <% end %>
+  </li>
+<% end %>
+<% if can?(:read, User) %>
+  <li>
+    <%= link_to settings_users_path, class: nav_link_classes do %>
+      <span class="settings-nav-icon-wrap"><%= svg_icon('users', class: 'settings-nav-icon') %></span>
+      <span><%= t('users') %></span>
+    <% end %>
+  </li>
+<% end %>
+<%= render 'shared/settings_nav_extra' %>
+<% if Docuseal.demo? || !Docuseal.multitenant? %>
+  <% if can?(:read, AccessToken) %>
+    <li>
+      <%= link_to settings_api_index_path, class: nav_link_classes do %>
+        <span class="settings-nav-icon-wrap"><%= svg_icon('code', class: 'settings-nav-icon') %></span>
+        <span>API</span>
+      <% end %>
+    </li>
+  <% end %>
+<% end %>
+<% if Docuseal.demo? || !Docuseal.multitenant? || (current_user != true_user && !current_account.testing?) %>
+  <% if can?(:read, WebhookUrl) %>
+    <li>
+      <%= link_to settings_webhooks_path, class: nav_link_classes do %>
+        <span class="settings-nav-icon-wrap"><%= svg_icon('link', class: 'settings-nav-icon') %></span>
+        <span>Webhooks</span>
+      <% end %>
+    </li>
+  <% end %>
+<% end %>
+<% if !Docuseal.demo? && can?(:manage, EncryptedConfig) && (current_user == true_user || current_account.testing?) %>
+  <% if Docuseal.multitenant? %>
+    <li>
+      <%= link_to console_redirect_index_path(redir: "#{Docuseal::CONSOLE_URL}#{'/test' if current_account.testing?}/embedding/form"), class: nav_link_classes, data: { turbo: false } do %>
+        <span class="settings-nav-icon-wrap"><%= svg_icon('code', class: 'settings-nav-icon') %></span>
+        <span><%= t('embedding') %></span>
+      <% end %>
+    </li>
+  <% end %>
+  <%= render 'shared/settings_nav_extra2' %>
+  <% if (can?(:manage, EncryptedConfig) && current_user == true_user) || (current_user != true_user && current_account.testing?) %>
+    <%= form_for '', url: testing_account_path, method: current_account.testing? ? :delete : :get, html: { class: 'w-full' } do |f| %>
+      <li class="settings-nav-footer">
+        <label class="settings-nav-test-toggle" for="testing_toggle">
+          <span class="min-w-0 pr-3">
+            <%= t('test_mode') %>
+          </span>
+          <submit-form data-on="change" class="flex shrink-0">
+            <%= f.check_box :testing_toggle, class: 'toggle toggle-sm', checked: current_account.testing? %>
+          </submit-form>
+        </label>
+      </li>
+    <% end %>
+  <% end %>
+<% end %>

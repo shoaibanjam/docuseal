@@ -11,13 +11,20 @@
       <%= f.fields_for :value, Struct.new(:subject, :body, :reply_to, :attach_audit_log, :attach_documents, :bcc_recipients, :enabled).new(*f.object.value.values_at('subject', 'body', 'reply_to', 'attach_audit_log', 'attach_documents', 'bcc_recipients', 'enabled')) do |ff| %>
         <div class="form-control">
           <%= ff.label :subject, t('subject'), class: 'label' %>
-          <%= ff.text_field :subject, required: true, class: 'base-input', dir: 'auto' %>
+          <%= ff.text_field :subject,
+                required: true,
+                class: 'base-input',
+                dir: 'auto',
+                placeholder: t('personalization_placeholder_email_subject') %>
         </div>
         <%= render 'personalization_settings/email_body_field', ff:, config: f.object %>
         <% if can?(:manage, :reply_to) || can?(:manage, :personalization_advanced) %>
           <div class="form-control">
             <%= ff.label :reply_to, t('reply_to'), class: 'label' %>
-            <%= ff.email_field :reply_to, class: 'base-input', dir: 'auto', placeholder: t(:email) %>
+            <%= ff.email_field :reply_to,
+                  class: 'base-input',
+                  dir: 'auto',
+                  placeholder: t('personalization_placeholder_reply_to') %>
           </div>
         <% end %>
         <div class="space-y-3.5">
@@ -25,20 +32,20 @@
             <span>
               <%= t('attach_documents') %>
             </span>
-            <%= ff.check_box :attach_documents, { checked: ff.object.attach_documents != false, class: 'toggle' }, 'true', 'false' %>
+            <%= ff.check_box :attach_documents, { checked: ff.object.attach_documents != false, class: 'toggle toggle-sm' }, 'true', 'false' %>
           </div>
           <div class="flex items-center justify-between mx-1">
             <span>
               <%= t('attach_audit_log_pdf') %>
             </span>
-            <%= ff.check_box :attach_audit_log, { checked: ff.object.attach_audit_log != false, class: 'toggle' }, 'true', 'false' %>
+            <%= ff.check_box :attach_audit_log, { checked: ff.object.attach_audit_log != false, class: 'toggle toggle-sm' }, 'true', 'false' %>
           </div>
           <% unless Docuseal.multitenant? %>
             <div class="flex items-center justify-between mx-1">
               <span>
                 <%= t('bcc_recipients') %>
               </span>
-              <%= ff.check_box :bcc_recipients, { checked: ff.object.bcc_recipients == true, class: 'toggle' }, 'true', 'false' %>
+              <%= ff.check_box :bcc_recipients, { checked: ff.object.bcc_recipients == true, class: 'toggle toggle-sm' }, 'true', 'false' %>
             </div>
           <% end %>
           <% if !Docuseal.multitenant? || can?(:manage, :personalization_advanced) %>
@@ -46,13 +53,13 @@
               <span>
                 <%= t('send_emails_automatically_on_completion') %>
               </span>
-              <%= ff.check_box :enabled, { checked: ff.object.enabled != false, class: 'toggle' }, 'true', 'false' %>
+              <%= ff.check_box :enabled, { checked: ff.object.enabled != false, class: 'toggle toggle-sm' }, 'true', 'false' %>
             </div>
           <% end %>
         </div>
       <% end %>
       <div class="form-control pt-2">
-        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
+        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button profile-settings-btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2' %>
       </div>
     <% end %>
   </div>

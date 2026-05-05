@@ -1,0 +1,101 @@
+<% dashboard_view = cookies[:dashboard_view] %>
+<% on_root_dashboard = request.path == root_path %>
+<% is_templates = request.path.start_with?('/templates') || request.path.start_with?('/folders') || (on_root_dashboard && dashboard_view != 'submissions') %>
+<% is_submissions = request.path.start_with?('/submissions') || (on_root_dashboard && dashboard_view == 'submissions') %>
+<% nav_link_classes = 'settings-nav-link' %>
+<% display_name = current_user.full_name.presence || current_user.email.to_s.split('@').first %>
+
+<aside class="saas-sidebar app-sidebar" aria-label="<%= t('navigation', default: 'Navigation') %>">
+  <div class="saas-sidebar__mobile lg:hidden">
+    <span class="saas-sidebar__mobile-label"><%= t('navigation', default: 'Navigation') %></span>
+    <label for="app-sidebar-drawer" class="btn btn-ghost btn-sm btn-square rounded-lg border border-white/[0.06] bg-white/[0.03]" aria-label="<%= t('close', default: 'Close') %>">
+      <%= svg_icon('x', class: 'w-5 h-5 stroke-[1.5]') %>
+    </label>
+  </div>
+
+  <div class="saas-sidebar__inner">
+    <div class="saas-sidebar__scroll">
+      <menu-active>
+        <div class="saas-sidebar__stack">
+          <%# Workspace %>
+          <section class="saas-sidebar__section" aria-labelledby="saas-sidebar-workspace-label">
+            <p id="saas-sidebar-workspace-label" class="saas-sidebar__label"><%= t('workspace', default: 'Workspace') %></p>
+            <p class="saas-sidebar__workspace-name truncate" title="<%= current_account.name %>"><%= current_account.name %></p>
+          </section>
+
+          <%# Primary navigation %>
+          <nav class="saas-sidebar__section" aria-labelledby="saas-sidebar-main-label">
+            <p id="saas-sidebar-main-label" class="saas-sidebar__label"><%= t('overview', default: 'Overview') %></p>
+            <ul class="saas-sidebar__list">
+              <li>
+                <form action="<%= root_path %>" method="get" class="m-0 block w-full">
+                  <toggle-cookies data-value="templates" data-key="dashboard_view">
+                    <button type="submit" class="<%= class_names('saas-nav__item', 'saas-nav__item--active': is_templates) %>">
+                      <%= svg_icon('forms', class: 'saas-nav__ico') %>
+                      <span class="saas-nav__text"><%= t('templates') %></span>
+                    </button>
+                  </toggle-cookies>
+                </form>
+              </li>
+              <li>
+                <form action="<%= submissions_path %>" method="get" class="m-0 block w-full">
+                  <toggle-cookies data-value="submissions" data-key="dashboard_view">
+                    <button type="submit" class="<%= class_names('saas-nav__item', 'saas-nav__item--active': is_submissions) %>">
+                      <%= svg_icon('clipboard', class: 'saas-nav__ico') %>
+                      <span class="saas-nav__text"><%= t('submissions') %></span>
+                    </button>
+                  </toggle-cookies>
+                </form>
+              </li>
+            </ul>
+          </nav>
+
+          <% if Docuseal.multitenant? || current_user.role == 'superadmin' %>
+            <nav class="saas-sidebar__section" aria-labelledby="saas-sidebar-tools-label">
+              <p id="saas-sidebar-tools-label" class="saas-sidebar__label"><%= t('tools', default: 'Tools') %></p>
+              <ul class="saas-sidebar__list">
+                <li>
+                  <%= link_to Docuseal::CHATGPT_URL, target: '_blank', rel: 'noopener noreferrer', class: 'saas-nav__item' do %>
+                    <%= svg_icon('sparkles', class: 'saas-nav__ico') %>
+                    <span class="saas-nav__text"><%= t('ask_ai') %></span>
+                    <%= svg_icon('arrow_up_right', class: 'ml-auto h-3.5 w-3.5 shrink-0 opacity-45') %>
+                  <% end %>
+                </li>
+              </ul>
+            </nav>
+          <% end %>
+
+          <%# Configurations: flat list (no expand/collapse) %>
+          <nav class="saas-sidebar__section" aria-labelledby="saas-sidebar-config-label">
+            <p id="saas-sidebar-config-label" class="saas-sidebar__label"><%= t('configurations', default: 'Configurations') %></p>
+            <ul id="account_settings_menu" class="saas-sidebar__settings-ul saas-sidebar__config-list">
+              <%= render 'shared/settings_nav_menu_items', nav_link_classes: nav_link_classes %>
+            </ul>
+          </nav>
+        </div>
+      </menu-active>
+    </div>
+
+    <footer class="saas-sidebar__footer sticky bottom-0 z-10">
+      <div class="saas-sidebar__user">
+        <div class="saas-sidebar__user-avatar" aria-hidden="true"><%= current_user.initials %></div>
+        <div class="saas-sidebar__user-meta">
+          <p class="saas-sidebar__user-name truncate"><%= display_name %></p>
+          <p class="saas-sidebar__user-email truncate"><%= current_user.email %></p>
+        </div>
+      </div>
+      <div class="saas-sidebar__footer-actions">
+        <% if Docuseal.demo? %>
+          <a href="https://docuseal.com/sign_up" target="_blank" rel="noopener noreferrer" class="saas-sidebar__sign-up">
+            <%= svg_icon('user_plus', class: 'saas-sidebar__sign-up-ico') %>
+            <span><%= t('sign_up') %></span>
+          </a>
+        <% end %>
+        <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false }, form: { class: 'm-0 block w-full' }, class: 'saas-sidebar__sign-out' do %>
+          <%= svg_icon('logout', class: 'saas-sidebar__sign-out-ico stroke-[1.5]') %>
+          <span><%= t('sign_out') %></span>
+        <% end %>
+      </div>
+    </footer>
+  </div>
+</aside>

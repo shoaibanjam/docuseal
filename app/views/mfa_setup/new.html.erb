@@ -1,3 +1,5 @@
-<%= render 'shared/turbo_modal', title: t('setup_2fa') do %>
-  <%= render 'mfa_setup/form' %>
+<%= render 'shared/turbo_modal',
+  title: t('setup_2fa'),
+  enhanced_modal: true do %>
+  <%= render partial: 'mfa_setup/form', locals: { mfa_modal: true } %>
 <% end %>

@@ -1,29 +1,50 @@
-<%= render 'shared/turbo_modal', title: t('new_webhook') do %>
-  <%= form_for @webhook_url, url: settings_webhooks_path, html: { class: 'space-y-4' }, data: { turbo_frame: :_top } do |f| %>
-    <div class="space-y-4">
-      <div class="form-control">
-        <%= f.label :url, 'Webhook URL', class: 'label' %>
-        <%= f.url_field :url, class: 'base-input', placeholder: 'https://example.com/hook', required: true %>
+<%= render 'shared/turbo_modal',
+      title: t('new_webhook'),
+      enhanced_modal: true do %>
+  <%= form_for @webhook_url,
+        url: settings_webhooks_path,
+        html: { class: 'users-modal-form webhook-modal-form' },
+        data: { turbo_frame: :_top } do |f| %>
+    <div class="users-modal-editor">
+      <p id="webhook-modal-description" class="signature-editor__lead users-modal-editor__lead">
+        <%= t(
+              'webhook_settings_new_intro',
+              default: 'Paste the HTTPS endpoint that should receive POST payloads for each selected event.'
+            ) %>
+      </p>
+      <div class="users-modal-editor__fields space-y-4">
+        <div class="form-control">
+          <%= f.label :url, t('webhook_field_label_url', default: 'Webhook URL'), class: 'label' %>
+          <%= f.url_field :url,
+                class: 'base-input w-full font-mono',
+                placeholder: 'https://example.com/hook',
+                required: true,
+                aria: { describedby: 'webhook-modal-description' } %>
+        </div>
+        <div class="space-y-3">
+          <p class="text-sm font-medium text-base-content"><%= t('events', default: 'Events') %></p>
+          <% WebhookUrl::EVENTS.group_by { |e| e.include?('form') }.each do |_, events| %>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
+              <%= f.collection_check_boxes(:events, events, :to_s, :to_s, include_hidden: false) do |b| %>
+                <div class="flex min-w-0">
+                  <label class="flex min-w-0 items-start gap-2">
+                    <%= b.check_box class: 'base-checkbox', checked: @webhook_url.events.include?(b.value) %>
+                    <span class="min-w-0 break-all leading-5">
+                      <%= b.label %>
+                    </span>
+                  </label>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
-      <div class="space-y-4">
-        <% WebhookUrl::EVENTS.group_by { |e| e.include?('form') }.each do |_, events| %>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2">
-            <%= f.collection_check_boxes(:events, events, :to_s, :to_s, include_hidden: false) do |b| %>
-              <div class="flex">
-                <label class="flex items-center space-x-2">
-                  <%= b.check_box class: 'base-checkbox', checked: @webhook_url.events.include?(b.value) %>
-                  <span>
-                    <%= b.label %>
-                  </span>
-                </label>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
+      <div class="signature-editor__actions users-modal-editor__actions">
+        <button type="button" class="signature-editor__cancel btn btn-ghost" data-turbo-modal-close>
+          <%= t('cancel', default: 'Cancel') %>
+        </button>
+        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button profile-settings-btn-primary signature-editor__save' %>
       </div>
-    </div>
-    <div class="form-control pt-2">
-      <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
     </div>
   <% end %>
 <% end %>

@@ -27,16 +27,27 @@
     <% end %>
     <turbo-frame id="modal"></turbo-frame>
     <turbo-frame id="drawer"></turbo-frame>
-    <%= render 'shared/navbar' %>
-    <% if flash.present? %><%= render 'shared/flash' %><% end %>
     <% if signed_in? %>
-      <% signed_page_class = request.path.start_with?('/settings') ? 'page-stack' : 'ds-page page-stack' %>
-      <main class="ds-page-shell">
-        <div class="<%= signed_page_class %>">
-          <%= yield %>
+      <div class="drawer lg:drawer-open min-h-screen">
+        <input id="app-sidebar-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex min-h-screen min-w-0 flex-col">
+          <%= render 'shared/navbar' %>
+          <% if flash.present? %><%= render 'shared/flash' %><% end %>
+          <% signed_page_class = request.path.start_with?('/settings') ? 'page-stack' : 'page-stack' %>
+          <main class="ds-page-shell flex-1 min-w-0">
+            <div class="<%= signed_page_class %>">
+              <%= yield %>
+            </div>
+          </main>
         </div>
-      </main>
+        <div class="drawer-side z-[35] border-0 bg-transparent p-0 lg:border-e lg:border-white/[0.06]">
+          <label for="app-sidebar-drawer" aria-label="<%= t('close_menu', default: 'Close menu') %>" class="drawer-overlay lg:hidden bg-neutral/50 backdrop-blur-sm"></label>
+          <%= render 'shared/app_sidebar' %>
+        </div>
+      </div>
     <% else %>
+      <%= render 'shared/navbar' %>
+      <% if flash.present? %><%= render 'shared/flash' %><% end %>
       <main class="page-shell page-stack">
         <%= yield %>
       </main>

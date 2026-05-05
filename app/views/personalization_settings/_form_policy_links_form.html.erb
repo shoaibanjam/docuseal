@@ -11,11 +11,13 @@
         <%= f.hidden_field :key %>
         <div class="form-control">
           <autoresize-textarea>
-            <%= f.text_area :value, class: 'base-input w-full py-2 font-mono', placeholder: "#{t('markdown_content_e_g')}\n[#{t('privacy_policy')}](https://example.com/privacy)" %>
+            <%= f.text_area :value,
+                  class: 'base-input w-full py-2 font-mono',
+                  placeholder: t('personalization_placeholder_policy_links_body') %>
           </autoresize-textarea>
         </div>
         <div class="form-control pt-2">
-          <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
+          <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button profile-settings-btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2' %>
         </div>
       <% end %>
     </div>

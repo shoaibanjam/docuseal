@@ -11,18 +11,25 @@
       <%= f.fields_for :value, Struct.new(:subject, :body, :reply_to).new(*f.object.value.values_at('subject', 'body', 'reply_to')) do |ff| %>
         <div class="form-control">
           <%= ff.label :subject, t('subject'), class: 'label' %>
-          <%= ff.text_field :subject, required: true, class: 'base-input', dir: 'auto' %>
+          <%= ff.text_field :subject,
+                required: true,
+                class: 'base-input',
+                dir: 'auto',
+                placeholder: t('personalization_placeholder_email_subject') %>
         </div>
         <%= render 'personalization_settings/email_body_field', ff:, config: f.object %>
         <% if can?(:manage, :reply_to) || can?(:manage, :personalization_advanced) %>
           <div class="form-control">
             <%= ff.label :reply_to, t('reply_to'), class: 'label' %>
-            <%= ff.email_field :reply_to, class: 'base-input', dir: 'auto', placeholder: t(:email) %>
+            <%= ff.email_field :reply_to,
+                  class: 'base-input',
+                  dir: 'auto',
+                  placeholder: t('personalization_placeholder_reply_to') %>
           </div>
         <% end %>
       <% end %>
       <div class="form-control pt-2">
-        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
+        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button profile-settings-btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2' %>
       </div>
     <% end %>
   </div>

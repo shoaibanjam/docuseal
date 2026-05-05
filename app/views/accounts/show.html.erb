@@ -1,68 +1,96 @@
-<div class="settings-layout">
-  <aside class="settings-sidebar">
-    <%= render 'shared/settings_nav' %>
-  </aside>
-  <div class="settings-main">
-    <header class="settings-page-header">
-      <h1 class="ds-heading-2">
-        <%= t('account') %>
-      </h1>
-      <p class="settings-page-subtitle">
-        <%= t('manage_your_identity_and_dashboard_preferences', default: 'Manage your account identity and dashboard preferences.') %>
-      </p>
+<% account_name_parts = current_account.name.to_s.strip.split(/\s+/).reject(&:blank?) %>
+<% account_avatar_abbr =
+     if account_name_parts.size >= 2
+       "#{account_name_parts[0][0]}#{account_name_parts[1][0]}".upcase
+     elsif account_name_parts[0].present?
+       account_name_parts[0].length >= 2 ? account_name_parts[0][0..1].upcase : account_name_parts[0][0].upcase
+     else
+       '—'
+     end %>
+<div class="settings-layout profile-settings-page">
+  <div class="settings-main profile-settings-main">
+    <header class="settings-page-header profile-settings-header">
+      <div class="settings-page-header-top">
+        <div class="settings-page-avatar profile-settings-avatar" aria-hidden="true">
+          <span><%= account_avatar_abbr %></span>
+        </div>
+        <div class="profile-settings-header-text">
+          <h1 class="ds-heading-2 profile-settings-title">
+            <%= t('account') %>
+          </h1>
+          <p class="settings-page-subtitle profile-settings-intro">
+            <%= t('manage_your_identity_and_dashboard_preferences', default: 'Manage your account identity and dashboard preferences.') %>
+          </p>
+        </div>
+      </div>
     </header>
 
     <div class="settings-account-grid">
       <div class="settings-account-sidebar-stack">
-        <section class="settings-card">
+        <section class="settings-card profile-settings-card profile-settings-card--company">
           <div class="settings-card-header">
-            <h2 class="settings-card-title flex items-center gap-2">
-              <%= svg_icon('building', class: 'w-5 h-5') %>
-              <span><%= t('company_details', default: 'Company Details') %></span>
-            </h2>
+            <div>
+              <h2 class="settings-card-title flex items-center gap-2.5">
+                <%= svg_icon('building', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
+                <span><%= t('company_details', default: 'Company Details') %></span>
+              </h2>
+              <p class="settings-card-subtitle">
+                <%= t('account_company_details_hint', default: 'Legal name, locale, and timezone apply to requests, notifications, and timestamps across your workspace.') %>
+              </p>
+            </div>
           </div>
-        <%= form_for '', url: settings_account_path, method: :patch, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
-      <%= fields_for current_account do |ff| %>
-        <div class="form-control">
-          <%= ff.label :name, t('company_name'), class: 'label' %>
-          <%= ff.text_field :name, required: true, class: 'base-input', dir: 'auto' %>
-        </div>
-        <div class="space-y-4">
-          <div class="form-control">
-            <%= ff.label :timezone, t('time_zone'), class: 'label' %>
-            <%= ff.select :timezone, nil, {}, class: 'base-select' do %>
-              <% tzinfo = TZInfo::Timezone.get(ActiveSupport::TimeZone::MAPPING[current_account.timezone] || current_account.timezone) %>
-              <% items = ActiveSupport::TimeZone.all.map { |z| [z.to_s, z.name] } %>
-              <% items.unshift([tzinfo.to_s, current_account.timezone]) unless ActiveSupport::TimeZone.all.find { |e| e.tzinfo == tzinfo } %>
-              <%= options_for_select(items, current_account.timezone) %>
+          <%= form_for '', url: settings_account_path, method: :patch, html: { autocomplete: 'off', class: 'space-y-6' } do |f| %>
+            <%= fields_for current_account do |ff| %>
+              <div class="form-control">
+                <%= ff.label :name, t('company_name'), class: 'label' %>
+                <%= ff.text_field :name,
+                  required: true,
+                  class: 'base-input',
+                  dir: 'auto',
+                  placeholder: t('account_placeholder_company_name', default: 'Acme Corp') %>
+              </div>
+              <div class="space-y-6">
+                <div class="form-control">
+                  <%= ff.label :timezone, t('time_zone'), class: 'label' %>
+                  <%= ff.select :timezone, nil, {}, class: 'base-select' do %>
+                    <% tzinfo = TZInfo::Timezone.get(ActiveSupport::TimeZone::MAPPING[current_account.timezone] || current_account.timezone) %>
+                    <% items = ActiveSupport::TimeZone.all.map { |z| [z.to_s, z.name] } %>
+                    <% items.unshift([tzinfo.to_s, current_account.timezone]) unless ActiveSupport::TimeZone.all.find { |e| e.tzinfo == tzinfo } %>
+                    <%= options_for_select(items, current_account.timezone) %>
+                  <% end %>
+                </div>
+                <div class="form-control">
+                  <%= ff.label :locale, t('language'), class: 'label' %>
+                  <%= ff.select :locale, options_for_select(AccountsController::LOCALE_OPTIONS.invert, current_account.locale), {}, class: 'base-select' %>
+                </div>
+              </div>
             <% end %>
-          </div>
-          <div class="form-control">
-            <%= ff.label :locale, t('language'), class: 'label' %>
-            <%= ff.select :locale, options_for_select(AccountsController::LOCALE_OPTIONS.invert, current_account.locale), {}, class: 'base-select' %>
-          </div>
-        </div>
-      <% end %>
-      <% encrypted_config = @encrypted_config || EncryptedConfig.find_or_initialize_by(account: current_account, key: EncryptedConfig::APP_URL_KEY) %>
-      <% if !Docuseal.multitenant? && can?(:manage, encrypted_config) && !current_account.testing? && ENV['APP_URL'].blank? %>
-        <%= fields_for encrypted_config do |ff| %>
-          <div class="form-control">
-            <%= ff.label :value, t('app_url'), class: 'label' %>
-            <%= ff.text_field :value, autocomplete: 'off', class: 'base-input' %>
-          </div>
-        <% end %>
-      <% end %>
-      <% if can?(:update, current_account) %>
-        <div class="form-control pt-2">
-          <%= f.button button_title(title: t('update_settings', default: t('update')), disabled_with: t('updating')), class: 'base-button w-full' %>
-        </div>
-      <% end %>
-    <% end %>
+            <% encrypted_config = @encrypted_config || EncryptedConfig.find_or_initialize_by(account: current_account, key: EncryptedConfig::APP_URL_KEY) %>
+            <% if !Docuseal.multitenant? && can?(:manage, encrypted_config) && !current_account.testing? && ENV['APP_URL'].blank? %>
+              <%= fields_for encrypted_config do |ff| %>
+                <div class="form-control">
+                  <%= ff.label :value, t('app_url'), class: 'label' %>
+                  <%= ff.text_field :value, autocomplete: 'off', class: 'base-input', placeholder: 'https://' %>
+                </div>
+              <% end %>
+            <% end %>
+            <% if can?(:update, current_account) %>
+              <div class="settings-card-actions profile-settings-card-actions">
+                <%= f.button button_title(title: t('update_settings', default: t('update')), disabled_with: t('updating')), class: 'base-button profile-settings-btn-primary w-full sm:w-auto flex items-center justify-center gap-2' do %>
+                  <%= svg_icon('save', class: 'w-4 h-4') %>
+                  <span><%= t('update_settings', default: t('update')) %></span>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
         </section>
 
-        <section class="settings-card settings-account-user-card">
-          <img src="/admin-icon.png" alt="Admin icon" class="h-14 w-14 shrink-0 object-contain">
+        <section class="settings-card profile-settings-card profile-settings-card--session settings-account-user-card">
+          <div class="settings-account-user-avatar" aria-hidden="true">
+            <span><%= current_user.first_name.to_s[0].to_s.upcase %><%= current_user.last_name.to_s[0].to_s.upcase %></span>
+          </div>
           <div class="settings-account-user-content">
+            <p class="settings-account-user-label"><%= t('account_signed_in_as', default: 'Signed in as') %></p>
             <p class="settings-account-user-name"><%= current_user.full_name.presence || current_user.email %></p>
             <p class="settings-account-user-email"><%= current_user.email %></p>
             <span class="settings-account-user-role">
@@ -73,10 +101,11 @@
       </div>
 
       <% if can?(:manage, AccountConfig) %>
-      <section class="settings-card settings-card--preferences">
+      <section class="settings-card profile-settings-card profile-settings-card--preferences settings-card--preferences">
         <div class="settings-card-header">
           <div>
-            <h2 class="settings-card-title flex items-center gap-2">
+            <h2 class="settings-card-title flex items-center gap-2.5">
+              <%= svg_icon('adjustments_horizontal', class: 'profile-settings-card-icon shrink-0 w-5 h-5') %>
               <span><%= t('preferences') %></span>
             </h2>
             <p class="settings-card-subtitle">
@@ -84,9 +113,40 @@
             </p>
           </div>
         </div>
-        <div class="settings-preferences-list">
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::FORCE_MFA) %>
-        <% if can?(:manage, account_config) %>
+        <% account_pref = ->(key) { AccountConfig.find_or_initialize_by(account: current_account, key: key) } %>
+        <% can_pref = ->(key) { can?(:manage, account_pref.call(key)) } %>
+        <% personalization_advanced = !Docuseal.multitenant? || can?(:manage, :personalization_advanced) %>
+        <% decline_prefs_available = !Docuseal.multitenant? || can?(:manage, :disable_decline) %>
+        <% prefs_security_visible = can_pref.call(AccountConfig::FORCE_MFA) %>
+        <% prefs_signing_visible =
+             can_pref.call(AccountConfig::WITH_SIGNATURE_ID) ||
+             can_pref.call(AccountConfig::REQUIRE_SIGNING_REASON_KEY) ||
+             can_pref.call(AccountConfig::ALLOW_TYPED_SIGNATURE) ||
+             can_pref.call(AccountConfig::FORM_PREFILL_SIGNATURE_KEY) ||
+             (personalization_advanced && (can_pref.call(AccountConfig::ENFORCE_SIGNING_ORDER_KEY) || can_pref.call(AccountConfig::WITH_FILE_LINKS_KEY))) %>
+        <% prefs_recipients_visible =
+             can_pref.call(AccountConfig::ALLOW_TO_RESUBMIT) ||
+             (decline_prefs_available && can_pref.call(AccountConfig::ALLOW_TO_DECLINE_KEY)) %>
+        <% prefs_downloads_visible =
+             can_pref.call(AccountConfig::DOWNLOAD_LINKS_EXPIRE_KEY) ||
+             can_pref.call(AccountConfig::DOWNLOAD_LINKS_AUTH_KEY) %>
+        <% prefs_output_visible = can_pref.call(AccountConfig::COMBINE_PDF_RESULT_KEY) %>
+        <% prefs_search_visible = !Docuseal.multitenant? && SearchEntry.table_exists? && (!Docuseal.fulltext_search? || params[:reindex] == 'true') && can?(:manage, EncryptedConfig) %>
+
+        <div class="settings-preferences-stack">
+        <% if prefs_security_visible %>
+          <div class="settings-preferences-section">
+            <div class="settings-preferences-section-head">
+              <h3 class="settings-preferences-section-title">
+                <%= svg_icon('shield_check', class: 'settings-preferences-section-icon shrink-0') %>
+                <span><%= t('account_preferences_section_security', default: 'Security') %></span>
+              </h3>
+              <p class="settings-preferences-section-desc">
+                <%= t('account_preferences_section_security_hint', default: 'Authentication requirements for everyone on this account.') %>
+              </p>
+            </div>
+            <div class="settings-preferences-list">
+        <% account_config = account_pref.call(AccountConfig::FORCE_MFA) %>
           <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
             <%= f.hidden_field :key %>
             <div class="flex items-center justify-between gap-4 py-2.5">
@@ -101,206 +161,270 @@
               </submit-form>
             </div>
           <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::WITH_SIGNATURE_ID) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between gap-4 py-2.5">
-              <div class="flex items-center space-x-1">
-                <span class="text-left"><%= t('add_signature_id_to_the_documents') %></span>
-                <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('add_a_unique_signature_id_and_timestamp_to_each_signature_for_audit_and_traceability_purposes_along_with_the_timestamp_part_of_docuseals_21_cfr_part_11_compliance_settings') %>">
-                  <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                </span>
-              </div>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, class: 'toggle', checked: account_config.value, disabled: can?(:manage, :cfr) %>
-              </submit-form>
             </div>
-          <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::REQUIRE_SIGNING_REASON_KEY) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between gap-4 py-2.5">
-              <div class="flex items-center space-x-1">
-                <span class="text-left"><%= t('require_signing_reason') %></span>
-                <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('require_signer_to_provide_a_reason_for_signing_before_completing_their_signature_e_g_approvals_certifications_part_of_docuseals_21_cfr_part_11_compliance_settings') %>">
-                  <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                </span>
-              </div>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, class: 'toggle', checked: account_config.value, disabled: can?(:manage, :cfr) %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::ALLOW_TYPED_SIGNATURE) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between gap-4 py-2.5">
-              <div class="flex items-center space-x-1">
-                <span class="text-left"><%= t('allow_typed_text_signatures') %></span>
-                <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('allow_signers_to_create_signatures_by_typing_their_name_instead_of_drawing_or_uploading_one') %>">
-                  <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                </span>
-              </div>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::ALLOW_TO_RESUBMIT) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between gap-4 py-2.5">
-              <div class="flex items-center space-x-1">
-                <span class="text-left"><%= t('allow_to_resubmit_completed_forms') %></span>
-                <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('allow_signers_to_resubmit_forms_after_completion_useful_when_corrections_or_multiple_submissions_are_needed') %>">
-                  <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                </span>
-              </div>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
-        <% if !Docuseal.multitenant? || can?(:manage, :disable_decline) %>
-          <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::ALLOW_TO_DECLINE_KEY) %>
-          <% if can?(:manage, account_config) %>
-            <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-              <%= f.hidden_field :key %>
-              <div class="flex items-center justify-between gap-4 py-2.5">
-                <div class="flex items-center space-x-1">
-                  <span class="text-left"><%= t('allow_to_decline_documents') %></span>
-                  <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('allow_recipients_to_decline_signing_a_document_the_decline_reason_notification_will_be_sent_to_the_signature_requester') %>">
-                    <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                  </span>
-                </div>
-                <submit-form data-on="change" class="flex">
-                  <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
-                </submit-form>
-              </div>
-            <% end %>
-          <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::FORM_PREFILL_SIGNATURE_KEY) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between gap-4 py-2.5">
-              <div class="flex items-center space-x-1">
-                <span class="text-left"><%= t('remember_and_pre_fill_signatures') %></span>
-                <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('save_a_users_signature_and_automatically_pre_fill_it_in_future_signing_sessions') %>">
-                  <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                </span>
-              </div>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::DOWNLOAD_LINKS_EXPIRE_KEY) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between gap-4 py-2.5">
-              <div class="flex items-center space-x-1">
-                <span class="text-left"><%= t('expirable_file_download_links') %></span>
-                <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('make_document_download_links_expire_after_40_minutes_to_prevent_long_term_access_and_enhance_security') %>">
-                  <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                </span>
-              </div>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::DOWNLOAD_LINKS_AUTH_KEY) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between gap-4 py-2.5">
-              <div class="flex items-center space-x-1">
-                <span class="text-left"><%= t('require_authentication_for_file_download_links') %></span>
-                <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('require_authentication_with_user_login_or_api_key_to_access_the_document_download_links') %>">
-                  <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                </span>
-              </div>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, class: 'toggle', checked: account_config.value %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
-        <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::COMBINE_PDF_RESULT_KEY) %>
-        <% if can?(:manage, account_config) %>
-          <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-            <%= f.hidden_field :key %>
-            <div class="flex items-center justify-between gap-4 py-2.5">
-              <div class="flex items-center space-x-1">
-                <span class="text-left"><%= t('combine_completed_documents_and_audit_log') %></span>
-                <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('combine_signed_documents_and_the_audit_log_into_a_single_pdf_file_for_easier_recordkeeping_and_compliance') %>">
-                  <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                </span>
-              </div>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :value, class: 'toggle', checked: account_config.value %>
-              </submit-form>
-            </div>
-          <% end %>
-        <% end %>
-        <% if !Docuseal.multitenant? || can?(:manage, :personalization_advanced) %>
-          <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::ENFORCE_SIGNING_ORDER_KEY) %>
-          <% if can?(:manage, account_config) %>
-            <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-              <%= f.hidden_field :key %>
-              <div class="flex items-center justify-between gap-4 py-2.5">
-                <div class="flex items-center space-x-1">
-                  <span class="text-left"><%= t('always_enforce_signing_order') %></span>
-                  <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('make_the_recipients_signing_order_always_enforced_so_that_the_second_signer_can_start_signing_their_part_only_after_the_first_signer_has_completed_signing') %>">
-                    <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
-                  </span>
-                </div>
-                <submit-form data-on="change" class="flex">
-                  <%= f.check_box :value, class: 'toggle', checked: account_config.value %>
-                </submit-form>
-              </div>
-            <% end %>
-          <% end %>
-        <% end %>
-        <% if !Docuseal.multitenant? || can?(:manage, :personalization_advanced) %>
-          <% account_config = AccountConfig.find_or_initialize_by(account: current_account, key: AccountConfig::WITH_FILE_LINKS_KEY) %>
-          <% if can?(:manage, account_config) %>
-            <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
-              <%= f.hidden_field :key %>
-              <div class="flex items-center justify-between gap-4 py-2.5">
-                <div class="flex items-center space-x-1">
-                  <span class="text-left"><%= t('use_direct_file_attachment_links_in_the_documents') %></span>
-                </div>
-                <submit-form data-on="change" class="flex">
-                  <%= f.check_box :value, class: 'toggle', checked: account_config.value %>
-                </submit-form>
-              </div>
-            <% end %>
-          <% end %>
-        <% end %>
-        <%= render 'extra_preferences' %>
-        <% if !Docuseal.multitenant? && SearchEntry.table_exists? && (!Docuseal.fulltext_search? || params[:reindex] == 'true') && can?(:manage, EncryptedConfig) %>
-          <div class="flex items-center justify-between gap-4 py-2.5">
-            <span>
-              <%= t('efficient_search_with_search_index') %>
-            </span>
-            <%= button_to params[:reindex] == 'true' ? t('reindex') : t('build_search_index'), settings_search_entries_reindex_index_path, method: :post, class: 'btn btn-sm btn-neutral text-white px-4' %>
           </div>
         <% end %>
+        <% if prefs_signing_visible %>
+          <div class="settings-preferences-section">
+            <div class="settings-preferences-section-head">
+              <h3 class="settings-preferences-section-title">
+                <%= svg_icon('writing_sign', class: 'settings-preferences-section-icon shrink-0') %>
+                <span><%= t('account_preferences_section_signing', default: 'Signing & audit') %></span>
+              </h3>
+              <p class="settings-preferences-section-desc">
+                <%= t('account_preferences_section_signing_hint', default: 'How signatures are captured, tracked, and sequenced.') %>
+              </p>
+            </div>
+            <div class="settings-preferences-list">
+              <% account_config = account_pref.call(AccountConfig::WITH_SIGNATURE_ID) %>
+              <% if can?(:manage, account_config) %>
+                <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                  <%= f.hidden_field :key %>
+                  <div class="flex items-center justify-between gap-4 py-2.5">
+                    <div class="flex items-center space-x-1">
+                      <span class="text-left"><%= t('add_signature_id_to_the_documents') %></span>
+                      <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('add_a_unique_signature_id_and_timestamp_to_each_signature_for_audit_and_traceability_purposes_along_with_the_timestamp_part_of_docuseals_21_cfr_part_11_compliance_settings') %>">
+                        <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                      </span>
+                    </div>
+                    <submit-form data-on="change" class="flex">
+                      <%= f.check_box :value, class: 'toggle', checked: account_config.value, disabled: can?(:manage, :cfr) %>
+                    </submit-form>
+                  </div>
+                <% end %>
+              <% end %>
+              <% account_config = account_pref.call(AccountConfig::REQUIRE_SIGNING_REASON_KEY) %>
+              <% if can?(:manage, account_config) %>
+                <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                  <%= f.hidden_field :key %>
+                  <div class="flex items-center justify-between gap-4 py-2.5">
+                    <div class="flex items-center space-x-1">
+                      <span class="text-left"><%= t('require_signing_reason') %></span>
+                      <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('require_signer_to_provide_a_reason_for_signing_before_completing_their_signature_e_g_approvals_certifications_part_of_docuseals_21_cfr_part_11_compliance_settings') %>">
+                        <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                      </span>
+                    </div>
+                    <submit-form data-on="change" class="flex">
+                      <%= f.check_box :value, class: 'toggle', checked: account_config.value, disabled: can?(:manage, :cfr) %>
+                    </submit-form>
+                  </div>
+                <% end %>
+              <% end %>
+              <% account_config = account_pref.call(AccountConfig::ALLOW_TYPED_SIGNATURE) %>
+              <% if can?(:manage, account_config) %>
+                <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                  <%= f.hidden_field :key %>
+                  <div class="flex items-center justify-between gap-4 py-2.5">
+                    <div class="flex items-center space-x-1">
+                      <span class="text-left"><%= t('allow_typed_text_signatures') %></span>
+                      <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('allow_signers_to_create_signatures_by_typing_their_name_instead_of_drawing_or_uploading_one') %>">
+                        <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                      </span>
+                    </div>
+                    <submit-form data-on="change" class="flex">
+                      <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
+                    </submit-form>
+                  </div>
+                <% end %>
+              <% end %>
+              <% account_config = account_pref.call(AccountConfig::FORM_PREFILL_SIGNATURE_KEY) %>
+              <% if can?(:manage, account_config) %>
+                <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                  <%= f.hidden_field :key %>
+                  <div class="flex items-center justify-between gap-4 py-2.5">
+                    <div class="flex items-center space-x-1">
+                      <span class="text-left"><%= t('remember_and_pre_fill_signatures') %></span>
+                      <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('save_a_users_signature_and_automatically_pre_fill_it_in_future_signing_sessions') %>">
+                        <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                      </span>
+                    </div>
+                    <submit-form data-on="change" class="flex">
+                      <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
+                    </submit-form>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if personalization_advanced %>
+                <% account_config = account_pref.call(AccountConfig::ENFORCE_SIGNING_ORDER_KEY) %>
+                <% if can?(:manage, account_config) %>
+                  <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                    <%= f.hidden_field :key %>
+                    <div class="flex items-center justify-between gap-4 py-2.5">
+                      <div class="flex items-center space-x-1">
+                        <span class="text-left"><%= t('always_enforce_signing_order') %></span>
+                        <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('make_the_recipients_signing_order_always_enforced_so_that_the_second_signer_can_start_signing_their_part_only_after_the_first_signer_has_completed_signing') %>">
+                          <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                        </span>
+                      </div>
+                      <submit-form data-on="change" class="flex">
+                        <%= f.check_box :value, class: 'toggle', checked: account_config.value %>
+                      </submit-form>
+                    </div>
+                  <% end %>
+                <% end %>
+                <% account_config = account_pref.call(AccountConfig::WITH_FILE_LINKS_KEY) %>
+                <% if can?(:manage, account_config) %>
+                  <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                    <%= f.hidden_field :key %>
+                    <div class="flex items-center justify-between gap-4 py-2.5">
+                      <div class="flex items-center space-x-1">
+                        <span class="text-left"><%= t('use_direct_file_attachment_links_in_the_documents') %></span>
+                      </div>
+                      <submit-form data-on="change" class="flex">
+                        <%= f.check_box :value, class: 'toggle', checked: account_config.value %>
+                      </submit-form>
+                    </div>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% if prefs_recipients_visible %>
+          <div class="settings-preferences-section">
+            <div class="settings-preferences-section-head">
+              <h3 class="settings-preferences-section-title">
+                <%= svg_icon('users', class: 'settings-preferences-section-icon shrink-0') %>
+                <span><%= t('account_preferences_section_recipients', default: 'Recipients & requests') %></span>
+              </h3>
+              <p class="settings-preferences-section-desc">
+                <%= t('account_preferences_section_recipients_hint', default: 'What signers can do with requests and submissions.') %>
+              </p>
+            </div>
+            <div class="settings-preferences-list">
+              <% account_config = account_pref.call(AccountConfig::ALLOW_TO_RESUBMIT) %>
+              <% if can?(:manage, account_config) %>
+                <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                  <%= f.hidden_field :key %>
+                  <div class="flex items-center justify-between gap-4 py-2.5">
+                    <div class="flex items-center space-x-1">
+                      <span class="text-left"><%= t('allow_to_resubmit_completed_forms') %></span>
+                      <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('allow_signers_to_resubmit_forms_after_completion_useful_when_corrections_or_multiple_submissions_are_needed') %>">
+                        <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                      </span>
+                    </div>
+                    <submit-form data-on="change" class="flex">
+                      <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
+                    </submit-form>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if decline_prefs_available %>
+                <% account_config = account_pref.call(AccountConfig::ALLOW_TO_DECLINE_KEY) %>
+                <% if can?(:manage, account_config) %>
+                  <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                    <%= f.hidden_field :key %>
+                    <div class="flex items-center justify-between gap-4 py-2.5">
+                      <div class="flex items-center space-x-1">
+                        <span class="text-left"><%= t('allow_to_decline_documents') %></span>
+                        <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('allow_recipients_to_decline_signing_a_document_the_decline_reason_notification_will_be_sent_to_the_signature_requester') %>">
+                          <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                        </span>
+                      </div>
+                      <submit-form data-on="change" class="flex">
+                        <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
+                      </submit-form>
+                    </div>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% if prefs_downloads_visible %>
+          <div class="settings-preferences-section">
+            <div class="settings-preferences-section-head">
+              <h3 class="settings-preferences-section-title">
+                <%= svg_icon('download', class: 'settings-preferences-section-icon shrink-0') %>
+                <span><%= t('account_preferences_section_downloads', default: 'Downloads & links') %></span>
+              </h3>
+              <p class="settings-preferences-section-desc">
+                <%= t('account_preferences_section_downloads_hint', default: 'Security of shared file links.') %>
+              </p>
+            </div>
+            <div class="settings-preferences-list">
+              <% account_config = account_pref.call(AccountConfig::DOWNLOAD_LINKS_EXPIRE_KEY) %>
+              <% if can?(:manage, account_config) %>
+                <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                  <%= f.hidden_field :key %>
+                  <div class="flex items-center justify-between gap-4 py-2.5">
+                    <div class="flex items-center space-x-1">
+                      <span class="text-left"><%= t('expirable_file_download_links') %></span>
+                      <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('make_document_download_links_expire_after_40_minutes_to_prevent_long_term_access_and_enhance_security') %>">
+                        <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                      </span>
+                    </div>
+                    <submit-form data-on="change" class="flex">
+                      <%= f.check_box :value, class: 'toggle', checked: account_config.value != false %>
+                    </submit-form>
+                  </div>
+                <% end %>
+              <% end %>
+              <% account_config = account_pref.call(AccountConfig::DOWNLOAD_LINKS_AUTH_KEY) %>
+              <% if can?(:manage, account_config) %>
+                <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                  <%= f.hidden_field :key %>
+                  <div class="flex items-center justify-between gap-4 py-2.5">
+                    <div class="flex items-center space-x-1">
+                      <span class="text-left"><%= t('require_authentication_for_file_download_links') %></span>
+                      <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('require_authentication_with_user_login_or_api_key_to_access_the_document_download_links') %>">
+                        <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                      </span>
+                    </div>
+                    <submit-form data-on="change" class="flex">
+                      <%= f.check_box :value, class: 'toggle', checked: account_config.value %>
+                    </submit-form>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% if prefs_output_visible %>
+          <div class="settings-preferences-section">
+            <div class="settings-preferences-section-head">
+              <h3 class="settings-preferences-section-title">
+                <%= svg_icon('files', class: 'settings-preferences-section-icon shrink-0') %>
+                <span><%= t('account_preferences_section_output', default: 'Finished documents') %></span>
+              </h3>
+              <p class="settings-preferences-section-desc">
+                <%= t('account_preferences_section_output_hint', default: 'How completed PDFs are packaged.') %>
+              </p>
+            </div>
+            <div class="settings-preferences-list">
+              <% account_config = account_pref.call(AccountConfig::COMBINE_PDF_RESULT_KEY) %>
+              <% if can?(:manage, account_config) %>
+                <%= form_for account_config, url: account_configs_path, method: :post do |f| %>
+                  <%= f.hidden_field :key %>
+                  <div class="flex items-center justify-between gap-4 py-2.5">
+                    <div class="flex items-center space-x-1">
+                      <span class="text-left"><%= t('combine_completed_documents_and_audit_log') %></span>
+                      <span class="tooltip tooltip-top flex cursor-pointer" data-tip="<%= t('combine_signed_documents_and_the_audit_log_into_a_single_pdf_file_for_easier_recordkeeping_and_compliance') %>">
+                        <%= svg_icon('info_circle', class: 'hidden md:inline-block w-4 h-4 shrink-0') %>
+                      </span>
+                    </div>
+                    <submit-form data-on="change" class="flex">
+                      <%= f.check_box :value, class: 'toggle', checked: account_config.value %>
+                    </submit-form>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <div class="settings-preferences-section settings-preferences-section--extra">
+          <%= render 'extra_preferences' %>
+          <% if prefs_search_visible %>
+            <div class="settings-preferences-list mt-4">
+              <div class="flex items-center justify-between gap-4 py-2.5">
+                <span>
+                  <%= t('efficient_search_with_search_index') %>
+                </span>
+                <%= button_to params[:reindex] == 'true' ? t('reindex') : t('build_search_index'), settings_search_entries_reindex_index_path, method: :post, class: 'btn btn-sm btn-neutral text-white px-4' %>
+              </div>
+            </div>
+          <% end %>
+        </div>
         </div>
       </section>
       <% end %>
@@ -308,11 +432,19 @@
     <%= render 'compliances' %>
     <%= render 'integrations' %>
     <% if can?(:manage, current_account) && Docuseal.multitenant? && true_user == current_user %>
-      <section class="bg-base-100 rounded-xl border border-base-300 p-6 md:p-8 shadow-soft border-error/30">
-        <h2 class="text-lg font-semibold text-error mb-5">
-          <%= t('danger_zone') %>
-        </h2>
-        <%= button_to button_title(title: t('delete_my_account')), settings_account_path, class: 'btn btn-outline btn-error block', data: { turbo_confirm: t('you_are_scheduling_your_account_for_deletion_after_deletion_your_data_will_be_permanently_removed_and_cannot_be_recovered_click_ok_if_you_would_like_to_continue') }, method: :delete, id: :account_delete_button %>
+      <section class="settings-card profile-settings-card profile-settings-danger-zone mt-10 md:mt-12" aria-labelledby="account-danger-zone-heading">
+        <div class="settings-card-header !border-b-0 !pb-0 mb-5">
+          <div>
+            <h2 id="account-danger-zone-heading" class="settings-card-title flex items-center gap-2.5 text-error">
+              <%= svg_icon('trash', class: 'w-5 h-5 shrink-0 opacity-90') %>
+              <span><%= t('danger_zone') %></span>
+            </h2>
+            <p class="settings-card-subtitle text-error/80">
+              <%= t('account_danger_zone_hint', default: 'Deleting your account is permanent. Exported data may remain with collaborators.') %>
+            </p>
+          </div>
+        </div>
+        <%= button_to button_title(title: t('delete_my_account')), settings_account_path, class: 'btn btn-outline btn-error w-full sm:w-auto sm:inline-flex', data: { turbo_confirm: t('you_are_scheduling_your_account_for_deletion_after_deletion_your_data_will_be_permanently_removed_and_cannot_be_recovered_click_ok_if_you_would_like_to_continue') }, method: :delete, id: :account_delete_button %>
       </section>
     <% end %>
   </div>

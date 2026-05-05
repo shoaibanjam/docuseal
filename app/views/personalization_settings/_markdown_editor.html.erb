@@ -1,9 +1,13 @@
 <% if value.to_s.start_with?('<html') %>
   <autoresize-textarea>
-    <%= text_area_tag name, value, required: true, class: 'base-input w-full py-2 !rounded-2xl', dir: 'auto', style: 'max-height: 400px' %>
+    <%= text_area_tag name, value, required: true, class: 'base-input w-full py-2 !rounded-2xl', dir: 'auto', style: 'max-height: 400px', placeholder: t('personalization_placeholder_email_body_html') %>
   </autoresize-textarea>
 <% else %>
-  <markdown-editor>
+  <% if local_assigns[:placeholder].present? %>
+    <markdown-editor data-placeholder="<%= h(local_assigns[:placeholder]) %>">
+  <% else %>
+    <markdown-editor>
+  <% end %>
     <template data-target="markdown-editor.linkTooltipTemplate">
       <div class="ds-markdown-link-tooltip hidden absolute flex bg-[#0d1c2f] border border-white/10 rounded-xl shadow p-1 gap-1 items-center z-50" contenteditable="false">
         <input type="text" placeholder="<%= t('enter_a_url_or_variable_name') %>" class="ds-markdown-link-input rounded-lg border border-white/10 bg-[#010e21] text-primary-content px-2 py-1 text-sm outline-none" style="field-sizing: content; min-width: 205px; max-width: 320px;" autocomplete="off">

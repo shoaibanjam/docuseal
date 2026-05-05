@@ -1,38 +1,59 @@
-<div class="settings-layout">
-  <aside class="settings-sidebar">
-    <%= render 'shared/settings_nav' %>
-  </aside>
-  <div class="settings-main">
-    <div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-center">
-      <h1 class="ds-heading-2 flex items-center gap-2">
-        <%= svg_icon('api', class: 'w-5 h-5') %>
-        <span>Webhooks</span>
-      </h1>
-      <div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-center">
-        <%= render 'shared/test_mode_toggle' %>
-        <% if @webhook_url.persisted? %>
-          <%= link_to new_settings_webhook_path, class: 'md:ml-3 white-button btn-md gap-2 w-full md:w-fit', data: { turbo_frame: 'modal' } do %>
-            <%= svg_icon('plus', class: 'w-6 h-6') %>
-            <span><%= t('new_webhook') %></span>
-          <% end %>
-        <% end %>
+<div class="settings-layout profile-settings-page webhook-settings-page">
+  <div class="settings-main profile-settings-main">
+    <header class="settings-page-header profile-settings-header webhook-settings-header">
+      <div class="settings-page-header-top">
+        <div class="settings-page-avatar profile-settings-avatar webhook-settings-page__avatar" aria-hidden="true">
+          <%= svg_icon('world', class: 'w-7 h-7 shrink-0') %>
+        </div>
+        <div class="profile-settings-header-text">
+          <p class="webhook-settings-eyebrow">
+            <%= t('webhook_settings_eyebrow', default: 'Automation') %>
+          </p>
+          <h1 class="ds-heading-2 profile-settings-title">
+            <%= t('webhook_settings') %>
+          </h1>
+          <p class="settings-page-subtitle profile-settings-intro webhook-settings-intro">
+            <%= t(
+                  'webhook_settings_index_intro',
+                  default: 'Select an endpoint to edit delivery and events, or add a new webhook URL.'
+                ) %>
+          </p>
+        </div>
       </div>
+    </header>
+
+    <div class="webhook-settings-toolbar mt-6 flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-4">
+      <%= render 'shared/test_mode_toggle' %>
+      <%= link_to new_settings_webhook_path, class: 'base-button profile-settings-btn-primary whitespace-nowrap self-start sm:self-auto gap-2', data: { turbo_frame: :modal } do %>
+        <%= svg_icon('plus', class: 'size-5 shrink-0') %>
+        <%= t('new_webhook') %>
+      <% end %>
     </div>
-    <div class="space-y-4">
+
+    <div class="webhook-settings-stack mt-8 space-y-6">
       <% @webhook_urls.each do |webhook_url| %>
-        <%= link_to settings_webhook_path(webhook_url), class: 'block settings-card hover:border-primary/40 transition-colors' do %>
-          <div class="min-w-0">
-            <p class="flex items-center space-x-1">
-              <%= svg_icon('world', class: 'w-6 h-6 shrink-0') %>
-              <span class="text-xl font-semibold truncate"><%= webhook_url.url %></span>
-            </p>
-            <div class="flex flex-wrap gap-2 mt-2">
-              <% webhook_url.events.each do |event| %>
-                <span class="badge badge-outline"><%= event %></span>
-              <% end %>
-            </div>
+        <%= link_to settings_webhook_path(webhook_url), class: 'block settings-card profile-settings-card webhook-settings-card-link border border-base-300 rounded-xl p-5 hover:border-accent transition-colors duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base-100' do %>
+          <div class="flex flex-wrap gap-x-4 gap-y-2 justify-between items-start">
+            <span class="font-semibold text-base md:text-lg text-base-content break-all"><%= webhook_url.url %></span>
+            <%= svg_icon('arrow_up_right', class: 'size-5 shrink-0 mt-0.5 text-base-content/60') %>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <% webhook_url.events.each do |event| %>
+              <span class="badge badge-outline badge-sm"><%= event %></span>
+            <% end %>
           </div>
         <% end %>
+      <% end %>
+      <% if @webhook_urls.none? %>
+        <div class="settings-card profile-settings-card webhook-settings-empty border border-base-300 rounded-xl p-8 md:p-10 text-center">
+          <p class="text-base-content/70 mb-5">
+            <%= t('there_are_no_webhooks_yet', default: 'No webhooks yet.') %>
+          </p>
+          <%= link_to new_settings_webhook_path, class: 'base-button profile-settings-btn-primary whitespace-nowrap gap-2', data: { turbo_frame: :modal } do %>
+            <%= svg_icon('plus', class: 'size-5 shrink-0') %>
+            <%= t('new_webhook') %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>

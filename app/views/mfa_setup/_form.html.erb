@@ -1,23 +1,54 @@
 <%= form_for '', url: mfa_setup_path, data: { turbo_frame: :_top }, html: { id: 'mfa_form' } do |f| %>
-  <p class="text-center">
-    <%= t('use_an_authenticator_mobile_app_like_google_authenticator_or_1password_to_scan_the_qr_code_below') %>
-  </p>
-  <div class="mfa-qr-container flex justify-center my-4">
-    <%== RQRCode::QRCode.new(@provision_url).as_svg(
-          viewbox: true,
-          fill: 'ffffff',
-          color: '000000',
-          offset: 8,
-          svg_attributes: { class: 'mfa-qr-svg md:w-80 md:h-80 mx-auto' }
-        ) %>
-  </div>
-  <div class="form-control my-6 space-y-2">
-    <%= f.text_field :otp_attempt, required: true, placeholder: 'XXX-XXX', class: 'base-input text-center' %>
-    <span>
-      <%= @error_message %>
-    </span>
-  </div>
-  <div class="form-control mt-4">
-    <%= f.button button_title(title: t('save')), class: 'base-button' %>
+  <% mfa_modal = local_assigns.fetch(:mfa_modal, false) %>
+  <div class="mfa-setup-editor">
+    <p id="mfa-setup-modal-description" class="signature-editor__lead">
+      <%= t('use_an_authenticator_mobile_app_like_google_authenticator_or_1password_to_scan_the_qr_code_below') %>
+    </p>
+    <div class="mfa-setup-editor__qr-wrap">
+      <div class="mfa-qr-container mfa-setup-editor__qr">
+        <%== RQRCode::QRCode.new(@provision_url).as_svg(
+              viewbox: true,
+              fill: 'ffffff',
+              color: '000000',
+              offset: 8,
+              svg_attributes: { class: 'mfa-qr-svg md:w-80 md:h-80 mx-auto' }
+            ) %>
+      </div>
+      <p class="mfa-setup-editor__qr-caption">
+        <%= t('mfa_setup_enter_code_hint', default: 'Enter the rotating code from the app below to verify and finish setup.') %>
+      </p>
+    </div>
+    <div class="form-control mfa-setup-editor__field">
+      <%= f.label :otp_attempt, t('two_factor_code', default: 'Authentication code'), class: 'label' %>
+      <%= f.text_field :otp_attempt,
+        required: true,
+        autocomplete: 'one-time-code',
+        inputmode: 'numeric',
+        pattern: '[0-9\s-]*',
+        maxlength: 12,
+        placeholder: t('mfa_code_placeholder', default: 'XXX-XXX'),
+        class: 'base-input text-center tracking-wide font-mono',
+        aria: {
+          describedby: [
+            'mfa-setup-modal-description',
+            ('mfa-setup-field-error' if @error_message.present?)
+          ].compact.join(' ')
+        } %>
+      <% if @error_message.present? %>
+        <span id="mfa-setup-field-error" class="label-text-alt mfa-setup-editor__error" role="alert"><%= @error_message %></span>
+      <% end %>
+    </div>
+    <div class="signature-editor__actions mfa-setup-editor__actions">
+      <% if mfa_modal %>
+        <button type="button" class="signature-editor__cancel btn btn-ghost" data-turbo-modal-close>
+          <%= t('cancel', default: 'Cancel') %>
+        </button>
+      <% else %>
+        <%= link_to settings_profile_index_path, class: 'signature-editor__cancel btn btn-ghost' do %>
+          <%= t('mfa_back_to_profile', default: 'Back to profile') %>
+        <% end %>
+      <% end %>
+      <%= f.button button_title(title: t('save')), class: 'base-button signature-editor__save' %>
+    </div>
   </div>
 <% end %>

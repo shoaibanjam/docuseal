@@ -1,3 +1,5 @@
-<%= render 'shared/turbo_modal', title: t('edit_user') do %>
+<%= render 'shared/turbo_modal',
+  title: t('edit_user'),
+  enhanced_modal: true do %>
   <%= render 'form', user: @user %>
 <% end %>

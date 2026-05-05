@@ -1,18 +1,50 @@
 <turbo-frame id="modal">
-  <turbo-modal class="modal modal-open items-start !animate-none overflow-y-auto" data-close-after-submit="<%= local_assigns.key?(:close_after_submit) ? local_assigns[:close_after_submit] : true %>">
+  <%
+    # Polished modal shell (same as signature/initials editors): shared via enhanced_modal or signature_editor.
+    enhanced_modal = !!(
+      local_assigns[:enhanced_modal] || local_assigns[:signature_editor]
+    )
+    modal_classes = "modal modal-open items-start !animate-none overflow-y-auto"
+    modal_classes += " modal--signature-editor" if enhanced_modal
+    modal_attrs = {
+      class: modal_classes,
+      data: {
+        close_after_submit: local_assigns.key?(:close_after_submit) ? local_assigns[:close_after_submit] : true
+      }
+    }
+    if local_assigns[:signature_editor]
+      modal_attrs[:data][:unsaved_close_prompt] = local_assigns[:unsaved_close_prompt] || t('signature_modal_unsaved_close', default: 'You have an unsaved signature. Close without saving?')
+    end
+  %>
+  <%= content_tag('turbo-modal', **modal_attrs) do %>
     <div class="turbo-modal-backdrop absolute inset-0 cursor-pointer z-0" data-turbo-modal-close aria-hidden="true"></div>
-    <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none relative z-10" data-turbo-modal-content>
+    <div
+      class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none relative z-10 <%= 'modal-box--signature-editor' if enhanced_modal %>"
+      data-turbo-modal-content
+    >
       <% if local_assigns[:title] %>
-        <div class="flex justify-between items-center border-b pb-2 mb-2 font-medium">
-          <span>
-            <%= local_assigns[:title] %>
-          </span>
-          <button type="button" class="text-xl hover:opacity-70 turbo-modal-close-btn" data-turbo-modal-close aria-label="Close">&times;</button>
-        </div>
+        <% if enhanced_modal %>
+          <header class="signature-modal__header">
+            <div class="signature-modal__title-row">
+              <h2 id="signature-modal-title" class="signature-modal__title"><%= local_assigns[:title] %></h2>
+              <button type="button" class="signature-modal__close turbo-modal-close-btn" data-turbo-modal-close aria-label="<%= t('close', default: 'Close') %>">
+                <%= svg_icon('x', class: 'w-5 h-5 stroke-[1.75]') %>
+              </button>
+            </div>
+            <div class="signature-modal__head-divider" aria-hidden="true"></div>
+          </header>
+        <% else %>
+          <div class="flex justify-between items-center border-b pb-2 mb-2 font-medium">
+            <span>
+              <%= local_assigns[:title] %>
+            </span>
+            <button type="button" class="text-xl hover:opacity-70 turbo-modal-close-btn" data-turbo-modal-close aria-label="Close">&times;</button>
+          </div>
+        <% end %>
       <% end %>
-      <div>
+      <div class="<%= 'signature-modal__body' if enhanced_modal %>">
         <%= yield %>
       </div>
     </div>
-  </turbo-modal>
+  <% end %>
 </turbo-frame>

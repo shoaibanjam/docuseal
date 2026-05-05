@@ -1,30 +1,35 @@
-<%= form_for config, url: settings_notifications_path, method: :post, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
+<%= form_for config, url: settings_notifications_path, method: :post, html: { autocomplete: 'off', class: 'notifications-reminder-form' } do |f| %>
   <%= f.hidden_field :key %>
   <div class="form-control">
     <% record = Struct.new(:first_duration, :second_duration, :third_duration).new(*(f.object.value || {}).values_at('first_duration', 'second_duration', 'third_duration')) %>
     <% durations = (Docuseal.multitenant? ? AccountConfigs::REMINDER_DURATIONS.except('one_hour', 'two_hours') : AccountConfigs::REMINDER_DURATIONS).keys.map { |v| [t(v.underscore), v] } %>
-    <div class="flex flex-col md:flex-row gap-2">
-      <div class="w-full">
+    <div class="notifications-reminder-schedule grid grid-cols-3 gap-2 sm:gap-4 items-end">
+      <div class="min-w-0">
         <%= f.fields_for :value, record  do |ff| %>
           <%= ff.label :first_duration, t('first_reminder_in'), class: 'label truncate' %>
-          <%= ff.select :first_duration, durations, { include_blank: t('none') }, class: 'base-select' %>
+          <%= ff.select :first_duration, durations, { include_blank: t('none') }, class: 'base-select w-full' %>
         <% end %>
       </div>
-      <div class="w-full">
+      <div class="min-w-0">
         <%= f.fields_for :value, record  do |ff| %>
           <%= ff.label :second_duration, t('second_reminder_in'), class: 'label truncate' %>
-          <%= ff.select :second_duration, durations, { include_blank: t('none') }, class: 'base-select' %>
+          <%= ff.select :second_duration, durations, { include_blank: t('none') }, class: 'base-select w-full' %>
         <% end %>
       </div>
-      <div class="w-full">
+      <div class="min-w-0">
         <%= f.fields_for :value, record  do |ff| %>
           <%= ff.label :third_duration, t('third_reminder_in'), class: 'label truncate' %>
-          <%= ff.select :third_duration, durations, { include_blank: t('none') }, class: 'base-select' %>
+          <%= ff.select :third_duration, durations, { include_blank: t('none') }, class: 'base-select w-full' %>
         <% end %>
       </div>
     </div>
   </div>
-  <div class="form-control pt-4">
-    <%= f.button button_title(title: t('save'), disabled_with: t('updating')), class: 'base-button' %>
+  <div class="settings-card-actions profile-settings-card-actions notifications-settings-save">
+    <%= f.button button_title(
+          title: t('save'),
+          disabled_with: t('updating'),
+          icon: svg_icon('save', class: 'w-4 h-4')
+        ),
+        class: 'base-button profile-settings-btn-primary w-full sm:w-auto flex items-center justify-center gap-2' %>
   </div>
 <% end %>

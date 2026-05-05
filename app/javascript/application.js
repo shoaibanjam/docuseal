@@ -1,258 +1,320 @@
-import '@hotwired/turbo'
-import { encodeMethodIntoRequestBody } from '@hotwired/turbo-rails/app/javascript/turbo/fetch_requests'
+import '@hotwired/turbo';
+import { encodeMethodIntoRequestBody } from '@hotwired/turbo-rails/app/javascript/turbo/fetch_requests';
 
-import { createApp, reactive } from 'vue'
-import TemplateBuilder from './template_builder/builder'
-import ImportList from './template_builder/import_list'
+import { createApp, reactive } from 'vue';
+import TemplateBuilder from './template_builder/builder';
+import ImportList from './template_builder/import_list';
 
-import ToggleVisible from './elements/toggle_visible'
-import ToggleCookies from './elements/toggle_cookies'
-import DisableHidden from './elements/disable_hidden'
-import TurboModal from './elements/turbo_modal'
-import FileDropzone from './elements/file_dropzone'
-import MenuActive from './elements/menu_active'
-import ClipboardCopy from './elements/clipboard_copy'
-import DynamicList from './elements/dynamic_list'
-import DownloadButton from './elements/download_button'
-import SetOriginUrl from './elements/set_origin_url'
-import SetTimezone from './elements/set_timezone'
-import AutoresizeTextarea from './elements/autoresize_textarea'
-import SubmittersAutocomplete from './elements/submitter_autocomplete'
-import FolderAutocomplete from './elements/folder_autocomplete'
-import SignatureForm from './elements/signature_form'
-import SubmitForm from './elements/submit_form'
-import PromptPassword from './elements/prompt_password'
-import EmailsTextarea from './elements/emails_textarea'
-import ToggleSubmit from './elements/toggle_submit'
-import ToggleOnSubmit from './elements/toggle_on_submit'
-import CheckOnClick from './elements/check_on_click'
-import PasswordInput from './elements/password_input'
-import SearchInput from './elements/search_input'
-import ToggleAttribute from './elements/toggle_attribute'
-import LinkedInput from './elements/linked_input'
-import CheckboxGroup from './elements/checkbox_group'
-import MaskedInput from './elements/masked_input'
-import SetDateButton from './elements/set_date_button'
-import IndeterminateCheckbox from './elements/indeterminate_checkbox'
-import AppTour from './elements/app_tour'
-import AppTourStart from './elements/app_tour_start'
-import DashboardDropzone from './elements/dashboard_dropzone'
-import RequiredCheckboxGroup from './elements/required_checkbox_group'
-import PageContainer from './elements/page_container'
-import EmailEditor from './elements/email_editor'
-import MarkdownEditor from './elements/markdown_editor'
-import MountOnClick from './elements/mount_on_click'
-import RemoveOnEvent from './elements/remove_on_event'
-import ScrollTo from './elements/scroll_to'
-import SetValue from './elements/set_value'
-import ReviewForm from './elements/review_form'
-import ShowOnValue from './elements/show_on_value'
-import CustomValidation from './elements/custom_validation'
-import ToggleClasses from './elements/toggle_classes'
-import AutosizeField from './elements/autosize_field'
-import GoogleDriveFilePicker from './elements/google_drive_file_picker'
-import OpenModal from './elements/open_modal'
-import BarChart from './elements/bar_chart'
-import FieldCondition from './elements/field_condition'
-import { showToast, showConfirmToast } from './lib/toast'
-import ThemeToggle, { initTheme, getCurrentTheme } from './lib/theme'
+import ToggleVisible from './elements/toggle_visible';
+import ToggleCookies from './elements/toggle_cookies';
+import DisableHidden from './elements/disable_hidden';
+import TurboModal from './elements/turbo_modal';
+import FileDropzone from './elements/file_dropzone';
+import MenuActive from './elements/menu_active';
+import ClipboardCopy from './elements/clipboard_copy';
+import DynamicList from './elements/dynamic_list';
+import DownloadButton from './elements/download_button';
+import SetOriginUrl from './elements/set_origin_url';
+import SetTimezone from './elements/set_timezone';
+import AutoresizeTextarea from './elements/autoresize_textarea';
+import SubmittersAutocomplete from './elements/submitter_autocomplete';
+import FolderAutocomplete from './elements/folder_autocomplete';
+import SignatureForm from './elements/signature_form';
+import SubmitForm from './elements/submit_form';
+import PromptPassword from './elements/prompt_password';
+import EmailsTextarea from './elements/emails_textarea';
+import ToggleSubmit from './elements/toggle_submit';
+import ToggleOnSubmit from './elements/toggle_on_submit';
+import CheckOnClick from './elements/check_on_click';
+import PasswordInput from './elements/password_input';
+import SearchInput from './elements/search_input';
+import ToggleAttribute from './elements/toggle_attribute';
+import LinkedInput from './elements/linked_input';
+import CheckboxGroup from './elements/checkbox_group';
+import MaskedInput from './elements/masked_input';
+import SetDateButton from './elements/set_date_button';
+import IndeterminateCheckbox from './elements/indeterminate_checkbox';
+import AppTour from './elements/app_tour';
+import AppTourStart from './elements/app_tour_start';
+import DashboardDropzone from './elements/dashboard_dropzone';
+import RequiredCheckboxGroup from './elements/required_checkbox_group';
+import PageContainer from './elements/page_container';
+import EmailEditor from './elements/email_editor';
+import MarkdownEditor from './elements/markdown_editor';
+import MountOnClick from './elements/mount_on_click';
+import RemoveOnEvent from './elements/remove_on_event';
+import ScrollTo from './elements/scroll_to';
+import SetValue from './elements/set_value';
+import ReviewForm from './elements/review_form';
+import ShowOnValue from './elements/show_on_value';
+import CustomValidation from './elements/custom_validation';
+import ToggleClasses from './elements/toggle_classes';
+import AutosizeField from './elements/autosize_field';
+import GoogleDriveFilePicker from './elements/google_drive_file_picker';
+import OpenModal from './elements/open_modal';
+import BarChart from './elements/bar_chart';
+import FieldCondition from './elements/field_condition';
+import { showToast, showConfirmToast } from './lib/toast';
+import { showConfirmModal } from './lib/confirm_modal';
+import ThemeToggle, { initTheme, getCurrentTheme } from './lib/theme';
+import ProfilePasswordStrength from './elements/profile_password_strength';
 
-import * as TurboInstantClick from './lib/turbo_instant_click'
+import * as TurboInstantClick from './lib/turbo_instant_click';
 
-TurboInstantClick.start()
-initTheme()
-window.showToast = showToast
-window.showConfirmToast = showConfirmToast
-window.Turbo?.setConfirmMethod((message) => {
-  if (window.showConfirmToast) {
-    return window.showConfirmToast(message, { confirmText: 'OK', cancelText: 'Cancel' })
-  }
+TurboInstantClick.start();
+initTheme();
+window.showToast = showToast;
+window.showConfirmToast = showConfirmToast;
+window.showConfirmModal = showConfirmModal;
 
-  return window.confirm(message)
-})
+window.Turbo?.setConfirmMethod((message, formElement, submitter) => {
+  const title =
+    submitter?.getAttribute?.('data-turbo-confirm-title') ||
+    formElement?.getAttribute?.('data-turbo-confirm-title') ||
+    '';
+
+  const confirmText =
+    submitter?.getAttribute?.('data-turbo-confirm-accept') ||
+    submitter?.getAttribute?.('data-turbo-confirm-yes') ||
+    formElement?.getAttribute?.('data-turbo-confirm-accept') ||
+    'OK';
+
+  const cancelText =
+    submitter?.getAttribute?.('data-turbo-confirm-cancel') ||
+    formElement?.getAttribute?.('data-turbo-confirm-cancel') ||
+    'Cancel';
+
+  const variantRaw =
+    submitter?.getAttribute?.('data-turbo-confirm-variant') ||
+    formElement?.getAttribute?.('data-turbo-confirm-variant') ||
+    '';
+
+  const variant = variantRaw === 'danger' ? 'danger' : 'neutral';
+
+  return showConfirmModal(message, {
+    title,
+    confirmText,
+    cancelText,
+    variant,
+  });
+});
 
 document.addEventListener('turbo:before-cache', () => {
-  window.flash?.remove()
-})
+  window.flash?.remove();
+});
+
+document.addEventListener('turbo:before-visit', () => {
+  const drawerToggle = document.getElementById('app-sidebar-drawer');
+  if (drawerToggle) drawerToggle.checked = false;
+});
 
 document.addEventListener('keyup', (e) => {
   if (e.code === 'Escape') {
-    document.activeElement?.blur()
+    if (document.querySelector('.app-confirm-modal')) return;
+
+    document.activeElement?.blur();
   }
-})
+});
 
 window.addEventListener('pageshow', (event) => {
-  const isProtectedPage = document.body?.dataset?.revalidateOnBack === 'true'
-  const navigationEntry = performance.getEntriesByType('navigation')[0]
-  const isBackForward = navigationEntry?.type === 'back_forward'
+  const isProtectedPage = document.body?.dataset?.revalidateOnBack === 'true';
+  const navigationEntry = performance.getEntriesByType('navigation')[0];
+  const isBackForward = navigationEntry?.type === 'back_forward';
 
   if (isProtectedPage && (event.persisted || isBackForward)) {
-    window.location.reload()
+    window.location.reload();
   }
-})
+});
 
-document.addEventListener('turbo:before-fetch-request', encodeMethodIntoRequestBody)
+document.addEventListener(
+  'turbo:before-fetch-request',
+  encodeMethodIntoRequestBody
+);
 document.addEventListener('turbo:before-fetch-request', (event) => {
-  event.detail.fetchOptions.headers['X-Turbo'] = 'true'
-})
+  event.detail.fetchOptions.headers['X-Turbo'] = 'true';
+});
 document.addEventListener('turbo:submit-end', async (event) => {
-  const resp = event.detail?.formSubmission?.result?.fetchResponse?.response
+  const resp = event.detail?.formSubmission?.result?.fetchResponse?.response;
 
   if (!resp?.headers?.get('content-disposition')?.includes('attachment')) {
-    return
+    return;
   }
 
-  const url = URL.createObjectURL(await resp.blob())
-  const link = document.createElement('a')
+  const url = URL.createObjectURL(await resp.blob());
+  const link = document.createElement('a');
 
-  link.href = url
-  link.setAttribute('download', decodeURIComponent(resp.headers.get('content-disposition').split('"')[1]))
+  link.href = url;
+  link.setAttribute(
+    'download',
+    decodeURIComponent(resp.headers.get('content-disposition').split('"')[1])
+  );
 
-  document.body.appendChild(link)
+  document.body.appendChild(link);
 
-  link.click()
+  link.click();
 
-  document.body.removeChild(link)
+  document.body.removeChild(link);
 
-  URL.revokeObjectURL(url)
-})
+  URL.revokeObjectURL(url);
+});
 
-const safeRegisterElement = (name, element, options = {}) => !window.customElements.get(name) && window.customElements.define(name, element, options)
+const safeRegisterElement = (name, element, options = {}) =>
+  !window.customElements.get(name) &&
+  window.customElements.define(name, element, options);
 
-safeRegisterElement('toggle-visible', ToggleVisible)
-safeRegisterElement('disable-hidden', DisableHidden)
-safeRegisterElement('turbo-modal', TurboModal)
-safeRegisterElement('file-dropzone', FileDropzone)
-safeRegisterElement('menu-active', MenuActive)
-safeRegisterElement('clipboard-copy', ClipboardCopy)
-safeRegisterElement('dynamic-list', DynamicList)
-safeRegisterElement('download-button', DownloadButton)
-safeRegisterElement('set-origin-url', SetOriginUrl)
-safeRegisterElement('set-timezone', SetTimezone)
-safeRegisterElement('autoresize-textarea', AutoresizeTextarea)
-safeRegisterElement('submitters-autocomplete', SubmittersAutocomplete)
-safeRegisterElement('folder-autocomplete', FolderAutocomplete)
-safeRegisterElement('signature-form', SignatureForm)
-safeRegisterElement('submit-form', SubmitForm)
-safeRegisterElement('prompt-password', PromptPassword)
-safeRegisterElement('emails-textarea', EmailsTextarea)
-safeRegisterElement('toggle-cookies', ToggleCookies)
-safeRegisterElement('toggle-submit', ToggleSubmit)
-safeRegisterElement('toggle-on-submit', ToggleOnSubmit)
-safeRegisterElement('password-input', PasswordInput)
-safeRegisterElement('search-input', SearchInput)
-safeRegisterElement('toggle-attribute', ToggleAttribute)
-safeRegisterElement('linked-input', LinkedInput)
-safeRegisterElement('checkbox-group', CheckboxGroup)
-safeRegisterElement('masked-input', MaskedInput)
-safeRegisterElement('set-date-button', SetDateButton)
-safeRegisterElement('indeterminate-checkbox', IndeterminateCheckbox)
-safeRegisterElement('app-tour', AppTour)
-safeRegisterElement('app-tour-start', AppTourStart)
-safeRegisterElement('dashboard-dropzone', DashboardDropzone)
-safeRegisterElement('check-on-click', CheckOnClick)
-safeRegisterElement('required-checkbox-group', RequiredCheckboxGroup)
-safeRegisterElement('page-container', PageContainer)
-safeRegisterElement('email-editor', EmailEditor)
-safeRegisterElement('markdown-editor', MarkdownEditor)
-safeRegisterElement('mount-on-click', MountOnClick)
-safeRegisterElement('remove-on-event', RemoveOnEvent)
-safeRegisterElement('scroll-to', ScrollTo)
-safeRegisterElement('set-value', SetValue)
-safeRegisterElement('review-form', ReviewForm)
-safeRegisterElement('show-on-value', ShowOnValue)
-safeRegisterElement('custom-validation', CustomValidation)
-safeRegisterElement('toggle-classes', ToggleClasses)
-safeRegisterElement('autosize-field', AutosizeField)
-safeRegisterElement('google-drive-file-picker', GoogleDriveFilePicker)
-safeRegisterElement('open-modal', OpenModal)
-safeRegisterElement('bar-chart', BarChart)
-safeRegisterElement('field-condition', FieldCondition)
-safeRegisterElement('theme-toggle', ThemeToggle)
+safeRegisterElement('toggle-visible', ToggleVisible);
+safeRegisterElement('disable-hidden', DisableHidden);
+safeRegisterElement('turbo-modal', TurboModal);
+safeRegisterElement('file-dropzone', FileDropzone);
+safeRegisterElement('menu-active', MenuActive);
+safeRegisterElement('clipboard-copy', ClipboardCopy);
+safeRegisterElement('dynamic-list', DynamicList);
+safeRegisterElement('download-button', DownloadButton);
+safeRegisterElement('set-origin-url', SetOriginUrl);
+safeRegisterElement('set-timezone', SetTimezone);
+safeRegisterElement('autoresize-textarea', AutoresizeTextarea);
+safeRegisterElement('submitters-autocomplete', SubmittersAutocomplete);
+safeRegisterElement('folder-autocomplete', FolderAutocomplete);
+safeRegisterElement('signature-form', SignatureForm);
+safeRegisterElement('submit-form', SubmitForm);
+safeRegisterElement('prompt-password', PromptPassword);
+safeRegisterElement('emails-textarea', EmailsTextarea);
+safeRegisterElement('toggle-cookies', ToggleCookies);
+safeRegisterElement('toggle-submit', ToggleSubmit);
+safeRegisterElement('toggle-on-submit', ToggleOnSubmit);
+safeRegisterElement('password-input', PasswordInput);
+safeRegisterElement('search-input', SearchInput);
+safeRegisterElement('toggle-attribute', ToggleAttribute);
+safeRegisterElement('linked-input', LinkedInput);
+safeRegisterElement('checkbox-group', CheckboxGroup);
+safeRegisterElement('masked-input', MaskedInput);
+safeRegisterElement('set-date-button', SetDateButton);
+safeRegisterElement('indeterminate-checkbox', IndeterminateCheckbox);
+safeRegisterElement('app-tour', AppTour);
+safeRegisterElement('app-tour-start', AppTourStart);
+safeRegisterElement('dashboard-dropzone', DashboardDropzone);
+safeRegisterElement('check-on-click', CheckOnClick);
+safeRegisterElement('required-checkbox-group', RequiredCheckboxGroup);
+safeRegisterElement('page-container', PageContainer);
+safeRegisterElement('email-editor', EmailEditor);
+safeRegisterElement('markdown-editor', MarkdownEditor);
+safeRegisterElement('mount-on-click', MountOnClick);
+safeRegisterElement('remove-on-event', RemoveOnEvent);
+safeRegisterElement('scroll-to', ScrollTo);
+safeRegisterElement('set-value', SetValue);
+safeRegisterElement('review-form', ReviewForm);
+safeRegisterElement('show-on-value', ShowOnValue);
+safeRegisterElement('custom-validation', CustomValidation);
+safeRegisterElement('toggle-classes', ToggleClasses);
+safeRegisterElement('autosize-field', AutosizeField);
+safeRegisterElement('google-drive-file-picker', GoogleDriveFilePicker);
+safeRegisterElement('open-modal', OpenModal);
+safeRegisterElement('bar-chart', BarChart);
+safeRegisterElement('field-condition', FieldCondition);
+safeRegisterElement('theme-toggle', ThemeToggle);
+safeRegisterElement('profile-password-strength', ProfilePasswordStrength);
 
-safeRegisterElement('template-builder', class extends HTMLElement {
-  connectedCallback () {
-    document.addEventListener('turbo:submit-end', this.onSubmit)
+safeRegisterElement(
+  'template-builder',
+  class extends HTMLElement {
+    connectedCallback() {
+      document.addEventListener('turbo:submit-end', this.onSubmit);
 
-    this.appElem = document.createElement('div')
+      this.appElem = document.createElement('div');
 
-    this.appElem.classList.add('md:h-screen')
+      this.appElem.classList.add('md:h-screen');
 
-    const template = reactive(JSON.parse(this.dataset.template))
+      const template = reactive(JSON.parse(this.dataset.template));
 
-    const builderBackgroundColor = getCurrentTheme() === 'docuseal-light' ? '#f8fbff' : '#051427'
+      const builderBackgroundColor =
+        getCurrentTheme() === 'docuseal-light' ? '#f8fbff' : '#051427';
 
-    this.app = createApp(TemplateBuilder, {
-      template: reactive(JSON.parse(this.dataset.template)),
-      // Keep builder panel/field surfaces aligned with current theme.
-      backgroundColor: builderBackgroundColor,
-      template,
-      customFields: reactive(JSON.parse(this.dataset.customFields || '[]')),
-      locale: this.dataset.locale,
-      withPhone: this.dataset.withPhone === 'true',
-      withPrefillable: template.fields?.some((f) => f.prefillable),
-      withVerification: ['true', 'false'].includes(this.dataset.withVerification) ? this.dataset.withVerification === 'true' : null,
-      withKba: ['true', 'false'].includes(this.dataset.withKba) ? this.dataset.withKba === 'true' : null,
-      withLogo: this.dataset.withLogo !== 'false',
-      withFieldsDetection: this.dataset.withFieldsDetection === 'true',
-      editable: this.dataset.editable !== 'false',
-      authenticityToken: document.querySelector('meta[name="csrf-token"]')?.content,
-      withCustomFields: true,
-      withPayment: this.dataset.withPayment === 'true',
-      isPaymentConnected: this.dataset.isPaymentConnected === 'true',
-      withFormula: this.dataset.withFormula === 'true',
-      withSendButton: this.dataset.withSendButton !== 'false',
-      withSignYourselfButton: this.dataset.withSignYourselfButton !== 'false',
-      withConditions: this.dataset.withConditions === 'true',
-      withDynamicDocuments: this.dataset.withDynamicDocuments === 'true',
-      withGoogleDrive: this.dataset.withGoogleDrive === 'true',
-      withAddPageButton: true,
-      withReplaceAndCloneUpload: true,
-      withDownload: true,
-      caurrencies: (this.dataset.currencies || '').split(',').filter(Boolean),
-      acceptFileTypes: this.dataset.acceptFileTypes,
-      showTourStartForm: this.dataset.showTourStartForm === 'true'
-    })
+      this.app = createApp(TemplateBuilder, {
+        template: reactive(JSON.parse(this.dataset.template)),
+        // Keep builder panel/field surfaces aligned with current theme.
+        backgroundColor: builderBackgroundColor,
+        template,
+        customFields: reactive(JSON.parse(this.dataset.customFields || '[]')),
+        locale: this.dataset.locale,
+        withPhone: this.dataset.withPhone === 'true',
+        withPrefillable: template.fields?.some((f) => f.prefillable),
+        withVerification: ['true', 'false'].includes(
+          this.dataset.withVerification
+        )
+          ? this.dataset.withVerification === 'true'
+          : null,
+        withKba: ['true', 'false'].includes(this.dataset.withKba)
+          ? this.dataset.withKba === 'true'
+          : null,
+        withLogo: this.dataset.withLogo !== 'false',
+        withFieldsDetection: this.dataset.withFieldsDetection === 'true',
+        editable: this.dataset.editable !== 'false',
+        authenticityToken: document.querySelector('meta[name="csrf-token"]')
+          ?.content,
+        withCustomFields: true,
+        withPayment: this.dataset.withPayment === 'true',
+        isPaymentConnected: this.dataset.isPaymentConnected === 'true',
+        withFormula: this.dataset.withFormula === 'true',
+        withSendButton: this.dataset.withSendButton !== 'false',
+        withSignYourselfButton: this.dataset.withSignYourselfButton !== 'false',
+        withConditions: this.dataset.withConditions === 'true',
+        withDynamicDocuments: this.dataset.withDynamicDocuments === 'true',
+        withGoogleDrive: this.dataset.withGoogleDrive === 'true',
+        withAddPageButton: true,
+        withReplaceAndCloneUpload: true,
+        withDownload: true,
+        caurrencies: (this.dataset.currencies || '').split(',').filter(Boolean),
+        acceptFileTypes: this.dataset.acceptFileTypes,
+        showTourStartForm: this.dataset.showTourStartForm === 'true',
+      });
 
-    this.component = this.app.mount(this.appElem)
+      this.component = this.app.mount(this.appElem);
 
-    this.appendChild(this.appElem)
-  }
+      this.appendChild(this.appElem);
+    }
 
-  onSubmit = (e) => {
-    if (e.detail.success && e.detail?.formSubmission?.formElement?.id === 'submitters_form') {
-      e.detail.fetchResponse.response.json().then((data) => {
-        this.component.template.submitters = data.submitters
-      })
+    onSubmit = (e) => {
+      if (
+        e.detail.success &&
+        e.detail?.formSubmission?.formElement?.id === 'submitters_form'
+      ) {
+        e.detail.fetchResponse.response.json().then((data) => {
+          this.component.template.submitters = data.submitters;
+        });
+      }
+    };
+
+    disconnectedCallback() {
+      document.removeEventListener('turbo:submit-end', this.onSubmit);
+
+      this.app?.unmount();
+      this.appElem?.remove();
     }
   }
+);
 
-  disconnectedCallback () {
-    document.removeEventListener('turbo:submit-end', this.onSubmit)
+safeRegisterElement(
+  'import-list',
+  class extends HTMLElement {
+    connectedCallback() {
+      this.appElem = document.createElement('div');
 
-    this.app?.unmount()
-    this.appElem?.remove()
+      this.app = createApp(ImportList, {
+        template: JSON.parse(this.dataset.template),
+        multitenant: this.dataset.multitenant === 'true',
+        authenticityToken: document.querySelector('meta[name="csrf-token"]')
+          ?.content,
+        i18n: JSON.parse(this.dataset.i18n || '{}'),
+      });
+
+      this.app.mount(this.appElem);
+
+      this.appendChild(this.appElem);
+    }
+
+    disconnectedCallback() {
+      this.app?.unmount();
+      this.appElem?.remove();
+    }
   }
-})
-
-safeRegisterElement('import-list', class extends HTMLElement {
-  connectedCallback () {
-    this.appElem = document.createElement('div')
-
-    this.app = createApp(ImportList, {
-      template: JSON.parse(this.dataset.template),
-      multitenant: this.dataset.multitenant === 'true',
-      authenticityToken: document.querySelector('meta[name="csrf-token"]')?.content,
-      i18n: JSON.parse(this.dataset.i18n || '{}')
-    })
-
-    this.app.mount(this.appElem)
-
-    this.appendChild(this.appElem)
-  }
-
-  disconnectedCallback () {
-    this.app?.unmount()
-    this.appElem?.remove()
-  }
-})
+);
