@@ -19,7 +19,7 @@
     <% end %>
     <%= stylesheet_pack_tag 'application', media: 'all' %>
   </head>
-  <body class="min-h-screen bg-base-100" data-revalidate-on-back="<%= signed_in? %>">
+  <body class="min-h-screen bg-base-100<%= ' docuseal-landing' if @marketing_landing %>" data-revalidate-on-back="<%= signed_in? %>">
     <% if params[:modal].present? %>
       <% url_params = Rails.application.routes.recognize_path(params[:modal], method: :get) %>
       <% if url_params[:action] == 'new' %>
@@ -28,6 +28,10 @@
     <% end %>
     <turbo-frame id="modal"></turbo-frame>
     <turbo-frame id="drawer"></turbo-frame>
+    <% unless @marketing_landing %>
+      <%= render 'shared/navbar' %>
+    <% end %>
+    <% if flash.present? %><%= render 'shared/flash' %><% end %>
     <% if signed_in? %>
       <div class="drawer lg:drawer-open min-h-screen">
         <input id="app-sidebar-drawer" type="checkbox" class="drawer-toggle" />
