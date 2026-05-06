@@ -58,7 +58,7 @@
       :class="{ sticky: withStickySubmitters || isBreakpointLg }"
       :style="builderSurfaceStyle"
     >
-      <div class="flex items-center space-x-3 builder-topbar-left">
+      <div class="flex items-center space-x-3 min-w-0 flex-1 builder-topbar-left">
         <a
           v-if="withLogo"
           href="/"
@@ -69,7 +69,7 @@
           v-if="withTitle"
           :model-value="template.name"
           :editable="editable"
-          class="text-xl md:text-3xl font-semibold focus:text-clip template-name builder-template-name"
+          class="text-xl md:text-3xl font-semibold focus:text-clip min-w-0 flex-1 template-name builder-template-name"
           :icon-stroke-width="2.3"
           @update:model-value="updateName"
         />
