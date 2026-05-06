@@ -35,7 +35,6 @@ jobs:
           ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
 
       - name: Notify Slack – Start Deployment
-        if: ${{ false }}
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
@@ -51,7 +50,7 @@ jobs:
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "cd \"$DEPLOY_PATH\" && sudo -n chown -R \"$DEPLOY_USER:$DEPLOY_USER\" \"$DEPLOY_PATH/pg_data\" 2>/dev/null || true && git fetch origin && git reset --hard origin/master && docker compose -f \"$DEPLOY_COMPOSE_FILE\" up --build -d && docker volume prune -f"
 
       - name: Notify Slack – Deployment Succeeded
-        if: ${{ false }}
+        if: success()
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
@@ -62,7 +61,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notify Slack – Deployment Failed
-        if: ${{ false }}
+        if: failure()
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
