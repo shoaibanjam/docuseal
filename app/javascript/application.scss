@@ -4033,7 +4033,7 @@ table tbody tr:hover {
 .app-confirm-modal {
   position: fixed;
   inset: 0;
-  z-index: 120;
+  z-index: 2100;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6395,6 +6395,20 @@ template-builder .builder-draw-overlay {
   border-color: var(--profile-border);
   border-radius: var(--profile-radius);
   transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+[data-theme='docuseal-dark']
+  .profile-settings-page
+  .profile-identity-preview.settings-media-preview
+  img,
+[data-theme='docuseal-dark']
+  .profile-settings-page
+  .settings-media-preview.profile-identity-preview
+  img {
+  background: #ffffff;
+  border-radius: 0.625rem;
+  padding: 0.625rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
 }
 
 .profile-settings-page .profile-identity-empty {
