@@ -1,5 +1,5 @@
 const CONTAINER_ID = 'app-toast-container'
-const DEFAULT_DURATION = 3500
+const DEFAULT_DURATION = 1500
 
 const getContainer = () => {
   let container = document.getElementById(CONTAINER_ID)

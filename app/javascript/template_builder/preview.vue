@@ -93,7 +93,7 @@
         </div>
       </div>
     </div>
-    <div class="flex items-center gap-1 pb-2 pt-1.5 document-preview-name">
+    <div class="flex items-center gap-1 pb-2 pt-1.5 min-w-0 document-preview-name">
       <GoogleDriveDocumentSettings
         v-if="item.google_drive_file_id"
         :template-id="template.id"
@@ -107,7 +107,7 @@
         :float-icon="!item.google_drive_file_id"
         :hide-icon="!item.google_drive_file_id"
         :editable="editable"
-        class="mx-auto"
+        class="min-w-0 flex-1 document-preview-name-input"
         @update:model-value="onUpdateName"
       />
     </div>
