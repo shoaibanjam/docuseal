@@ -2,7 +2,12 @@ export default class extends HTMLElement {
   connectedCallback () {
     const eventType = this.dataset.on || this.dataset.eventType || 'click'
     const timeoutMs = parseInt(this.dataset.timeoutMs || '0', 10)
-    const selector = document.getElementById(this.dataset.selectorId) || this
+    const selectorId = this.dataset.selectorId
+    const selector = (
+      (selectorId ? this.closest(`#${selectorId}`) : null) ||
+      (selectorId ? document.getElementById(selectorId) : null) ||
+      this
+    )
     const eventElement = eventType === 'submit' ? this.querySelector('form') : this
 
     if (eventType === 'timeout') {

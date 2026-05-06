@@ -1,4 +1,5 @@
 import { actionable } from '@github/catalyst/lib/actionable'
+import { showConfirmModal } from '../lib/confirm_modal'
 
 export default actionable(class extends HTMLElement {
   connectedCallback () {
@@ -22,22 +23,20 @@ export default actionable(class extends HTMLElement {
     document.removeEventListener('turbo:before-cache', this.close)
   }
 
-  onClick = (e) => {
+  onClick = async (e) => {
     const isCloseButton = e.target.closest('[data-turbo-modal-close]')
     const isOutsideContent = !e.target.closest('[data-turbo-modal-content]')
     if (!(isCloseButton || isOutsideContent)) {
       return
     }
 
-    if (!this.confirmDiscardIfNeeded()) {
-      e.preventDefault()
-      e.stopPropagation()
+    e.preventDefault()
+    e.stopPropagation()
 
+    if (!(await this.confirmDiscardIfNeeded())) {
       return
     }
 
-    e.preventDefault()
-    e.stopPropagation()
     this.close()
   }
 
@@ -47,12 +46,21 @@ export default actionable(class extends HTMLElement {
     }
   }
 
-  onEscKey = (e) => {
-    if (e.code === 'Escape') {
-      if (!this.confirmDiscardIfNeeded()) return
+  onEscKey = async (e) => {
+    if (e.code !== 'Escape') return
 
-      this.close()
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (document.querySelector('.app-confirm-modal')) {
+      return
     }
+
+    if (!(await this.confirmDiscardIfNeeded())) {
+      return
+    }
+
+    this.close()
   }
 
   close = (e) => {
@@ -61,11 +69,18 @@ export default actionable(class extends HTMLElement {
     this.remove()
   }
 
-  confirmDiscardIfNeeded () {
+  async confirmDiscardIfNeeded () {
     if (this.dataset.unsavedSignature !== 'true') return true
 
     const message = this.dataset.unsavedClosePrompt || ''
 
-    return window.confirm(message)
+    if (!message) return true
+
+    return showConfirmModal(message, {
+      title: this.dataset.unsavedCloseTitle || '',
+      confirmText: this.dataset.unsavedCloseConfirm || 'OK',
+      cancelText: this.dataset.unsavedCloseCancel || 'Cancel',
+      variant: 'neutral'
+    })
   }
 })

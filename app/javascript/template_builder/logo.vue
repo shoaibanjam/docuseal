@@ -1,7 +1,7 @@
 <template>
   <img
-    src="/logo.png"
-    alt="CYBROS"
+    src="/logo-light.png"
+    alt="Trustseal"
     class="h-[37px] w-auto object-contain shrink-0"
     height="37"
   >

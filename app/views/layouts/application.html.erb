@@ -28,10 +28,6 @@
     <% end %>
     <turbo-frame id="modal"></turbo-frame>
     <turbo-frame id="drawer"></turbo-frame>
-    <% unless @marketing_landing %>
-      <%= render 'shared/navbar' %>
-    <% end %>
-    <% if flash.present? %><%= render 'shared/flash' %><% end %>
     <% if signed_in? %>
       <div class="drawer lg:drawer-open min-h-screen">
         <input id="app-sidebar-drawer" type="checkbox" class="drawer-toggle" />
@@ -51,7 +47,9 @@
         </div>
       </div>
     <% else %>
-      <%= render 'shared/navbar' %>
+      <% unless @marketing_landing %>
+        <%= render 'shared/navbar' %>
+      <% end %>
       <% if flash.present? %><%= render 'shared/flash' %><% end %>
       <main class="page-shell page-stack">
         <%= yield %>

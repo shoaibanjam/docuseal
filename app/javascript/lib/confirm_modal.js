@@ -6,7 +6,13 @@
 const MODAL_HTML_ID = () =>
   `app-confirm-modal-title-${Math.random().toString(36).slice(2, 9)}`;
 
+let activeConfirmPromise = null;
+
 export function showConfirmModal(message, options = {}) {
+  if (activeConfirmPromise) {
+    return activeConfirmPromise;
+  }
+
   const {
     title = '',
     confirmText = 'OK',
@@ -14,7 +20,7 @@ export function showConfirmModal(message, options = {}) {
     variant = 'danger',
   } = options;
 
-  return new Promise((resolve) => {
+  activeConfirmPromise = new Promise((resolve) => {
     const headingId = MODAL_HTML_ID();
     let settled = false;
 
@@ -86,6 +92,7 @@ export function showConfirmModal(message, options = {}) {
       document.body.style.overflow = '';
       document.removeEventListener('keydown', onKeyDown);
       wrap.remove();
+      activeConfirmPromise = null;
       resolve(result);
     };
 
@@ -109,4 +116,6 @@ export function showConfirmModal(message, options = {}) {
       cancelBtn.focus();
     });
   });
+
+  return activeConfirmPromise;
 }
