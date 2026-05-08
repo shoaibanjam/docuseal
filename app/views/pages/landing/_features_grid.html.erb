@@ -1,23 +1,23 @@
 <section id="landing-products" class="landing-section landing-features-grid py-24 md:py-32">
   <div class="mx-auto max-w-7xl px-6">
     <div class="mx-auto max-w-3xl text-center">
-      <span class="landing-cloud-badge mx-auto mb-4 inline-block">Our products</span>
+      <span class="landing-cloud-badge mx-auto mb-4 inline-block">Core features</span>
       <h2 class="text-3xl font-bold tracking-tight text-white md:text-4xl">
-        Best‑in‑class tools, <span class="landing-gradient-text">fully managed for you</span>
+        Built for teams that need <span class="landing-gradient-text">signing that ships fast</span>
       </h2>
       <p class="mt-4 text-lg text-slate-400">
-        Everything you need to design, send, sign, and archive documents at scale—without sacrificing compliance or developer experience.
+        Everything in one place to prepare templates, collect signatures, and integrate with your existing systems.
       </p>
     </div>
 
     <div class="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       <% products = [
-        { icon: 'domain', title: 'Template studio', copy: 'Drag‑and‑drop builder with conditional logic, roles, and reusable layouts for every agreement type.' },
-        { icon: 'draw', title: 'Secure signing', copy: 'Legally robust e‑signatures with audit trails, identity options, and mobile‑first completion flows.' },
-        { icon: 'api', title: 'Developer API', copy: 'REST endpoints, webhooks, and embeds that slot into your CI/CD and product surface area.' },
-        { icon: 'gavel', title: 'Compliance hub', copy: 'Retention policies, exports, and evidence packs designed for legal and procurement reviews.' },
-        { icon: 'rocket_launch', title: 'Global delivery', copy: 'Localized emails, multi‑language flows, and resilient infrastructure wherever your signers are.' },
-        { icon: 'bar_chart', title: 'Analytics', copy: 'Funnel visibility from draft to signed so revenue and operations teams stay aligned.' }
+        { icon: 'domain', title: 'Template builder', copy: 'Create fillable templates from PDF or DOCX and place fields where signers need to complete them.' },
+        { icon: 'draw', title: 'Online signing', copy: 'Collect legally recognized e-signatures with signer flows that work across desktop and mobile.' },
+        { icon: 'api', title: 'API and webhooks', copy: 'Create templates and submissions programmatically, then react to events in your backend.' },
+        { icon: 'groups', title: 'Multi-recipient flows', copy: 'Send to one or many recipients with role-based completion and shared progress tracking.' },
+        { icon: 'mail', title: 'Email delivery', copy: 'Send signing requests and reminders through SMTP-based email notifications.' },
+        { icon: 'verified', title: 'PDF verification', copy: 'Verify digital signatures and exported signed documents directly from the platform.' }
       ] %>
       <% products.each do |p| %>
         <article class="landing-products-card group flex flex-col rounded-2xl border border-[#2A3F5F] bg-[#112240] p-8 transition hover:border-emerald-400/40 hover:shadow-xl hover:shadow-emerald-500/10">

@@ -9,11 +9,11 @@
 
     <div class="landing-faq-list mt-12 divide-y divide-white/10 border-y border-white/10">
       <% faqs = [
-        ['Is Docuseal suitable for regulated industries?', 'Yes. You can self-host for full data control, use audit trails, role-based access, and enterprise SSO. Many teams in finance and healthcare run Docuseal on their own infrastructure.'],
-        ['Can I embed signing in my own product?', 'Absolutely. Use our API, webhooks, and embeddable flows to integrate signing into your app with minimal friction.'],
-        ['What file formats are supported?', 'PDF and DOCX templates are supported, with dynamic variables and automated generation for high-volume workflows.'],
-        ['How does pricing work for self-hosted deployments?', 'Open-source self-hosting is free. Cloud and enterprise tiers add managed hosting, support, and advanced compliance features.'],
-        ['Where is my data stored?', 'On self-hosted installs, data stays on your servers. On cloud, data is stored in regions you choose according to our security and privacy policies.']
+        ['Can I self-host this project?', 'Yes. This project is open source and can be self-hosted using the provided Docker deployment path.'],
+        ['What can I automate with the API?', 'You can manage templates, submissions, documents, and recipients through REST API endpoints.'],
+        ['Does it support webhook events?', 'Yes. Webhook endpoints are available so your backend can receive submission and form event updates.'],
+        ['What template formats are supported?', 'PDF and DOCX templates are supported for creating fillable signing workflows.'],
+        ['Can signed PDFs be verified?', 'Yes. The project includes PDF signature verification capabilities for signed documents.']
       ] %>
       <% faqs.each do |question, answer| %>
         <details class="landing-faq-item group py-5">
