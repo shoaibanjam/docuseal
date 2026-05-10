@@ -318,3 +318,27 @@ safeRegisterElement(
     }
   }
 );
+
+function initLandingPageEnhancements () {
+  import('./landing_enhancements')
+    .then((m) => {
+      if (!document.querySelector('.landing-page')) {
+        m.resetLandingAos()
+        m.teardownLandingScroll()
+        return
+      }
+      m.bootLandingAos()
+    })
+    .catch(() => {})
+}
+
+document.addEventListener('turbo:before-cache', () => {
+  if (!document.body?.classList.contains('docuseal-landing')) return
+
+  import('./landing_enhancements')
+    .then((m) => m.teardownLandingScroll())
+    .catch(() => {})
+})
+
+document.addEventListener('turbo:load', initLandingPageEnhancements);
+document.addEventListener('DOMContentLoaded', initLandingPageEnhancements);

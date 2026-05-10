@@ -1,6 +1,6 @@
 <section class="landing-section landing-fields-grid bg-[#fdf8f5] py-20">
   <div class="mx-auto max-w-7xl px-6">
-    <header class="mb-12 text-center">
+    <header class="mb-12 text-center" data-aos="fade-up">
       <div class="landing-fields-compliance-badge inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-100/60 px-3 py-1">
         <span class="material-symbols-outlined landing-fields-compliance-badge-icon text-[16px] text-emerald-700">verified_user</span>
         <span class="landing-fields-compliance-badge-text text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-700">Template Field Builder</span>
@@ -12,7 +12,7 @@
     </header>
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-12">
-      <div class="landing-fields-identity-card relative overflow-hidden rounded-xl border border-slate-200 bg-white p-8 md:col-span-8">
+      <div class="landing-fields-identity-card landing-surface-interactive relative overflow-hidden rounded-xl border border-slate-200 bg-white p-8 md:col-span-8" data-aos="fade-up" data-aos-delay="40">
         <div class="relative z-10">
           <div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-[#0d1c2f] text-white">
             <span class="material-symbols-outlined text-[24px]">signature</span>
@@ -40,7 +40,7 @@
         >
       </div>
 
-      <div class="landing-fields-identity-shield rounded-xl bg-[#0d1c2f] p-8 text-white md:col-span-4">
+      <div class="landing-fields-identity-shield landing-surface-interactive rounded-xl bg-[#0d1c2f] p-8 text-white md:col-span-4" data-aos="fade-up" data-aos-delay="120">
         <div class="mb-6 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-400 text-[#0d1c2f]">
           <span class="material-symbols-outlined text-[20px]">verified</span>
         </div>
@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <div class="rounded-xl border border-slate-200 bg-white p-8 md:col-span-12">
+      <div class="rounded-xl border border-slate-200 bg-white p-8 md:col-span-12" data-aos="fade-up" data-aos-delay="80">
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           <% [
             ['Identity', 'signature', 'signature'],
@@ -74,7 +74,7 @@
             ['Image', 'image', 'image'],
             ['Table', 'cells', 'grid_on']
           ].each do |label, value, icon| %>
-            <div class="rounded-xl border border-slate-200 bg-white p-5 transition hover:shadow-lg">
+            <div class="rounded-xl border border-slate-200 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:shadow-lg">
               <span class="material-symbols-outlined mb-3 text-[28px] leading-none text-emerald-700"><%= icon %></span>
               <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500"><%= label %></p>
               <p class="mt-1 text-base font-semibold text-slate-900"><%= value %></p>
@@ -84,7 +84,7 @@
       </div>
     </div>
 
-    <section class="landing-fields-enterprise-panel mt-16 rounded-3xl border border-slate-200 bg-[#ece7e4] p-8 md:p-12">
+    <section class="landing-fields-enterprise-panel landing-surface-interactive mt-16 rounded-3xl border border-slate-200 bg-[#ece7e4] p-8 md:p-12" data-aos="fade-up">
       <div class="flex flex-col items-center gap-10 md:flex-row">
         <div class="md:w-1/2">
           <h3 class="landing-fields-enterprise-title text-4xl font-semibold tracking-tight text-slate-900">Designed for Real Document Work</h3>

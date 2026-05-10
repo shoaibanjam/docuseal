@@ -1,6 +1,6 @@
 <section id="landing-products" class="landing-section landing-features-grid py-24 md:py-32">
   <div class="mx-auto max-w-7xl px-6">
-    <div class="mx-auto max-w-3xl text-center">
+    <div class="mx-auto max-w-3xl text-center" data-aos="fade-up">
       <span class="landing-cloud-badge mx-auto mb-4 inline-block">Core features</span>
       <h2 class="text-3xl font-bold tracking-tight text-white md:text-4xl">
         Built for teams that need <span class="landing-gradient-text">signing that ships fast</span>
@@ -19,8 +19,8 @@
         { icon: 'mail', title: 'Email delivery', copy: 'Send signing requests and reminders through SMTP-based email notifications.' },
         { icon: 'verified', title: 'PDF verification', copy: 'Verify digital signatures and exported signed documents directly from the platform.' }
       ] %>
-      <% products.each do |p| %>
-        <article class="landing-products-card group flex flex-col rounded-2xl border border-[#2A3F5F] bg-[#112240] p-8 transition hover:border-emerald-400/40 hover:shadow-xl hover:shadow-emerald-500/10">
+      <% products.each_with_index do |p, idx| %>
+        <article class="landing-products-card landing-tilt group flex flex-col rounded-2xl border border-[#2A3F5F] bg-[#112240] p-8 transition duration-300 hover:border-emerald-400/40 hover:shadow-xl hover:shadow-emerald-500/10 " data-aos="fade-up" data-aos-delay="<%= [idx * 75, 375].min %>">
           <div class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/25 to-teal-400/20 text-emerald-200">
             <span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 0, 'wght' 400;"><%= p[:icon] %></span>
           </div>

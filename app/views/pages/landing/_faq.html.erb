@@ -1,13 +1,13 @@
 <section id="landing-faq" class="landing-section landing-faq py-24 md:py-32">
   <div class="mx-auto max-w-3xl px-6">
-    <div class="text-center">
+    <div class="text-center" data-aos="fade-up">
       <span class="landing-cloud-badge mx-auto mb-4 inline-block">FAQ</span>
       <h2 class="text-3xl font-bold tracking-tight text-white md:text-4xl">
         Frequently Asked <span class="landing-gradient-text">Questions</span>
       </h2>
     </div>
 
-    <div class="landing-faq-list mt-12 divide-y divide-white/10 border-y border-white/10">
+    <div class="landing-faq-list mt-12 divide-y divide-white/10 border-y border-white/10" data-aos="fade-up" data-aos-delay="80">
       <% faqs = [
         ['Can I self-host this project?', 'Yes. This project is open source and can be self-hosted using the provided Docker deployment path.'],
         ['What can I automate with the API?', 'You can manage templates, submissions, documents, and recipients through REST API endpoints.'],
@@ -16,8 +16,8 @@
         ['Can signed PDFs be verified?', 'Yes. The project includes PDF signature verification capabilities for signed documents.']
       ] %>
       <% faqs.each do |question, answer| %>
-        <details class="landing-faq-item group py-5">
-          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-base font-semibold text-white marker:content-none [&::-webkit-details-marker]:hidden">
+        <details class="landing-faq-item group py-5 transition-colors">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-base font-semibold text-white marker:content-none [&::-webkit-details-marker]:hidden rounded-lg px-1 -mx-1 hover:bg-white/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50">
             <span><%= question %></span>
             <span class="landing-faq-chevron flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 text-slate-400 transition group-open:rotate-45 group-open:border-emerald-400/50 group-open:text-emerald-300" aria-hidden="true">+</span>
           </summary>
