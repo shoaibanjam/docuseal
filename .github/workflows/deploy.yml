@@ -18,7 +18,7 @@ env:
   DEPLOY_USER: cybros
   DEPLOY_PATH: /var/www/docuseal
   DEPLOY_COMPOSE_FILE: docker-compose.production.yml
-  SLACK_NOTIFICATIONS_ENABLED: "true"
+  SLACK_NOTIFICATIONS_ENABLED: "false"
 
 jobs:
   deploy:
