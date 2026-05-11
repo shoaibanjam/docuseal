@@ -186,10 +186,10 @@ html[data-theme='docuseal-light'] body.docuseal-landing {
 /* Sticky landing nav: frosted surface so links stay readable over any section while scrolling */
 [data-theme='docuseal-dark'] .landing-page .landing-nav,
 [data-theme='docuseal'] .landing-page .landing-nav {
-  background: rgba(10, 25, 44, 0.86) !important;
+  background: rgba(5, 20, 39, 0.8) !important;
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
   backdrop-filter: blur(14px) saturate(1.4);
-  border-bottom-color: rgba(42, 63, 95, 0.8) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.05) !important;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.05) inset,
     0 8px 32px rgba(0, 0, 0, 0.55);
@@ -199,7 +199,7 @@ html[data-theme='docuseal-light'] body.docuseal-landing {
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   [data-theme='docuseal-dark'] .landing-page .landing-nav,
   [data-theme='docuseal'] .landing-page .landing-nav {
-    background: rgba(5, 10, 20, 0.96) !important;
+    background: rgba(5, 20, 39, 0.8) !important;
   }
 }
 
@@ -1124,4 +1124,85 @@ body.docuseal-landing {
 
 body.docuseal-landing .aos-init[data-aos].aos-animate {
   will-change: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Landing visual refresh: align with new settings UI language
+   -------------------------------------------------------------------------- */
+
+.landing-page--refined .landing-refined-panel {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+    rgba(13, 28, 47, 0.72);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 18px 44px rgba(2, 6, 23, 0.42);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.landing-page--refined .landing-refined-card {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+    #0d1c2f;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 12px 30px rgba(2, 6, 23, 0.36);
+}
+
+.landing-page--refined .landing-refined-card:hover {
+  border-color: rgba(84, 253, 201, 0.42);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.1) inset,
+    0 20px 40px rgba(2, 6, 23, 0.5),
+    0 0 0 1px rgba(84, 253, 201, 0.16);
+}
+
+.landing-page--refined .landing-nav--refined {
+  border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.landing-page--refined .landing-nav-link--refined {
+  padding: 0.42rem 0.7rem;
+  border-radius: 0.55rem;
+}
+
+.landing-page--refined .landing-nav-link--refined:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.landing-page--refined .landing-nav-cta--refined {
+  box-shadow:
+    0 0 0 1px rgba(84, 253, 201, 0.16) inset,
+    0 10px 24px rgba(4, 190, 153, 0.3);
+}
+
+[data-theme='docuseal-light'] .landing-page--refined .landing-refined-panel {
+  border-color: rgba(15, 23, 42, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 255, 0.92)),
+    #ffffff;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 16px 34px rgba(15, 23, 42, 0.12);
+}
+
+[data-theme='docuseal-light'] .landing-page--refined .landing-refined-card {
+  border-color: rgba(15, 23, 42, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 255, 0.98)),
+    #ffffff;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.96) inset,
+    0 12px 28px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme='docuseal-light'] .landing-page--refined .landing-refined-card:hover {
+  border-color: rgba(4, 190, 153, 0.45);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.96) inset,
+    0 20px 36px rgba(15, 23, 42, 0.16),
+    0 0 0 1px rgba(4, 190, 153, 0.14);
 }
