@@ -53,7 +53,12 @@
                 <div class="form-control">
                   <%= ff.label :timezone, t('time_zone'), class: 'label' %>
                   <%= ff.select :timezone, nil, {}, class: 'base-select' do %>
-                    <% tzinfo = TZInfo::Timezone.get(ActiveSupport::TimeZone::MAPPING[current_account.timezone] || current_account.timezone) %>
+                    <% tzinfo =
+                         begin
+                           TZInfo::Timezone.get(ActiveSupport::TimeZone::MAPPING[current_account.timezone] || current_account.timezone)
+                         rescue TZInfo::InvalidTimezoneIdentifier
+                           TZInfo::Timezone.get('UTC')
+                         end %>
                     <% items = ActiveSupport::TimeZone.all.map { |z| [z.to_s, z.name] } %>
                     <% items.unshift([tzinfo.to_s, current_account.timezone]) unless ActiveSupport::TimeZone.all.find { |e| e.tzinfo == tzinfo } %>
                     <%= options_for_select(items, current_account.timezone) %>
