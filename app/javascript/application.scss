@@ -5558,6 +5558,98 @@ table tbody tr:hover {
   margin-bottom: 1.25rem;
 }
 
+.submissions-dashboard-stats-grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.submissions-dashboard-stat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--profile-border) 90%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--profile-surface-inset) 72%, transparent) 0%,
+      color-mix(in srgb, var(--profile-surface-inset) 60%, transparent) 100%
+    );
+  box-shadow: 0 10px 24px rgba(3, 14, 32, 0.18);
+  padding: 0.8rem 1rem 0.9rem;
+  min-height: 5.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.submissions-dashboard-stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 2px;
+  background: color-mix(in srgb, var(--profile-accent) 45%, transparent);
+  opacity: 0.65;
+}
+
+.submissions-dashboard-stat-card:hover {
+  border-color: color-mix(in srgb, var(--profile-accent) 35%, var(--profile-border));
+  box-shadow: 0 14px 28px rgba(3, 14, 32, 0.24);
+  transform: translateY(-1px);
+}
+
+.submissions-dashboard-stat-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--profile-text-secondary) 82%, transparent);
+  margin: 0;
+}
+
+.submissions-dashboard-stat-value {
+  margin: 0.38rem 0 0;
+  font-size: clamp(1.75rem, 1.35rem + 1vw, 2.2rem);
+  line-height: 0.95;
+  font-weight: 700;
+  color: var(--profile-text);
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .submissions-dashboard-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .submissions-dashboard-stats-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+[data-theme='docuseal-light'] .submissions-dashboard-stat-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  border-color: rgba(18, 35, 60, 0.14);
+  box-shadow: 0 12px 24px rgba(10, 25, 44, 0.1);
+}
+
+[data-theme='docuseal-light'] .submissions-dashboard-stat-card::before {
+  background: color-mix(in srgb, var(--profile-accent) 50%, #d9e8f8);
+  opacity: 0.7;
+}
+
+[data-theme='docuseal-light'] .submissions-dashboard-stat-label {
+  color: #4d6784;
+}
+
+[data-theme='docuseal-light'] .submissions-dashboard-stat-value {
+  color: #10243f;
+}
+
 .tpl-show-tabs-row {
   display: flex;
   flex-direction: column;

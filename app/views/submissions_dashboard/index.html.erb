@@ -45,6 +45,25 @@
       </div>
     </header>
 
+  <section class="submissions-dashboard-stats-grid mt-4 md:mt-5" aria-label="<%= t('overview', default: 'Overview') %>">
+    <article class="submissions-dashboard-stat-card">
+      <p class="submissions-dashboard-stat-label"><%= t('total_active', default: 'Total Active') %></p>
+      <p class="submissions-dashboard-stat-value"><%= @stats_total %></p>
+    </article>
+    <article class="submissions-dashboard-stat-card">
+      <p class="submissions-dashboard-stat-label"><%= t('completed', default: 'Completed') %></p>
+      <p class="submissions-dashboard-stat-value"><%= @stats_completed %></p>
+    </article>
+    <article class="submissions-dashboard-stat-card">
+      <p class="submissions-dashboard-stat-label"><%= t('awaiting', default: 'Awaiting') %></p>
+      <p class="submissions-dashboard-stat-value"><%= @stats_awaiting %></p>
+    </article>
+    <article class="submissions-dashboard-stat-card">
+      <p class="submissions-dashboard-stat-label"><%= t('avg_time', default: 'Avg. Time') %></p>
+      <p class="submissions-dashboard-stat-value"><%= @stats_avg_time %></p>
+    </article>
+  </section>
+
   <% view_archived_html = capture do %>
     <% if can?(:manage, :countless) || current_account.submissions.where.not(archived_at: nil).exists? %>
       <div>
