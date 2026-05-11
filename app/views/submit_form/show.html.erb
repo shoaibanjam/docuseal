@@ -133,7 +133,7 @@
   </div>
 </div>
 <% if @form_configs[:with_decline] %>
-  <%= render 'shared/html_modal', title: t(:decline), uuid: decline_modal_checkbox_uuid do %>
+  <%= render 'shared/html_modal', title: t(:decline), uuid: decline_modal_checkbox_uuid, modal_class: 'modal--decline', content_class: 'modal-box--decline', header_class: 'decline-modal__header', body_class: 'decline-modal__body' do %>
     <%= render 'submit_form/decline_form', submitter: @submitter %>
   <% end %>
 <% end %>

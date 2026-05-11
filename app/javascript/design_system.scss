@@ -120,17 +120,17 @@
 }
 
 .theme-toggle-btn {
-  width: 2.125rem;
-  height: 2.125rem;
-  border-radius: 0.625rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.58rem;
   border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
-  background: color-mix(in srgb, var(--ds-bg-elevated) 96%, transparent);
+  background: color-mix(in srgb, var(--ds-bg-elevated) 98%, transparent);
   color: color-mix(in srgb, var(--ds-text) 90%, transparent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 4px 10px rgba(1, 14, 33, 0.18);
+  box-shadow: 0 2px 7px rgba(1, 14, 33, 0.16);
   transition: border-color 0.16s ease, box-shadow 0.16s ease,
     background-color 0.16s ease, color 0.16s ease;
 }
@@ -139,8 +139,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.05rem;
-  height: 1.05rem;
+  width: 1rem;
+  height: 1rem;
   border-radius: 0;
   line-height: 0;
   position: relative;
@@ -153,8 +153,8 @@
 }
 
 .theme-toggle-btn [data-theme-icon] svg {
-  width: 1rem;
-  height: 1rem;
+  width: 0.95rem;
+  height: 0.95rem;
   stroke-width: 1.9;
   transition: color 0.16s ease, stroke 0.16s ease, opacity 0.16s ease;
 }
@@ -182,21 +182,22 @@
 .theme-toggle-btn:hover {
   background: color-mix(in srgb, var(--ds-bg-hover) 88%, transparent);
   color: var(--ds-secondary-500);
-  border-color: color-mix(in srgb, var(--ds-secondary-500) 45%, var(--ds-border));
-  box-shadow: 0 6px 14px rgba(1, 14, 33, 0.24);
+  border-color: color-mix(in srgb, var(--ds-secondary-500) 56%, var(--ds-border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ds-secondary-500) 24%, transparent),
+    0 4px 11px rgba(1, 14, 33, 0.22);
 }
 
 .theme-toggle-btn:focus-visible {
   outline: 0;
   box-shadow: 0 0 0 2px var(--ds-ring),
-    0 6px 14px rgba(1, 14, 33, 0.24);
+    0 4px 11px rgba(1, 14, 33, 0.22);
 }
 
 .theme-toggle-btn[data-theme='docuseal-light'] {
   background: #ffffff;
   color: #243f5f;
   border-color: rgba(18, 35, 60, 0.18);
-  box-shadow: 0 4px 10px rgba(10, 25, 44, 0.12);
+  box-shadow: 0 2px 7px rgba(10, 25, 44, 0.11);
 }
 
 .theme-toggle-btn[data-theme='docuseal-light'] [data-theme-icon='moon'] svg {
@@ -207,7 +208,7 @@
   background: color-mix(in srgb, var(--ds-bg-elevated) 96%, transparent);
   color: #d5e3fe;
   border-color: rgba(213, 227, 254, 0.22);
-  box-shadow: 0 4px 10px rgba(2, 8, 19, 0.3);
+  box-shadow: 0 2px 7px rgba(2, 8, 19, 0.27);
 }
 
 .theme-toggle-btn[data-theme='docuseal-dark'] [data-theme-icon='sun'] svg {
