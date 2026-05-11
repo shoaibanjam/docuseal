@@ -3170,6 +3170,71 @@ kbd {
   border-bottom-color: rgba(18, 35, 60, 0.14);
 }
 
+[data-theme='docuseal-dark'] .modal--preferences .turbo-modal-backdrop,
+[data-theme='docuseal'] .modal--preferences .turbo-modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal-box--preferences {
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
+}
+
+.modal-box--preferences .preferences-modal__header {
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 90%, transparent);
+  padding-top: 0.8rem;
+  padding-bottom: 0.7rem;
+}
+
+.modal-box--preferences .preferences-modal__body {
+  width: min(100%, 760px);
+}
+
+.preferences-modal__tabs-wrap {
+  display: block;
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.preferences-modal__tabs {
+  padding: 0.2rem;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--ds-bg-base) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  gap: 0.25rem;
+}
+
+.preferences-modal__tab {
+  background: transparent;
+  color: color-mix(in srgb, var(--ds-text) 84%, transparent);
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.preferences-modal__section .base-button {
+  border-radius: var(--ds-radius-8);
+}
+
+[data-theme='docuseal-light'] .modal-box--preferences {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
+}
+
+[data-theme='docuseal-light'] .modal-box--preferences .preferences-modal__header {
+  border-bottom-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .preferences-modal__tabs {
+  background: #eef4fb;
+  border-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .preferences-modal__tab {
+  color: #435a76;
+}
+
 [data-theme='docuseal-dark'] .modal--template-form .turbo-modal-backdrop,
 [data-theme='docuseal'] .modal--template-form .turbo-modal-backdrop {
   backdrop-filter: blur(4px);
