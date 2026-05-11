@@ -3082,6 +3082,20 @@ template-builder .builder-draw-field-link {
   box-shadow: 0 10px 24px rgba(10, 25, 44, 0.1) !important;
 }
 
+[data-theme='docuseal-light'] .signing-form-hero-avatar {
+  border-color: rgba(4, 190, 153, 0.32) !important;
+  background: rgba(4, 190, 153, 0.12) !important;
+  color: #026854 !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-hero-eyebrow {
+  color: rgba(2, 104, 84, 0.92) !important;
+}
+
+[data-theme='docuseal-light'] .signing-form-hero-subtitle {
+  color: rgba(75, 93, 117, 0.9) !important;
+}
+
 [data-theme='docuseal-light'] .signing-form-title {
   color: #12233c !important;
 }

@@ -9,6 +9,8 @@
 <% with_submitter_timezone = configs.find { |e| e.key == AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY }&.value == true %>
 <% with_timestamp_seconds = configs.find { |e| e.key == AccountConfig::WITH_TIMESTAMP_SECONDS_KEY }&.value == true %>
 <% with_signature_id_reason = configs.find { |e| e.key == AccountConfig::WITH_SIGNATURE_ID_REASON_KEY }&.value != false %>
+<div class="settings-layout profile-settings-page templates-dashboard-page submission-show-page">
+  <div class="settings-main profile-settings-main templates-dashboard-main submission-show-main">
 <div style="max-width: 1600px" class="mx-auto pl-4">
   <div class="flex justify-between py-1.5 items-center pr-4 sticky top-0 md:relative z-10 bg-base-100">
     <a href="<%= signed_in? && @submission.account_id == current_account&.id && @submission.template ? template_path(@submission.template) : '/' %>" class="flex items-center space-x-3 py-1">
@@ -328,6 +330,8 @@
       </span>
     </label>
   </toggle-visible>
+</div>
+  </div>
 </div>
 <% unless request.headers['HTTP_X_TURBO'] %>
   <%= render 'scripts/autosize_field' %>

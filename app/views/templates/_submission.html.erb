@@ -1,5 +1,5 @@
 <% status_badges = { 'awaiting' => 'badge-info', 'sent' => 'badge-info', 'completed' => 'badge-success', 'opened' => 'badge-warning', 'declined' => 'badge-error' } %>
-<div class="ds-submission-row bg-base-200 rounded-2xl border border-base-content/10 shadow-sm hover:border-base-content/20 transition-colors overflow-hidden flex flex-col sm:flex-row items-strech <%= 'bg-[#0d1c2f] border-white/10' if local_assigns[:with_template] %>">
+<div class="ds-submission-row bg-base-200 rounded-2xl border border-base-content/10 shadow-sm hover:border-base-content/20 transition-colors overflow-visible flex flex-col sm:flex-row items-strech <%= 'bg-[#0d1c2f] border-white/10' if local_assigns[:with_template] %>">
   <% if local_assigns[:with_template] %>
     <% template = submission.template %>
     <a href="<%= template ? template_path(template) : submission_path(submission) %>" class="ds-submission-meta-panel px-5 sm:pr-3 py-3 group sm:rounded-l-2xl sm:rounded-tr-none rounded-t-2xl flex sm:flex-col justify-between sm:w-52 w-full flex-shrink-0 bg-base-300/60 space-x-2 sm:space-x-0">
@@ -102,12 +102,12 @@
           </a>
         </div>
         <% if !submission.archived_at? && !template&.archived_at? && can?(:destroy, submission) %>
-          <span data-tip="<%= t('archive') %>" class="sm:tooltip tooltip-top">
+          <span data-tip="<%= t('archive') %>" class="sm:tooltip tooltip-left">
             <%= button_to button_title(title: nil, disabled_with: nil, icon: svg_icon('archive', class: 'w-6 h-6'), icon_disabled: svg_icon('loader', class: 'w-6 h-6 animate-spin')), submission_path(submission), class: "btn btn-outline btn-sm w-full md:w-fit #{'border-white/20 hover:border-secondary/70' if local_assigns[:with_template]}", form: { class: 'flex' }, title: t('archive'), method: :delete %>
           </span>
         <% end %>
         <% if local_assigns[:archived] && can?(:destroy, submission) %>
-          <span data-tip="<%= t('remove') %>" class="sm:tooltip tooltip-top">
+          <span data-tip="<%= t('remove') %>" class="sm:tooltip tooltip-left">
             <%= button_to button_title(title: nil, disabled_with: nil, icon: svg_icon('trash', class: 'w-6 h-6'), icon_disabled: svg_icon('loader', class: 'w-6 h-6 animate-spin')), submission_path(submission, permanently: true), class: 'btn btn-outline btn-sm w-full md:w-fit', form: { class: 'flex' }, title: t('remove'), method: :delete, data: { turbo_confirm: t('submission_deletion_is_irreversible_and_will_permanently_remove_all_associated_signed_documents_with_it_are_you_sure_') } %>
           </span>
         <% end %>
@@ -209,12 +209,12 @@
           </a>
         </div>
         <% if !submission.archived_at? && !template&.archived_at? %>
-          <span data-tip="<%= t('archive') %>" class="sm:tooltip tooltip-top">
+          <span data-tip="<%= t('archive') %>" class="sm:tooltip tooltip-left">
             <%= button_to button_title(title: nil, disabled_with: nil, icon: svg_icon('archive', class: 'w-6 h-6'), icon_disabled: svg_icon('loader', class: 'w-6 h-6 animate-spin')), submission_path(submission), class: "btn btn-outline btn-sm w-full md:w-fit #{'border-white/20 hover:border-secondary/70' if local_assigns[:with_template]}", form: { class: 'flex' }, title: t('archive'), method: :delete %>
           </span>
         <% end %>
         <% if local_assigns[:archived] && can?(:destroy, submission) %>
-          <span data-tip="<%= t('remove') %>" class="sm:tooltip tooltip-top">
+          <span data-tip="<%= t('remove') %>" class="sm:tooltip tooltip-left">
             <%= button_to button_title(title: nil, disabled_with: nil, icon: svg_icon('trash', class: 'w-6 h-6'), icon_disabled: svg_icon('loader', class: 'w-6 h-6 animate-spin')), submission_path(submission, permanently: true), class: 'btn btn-outline btn-sm w-full md:w-fit', form: { class: 'flex' }, title: t('remove'), method: :delete, data: { turbo_confirm: t('submission_deletion_is_irreversible_and_will_permanently_remove_all_associated_signed_documents_with_it_are_you_sure_') } %>
           </span>
         <% end %>
