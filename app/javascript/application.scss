@@ -3084,6 +3084,303 @@ kbd {
   ) !important;
 }
 
+[data-theme='docuseal-dark'] .modal--add-recipients .turbo-modal-backdrop,
+[data-theme='docuseal'] .modal--add-recipients .turbo-modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal-box--add-recipients {
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
+}
+
+.modal-box--add-recipients .add-recipients-modal__header {
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 90%, transparent);
+  padding-top: 0.8rem;
+  padding-bottom: 0.7rem;
+}
+
+.modal-box--add-recipients .add-recipients-modal__body {
+  width: min(100%, 620px);
+}
+
+.add-recipients-modal__tabs {
+  padding: 0.2rem;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--ds-bg-base) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  gap: 0.25rem;
+}
+
+.add-recipients-modal__tab {
+  background: transparent;
+  color: color-mix(in srgb, var(--ds-text) 84%, transparent);
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-modal__header {
+  border-bottom-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .add-recipients-modal__tabs {
+  background: #eef4fb;
+  border-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .add-recipients-modal__tab {
+  color: #435a76;
+}
+
+[data-theme='docuseal-dark'] .modal--share-link .turbo-modal-backdrop,
+[data-theme='docuseal'] .modal--share-link .turbo-modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal-box--share-link {
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
+}
+
+.modal-box--share-link .share-link-modal__header {
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 90%, transparent);
+  padding-top: 0.8rem;
+  padding-bottom: 0.7rem;
+}
+
+.modal-box--share-link .share-link-modal__body {
+  width: min(100%, 620px);
+}
+
+[data-theme='docuseal-light'] .modal-box--share-link {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
+}
+
+[data-theme='docuseal-light'] .modal-box--share-link .share-link-modal__header {
+  border-bottom-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-dark'] .modal--preferences .turbo-modal-backdrop,
+[data-theme='docuseal'] .modal--preferences .turbo-modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal-box--preferences {
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
+}
+
+.modal-box--preferences .preferences-modal__header {
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 90%, transparent);
+  padding-top: 0.8rem;
+  padding-bottom: 0.7rem;
+}
+
+.modal-box--preferences .preferences-modal__body {
+  width: min(100%, 760px);
+}
+
+.preferences-modal__tabs-wrap {
+  display: block;
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.preferences-modal__tabs {
+  padding: 0.2rem;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--ds-bg-base) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  gap: 0.25rem;
+}
+
+.preferences-modal__tab {
+  background: transparent;
+  color: color-mix(in srgb, var(--ds-text) 84%, transparent);
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.preferences-modal__section .base-button {
+  border-radius: var(--ds-radius-8);
+}
+
+[data-theme='docuseal-light'] .modal-box--preferences {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
+}
+
+[data-theme='docuseal-light'] .modal-box--preferences .preferences-modal__header {
+  border-bottom-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .preferences-modal__tabs {
+  background: #eef4fb;
+  border-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .preferences-modal__tab {
+  color: #435a76;
+}
+
+[data-theme='docuseal-dark'] .modal--decline .modal-backdrop,
+[data-theme='docuseal'] .modal--decline .modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal--decline.modal {
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(1rem, 4vw, 2rem);
+}
+
+.modal-box--decline.modal-box {
+  width: min(calc(100vw - 2rem), 36rem) !important;
+  max-width: min(calc(100vw - 2rem), 36rem) !important;
+  margin-top: 0 !important;
+  border-radius: 1rem !important;
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent) !important;
+  background: color-mix(in srgb, var(--ds-bg-elevated) 95%, transparent) !important;
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36) !important;
+}
+
+.modal-box--decline .decline-modal__header {
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 90%, transparent);
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+
+.modal-box--decline .decline-modal__header label.text-xl {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: color-mix(in srgb, var(--ds-text) 82%, transparent);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.modal-box--decline .decline-modal__header label.text-xl:hover {
+  background: color-mix(in srgb, var(--ds-bg-hover) 88%, transparent);
+  color: var(--ds-text);
+}
+
+.modal-box--decline .decline-modal__body {
+  width: 100%;
+}
+
+.decline-modal__intro {
+  color: color-mix(in srgb, var(--ds-text) 86%, transparent);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.decline-modal__textarea.base-input {
+  border-radius: var(--ds-radius-8);
+  min-height: 9.5rem !important;
+  padding: 0.75rem 0.875rem !important;
+  background: color-mix(in srgb, var(--profile-surface-inset) 56%, transparent);
+  border: 1px solid color-mix(in srgb, var(--profile-border) 90%, transparent) !important;
+}
+
+.decline-modal__textarea.base-input:focus {
+  border-color: color-mix(in srgb, var(--profile-accent) 50%, var(--profile-border)) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 11%, transparent) !important;
+}
+
+.decline-modal__submit.base-button {
+  width: 100%;
+  border-radius: var(--ds-radius-8);
+  min-height: 2.65rem;
+}
+
+[data-theme='docuseal-light'] .modal-box--decline.modal-box {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
+}
+
+[data-theme='docuseal-light'] .modal-box--decline .decline-modal__header {
+  border-bottom-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .decline-modal__textarea.base-input {
+  background: #ffffff;
+}
+
+[data-theme='docuseal-dark'] .modal--move-folder .turbo-modal-backdrop,
+[data-theme='docuseal'] .modal--move-folder .turbo-modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal-box--move-folder.modal-box {
+  width: min(calc(100vw - 2rem), 52rem) !important;
+  max-width: min(calc(100vw - 2rem), 52rem) !important;
+  margin-top: 0 !important;
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
+}
+
+.modal-box--move-folder .move-folder-modal__header {
+  margin-bottom: 0.75rem;
+}
+
+.modal-box--move-folder .move-folder-modal__body {
+  width: 100%;
+}
+
+[data-theme='docuseal-light'] .modal-box--move-folder.modal-box {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
+}
+
+[data-theme='docuseal-dark'] .modal--template-form .turbo-modal-backdrop,
+[data-theme='docuseal'] .modal--template-form .turbo-modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal-box--template-form.modal-box {
+  width: min(calc(100vw - 2rem), 52rem) !important;
+  max-width: min(calc(100vw - 2rem), 52rem) !important;
+  margin-top: 0 !important;
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.35);
+}
+
+.modal-box--template-form .template-form-modal__header {
+  margin-bottom: 0.75rem;
+}
+
+.modal-box--template-form .template-form-modal__body {
+  width: 100%;
+  max-width: none;
+}
+
+[data-theme='docuseal-light'] .modal-box--template-form.modal-box {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.18);
+}
+
 /* -------------------------------------------------------------------------- */
 /* Signature modal shell (centered, backdrop blur, semantic tokens only)       */
 /* -------------------------------------------------------------------------- */
@@ -5261,6 +5558,98 @@ table tbody tr:hover {
   margin-bottom: 1.25rem;
 }
 
+.submissions-dashboard-stats-grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.submissions-dashboard-stat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--profile-border) 90%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--profile-surface-inset) 72%, transparent) 0%,
+      color-mix(in srgb, var(--profile-surface-inset) 60%, transparent) 100%
+    );
+  box-shadow: 0 10px 24px rgba(3, 14, 32, 0.18);
+  padding: 0.8rem 1rem 0.9rem;
+  min-height: 5.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.submissions-dashboard-stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 2px;
+  background: color-mix(in srgb, var(--profile-accent) 45%, transparent);
+  opacity: 0.65;
+}
+
+.submissions-dashboard-stat-card:hover {
+  border-color: color-mix(in srgb, var(--profile-accent) 35%, var(--profile-border));
+  box-shadow: 0 14px 28px rgba(3, 14, 32, 0.24);
+  transform: translateY(-1px);
+}
+
+.submissions-dashboard-stat-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--profile-text-secondary) 82%, transparent);
+  margin: 0;
+}
+
+.submissions-dashboard-stat-value {
+  margin: 0.38rem 0 0;
+  font-size: clamp(1.75rem, 1.35rem + 1vw, 2.2rem);
+  line-height: 0.95;
+  font-weight: 700;
+  color: var(--profile-text);
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .submissions-dashboard-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .submissions-dashboard-stats-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+[data-theme='docuseal-light'] .submissions-dashboard-stat-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  border-color: rgba(18, 35, 60, 0.14);
+  box-shadow: 0 12px 24px rgba(10, 25, 44, 0.1);
+}
+
+[data-theme='docuseal-light'] .submissions-dashboard-stat-card::before {
+  background: color-mix(in srgb, var(--profile-accent) 50%, #d9e8f8);
+  opacity: 0.7;
+}
+
+[data-theme='docuseal-light'] .submissions-dashboard-stat-label {
+  color: #4d6784;
+}
+
+[data-theme='docuseal-light'] .submissions-dashboard-stat-value {
+  color: #10243f;
+}
+
 .tpl-show-tabs-row {
   display: flex;
   flex-direction: column;
@@ -5450,8 +5839,22 @@ table tbody tr:hover {
 
 .tpl-new-submit-btn {
   border-radius: var(--ds-radius-8) !important;
-  padding: 0.625rem 1.5rem !important;
+  padding: 0 1.5rem !important;
   font-weight: 600 !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  height: 2.75rem !important;
+  min-height: 2.75rem !important;
+  line-height: 1 !important;
+}
+
+.tpl-new-submit-btn .enabled > span,
+.tpl-new-submit-btn .disabled > span {
+  align-items: center !important;
+  line-height: 1 !important;
 }
 
 /* --- Template Builder (edit) --- */

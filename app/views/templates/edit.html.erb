@@ -12,6 +12,10 @@
                                 else
                                   'image/*, application/pdf, application/zip, application/json'
                                 end %>
-<div class="tpl-builder-wrap">
-  <template-builder class="grid" data-template="<%= @template_data %>" data-custom-fields="<%= (current_account.account_configs.find_or_initialize_by(key: AccountConfig::TEMPLATE_CUSTOM_FIELDS_KEY).value || []).to_json %>" data-with-sign-yourself-button="<%= !@template.archived_at? %>" data-with-fields-detection="true" data-with-send-button="<%= !@template.archived_at? && can?(:create, @template.submissions.new(account: current_account)) %>" data-locale="<%= I18n.locale %>" data-show-tour-start-form="<%= @show_tour_start_form %>" data-accept-file-types="<%= builder_accept_file_types %>"></template-builder>
+<div class="settings-layout profile-settings-page templates-dashboard-page template-edit-page">
+  <div class="settings-main profile-settings-main templates-dashboard-main template-edit-main">
+    <div class="tpl-builder-wrap">
+      <template-builder class="grid" data-template="<%= @template_data %>" data-custom-fields="<%= (current_account.account_configs.find_or_initialize_by(key: AccountConfig::TEMPLATE_CUSTOM_FIELDS_KEY).value || []).to_json %>" data-with-sign-yourself-button="<%= !@template.archived_at? %>" data-with-fields-detection="true" data-with-send-button="<%= !@template.archived_at? && can?(:create, @template.submissions.new(account: current_account)) %>" data-locale="<%= I18n.locale %>" data-show-tour-start-form="<%= @show_tour_start_form %>" data-accept-file-types="<%= builder_accept_file_types %>"></template-builder>
+    </div>
+  </div>
 </div>

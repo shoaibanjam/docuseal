@@ -1,11 +1,11 @@
 <%= form_for '', url: submit_form_decline_index_path(submitter.slug), method: :post do |f| %>
-  <div class="mt-4 text-center">
+  <div class="decline-modal__intro mt-3 text-center">
     <%= t(:notify_the_sender_with_the_reason_you_declined) %>
   </div>
-  <div class="form-control mt-2">
-    <%= f.text_area :reason, required: true, class: 'base-input w-full py-2 h-40', dir: 'auto', placeholder: t('provide_a_reason'), style: 'height: 200px', rows: '10' %>
+  <div class="form-control mt-3">
+    <%= f.text_area :reason, required: true, class: 'base-input decline-modal__textarea w-full py-2 h-40', dir: 'auto', placeholder: t('provide_a_reason'), style: 'height: 200px', rows: '10' %>
   </div>
   <toggle-submit dir="auto" class="form-control mt-4">
-    <%= f.button button_title(title: t(:decline)), class: 'base-button' %>
+    <%= f.button button_title(title: t(:decline)), class: 'base-button decline-modal__submit' %>
   </toggle-submit>
 <% end %>

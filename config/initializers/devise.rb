@@ -34,7 +34,10 @@ module Devise
 
         @current_account = record.account if record.respond_to?(:account)
 
-        I18n.with_locale(record.account.locale) do
+        account_locale = record.try(:account).try(:locale).to_s.presence
+        account_locale = 'en-US' unless account_locale && I18n.locale_available?(account_locale)
+
+        I18n.with_locale(account_locale) do
           mail(headers_for(action, opts), &)
         end
       end

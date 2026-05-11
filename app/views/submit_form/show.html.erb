@@ -17,11 +17,23 @@
       <%# flex block w-full sticky top-0 z-50 space-x-2 items-center bg-yellow-100 p-2 border-y border-yellow-200 transition-transform duration-300 %>
       <%= local_assigns[:banner_html] || capture do %>
         <%= render('submit_form/banner') %>
-        <div id="signing_form_header" class="signing-form-header sticky min-[1230px]:static top-0 z-50 py-2 px-3 flex items-center md:-mx-[8px]">
-          <div class="signing-form-title text-xl md:text-2xl font-medium focus:text-clip" style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            <%= @submitter.submission.name || @submitter.submission.template.name %>
-          </div>
-          <div class="signing-form-actions flex items-center space-x-2" style="margin-left: 20px; flex-shrink: 0">
+        <div id="signing_form_header" class="signing-form-header sticky min-[1230px]:static top-0 z-50 p-3 md:p-4 md:-mx-[8px]">
+          <div class="signing-form-header-row">
+            <div class="signing-form-hero min-w-0">
+              <div class="signing-form-hero-avatar" aria-hidden="true">
+                <%= svg_icon('files', class: 'w-5 h-5') %>
+              </div>
+              <div class="signing-form-hero-copy min-w-0">
+                <p class="signing-form-hero-eyebrow"><%= t('document_library', default: 'Document Library') %></p>
+                <div class="signing-form-title text-xl md:text-2xl font-medium focus:text-clip" style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  <%= @submitter.submission.name || @submitter.submission.template.name %>
+                </div>
+                <p class="signing-form-hero-subtitle hidden sm:block">
+                  <%= t('fill_and_sign_documents_online', default: 'Review and complete all required fields to finish this document.') %>
+                </p>
+              </div>
+            </div>
+            <div class="signing-form-actions flex items-center space-x-2" style="flex-shrink: 0">
             <theme-toggle class="inline-flex">
               <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
                 <span data-theme-icon="sun">
@@ -33,10 +45,10 @@
               </button>
             </theme-toggle>
             <% if @form_configs[:with_decline] %>
-              <label id="decline_button" for="<%= decline_modal_checkbox_uuid = SecureRandom.uuid %>" class="btn btn-sm signing-form-action !px-5"><%= t(:decline) %></label>
+              <label id="decline_button" for="<%= decline_modal_checkbox_uuid = SecureRandom.uuid %>" class="white-button signing-form-action !h-9 !min-h-0 !px-4 !text-xs md:!text-sm"><%= t(:decline) %></label>
             <% end %>
             <% if @form_configs[:with_partial_download] %>
-              <download-button data-src="<%= submit_form_download_index_path(@submitter.slug) %>" class="btn btn-neutral text-white btn-sm signing-form-action !px-4">
+              <download-button data-src="<%= submit_form_download_index_path(@submitter.slug) %>" class="white-button signing-form-action !h-9 !min-h-0 !px-4 !text-xs md:!text-sm">
                 <span class="flex items-center justify-center" data-target="download-button.defaultButton">
                   <%= svg_icon('download', class: 'w-6 h-6 inline md:hidden') %>
                   <span class="hidden md:inline"><%= t('download') %></span>
@@ -47,11 +59,12 @@
                 </span>
               </download-button>
             <% end %>
+            </div>
           </div>
         </div>
         <scroll-buttons class="fixed right-5 top-2 hidden md:flex gap-1 z-50 ease-in-out opacity-0 -translate-y-10">
           <% if @form_configs[:with_decline] %>
-            <label id="decline_button" for="<%= decline_modal_checkbox_uuid %>" class="btn btn-sm px-0">
+            <label id="decline_button" for="<%= decline_modal_checkbox_uuid %>" class="white-button signing-form-action !h-9 !min-h-0 !px-0">
               <span class="min-[1366px]:inline hidden px-3">
                 <%= t(:decline) %>
               </span>
@@ -60,7 +73,7 @@
               </span>
             </label>
           <% end %>
-          <download-button data-src="<%= submit_form_download_index_path(@submitter.slug) %>" class="btn btn-neutral text-white btn-sm px-2">
+          <download-button data-src="<%= submit_form_download_index_path(@submitter.slug) %>" class="white-button signing-form-action !h-9 !min-h-0 !px-2">
             <span data-target="download-button.defaultButton">
               <%= svg_icon('download', class: 'w-5 h-5') %>
             </span>
@@ -120,7 +133,7 @@
   </div>
 </div>
 <% if @form_configs[:with_decline] %>
-  <%= render 'shared/html_modal', title: t(:decline), uuid: decline_modal_checkbox_uuid do %>
+  <%= render 'shared/html_modal', title: t(:decline), uuid: decline_modal_checkbox_uuid, modal_class: 'modal--decline', content_class: 'modal-box--decline', header_class: 'decline-modal__header', body_class: 'decline-modal__body' do %>
     <%= render 'submit_form/decline_form', submitter: @submitter %>
   <% end %>
 <% end %>

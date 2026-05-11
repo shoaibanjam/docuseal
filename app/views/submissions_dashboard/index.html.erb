@@ -1,112 +1,140 @@
 <% filter_params = params.permit(Submissions::Filter::ALLOWED_PARAMS).compact_blank %>
 <% is_show_tabs = (@pagy.count.nil? || @pagy.count >= 5) || params[:status].present? || filter_params.present? %>
 <% if Docuseal.demo? %><%= render 'shared/demo_alert' %><% end %>
-<div class="space-y-5">
-  <div class="flex justify-between items-center w-full">
-    <div class="flex items-center flex-grow min-w-0 text-primary-content">
-      <div class="mr-2">
-        <%= render 'dashboard/toggle_view', selected: 'submissions' %>
-      </div>
-      <div>
-        <h1 class="text-2xl truncate md:text-3xl sm:text-4xl font-bold md:block <%= 'hidden' if params[:q].present? %>">
-          <%= t('submissions') %>
-        </h1>
-        <p class="text-sm text-primary-content/70">
-          Manage and monitor digital verification requests.
-        </p>
-      </div>
-    </div>
-    <div class="flex space-x-2">
-      <% if params[:q].present? || @pagy.pages > 1 || filter_params.present? %>
-        <%= render 'shared/search_input' %>
-      <% end %>
-      <% if can?(:create, ::Template) %>
-        <span class="hidden sm:block">
-          <%= render 'templates/upload_button' %>
-        </span>
-        <%= link_to new_template_path, class: 'base-button gap-2', data: { turbo_frame: :modal } do %>
-          <%= svg_icon('plus', class: 'w-6 h-6 stroke-2') %>
-          <span class="hidden md:block"><%= t('create') %></span>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
+<div class="settings-layout profile-settings-page templates-dashboard-page submissions-dashboard-page">
+  <div class="settings-main profile-settings-main templates-dashboard-main submissions-dashboard-main">
+    <header class="templates-dashboard-header relative w-full">
+      <div class="settings-page-header profile-settings-header templates-dashboard-hero">
+        <div class="settings-page-header-top templates-dashboard-header-top flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-8">
+          <div class="flex gap-4 md:gap-5 items-start min-w-0 flex-1">
+            <div class="settings-page-avatar profile-settings-avatar templates-dashboard-page__avatar shrink-0" aria-hidden="true">
+              <%= svg_icon('files', class: 'w-7 h-7 shrink-0') %>
+            </div>
+            <div class="profile-settings-header-text min-w-0">
+              <p class="templates-dashboard-eyebrow flex items-center gap-2">
+                <%= t('overview', default: 'Overview') %>
+              </p>
+              <h1 class="ds-heading-2 profile-settings-title <%= 'hidden' if params[:q].present? %>">
+                <%= t('submissions') %>
+              </h1>
+              <p class="settings-page-subtitle profile-settings-intro templates-dashboard-intro <%= 'hidden' if params[:q].present? %>">
+                <%= t('submissions_dashboard_intro', default: 'Manage, filter, and monitor requests across all templates.') %>
+              </p>
+            </div>
+          </div>
 
-  <div class="overflow-x-auto mt-6 mb-7 md:mt-8 md:mb-10">
-    <div class="flex flex-nowrap gap-4 min-w-[900px]">
-      <div class="ds-submissions-stat-card relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
-        <span class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></span>
-        <div class="text-xs uppercase tracking-wider text-primary-content/60">Total Active</div>
-        <div class="text-3xl font-bold mt-1"><%= number_with_delimiter(@stats_total) %></div>
+          <div class="templates-dashboard-toolbar flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full lg:w-auto lg:max-w-[26rem] xl:max-w-none shrink-0">
+            <div class="templates-dashboard-actions flex flex-wrap items-center gap-2 justify-start sm:justify-end flex-1 min-w-[10rem]">
+              <% if params[:q].present? || @pagy.pages > 1 || filter_params.present? %>
+                <div class="flex-1 min-w-[12rem] max-w-full sm:max-w-xs md:max-w-sm">
+                  <%= render 'shared/search_input' %>
+                </div>
+              <% end %>
+              <% if can?(:create, ::Template) %>
+                <span class="hidden sm:inline-flex templates-dashboard-upload-wrap">
+                  <%= render 'templates/upload_button' %>
+                </span>
+                <%= link_to new_template_path, class: 'base-button profile-settings-btn-primary gap-2 whitespace-nowrap shrink-0', data: { turbo_frame: :modal } do %>
+                  <%= svg_icon('plus', class: 'w-5 h-5 stroke-2 shrink-0') %>
+                  <span class="hidden md:inline"><%= t('create') %></span>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="ds-submissions-stat-card relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
-        <span class="absolute left-0 top-0 bottom-0 w-1 bg-[#35d0af]"></span>
-        <div class="text-xs uppercase tracking-wider text-primary-content/60"><%= t('completed') %></div>
-        <div class="text-3xl font-bold mt-1"><%= number_with_delimiter(@stats_completed) %></div>
-      </div>
-      <div class="ds-submissions-stat-card relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
-        <span class="absolute left-0 top-0 bottom-0 w-1 bg-[#f3b565]"></span>
-        <div class="text-xs uppercase tracking-wider text-primary-content/60"><%= t('awaiting') %></div>
-        <div class="text-3xl font-bold mt-1"><%= number_with_delimiter(@stats_awaiting) %></div>
-      </div>
-      <div class="ds-submissions-stat-card relative bg-[#0d1c2f] rounded-xl border border-white/10 p-5 flex-1 min-w-[210px] overflow-hidden">
-        <span class="absolute left-0 top-0 bottom-0 w-1 bg-[#60708a]"></span>
-        <div class="text-xs uppercase tracking-wider text-primary-content/60">Avg. Time</div>
-        <div class="text-3xl font-bold mt-1"><%= @stats_avg_time %></div>
-      </div>
-    </div>
-  </div>
+    </header>
+
+  <section class="submissions-dashboard-stats-grid mt-4 md:mt-5" aria-label="<%= t('overview', default: 'Overview') %>">
+    <article class="submissions-dashboard-stat-card">
+      <p class="submissions-dashboard-stat-label"><%= t('total_active', default: 'Total Active') %></p>
+      <p class="submissions-dashboard-stat-value"><%= @stats_total %></p>
+    </article>
+    <article class="submissions-dashboard-stat-card">
+      <p class="submissions-dashboard-stat-label"><%= t('completed', default: 'Completed') %></p>
+      <p class="submissions-dashboard-stat-value"><%= @stats_completed %></p>
+    </article>
+    <article class="submissions-dashboard-stat-card">
+      <p class="submissions-dashboard-stat-label"><%= t('awaiting', default: 'Awaiting') %></p>
+      <p class="submissions-dashboard-stat-value"><%= @stats_awaiting %></p>
+    </article>
+    <article class="submissions-dashboard-stat-card">
+      <p class="submissions-dashboard-stat-label"><%= t('avg_time', default: 'Avg. Time') %></p>
+      <p class="submissions-dashboard-stat-value"><%= @stats_avg_time %></p>
+    </article>
+  </section>
 
   <% view_archived_html = capture do %>
     <% if can?(:manage, :countless) || current_account.submissions.where.not(archived_at: nil).exists? %>
       <div>
-        <a href="<%= submissions_archived_index_path %>" class="link text-sm"><%= t('view_archived') %></a>
+        <a href="<%= submissions_archived_index_path %>" class="link link-hover text-sm font-medium"><%= t('view_archived') %></a>
       </div>
     <% end %>
   <% end %>
 
   <% if is_show_tabs %>
-    <div class="flex items-center flex-col md:flex-row md:flex-wrap gap-2 mt-4 md:mt-6">
-      <div class="flex items-center md:items-end flex-col md:flex-row gap-2 w-full md:w-fit">
-        <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="ds-submissions-tab <%= params[:status].blank? ? 'border-secondary bg-secondary/10' : 'border-white/10' %> flex h-10 px-3 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-44 hover:border-secondary/70 bg-[#0d1c2f]">
-          <div class="flex items-center space-x-1">
-            <%= svg_icon('list', class: 'w-5 h-5') %>
-            <span class="font-normal"><%= t('all') %></span>
+    <div class="tpl-show-tabs mt-4 md:mt-6">
+      <div class="tpl-show-tabs-row flex-wrap">
+        <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="tpl-show-tab ds-submissions-tab <%= params[:status].blank? ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+          <div class="tpl-show-tab-label">
+            <%= svg_icon('list', class: 'w-4 h-4') %>
+            <span><%= t('all') %></span>
           </div>
         </a>
-        <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="ds-submissions-tab <%= params[:status] == 'pending' ? 'border-secondary bg-secondary/10' : 'border-white/10' %> flex h-10 px-3 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-44 hover:border-secondary/70 bg-[#0d1c2f]">
-          <div class="flex items-center space-x-1">
-            <%= svg_icon('clock', class: 'w-5 h-5') %>
-            <span class="font-normal"><%= t('pending') %></span>
+        <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="tpl-show-tab ds-submissions-tab <%= params[:status] == 'pending' ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+          <div class="tpl-show-tab-label">
+            <%= svg_icon('clock', class: 'w-4 h-4') %>
+            <span><%= t('pending') %></span>
           </div>
         </a>
-        <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="ds-submissions-tab <%= params[:status] == 'completed' ? 'border-secondary bg-secondary/10' : 'border-white/10' %> flex h-10 px-3 py-1 text-sm md:text-base items-center justify-between border text-center text-primary-content font-semibold rounded-xl w-full md:w-44 hover:border-secondary/70 bg-[#0d1c2f]">
-          <div class="flex items-center space-x-1">
-            <%= svg_icon('circle_check', class: 'w-5 h-5') %>
-            <span class="font-normal"><%= t('completed') %></span>
+        <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="tpl-show-tab ds-submissions-tab <%= params[:status] == 'completed' ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+          <div class="tpl-show-tab-label">
+            <%= svg_icon('circle_check', class: 'w-4 h-4') %>
+            <span><%= t('completed') %></span>
           </div>
         </a>
-      </div>
-      <div class="flex items-end flex-col md:flex-row gap-2 w-full md:w-fit">
-        <%= render 'submissions_filters/applied_filters', filter_params: %>
+
         <%= render 'submissions_filters/filter_button', filter_params: %>
         <%= render 'submissions_filters/actions', filter_params: %>
+      </div>
+      <div class="tpl-show-filters-row">
+        <%= render 'submissions_filters/applied_filters', filter_params: %>
       </div>
     </div>
   <% end %>
 
-  <% if @pagy.count.nil? || @pagy.count > 0 %>
-    <div class="ds-submissions-list-shell bg-[#08192d] border border-white/10 rounded-2xl p-3 md:p-4">
-      <div class="hidden md:flex items-center px-4 pb-2 text-[11px] uppercase tracking-wider text-primary-content/50">
-        <div class="w-52 px-1">Submission Details</div>
-        <div class="flex-1 flex items-center justify-between px-6">
-          <div>Status</div>
-          <div class="text-right">Actions</div>
-        </div>
+  <% if @submissions.present? %>
+    <div class="tpl-show-submissions-list space-y-4 mt-4">
+      <%= render partial: 'templates/submission', collection: @submissions, locals: { with_template: true } %>
+    </div>
+  <% elsif params[:q].present? || filter_params.present? %>
+    <div class="tpl-show-empty-state mt-6">
+      <div class="tpl-show-empty-icon">
+        <%= svg_icon('search', class: 'w-10 h-10') %>
       </div>
-      <div class="space-y-3">
-        <%= render partial: 'templates/submission', collection: @submissions, locals: { with_template: true } %>
+      <p class="tpl-show-empty-title">
+        <%= t('submissions_not_found') %>
+      </p>
+      <p class="tpl-show-empty-subtitle templates-empty-subtitle">
+        <%= t('submissions_dashboard_empty_search_hint', default: 'Try another keyword or clear filters to see all submissions.') %>
+      </p>
+      <div class="tpl-show-empty-actions">
+        <a href="<%= url_for(params: request.query_parameters.except('q').except(*Submissions::Filter::ALLOWED_PARAMS).except('status')) %>" class="tpl-show-action-btn tpl-show-action-btn--primary">
+          <%= t('clear') %>
+        </a>
       </div>
+    </div>
+  <% else %>
+    <div class="tpl-show-empty-state mt-6">
+      <div class="tpl-show-empty-icon">
+        <%= svg_icon('inbox', class: 'w-10 h-10') %>
+      </div>
+      <p class="tpl-show-empty-title">
+        <%= t('there_are_no_submissions') %>
+      </p>
+      <p class="tpl-show-empty-subtitle templates-empty-subtitle">
+        <%= t('submissions_dashboard_empty_hint', default: 'Once you send a template for signing, submissions will show up here.') %>
+      </p>
     </div>
   <% end %>
   <% if params[:q].blank? && params[:status].blank? && filter_params.blank? && @pagy.count.present? && @pagy.count < 5 %>
@@ -120,15 +148,6 @@
         <%= view_archived_html %>
       </div>
     <% end %>
-  <% elsif params[:q].present? || filter_params.present? %>
-    <div class="text-center">
-      <div class="mt-16 text-3xl font-semibold">
-        <%= t('submissions_not_found') %>
-      </div>
-    </div>
-  <% else %>
-    <div class="text-center text-primary-content/70">
-      <%= t('there_are_no_submissions') %>
-    </div>
   <% end %>
+  </div>
 </div>

@@ -55,7 +55,14 @@ class Account < ApplicationRecord
   attribute :timezone, :string, default: 'UTC'
   attribute :locale, :string, default: 'en-US'
 
+  before_validation do
+    self.timezone = Accounts.normalize_timezone(timezone.to_s.presence || 'UTC')
+    self.locale = locale.to_s.presence || 'en-US'
+  end
+
   scope :active, -> { where(archived_at: nil) }
+
+  validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }
 
   def testing?
     linked_account_account&.testing?

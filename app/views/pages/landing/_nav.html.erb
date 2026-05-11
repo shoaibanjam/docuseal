@@ -1,12 +1,12 @@
-<header class="landing-nav sticky top-0 z-[60] border-b border-white/10 supports-[backdrop-filter]:bg-[#050a14]/75 supports-[backdrop-filter]:backdrop-blur-xl bg-[#050a14]/92">
-  <div class="relative z-[1] mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3.5 md:gap-8">
+<header class="landing-nav landing-nav--refined sticky top-0 z-20 border-b border-white/5 supports-[backdrop-filter]:backdrop-blur-xl bg-[#051427]/80">
+  <div class="relative z-[1] mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3.5 md:py-4 md:gap-8">
     <%= link_to root_path, class: 'landing-nav-brand-link flex shrink-0 items-center text-white transition-opacity hover:opacity-90', aria: { label: Docuseal.product_name } do %>
       <%= render 'shared/logo', class: 'h-9 w-auto object-contain shrink-0' %>
     <% end %>
     <nav class="hidden flex-1 items-center justify-center gap-8 md:flex" aria-label="Primary">
-      <a href="#landing-products" class="landing-nav-link text-sm font-medium text-slate-400 transition-colors duration-200 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] rounded-sm">Products</a>
-      <a href="#landing-solutions" class="landing-nav-link text-sm font-medium text-slate-400 transition-colors duration-200 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] rounded-sm">Solutions</a>
-      <a href="#landing-faq" class="landing-nav-link text-sm font-medium text-slate-400 transition-colors duration-200 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] rounded-sm">Company</a>
+      <a href="#landing-products" class="landing-nav-link landing-nav-link--refined text-sm font-medium text-slate-400 transition-colors duration-200 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] rounded-sm">Products</a>
+      <a href="#landing-solutions" class="landing-nav-link landing-nav-link--refined text-sm font-medium text-slate-400 transition-colors duration-200 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] rounded-sm">Solutions</a>
+      <a href="#landing-faq" class="landing-nav-link landing-nav-link--refined text-sm font-medium text-slate-400 transition-colors duration-200 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] rounded-sm">Company</a>
     </nav>
     <div class="flex shrink-0 items-center gap-2 md:gap-3">
       <div class="dropdown dropdown-end md:hidden">
@@ -36,7 +36,7 @@
           <span class="hidden sm:inline"><%= t('sign_in') %></span>
         <% end %>
       <% end %>
-      <%= link_to 'Get Started', get_started_path, class: 'landing-nav-cta inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold shadow-lg transition duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] md:px-5' %>
+      <%= link_to 'Get Started', get_started_path, class: 'landing-nav-cta landing-nav-cta--refined inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold shadow-lg transition duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] md:px-5' %>
     </div>
   </div>
 </header>

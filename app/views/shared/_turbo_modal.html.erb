@@ -6,6 +6,7 @@
     )
     modal_classes = "modal modal-open items-start !animate-none overflow-y-auto"
     modal_classes += " modal--signature-editor" if enhanced_modal
+    modal_classes += " #{local_assigns[:modal_class]}" if local_assigns[:modal_class].present?
     modal_attrs = {
       class: modal_classes,
       data: {
@@ -19,12 +20,12 @@
   <%= content_tag('turbo-modal', **modal_attrs) do %>
     <div class="turbo-modal-backdrop absolute inset-0 cursor-pointer z-0" data-turbo-modal-close aria-hidden="true"></div>
     <div
-      class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none relative z-10 <%= 'modal-box--signature-editor' if enhanced_modal %>"
+      class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none relative z-10 <%= 'modal-box--signature-editor' if enhanced_modal %> <%= local_assigns[:content_class] %>"
       data-turbo-modal-content
     >
       <% if local_assigns[:title] %>
         <% if enhanced_modal %>
-          <header class="signature-modal__header">
+          <header class="signature-modal__header <%= local_assigns[:header_class] %>">
             <div class="signature-modal__title-row">
               <h2 id="signature-modal-title" class="signature-modal__title"><%= local_assigns[:title] %></h2>
               <button type="button" class="signature-modal__close turbo-modal-close-btn" data-turbo-modal-close aria-label="<%= t('close', default: 'Close') %>">
@@ -42,7 +43,7 @@
           </div>
         <% end %>
       <% end %>
-      <div class="<%= 'signature-modal__body' if enhanced_modal %>">
+      <div class="<%= 'signature-modal__body' if enhanced_modal %> <%= local_assigns[:body_class] %>">
         <%= yield %>
       </div>
     </div>

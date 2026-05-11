@@ -1,5 +1,5 @@
 <% with_subfolder = @template.folder.name != TemplateFolder::DEFAULT_NAME && params[:subfolder] != 'false' %>
-<%= render 'shared/turbo_modal', title: t('move_into_folder') do %>
+<%= render 'shared/turbo_modal', title: t('move_into_folder'), enhanced_modal: true, modal_class: 'modal--move-folder', content_class: 'modal-box--move-folder', header_class: 'move-folder-modal__header', body_class: 'move-folder-modal__body' do %>
   <% if with_subfolder %>
     <%= form_for '', url: template_folder_path(@template), method: :put, data: { turbo_frame: :_top }, html: { id: 'subfolder_form', autocomplete: :off } do |f| %>
       <%= f.hidden_field :parent_name, value: @template.folder.parent_folder&.name || @template.folder.name %>
@@ -19,22 +19,22 @@
       </toggle-visible>
       <div class="form-control mb-6">
         <folder-autocomplete class="block" data-submit-on-select="true" data-parent-name="<%= @template.folder.parent_folder&.name || @template.folder.name %>" data-enabled="<%= params[:autocomplete] != 'false' %>">
-          <%= f.text_field :name, required: true, placeholder: "#{t('new_subfolder_name')}...", class: 'base-input w-full', autofocus: true, id: 'subfolder_name' %>
+          <%= f.text_field :name, required: true, placeholder: "#{t('new_subfolder_name')}...", class: 'base-input tpl-new-input w-full', autofocus: true, id: 'subfolder_name' %>
         </folder-autocomplete>
       </div>
       <div class="form-control">
-        <%= f.button button_title(title: t('move'), disabled_with: t('moving')), class: 'base-button' %>
+        <%= f.button button_title(title: t('move'), disabled_with: t('moving')), class: 'base-button tpl-new-submit-btn' %>
       </div>
     <% end %>
   <% end %>
   <%= form_for '', url: template_folder_path(@template), method: :put, data: { turbo_frame: :_top }, html: { id: 'folder_form', autocomplete: :off, class: "mt-6 #{'hidden' if with_subfolder}" } do |f| %>
     <div class="form-control mb-6">
       <folder-autocomplete class="block" data-submit-on-select="true" data-enabled="<%= params[:autocomplete] != 'false' %>">
-        <%= f.text_field :name, required: true, placeholder: "#{t('new_folder_name')}...", class: 'base-input w-full', autofocus: true %>
+        <%= f.text_field :name, required: true, placeholder: "#{t('new_folder_name')}...", class: 'base-input tpl-new-input w-full', autofocus: true %>
       </folder-autocomplete>
     </div>
     <div class="form-control">
-      <%= f.button button_title(title: t('move'), disabled_with: t('moving')), class: 'base-button' %>
+      <%= f.button button_title(title: t('move'), disabled_with: t('moving')), class: 'base-button tpl-new-submit-btn' %>
     </div>
   <% end %>
 <% end %>

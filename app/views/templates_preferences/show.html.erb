@@ -1,16 +1,16 @@
-<%= render 'shared/turbo_modal_large', title: t('preferences') do %>
+<%= render 'shared/turbo_modal_large', title: t('preferences'), modal_class: 'modal--preferences', content_class: 'modal-box--preferences', header_class: 'preferences-modal__header', body_class: 'preferences-modal__body' do %>
   <% show_api = Docuseal.multitenant? || current_account.testing? || !current_account.linked_account_account %>
   <% show_recipients = @template.submitters.to_a.length > 1 %>
   <% options = [[t('general'), 'general']] %>
   <% options << [t('recipients'), 'recipients'] if show_recipients %>
   <% options << [t('api_and_embedding'), 'api'] if show_api %>
   <% if options.size > 1 %>
-    <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="relative text-center mt-3 block">
-      <div class="join">
+    <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="preferences-modal__tabs-wrap">
+      <div class="join preferences-modal__tabs">
         <% options.each_with_index do |(label, value), index| %>
           <span>
             <%= radio_button_tag 'option', value, value == 'general', class: 'peer hidden', data: { action: 'change:toggle-visible#trigger' } %>
-            <label for="option_<%= value %>" class="<%= '!rounded-s-full' if index.zero? %> btn btn-focus btn-sm join-item peer-checked:btn-active normal-case <%= 'px-8 md:px-0' if value.in?(%w[general recipients]) %> <%= options.size > 2 ? 'md:w-44' : 'md:w-48' %>">
+            <label for="option_<%= value %>" class="<%= '!rounded-s-full' if index.zero? %> btn btn-sm join-item normal-case preferences-modal__tab peer-checked:!bg-secondary peer-checked:!text-[#022628] peer-checked:!border-secondary <%= 'px-8 md:px-0' if value.in?(%w[general recipients]) %> <%= options.size > 2 ? 'md:w-44' : 'md:w-48' %>">
               <%= label %>
             </label>
           </span>
@@ -18,7 +18,7 @@
       </div>
     </toggle-visible>
   <% end %>
-  <div id="general" class="px-5 mb-4">
+  <div id="general" class="preferences-modal__section px-5 mb-4">
     <%= render 'access' %>
     <%= form_for @template, url: template_preferences_path(@template), method: :post, html: { autocomplete: 'off', class: 'mt-2' }, data: { close_on_submit: false } do |f| %>
       <toggle-on-submit data-element-id="bcc_saved_alert"></toggle-on-submit>
@@ -132,12 +132,12 @@
     <%= render 'templates_code_modal/preferences', class: 'pt-2' %>
   </div>
   <% if show_recipients %>
-    <div id="recipients" class="hidden mt-2 mb-4 px-5 pt-1 pb-2">
+    <div id="recipients" class="preferences-modal__section hidden mt-2 mb-4 px-5 pt-1 pb-2">
       <%= render 'recipients', template: @template %>
     </div>
   <% end %>
   <% if show_api %>
-    <div id="api" class="hidden mt-2 mb-4 px-5">
+    <div id="api" class="preferences-modal__section hidden mt-2 mb-4 px-5">
       <div>
         <label class="text-sm font-semibold" for="template_id">
           <%= t('template_id') %>
