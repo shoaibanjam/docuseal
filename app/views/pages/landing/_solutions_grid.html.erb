@@ -1,26 +1,26 @@
 <section id="landing-solutions" class="landing-section landing-solutions-grid py-24 md:py-32">
   <div class="mx-auto max-w-7xl px-6">
-    <div class="mx-auto max-w-3xl text-center">
-      <span class="landing-cloud-badge mx-auto mb-4 inline-block">Why choose us</span>
+    <div class="mx-auto max-w-3xl text-center" data-aos="fade-up">
+      <span class="landing-cloud-badge mx-auto mb-4 inline-block">Why teams choose it</span>
       <h2 class="text-3xl font-bold tracking-tight text-white md:text-4xl">
-        One platform. Many workflows. <span class="landing-gradient-text">Zero compromise.</span>
+        One platform. Practical workflows. <span class="landing-gradient-text">No lock-in.</span>
       </h2>
       <p class="mt-4 text-lg text-slate-400">
-        From template design to signed archives, <%= Docuseal.product_name %> connects every step without vendor lock-in.
+        From template design to signed output, <%= Docuseal.product_name %> covers the complete signing flow in a single app.
       </p>
     </div>
 
     <div class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       <% solutions = [
-        { icon: 'bolt', title: 'Managed infrastructure', copy: 'Run on our cloud or yours with Docker, Kubernetes, and predictable scaling.' },
-        { icon: 'hub', title: 'Platform driven', copy: 'API-first design with webhooks and embeds so your stack stays in control.' },
-        { icon: 'public', title: 'Global reach', copy: 'Localized experiences and signing flows that work across regions and devices.' },
-        { icon: 'extension', title: 'Integrated analytics', copy: 'Track completion, bottlenecks, and signer behavior from a single dashboard.' },
-        { icon: 'shield', title: 'Enterprise security', copy: 'Encryption, tamper-evident PDFs, and optional SSO for your organization.' },
-        { icon: 'lightbulb', title: 'Business efficiency', copy: 'Conditional fields, formulas, and automation that cut manual work in half.' }
+        { icon: 'bolt', title: 'Self-host or cloud', copy: 'Deploy with Docker and keep your documents under your own operational control.' },
+        { icon: 'hub', title: 'API-first platform', copy: 'Use REST endpoints and webhooks to connect document flows to your product.' },
+        { icon: 'devices', title: 'Mobile-friendly signing', copy: 'Signers can complete documents from desktop and mobile browsers.' },
+        { icon: 'shield', title: 'Auditability built in', copy: 'Track signer and submission events with downloadable signed documents.' },
+        { icon: 'group', title: 'Team management', copy: 'Manage users, roles, templates, and submissions from a shared workspace.' },
+        { icon: 'extension', title: 'Integrations', copy: 'Use webhooks, SMTP, and storage integrations to fit existing infrastructure.' }
       ] %>
-      <% solutions.each do |item| %>
-        <div class="landing-solutions-card rounded-2xl border border-[#2A3F5F] bg-[#112240] p-6 transition hover:border-emerald-400/35 hover:shadow-lg hover:shadow-emerald-500/10">
+      <% solutions.each_with_index do |item, idx| %>
+        <div class="landing-solutions-card landing-tilt rounded-2xl border border-[#2A3F5F] bg-[#112240] p-6 transition duration-300 hover:border-emerald-400/35 hover:shadow-lg hover:shadow-emerald-500/10 " data-aos="zoom-in" data-aos-delay="<%= [idx * 60, 300].min %>" data-aos-duration="600">
           <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-400/20 text-emerald-300">
             <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1, 'wght' 500;"><%= item[:icon] %></span>
           </div>
