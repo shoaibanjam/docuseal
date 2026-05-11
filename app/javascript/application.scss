@@ -3084,6 +3084,121 @@ kbd {
   ) !important;
 }
 
+[data-theme='docuseal-dark'] .modal--add-recipients .turbo-modal-backdrop,
+[data-theme='docuseal'] .modal--add-recipients .turbo-modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal-box--add-recipients {
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
+}
+
+.modal-box--add-recipients .add-recipients-modal__header {
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 90%, transparent);
+  padding-top: 0.8rem;
+  padding-bottom: 0.7rem;
+}
+
+.modal-box--add-recipients .add-recipients-modal__body {
+  width: min(100%, 620px);
+}
+
+.add-recipients-modal__tabs {
+  padding: 0.2rem;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--ds-bg-base) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  gap: 0.25rem;
+}
+
+.add-recipients-modal__tab {
+  background: transparent;
+  color: color-mix(in srgb, var(--ds-text) 84%, transparent);
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-modal__header {
+  border-bottom-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .add-recipients-modal__tabs {
+  background: #eef4fb;
+  border-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .add-recipients-modal__tab {
+  color: #435a76;
+}
+
+[data-theme='docuseal-dark'] .modal--share-link .turbo-modal-backdrop,
+[data-theme='docuseal'] .modal--share-link .turbo-modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal-box--share-link {
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
+}
+
+.modal-box--share-link .share-link-modal__header {
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 90%, transparent);
+  padding-top: 0.8rem;
+  padding-bottom: 0.7rem;
+}
+
+.modal-box--share-link .share-link-modal__body {
+  width: min(100%, 620px);
+}
+
+[data-theme='docuseal-light'] .modal-box--share-link {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
+}
+
+[data-theme='docuseal-light'] .modal-box--share-link .share-link-modal__header {
+  border-bottom-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-dark'] .modal--template-form .turbo-modal-backdrop,
+[data-theme='docuseal'] .modal--template-form .turbo-modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
+}
+
+.modal-box--template-form.modal-box {
+  width: min(calc(100vw - 2rem), 52rem) !important;
+  max-width: min(calc(100vw - 2rem), 52rem) !important;
+  margin-top: 0 !important;
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.35);
+}
+
+.modal-box--template-form .template-form-modal__header {
+  margin-bottom: 0.75rem;
+}
+
+.modal-box--template-form .template-form-modal__body {
+  width: 100%;
+  max-width: none;
+}
+
+[data-theme='docuseal-light'] .modal-box--template-form.modal-box {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.18);
+}
+
 /* -------------------------------------------------------------------------- */
 /* Signature modal shell (centered, backdrop blur, semantic tokens only)       */
 /* -------------------------------------------------------------------------- */
@@ -5450,8 +5565,22 @@ table tbody tr:hover {
 
 .tpl-new-submit-btn {
   border-radius: var(--ds-radius-8) !important;
-  padding: 0.625rem 1.5rem !important;
+  padding: 0 1.5rem !important;
   font-weight: 600 !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  height: 2.75rem !important;
+  min-height: 2.75rem !important;
+  line-height: 1 !important;
+}
+
+.tpl-new-submit-btn .enabled > span,
+.tpl-new-submit-btn .disabled > span {
+  align-items: center !important;
+  line-height: 1 !important;
 }
 
 /* --- Template Builder (edit) --- */

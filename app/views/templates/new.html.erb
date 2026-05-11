@@ -1,4 +1,4 @@
-<%= render 'shared/turbo_modal', title: @base_template ? t('clone_template') : t('new_document_template') do %>
+<%= render 'shared/turbo_modal', title: @base_template ? t('clone_template') : t('new_document_template'), enhanced_modal: true, modal_class: 'modal--template-form', content_class: 'modal-box--template-form', header_class: 'template-form-modal__header', body_class: 'template-form-modal__body' do %>
   <div class="tpl-new-form">
     <%= render 'templates/file_form' %>
   </div>

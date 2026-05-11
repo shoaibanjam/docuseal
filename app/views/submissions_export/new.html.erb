@@ -1,5 +1,5 @@
 <% filter_params = params.permit(:q, :archived, *Submissions::Filter::ALLOWED_PARAMS) %>
-<%= render 'shared/turbo_modal', title: t('export'), close_after_submit: false do %>
+<%= render 'shared/turbo_modal', title: t('export'), close_after_submit: false, enhanced_modal: true, modal_class: 'modal--export', content_class: 'modal-box--export', header_class: 'export-modal__header', body_class: 'export-modal__body' do %>
   <div class="space-y-2">
     <%= button_to template_submissions_export_index_path(@template), params: { format: :xlsx, **filter_params }, method: :get, data: { turbo_frame: :_top } do %>
       <div class="flex items-center p-4 text-left rounded-2xl border border-neutral-300 export-option-card">
