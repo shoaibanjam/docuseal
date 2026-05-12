@@ -1,4 +1,4 @@
-<%= render 'shared/turbo_modal', title: local_assigns[:title] do %>
+<%= render 'shared/turbo_modal', title: local_assigns[:title], enhanced_modal: true, content_class: 'modal-box--submissions-filter' do %>
   <%= form_for '', url: params[:path], method: :get, data: { turbo_frame: :_top }, html: { autocomplete: :off } do |f| %>
     <%= hidden_field_tag :q, params[:q] if params[:q].present? %>
     <% local_assigns[:default_params].each do |key, value| %>

@@ -6,7 +6,7 @@
     </div>
   <% end %>
   <div class="form-control mt-4">
-    <%= f.text_field :name, required: true, placeholder: t('document_name'), class: 'base-input tpl-new-input', dir: 'auto' %>
+    <%= f.text_field :name, required: true, placeholder: t('profile_placeholder_template_name', default: 'Sales proposal'), class: 'base-input w-full', dir: 'auto' %>
   </div>
   <div class="tpl-new-folder-picker">
     <label for="folder_name" class="tpl-new-folder-icon">
@@ -15,7 +15,7 @@
     <% clone_folder_value = params[:folder_name].presence || @base_template&.folder&.full_name || TemplateFolder::DEFAULT_NAME %>
     <folder-autocomplete class="flex justify-between items-center w-full bg-transparent">
       <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer flex-1 min-w-0">
-        <input id="folder_name" placeholder="<%= t('folder_name') %>" type="text" class="tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none" name="folder_name" value="<%= clone_folder_value %>" autocomplete="off">
+        <input id="folder_name" placeholder="<%= t('profile_placeholder_folder_path', default: 'Marketing / Contracts') %>" type="text" class="tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none" name="folder_name" value="<%= clone_folder_value %>" autocomplete="off">
       </set-value>
       <set-value data-on="click" data-value="" data-input-id="folder_name" class="peer-focus-within:hidden whitespace-nowrap">
         <label for="folder_name" data-clear-on-focus="true" class="tpl-new-change-folder-link shrink-0 cursor-pointer">

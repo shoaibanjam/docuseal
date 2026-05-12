@@ -31,7 +31,7 @@
               </span>
             </span>
           <% end %>
-          <%= tag.input type: 'email', multiple: true, name: 'template[preferences][bcc_completed]', autocomplete: 'off', class: 'base-input', value: ff.object.bcc_completed, id: ff.field_id(:bcc_completed) %>
+          <%= tag.input type: 'email', multiple: true, name: 'template[preferences][bcc_completed]', autocomplete: 'off', class: 'base-input', value: ff.object.bcc_completed, id: ff.field_id(:bcc_completed), placeholder: t('preferences_placeholder_bcc_completed', default: 'notifications@company.com') %>
         </div>
       <% end %>
       <div class="form-control pt-3">
@@ -51,7 +51,7 @@
               <%= ff.select :default_expire_at_duration, duration_options, { include_blank: t('none') }, required: false, class: 'base-select flex-1', dir: 'auto', autocomplete: 'off' %>
             </show-on-value>
             <submit-form data-on="change" data-submit-if-value="true" class="flex">
-              <%= ff.datetime_field :default_expire_at, required: false, class: ['base-input flex-1', ff.object.default_expire_at.blank? && 'hidden'].compact_blank.join(' '), dir: 'auto', autocomplete: 'off' %>
+              <%= ff.datetime_field :default_expire_at, required: false, class: ['base-input flex-1', ff.object.default_expire_at.blank? && 'hidden'].compact_blank.join(' '), dir: 'auto', autocomplete: 'off', placeholder: t('preferences_placeholder_expiration_datetime', default: '2026-06-15 09:00') %>
             </submit-form>
           </div>
         </div>
@@ -70,13 +70,13 @@
           <%= f.fields_for :preferences, Struct.new(:completed_redirect_url, :completed_message, :require_phone_2fa, :require_email_2fa).new(@template.preferences['completed_redirect_url'].presence, Struct.new(:title, :body).new(*(@template.preferences['completed_message'] || {}).values_at('title', 'body')), @template.preferences['require_phone_2fa'] == true, @template.preferences['require_email_2fa'] == true) do |ff| %>
             <div class="form-control mb-2">
               <%= ff.label :completed_redirect_url, t('redirect_on_completion_url'), class: 'label' %>
-              <%= ff.url_field :completed_redirect_url, required: false, class: 'base-input', dir: 'auto' %>
+              <%= ff.url_field :completed_redirect_url, required: false, class: 'base-input', dir: 'auto', placeholder: t('preferences_placeholder_redirect_url', default: 'https://example.com/thank-you') %>
             </div>
             <%= ff.fields_for :completed_message, ff.object.completed_message do |fff| %>
               <div class="form-control mb-2 mt-4">
                 <%= fff.label :body, t('completion_message'), class: 'label' %>
                 <autoresize-textarea>
-                  <%= fff.text_area :body, required: false, class: 'base-input w-full py-2', dir: 'auto' %>
+                  <%= fff.text_area :body, required: false, class: 'base-input w-full py-2', dir: 'auto', placeholder: t('preferences_placeholder_completion_message', default: 'Thank you for completing the form. You will hear from us shortly.') %>
                 </autoresize-textarea>
               </div>
             <% end %>

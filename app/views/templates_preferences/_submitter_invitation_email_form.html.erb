@@ -24,11 +24,11 @@
               </label>
             <% end %>
           </div>
-          <%= ff.text_field :request_email_subject, required: true, class: 'base-input', dir: 'auto' %>
+          <%= ff.text_field :request_email_subject, required: true, class: 'base-input', dir: 'auto', placeholder: t('personalization_placeholder_email_subject') %>
         </div>
         <div class="form-control">
           <%= ff.label :request_email_body, t('email_body'), class: 'label' %>
-          <%= render 'personalization_settings/markdown_editor', name: ff.field_name(:request_email_body), value: ff.object.request_email_body, variables: AccountConfig::EMAIL_VARIABLES[AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY] %>
+          <%= render 'personalization_settings/markdown_editor', name: ff.field_name(:request_email_body), value: ff.object.request_email_body, variables: AccountConfig::EMAIL_VARIABLES[AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY], placeholder: t('personalization_placeholder_email_body_markdown') %>
         </div>
       <% end %>
     </div>
@@ -60,11 +60,11 @@
                   </label>
                 <% end %>
               </div>
-              <%= text_field_tag 'template[preferences][submitters][][request_email_subject]', submitter_email_values.first, required: true, class: 'base-input', dir: 'auto', autocomplete: 'off' %>
+              <%= text_field_tag 'template[preferences][submitters][][request_email_subject]', submitter_email_values.first, required: true, class: 'base-input', dir: 'auto', autocomplete: 'off', placeholder: t('personalization_placeholder_email_subject') %>
             </div>
             <div class="form-control">
               <label class="label"><%= t('email_body') %></label>
-              <%= render 'personalization_settings/markdown_editor', name: 'template[preferences][submitters][][request_email_body]', value: submitter_email_values.last, variables: AccountConfig::EMAIL_VARIABLES[AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY] %>
+              <%= render 'personalization_settings/markdown_editor', name: 'template[preferences][submitters][][request_email_body]', value: submitter_email_values.last, variables: AccountConfig::EMAIL_VARIABLES[AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY], placeholder: t('personalization_placeholder_email_body_markdown') %>
             </div>
           </div>
         <% end %>

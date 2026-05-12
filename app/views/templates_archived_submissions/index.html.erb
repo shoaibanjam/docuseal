@@ -1,43 +1,74 @@
 <% filter_params = params.permit(Submissions::Filter::ALLOWED_PARAMS).compact_blank %>
 <% with_filters = @pagy.pages > 1 || params[:q].present? || filter_params.present? %>
-<%= render 'templates/title', template: @template %>
-<div class="flex flex-col md:flex-row md:items-center mb-6 gap-3">
-  <div class="flex w-full justify-between md:items-end items-end">
-    <div>
-      <div>
-        <%= link_to template_path(@template), class: 'flex items-center' do %>
-          <%= svg_icon('chevron_left', class: 'w-5 h-5') %>
-          <span style="margin-left: 3px"><%= t('back_to_active') %></span>
+<div class="settings-layout profile-settings-page templates-dashboard-page template-show-page template-archived-submissions-page">
+  <div class="settings-main profile-settings-main templates-dashboard-main template-show-main">
+    <%= render 'templates/title', template: @template %>
+
+    <div class="mb-4 md:mb-5">
+      <%= link_to template_path(@template), class: 'inline-flex items-center gap-1.5 text-sm font-medium link link-hover' do %>
+        <%= svg_icon('chevron_left', class: 'w-4 h-4 shrink-0') %>
+        <span><%= t('back_to_active') %></span>
+      <% end %>
+    </div>
+
+    <div class="tpl-show-submissions-header">
+      <h2 class="tpl-show-section-title flex flex-wrap items-center gap-2 <%= 'hidden' if params[:q].present? %>">
+        <%= t('submissions') %>
+        <span class="templates-dashboard-archived-badge shrink-0"><%= t('archived') %></span>
+      </h2>
+      <div class="tpl-show-submissions-toolbar">
+        <% if with_filters %>
+          <%= render 'shared/search_input', title_selector: 'h2' %>
+        <% end %>
+        <%= link_to new_template_submissions_export_path(@template, params.permit(:q, *Submissions::Filter::ALLOWED_PARAMS).merge(archived: true)), class: 'tpl-show-icon-btn hidden md:flex', data: { turbo_frame: 'modal' } do %>
+          <%= svg_icon('download', class: 'w-5 h-5 stroke-2') %>
+          <span><%= t('export') %></span>
         <% end %>
       </div>
-      <h1 class="text-3xl font-bold md:block"><%= t('submissions') %> <span class="badge badge-outline badge-lg align-middle"><%= t('archived') %></span></h1>
     </div>
-    <div class="flex space-x-2 justify-end">
-      <% if with_filters %>
-        <%= render 'shared/search_input' %>
-      <% end %>
-      <%= link_to new_template_submissions_export_path(@template, archived: true), class: 'btn btn-ghost text-base', data: { turbo_frame: 'modal' } do %>
-        <%= svg_icon('download', class: 'w-6 h-6 stroke-2') %>
-        <span><%= t('export') %></span>
-      <% end %>
-    </div>
+
+    <% if with_filters %>
+      <div class="tpl-show-tabs">
+        <div class="tpl-show-tabs-row flex-wrap">
+          <%= render 'submissions_filters/filter_button', filter_params: %>
+          <%= render 'submissions_filters/actions', filter_params: filter_params.merge(template_id: @template.id) %>
+        </div>
+        <div class="tpl-show-filters-row">
+          <%= render 'submissions_filters/applied_filters', filter_params: %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @submissions.present? %>
+      <div class="tpl-show-submissions-list space-y-4">
+        <%= render partial: 'templates/submission', collection: @submissions, locals: { template: @template, archived: true } %>
+      </div>
+    <% elsif params[:q].present? || filter_params.present? %>
+      <div class="tpl-show-empty-state">
+        <div class="tpl-show-empty-icon">
+          <%= svg_icon('search', class: 'w-10 h-10') %>
+        </div>
+        <p class="tpl-show-empty-title">
+          <%= t('submissions_not_found') %>
+        </p>
+        <p class="tpl-show-empty-subtitle templates-empty-subtitle">
+          <%= t('archived_submissions_empty_hint', default: 'Try adjusting filters or your search terms.') %>
+        </p>
+      </div>
+    <% else %>
+      <div class="tpl-show-empty-state">
+        <div class="tpl-show-empty-icon">
+          <%= svg_icon('inbox', class: 'w-10 h-10') %>
+        </div>
+        <p class="tpl-show-empty-title">
+          <%= t('no_archived_submissions', default: 'No archived submissions') %>
+        </p>
+        <p class="tpl-show-empty-subtitle templates-empty-subtitle">
+          <%= t('no_archived_submissions_hint', default: 'Archived invitations will appear here when you archive them from the active list.') %>
+        </p>
+      </div>
+    <% end %>
+
+    <%= render 'shared/pagination', pagy: @pagy, items_name: 'submissions' %>
   </div>
-  <% if with_filters %>
-    <div class="flex flex-col items-end md:flex-row gap-2">
-      <%= render 'submissions_filters/applied_filters', filter_params: %>
-      <%= render 'submissions_filters/filter_button', filter_params: %>
-    </div>
-  <% end %>
 </div>
-<% if @pagy.count.nil? || @pagy.count > 0 %>
-  <div class="space-y-4">
-    <%= render partial: 'templates/submission', collection: @submissions, locals: { template: @template, archived: true } %>
-  </div>
-<% elsif params[:q].present? || filter_params.present? %>
-  <div class="text-center">
-    <div class="mt-16 text-3xl font-semibold">
-      <%= t('submissions_not_found') %>
-    </div>
-  </div>
-<% end %>
-<%= render 'shared/pagination', pagy: @pagy, items_name: 'submissions' %>

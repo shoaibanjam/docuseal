@@ -1269,6 +1269,39 @@
   border-color: #04be99 !important;
 }
 
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input,
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select {
+  background-color: #ffffff !important;
+  color: #12233c !important;
+  border-color: rgba(18, 35, 60, 0.14) !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input::placeholder {
+  color: rgba(18, 35, 60, 0.45) !important;
+  opacity: 1;
+}
+
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input:hover:not(:focus),
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select:hover:not(:focus) {
+  background-color: #f7fbff !important;
+  border-color: rgba(4, 190, 153, 0.45) !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input:focus,
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus {
+  background-color: #ffffff !important;
+  border-color: #04be99 !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input::placeholder {
+  color: rgba(18, 35, 60, 0.45) !important;
+  opacity: 1;
+}
+
 [data-theme='docuseal-light'] .settings-card .toggle {
   background-color: #e8edf4 !important;
   border-color: rgba(51, 65, 85, 0.38) !important;
@@ -1689,11 +1722,12 @@
   box-shadow: 0 0 0 2px rgba(4, 190, 153, 0.18);
 }
 
-/* In template/clone modals, folder field should look like one single row container,
-   not an inner input with its own chrome. */
-.modal-box--template-form .template-folder-name-input,
-.modal-box--template-form .template-folder-name-input:hover:not(:focus),
-.modal-box--template-form .template-folder-name-input:focus {
+/* In new/clone template modals (signature shell), folder field reads as one row. */
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .template-folder-name-input,
+.modal-box--signature-editor:has(.tpl-new-folder-picker)
+  .template-folder-name-input:hover:not(:focus),
+.modal-box--signature-editor:has(.tpl-new-folder-picker)
+  .template-folder-name-input:focus {
   background: transparent !important;
   border-color: transparent !important;
   border-width: 0 !important;
@@ -1719,12 +1753,14 @@
   box-shadow: 0 0 0 2px rgba(4, 190, 153, 0.16) !important;
 }
 
-[data-theme='docuseal-light'] .modal-box--template-form .template-folder-name-input,
 [data-theme='docuseal-light']
-  .modal-box--template-form
+  .modal-box--signature-editor:has(.tpl-new-folder-picker)
+  .template-folder-name-input,
+[data-theme='docuseal-light']
+  .modal-box--signature-editor:has(.tpl-new-folder-picker)
   .template-folder-name-input:hover:not(:focus),
 [data-theme='docuseal-light']
-  .modal-box--template-form
+  .modal-box--signature-editor:has(.tpl-new-folder-picker)
   .template-folder-name-input:focus {
   background: transparent !important;
   border-color: transparent !important;

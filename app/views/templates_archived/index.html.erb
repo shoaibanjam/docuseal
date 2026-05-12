@@ -12,8 +12,9 @@
                 <%= svg_icon('chevron_left', class: 'w-4 h-4') %>
                 <span><%= t('back_to_active') %></span>
               <% end %>
-              <h1 class="ds-heading-2 profile-settings-title <%= 'hidden' if params[:q].present? %>">
-                <%= t('document_templates_html') %> <span class="badge badge-outline badge-lg align-middle"><%= t('archived') %></span>
+              <h1 class="ds-heading-2 profile-settings-title flex flex-wrap items-center gap-x-2 gap-y-2 <%= 'hidden' if params[:q].present? %>">
+                <%= t('document_templates_html') %>
+                <span class="templates-dashboard-archived-badge"><%= t('archived') %></span>
               </h1>
               <p class="settings-page-subtitle profile-settings-intro templates-dashboard-intro <%= 'hidden' if params[:q].present? %>">
                 <%= t('templates_archived_intro', default: 'Browse archived templates and reopen active work anytime.') %>
