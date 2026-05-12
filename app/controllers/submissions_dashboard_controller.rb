@@ -9,13 +9,15 @@ class SubmissionsDashboardController < ApplicationController
                              .where(templates: { archived_at: nil })
                              .preload(:created_by_user, template: :author)
 
-    @stats_total = base_scope.count
-    @stats_completed = base_scope.completed.count
-    @stats_awaiting = base_scope.pending.count
-    @stats_avg_time = average_completion_time(base_scope)
+    filtered_scope = Submissions.search(current_user, base_scope, params[:q], search_template: true)
+    filtered_scope = Submissions::Filter.call(filtered_scope, current_user, params)
 
-    @submissions = Submissions.search(current_user, base_scope, params[:q], search_template: true)
-    @submissions = Submissions::Filter.call(@submissions, current_user, params)
+    @stats_total = submission_scope_count(filtered_scope)
+    @stats_completed = submission_scope_count(filtered_scope.completed)
+    @stats_awaiting = submission_scope_count(filtered_scope.pending)
+    @stats_avg_time = average_completion_time(filtered_scope)
+
+    @submissions = filtered_scope
 
     @submissions = if params[:completed_at_from].present? || params[:completed_at_to].present?
                      @submissions.order(Submitter.arel_table[:completed_at].maximum.desc)
@@ -28,10 +30,16 @@ class SubmissionsDashboardController < ApplicationController
 
   private
 
+  # Plain search and some filters use GROUP BY id; +count+ then returns a Hash.
+  def submission_scope_count(scope)
+    count = scope.count
+    count.is_a?(Hash) ? count.size : count
+  end
+
   def average_completion_time(scope)
     adapter = ActiveRecord::Base.connection.adapter_name.to_s.downcase
     duration_sql = if adapter.include?('sqlite')
-                     "(julianday(completed_at) - julianday(created_at)) * 86400.0"
+                     '(julianday(completed_at) - julianday(created_at)) * 86400.0'
                    else
                      'EXTRACT(EPOCH FROM (completed_at - created_at))'
                    end

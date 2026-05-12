@@ -89,6 +89,13 @@ export default class extends HTMLElement {
     if (this.button) {
       this.button.setAttribute('aria-pressed', String(isLight))
       this.button.dataset.theme = isLight ? LIGHT_THEME : DARK_THEME
+
+      const nextIsLight = !isLight
+      const label = nextIsLight
+        ? (this.dataset.labelLight || 'Switch to light mode')
+        : (this.dataset.labelDark || 'Switch to dark mode')
+      this.button.setAttribute('aria-label', label)
+      this.button.setAttribute('title', label)
     }
   }
 }

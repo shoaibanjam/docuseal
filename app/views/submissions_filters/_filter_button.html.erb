@@ -1,12 +1,12 @@
 <% query_params = params.permit(:q).merge(filter_params) %>
 <div class="dropdown dropdown-end">
-  <label tabindex="0" class="tpl-show-tab ds-submissions-tab !w-auto md:!w-auto !justify-start !gap-1.5 cursor-pointer <%= filter_params.present? ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+  <label tabindex="0" class="tpl-show-tab ds-submissions-tab !w-auto md:!w-auto !justify-start !gap-1.5 cursor-pointer <%= 'tpl-show-tab--active' if filter_params.present? %>">
     <%= svg_icon('filter', class: 'w-4 h-4 flex-shrink-0 stroke-2') %>
     <span class="<%= filter_params.then { |f| f[:status].in?(%w[pending completed]) ? f.except(:status) : f }.present? ? 'md:hidden' : '' %>">
       Filter
     </span>
   </label>
-  <ul tabindex="0" class="z-20 dropdown-content p-2 mt-2 shadow-xl menu text-sm bg-[#0d1c2f] border border-white/10 rounded-xl min-w-[220px] text-left">
+  <ul tabindex="0" class="z-20 dropdown-content p-2 mt-2 shadow-xl menu text-sm bg-[#0d1c2f] border border-base-content/15 rounded-xl min-w-[220px] text-left">
     <li class="flex">
       <%= link_to submissions_filter_path('completed_at', query_params.merge(path: url_for)), class: 'rounded-lg hover:bg-white/5', data: { turbo_frame: 'modal' } do %>
         <%= svg_icon('calendar_check', class: 'w-5 h-5 flex-shrink-0 stroke-2') %>
