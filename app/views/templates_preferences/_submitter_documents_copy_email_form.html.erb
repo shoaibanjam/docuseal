@@ -17,16 +17,16 @@
             </label>
           <% end %>
         </div>
-        <%= ff.text_field :documents_copy_email_subject, required: true, class: 'base-input', dir: 'auto' %>
+        <%= ff.text_field :documents_copy_email_subject, required: true, class: 'base-input', dir: 'auto', placeholder: t('personalization_placeholder_email_subject') %>
       </div>
       <div class="form-control">
         <%= ff.label :documents_copy_email_body, t('email_body'), class: 'label' %>
-        <%= render 'personalization_settings/markdown_editor', name: ff.field_name(:documents_copy_email_body), value: ff.object.documents_copy_email_body, variables: AccountConfig::EMAIL_VARIABLES[AccountConfig::SUBMITTER_DOCUMENTS_COPY_EMAIL_KEY] %>
+        <%= render 'personalization_settings/markdown_editor', name: ff.field_name(:documents_copy_email_body), value: ff.object.documents_copy_email_body, variables: AccountConfig::EMAIL_VARIABLES[AccountConfig::SUBMITTER_DOCUMENTS_COPY_EMAIL_KEY], placeholder: t('personalization_placeholder_email_body_markdown') %>
       </div>
       <% if can?(:manage, :reply_to) %>
         <div class="form-control">
           <%= ff.label :documents_copy_email_reply_to, t('reply_to'), class: 'label' %>
-          <%= ff.email_field :documents_copy_email_reply_to, class: 'base-input', dir: 'auto', placeholder: t(:email) %>
+          <%= ff.email_field :documents_copy_email_reply_to, class: 'base-input', dir: 'auto', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
         </div>
       <% end %>
     <% end %>

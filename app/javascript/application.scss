@@ -593,6 +593,14 @@ dynamic-variable {
   @apply min-w-0 space-y-8 px-5 py-8 md:py-10 md:pl-10 md:pr-8 lg:px-12 lg:py-12;
 }
 
+/* Signed-in drawer: blur scrim only when the mobile menu is open (not on the idle overlay layer). */
+@media (max-width: 1023px) {
+  .drawer .drawer-toggle:checked ~ .drawer-side > .app-sidebar-drawer-overlay {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
+
 /* ----- SaaS sidebar (Linear / Stripe-inspired; keeps .app-sidebar for DS hooks) ----- */
 $saas-bg-deep: #0b1220;
 $saas-panel: rgba(15, 23, 42, 0.75);
@@ -1334,6 +1342,32 @@ $saas-label: rgba(226, 232, 240, 0.45);
 .settings-card .base-input:focus,
 .settings-card .base-select:focus {
   @apply bg-[#010e21] border-secondary outline-none ring-1 ring-secondary/20;
+}
+
+/* New / clone template modal: same field chrome and placeholder tone as profile settings cards */
+.modal-box--signature-editor:has(.tpl-new-form) .base-input,
+.modal-box--signature-editor:has(.tpl-new-form) select.base-select {
+  @apply bg-[#010e21] border border-white/5 placeholder:text-primary-content/50;
+  color: #d5e3fe;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .base-input:hover:not(:focus),
+.modal-box--signature-editor:has(.tpl-new-form) select.base-select:hover:not(:focus) {
+  @apply bg-[#1d2b3e] border-secondary/60;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .base-input:focus,
+.modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus {
+  @apply bg-[#010e21] border-secondary outline-none ring-1 ring-secondary/20;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input {
+  color: #d5e3fe !important;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input::placeholder {
+  color: rgba(213, 227, 254, 0.5);
+  opacity: 1;
 }
 
 .settings-card--preferences .settings-card-header {
@@ -3180,6 +3214,9 @@ kbd {
 .modal-box--preferences {
   border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
   box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
+  width: 100%;
+  max-width: min(760px, calc(100vw - 2rem));
+  margin-inline: auto;
 }
 
 .modal-box--preferences .preferences-modal__header {
@@ -3189,7 +3226,8 @@ kbd {
 }
 
 .modal-box--preferences .preferences-modal__body {
-  width: min(100%, 760px);
+  width: 100%;
+  max-width: none;
 }
 
 .preferences-modal__tabs-wrap {
@@ -3352,35 +3390,6 @@ kbd {
   box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
 }
 
-[data-theme='docuseal-dark'] .modal--template-form .turbo-modal-backdrop,
-[data-theme='docuseal'] .modal--template-form .turbo-modal-backdrop {
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
-}
-
-.modal-box--template-form.modal-box {
-  width: min(calc(100vw - 2rem), 52rem) !important;
-  max-width: min(calc(100vw - 2rem), 52rem) !important;
-  margin-top: 0 !important;
-  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
-  box-shadow: 0 20px 44px rgba(3, 14, 32, 0.35);
-}
-
-.modal-box--template-form .template-form-modal__header {
-  margin-bottom: 0.75rem;
-}
-
-.modal-box--template-form .template-form-modal__body {
-  width: 100%;
-  max-width: none;
-}
-
-[data-theme='docuseal-light'] .modal-box--template-form.modal-box {
-  border-color: rgba(18, 35, 60, 0.16);
-  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.18);
-}
-
 /* -------------------------------------------------------------------------- */
 /* Signature modal shell (centered, backdrop blur, semantic tokens only)       */
 /* -------------------------------------------------------------------------- */
@@ -3483,6 +3492,30 @@ kbd {
 [data-theme='docuseal-light'] .modal-box--signature-editor.modal-box {
   border-color: color-mix(in srgb, var(--stitch-on-surface) 14%, transparent);
   box-shadow: var(--ds-shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.modal-box--signature-editor.modal-box.modal-box--submissions-filter {
+  width: min(100%, 32rem);
+}
+
+.modal-box--signature-editor.modal-box.modal-box--event-log {
+  width: min(100%, 36.875rem);
+}
+
+.event-log-modal__body {
+  max-height: min(72vh, calc(100vh - 10rem));
+  overflow-y: auto;
+  padding-right: 0.125rem;
+}
+
+.modal-box--signature-editor.modal-box.modal-box--edit-recipient {
+  width: min(100%, 36.875rem);
+}
+
+.edit-recipient-modal__body {
+  max-height: min(72vh, calc(100vh - 10rem));
+  overflow-y: auto;
+  padding-right: 0.125rem;
 }
 
 [data-theme='docuseal-light'] .signature-modal__close {
@@ -4708,6 +4741,41 @@ table tbody tr:hover {
   );
 }
 
+/* "Archived" pill next to h1 on templates/submissions archived views (shared look) */
+.templates-dashboard-archived-badge {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  padding: 0.35rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--profile-border) 88%, transparent);
+  color: color-mix(in srgb, var(--profile-text) 92%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--profile-surface-inset) 52%,
+    transparent
+  );
+}
+
+[data-theme='docuseal-light'] .templates-dashboard-archived-badge {
+  border-color: rgba(18, 35, 60, 0.2);
+  color: #3d5674;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset;
+}
+
+[data-theme='docuseal-dark'] .templates-dashboard-archived-badge,
+[data-theme='docuseal'] .templates-dashboard-archived-badge {
+  border-color: rgba(226, 232, 240, 0.22);
+  color: rgba(241, 245, 249, 0.92);
+  background: rgba(12, 24, 40, 0.65);
+}
+
 .templates-dashboard-page .dashboard-view-toggle {
   border-radius: calc(var(--profile-radius) - 6px);
   border: 1px solid color-mix(in srgb, var(--profile-border) 92%, transparent);
@@ -5697,8 +5765,42 @@ table tbody tr:hover {
 }
 
 .tpl-show-tab--active {
-  border-color: var(--profile-accent) !important;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--profile-accent) 18%, transparent);
+  border-color: color-mix(in srgb, var(--profile-accent) 88%, var(--profile-border)) !important;
+  background: color-mix(in srgb, var(--profile-accent) 12%, var(--ds-bg-elevated));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--profile-accent) 26%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--profile-accent) 16%, transparent);
+  color: var(--profile-text);
+}
+
+[data-theme='docuseal-dark'] .tpl-show-tab--active,
+[data-theme='docuseal'] .tpl-show-tab--active {
+  background: color-mix(
+    in srgb,
+    var(--profile-accent) 18%,
+    color-mix(in srgb, var(--ds-bg-elevated) 94%, #050d18)
+  );
+  border-color: color-mix(in srgb, var(--profile-accent) 72%, transparent) !important;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--profile-accent) 32%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--profile-accent) 22%, transparent),
+    0 4px 14px color-mix(in srgb, var(--profile-accent) 12%, transparent);
+}
+
+.tpl-show-tab--active .tpl-show-tab-count,
+.tpl-show-tab--active .submission-status-count {
+  border-color: color-mix(
+    in srgb,
+    var(--profile-accent) 48%,
+    var(--profile-border)
+  ) !important;
+  background: color-mix(
+    in srgb,
+    var(--profile-accent) 26%,
+    rgba(15, 30, 48, 0.88)
+  ) !important;
+  color: #f2fffb !important;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
 }
 
 .tpl-show-tab-label {
@@ -5891,6 +5993,31 @@ table tbody tr:hover {
   border-color: rgba(18, 35, 60, 0.14) !important;
 }
 
+[data-theme='docuseal-light'] .tpl-show-tab.tpl-show-tab--active {
+  background: color-mix(in srgb, var(--profile-accent) 14%, #ffffff) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--profile-accent) 58%,
+    rgba(18, 35, 60, 0.35)
+  ) !important;
+  color: #0a2540 !important;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--profile-accent) 24%, transparent),
+    0 2px 10px color-mix(in srgb, var(--profile-accent) 14%, transparent);
+}
+
+[data-theme='docuseal-light'] .tpl-show-tab.tpl-show-tab--active .tpl-show-tab-count,
+[data-theme='docuseal-light'] .tpl-show-tab.tpl-show-tab--active .submission-status-count {
+  background: color-mix(in srgb, var(--profile-accent) 20%, #e8f7f3) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--profile-accent) 52%,
+    rgba(18, 35, 60, 0.22)
+  ) !important;
+  color: #025746 !important;
+  text-shadow: none !important;
+}
+
 [data-theme='docuseal-light'] .tpl-show-tab-count {
   background: #f0f5fa;
   border-color: rgba(18, 35, 60, 0.12);
@@ -5930,8 +6057,8 @@ table tbody tr:hover {
     0 0 0 2px color-mix(in srgb, var(--profile-accent) 16%, transparent) !important;
 }
 
-/* Folder row reads as one field inside template / clone modals */
-.modal-box--template-form .tpl-new-folder-picker {
+/* Folder row reads as one field inside new/clone template modals (same shell as 2FA / signature) */
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-picker {
   padding: 0.5rem 0.85rem !important;
   border-radius: var(--ds-radius-8);
   border: 1px solid rgba(197, 198, 205, 0.2);
@@ -5939,13 +6066,15 @@ table tbody tr:hover {
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
-[data-theme='docuseal-light'] .modal-box--template-form .tpl-new-folder-picker {
+[data-theme='docuseal-light']
+  .modal-box--signature-editor:has(.tpl-new-folder-picker)
+  .tpl-new-folder-picker {
   border-color: rgba(18, 35, 60, 0.16);
   background: rgba(244, 248, 252, 0.98);
   box-shadow: inset 0 1px 2px rgba(10, 25, 44, 0.04);
 }
 
-.modal-box--template-form .tpl-new-folder-input {
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-input {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -5954,24 +6083,26 @@ table tbody tr:hover {
   padding: 0 0.35rem !important;
 }
 
-.modal-box--template-form .template-folder-name-input,
-.modal-box--template-form .template-folder-name-input:hover:not(:focus),
-.modal-box--template-form .template-folder-name-input:focus {
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .template-folder-name-input,
+.modal-box--signature-editor:has(.tpl-new-folder-picker)
+  .template-folder-name-input:hover:not(:focus),
+.modal-box--signature-editor:has(.tpl-new-folder-picker)
+  .template-folder-name-input:focus {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
 }
 
 /* Optional tenant selector in clone modal */
-.modal-box--template-form .form-control .base-select,
-.modal-box--template-form select.base-select {
+.modal-box--signature-editor:has(#account_id) .form-control .base-select,
+.modal-box--signature-editor:has(#account_id) select.base-select {
   border-color: rgba(197, 198, 205, 0.22) !important;
   background: #122033 !important;
   color: var(--profile-text) !important;
 }
 
-[data-theme='docuseal-light'] .modal-box--template-form .form-control .base-select,
-[data-theme='docuseal-light'] .modal-box--template-form select.base-select {
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(#account_id) .form-control .base-select,
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(#account_id) select.base-select {
   border-color: rgba(18, 35, 60, 0.18) !important;
   background: #ffffff !important;
   color: #12233c !important;

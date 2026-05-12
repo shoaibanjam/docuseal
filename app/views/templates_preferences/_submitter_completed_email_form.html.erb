@@ -17,11 +17,11 @@
             </label>
           <% end %>
         </div>
-        <%= ff.text_field :completed_notification_email_subject, required: true, class: 'base-input', dir: 'auto' %>
+        <%= ff.text_field :completed_notification_email_subject, required: true, class: 'base-input', dir: 'auto', placeholder: t('personalization_placeholder_email_subject') %>
       </div>
       <div class="form-control">
         <%= ff.label :completed_notification_email_body, t('email_body'), class: 'label' %>
-        <%= render 'personalization_settings/markdown_editor', name: ff.field_name(:completed_notification_email_body), value: ff.object.completed_notification_email_body, variables: AccountConfig::EMAIL_VARIABLES[AccountConfig::SUBMITTER_COMPLETED_EMAIL_KEY] %>
+        <%= render 'personalization_settings/markdown_editor', name: ff.field_name(:completed_notification_email_body), value: ff.object.completed_notification_email_body, variables: AccountConfig::EMAIL_VARIABLES[AccountConfig::SUBMITTER_COMPLETED_EMAIL_KEY], placeholder: t('personalization_placeholder_email_body_markdown') %>
       </div>
     <% end %>
   <% end %>

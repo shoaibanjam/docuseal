@@ -1,5 +1,10 @@
-<%= render 'shared/turbo_modal_large', title: t('edit_recipient') do %>
-  <div class="px-5 mb-5 mt-4">
+<%= render 'shared/turbo_modal',
+  title: t('edit_recipient'),
+  enhanced_modal: true,
+  content_class: 'modal-box--edit-recipient',
+  body_class: 'edit-recipient-modal__body',
+  close_after_submit: false do %>
+  <div class="py-1">
     <%= form_for '', url: submitter_path(@submitter), method: :patch, html: { autocomplete: 'off' }, data: { turbo_frame: :_top } do |f| %>
       <div class="mb-2">
         <submitter-item class="form-control">
