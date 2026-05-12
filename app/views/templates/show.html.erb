@@ -28,7 +28,7 @@
     <% if is_show_tabs %>
       <div class="tpl-show-tabs">
         <div class="tpl-show-tabs-row flex-wrap">
-          <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="tpl-show-tab ds-submissions-tab <%= params[:status].blank? ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+          <a href="<%= url_for(params: request.query_parameters.except('status')) %>" class="tpl-show-tab ds-submissions-tab <%= 'tpl-show-tab--active' if params[:status].blank? %>">
             <div class="tpl-show-tab-label">
               <%= svg_icon('list', class: 'w-4 h-4') %>
               <span><%= t('all') %></span>
@@ -39,7 +39,7 @@
               </div>
             <% end %>
           </a>
-          <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="tpl-show-tab ds-submissions-tab <%= params[:status] == 'pending' ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+          <a href="<%= url_for(params: request.query_parameters.merge('status' => 'pending')) %>" class="tpl-show-tab ds-submissions-tab <%= 'tpl-show-tab--active' if params[:status] == 'pending' %>">
             <div class="tpl-show-tab-label">
               <%= svg_icon('clock', class: 'w-4 h-4') %>
               <span><%= t('pending') %></span>
@@ -50,7 +50,7 @@
               </div>
             <% end %>
           </a>
-          <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="tpl-show-tab ds-submissions-tab <%= params[:status] == 'completed' ? 'tpl-show-tab--active border-secondary' : 'border-white/10' %>">
+          <a href="<%= url_for(params: request.query_parameters.merge('status' => 'completed')) %>" class="tpl-show-tab ds-submissions-tab <%= 'tpl-show-tab--active' if params[:status] == 'completed' %>">
             <div class="tpl-show-tab-label">
               <%= svg_icon('circle_check', class: 'w-4 h-4') %>
               <span><%= t('completed') %></span>

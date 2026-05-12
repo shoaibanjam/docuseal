@@ -83,7 +83,7 @@
           <theme-toggle class="hidden md:inline-flex items-center justify-center">
             <button
               type="button"
-              class="theme-toggle-btn builder-theme-toggle-btn"
+              class="theme-toggle-btn"
               aria-label="Toggle color theme"
               title="Toggle color theme"
             >

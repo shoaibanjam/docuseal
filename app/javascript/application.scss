@@ -5670,7 +5670,7 @@ table tbody tr:hover {
   justify-content: space-between;
   padding: 0.5rem 0.75rem;
   border-radius: var(--ds-radius-12);
-  border: 1px solid;
+  border: 1px solid color-mix(in srgb, var(--profile-border) 88%, transparent);
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--profile-text);
@@ -5678,6 +5678,12 @@ table tbody tr:hover {
   background: var(--ds-bg-elevated);
   transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
   width: 100%;
+}
+
+/* Match submission cards / outline buttons — not Tailwind white/10 */
+[data-theme='docuseal-dark'] .tpl-show-tab.ds-submissions-tab,
+[data-theme='docuseal'] .tpl-show-tab.ds-submissions-tab {
+  border-color: rgba(197, 198, 205, 0.16) !important;
 }
 
 @media (min-width: 768px) {
@@ -5794,14 +5800,29 @@ table tbody tr:hover {
   border-radius: var(--ds-radius-8) !important;
   padding: 0.75rem 1rem !important;
   font-size: 0.9375rem !important;
-  border: 1px solid color-mix(in srgb, var(--profile-border) 90%, transparent) !important;
-  background: color-mix(in srgb, var(--profile-surface-inset) 50%, transparent) !important;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+  min-height: 2.75rem !important;
+  width: 100% !important;
+  border: 1px solid rgba(197, 198, 205, 0.22) !important;
+  background: #122033 !important;
+  color: var(--profile-text) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22) !important;
+}
+
+.tpl-new-input::placeholder {
+  color: color-mix(in srgb, var(--profile-text-secondary) 78%, transparent) !important;
+  opacity: 1 !important;
+}
+
+.tpl-new-input:hover:not(:disabled):not(:focus) {
+  border-color: rgba(197, 198, 205, 0.3) !important;
 }
 
 .tpl-new-input:focus {
-  border-color: color-mix(in srgb, var(--profile-accent) 55%, var(--profile-border)) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 12%, transparent) !important;
+  outline: none !important;
+  border-color: color-mix(in srgb, var(--profile-accent) 72%, rgba(197, 198, 205, 0.35)) !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18),
+    0 0 0 2px color-mix(in srgb, var(--profile-accent) 22%, transparent) !important;
 }
 
 .tpl-new-folder-picker {
@@ -5867,6 +5888,7 @@ table tbody tr:hover {
 [data-theme='docuseal-light'] .tpl-show-tab {
   background: #ffffff;
   color: #12233c;
+  border-color: rgba(18, 35, 60, 0.14) !important;
 }
 
 [data-theme='docuseal-light'] .tpl-show-tab-count {
@@ -5893,6 +5915,66 @@ table tbody tr:hover {
 
 [data-theme='docuseal-light'] .tpl-new-input {
   background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.18) !important;
+  color: #12233c !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 1px 2px rgba(10, 25, 44, 0.06) !important;
+}
+
+[data-theme='docuseal-light'] .tpl-new-input::placeholder {
+  color: rgba(18, 35, 60, 0.45) !important;
+}
+
+[data-theme='docuseal-light'] .tpl-new-input:focus {
+  border-color: color-mix(in srgb, var(--profile-accent) 55%, rgba(18, 35, 60, 0.25)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 2px color-mix(in srgb, var(--profile-accent) 16%, transparent) !important;
+}
+
+/* Folder row reads as one field inside template / clone modals */
+.modal-box--template-form .tpl-new-folder-picker {
+  padding: 0.5rem 0.85rem !important;
+  border-radius: var(--ds-radius-8);
+  border: 1px solid rgba(197, 198, 205, 0.2);
+  background: rgba(13, 28, 47, 0.65);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+[data-theme='docuseal-light'] .modal-box--template-form .tpl-new-folder-picker {
+  border-color: rgba(18, 35, 60, 0.16);
+  background: rgba(244, 248, 252, 0.98);
+  box-shadow: inset 0 1px 2px rgba(10, 25, 44, 0.04);
+}
+
+.modal-box--template-form .tpl-new-folder-input {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border-radius: 0 !important;
+  padding: 0 0.35rem !important;
+}
+
+.modal-box--template-form .template-folder-name-input,
+.modal-box--template-form .template-folder-name-input:hover:not(:focus),
+.modal-box--template-form .template-folder-name-input:focus {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Optional tenant selector in clone modal */
+.modal-box--template-form .form-control .base-select,
+.modal-box--template-form select.base-select {
+  border-color: rgba(197, 198, 205, 0.22) !important;
+  background: #122033 !important;
+  color: var(--profile-text) !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--template-form .form-control .base-select,
+[data-theme='docuseal-light'] .modal-box--template-form select.base-select {
+  border-color: rgba(18, 35, 60, 0.18) !important;
+  background: #ffffff !important;
+  color: #12233c !important;
 }
 
 /* Settings support channel icons */
