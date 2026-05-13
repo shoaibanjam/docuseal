@@ -1,35 +1,51 @@
 <template>
-  <div
-    class="modal modal-open items-start !animate-none overflow-y-auto"
-  >
+  <div class="modal modal-open modal--signature-editor !animate-none overflow-y-auto">
     <div
-      class="absolute top-0 bottom-0 right-0 left-0"
+      class="turbo-modal-backdrop absolute inset-0 cursor-pointer z-0"
+      aria-hidden="true"
       @click.prevent="$emit('close')"
     />
-    <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none w-full max-w-xl">
-      <div class="flex justify-between items-center border-b pb-2 mb-2 font-medium">
-        <span class="modal-title">
-          {{ t('condition') }} - {{ (defaultField ? (defaultField.title || item.title || item.name) : item.name) || buildDefaultName(item) }}
-        </span>
-        <a
-          href="#"
-          class="text-xl modal-close-button"
-          @click.prevent="$emit('close')"
-        >&times;</a>
-      </div>
-      <div>
+    <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none relative z-10 w-full modal-box--signature-editor modal-box--decline">
+      <header class="signature-modal__header">
+        <div class="signature-modal__title-row">
+          <h2 class="signature-modal__title">
+            {{ t('condition') }} - {{ (defaultField ? (defaultField.title || item.title || item.name) : item.name) || buildDefaultName(item) }}
+          </h2>
+          <button
+            type="button"
+            class="signature-modal__close"
+            :aria-label="t('close', 'Close')"
+            @click.prevent="$emit('close')"
+          >
+            <IconX
+              class="w-5 h-5"
+              stroke-width="1.75"
+            />
+          </button>
+        </div>
+        <div
+          class="signature-modal__head-divider"
+          aria-hidden="true"
+        />
+      </header>
+      <div class="signature-modal__body">
         <div
           v-if="!withConditions"
-          class="bg-base-300 rounded-xl py-2 px-3 text-center"
+          class="tpl-new-form"
         >
-          <a
-            href="https://www.docuseal.com/pricing"
-            target="_blank"
-            class="link"
-          >{{ t('available_in_pro') }}</a>
+          <p class="signature-editor__lead text-center">
+            <a
+              href="https://www.docuseal.com/pricing"
+              target="_blank"
+              class="link"
+            >{{ t('available_in_pro') }}</a>
+          </p>
         </div>
-        <form @submit.prevent="validateSaveAndClose">
-          <div class="my-4">
+        <form
+          class="tpl-new-form"
+          @submit.prevent="validateSaveAndClose"
+        >
+          <div class="form-control mt-4">
             <div
               v-for="(condition, cindex) in conditions"
               :key="cindex"
@@ -60,8 +76,8 @@
                 > {{ t('remove') }}</a>
               </div>
               <select
-                class="select select-bordered select-sm w-full bg-[#010e21] h-11 pl-4 text-base font-normal text-primary-content border-white/10"
-                :class="{ 'text-gray-300': !condition.field_uuid }"
+                class="base-select w-full"
+                :class="{ 'base-select--placeholder': !condition.field_uuid }"
                 required
                 @change="[
                   condition.field_uuid = $event.target.value,
@@ -72,6 +88,7 @@
                 <option
                   value=""
                   disabled
+                  hidden
                   :selected="!condition.field_uuid"
                 >
                   {{ t('select_field_') }}
@@ -88,9 +105,9 @@
               </select>
               <select
                 v-model="condition.action"
-                class="select select-bordered select-sm w-full h-11 pl-4 text-base font-normal"
-                :class="{ 'bg-[#010e21] text-primary-content border-white/10': condition.field_uuid, 'bg-[#1d2b3e] text-primary-content/60 border-white/10': !condition.field_uuid }"
-                :required="condition.field_uuid"
+                class="base-select w-full"
+                :disabled="!condition.field_uuid"
+                :required="!!condition.field_uuid"
               >
                 <option
                   v-for="action in conditionActions(condition)"
@@ -102,15 +119,15 @@
               </select>
               <select
                 v-if="['radio', 'select', 'multiple'].includes(conditionField(condition)?.type) && conditionField(condition)?.options"
-                class="select select-bordered select-sm w-full bg-[#010e21] h-11 pl-4 text-base font-normal text-primary-content border-white/10"
-                :class="{ 'text-gray-300': !condition.value }"
+                v-model="condition.value"
+                class="base-select w-full"
+                :class="{ 'base-select--placeholder': !condition.value }"
                 required
-                @change="condition.value = $event.target.value"
               >
                 <option
                   value=""
                   disabled
-                  selected
+                  hidden
                 >
                   {{ t('select_value_') }}
                 </option>
@@ -118,7 +135,6 @@
                   v-for="(option, index) in conditionField(condition).options"
                   :key="option.uuid"
                   :value="option.uuid"
-                  :selected="condition.value === option.uuid"
                   class="text-base-content"
                 >
                   {{ option.value || `${t('option')} ${index + 1}` }}
@@ -129,8 +145,7 @@
                 v-model="condition.value"
                 type="number"
                 step="any"
-                class="input input-bordered input-sm w-full bg-[#010e21] h-11 pl-4 text-base font-normal text-primary-content border-white/10"
-                :class="{ 'text-gray-300': !condition.value }"
+                class="base-input w-full"
                 :placeholder="t('type_value')"
                 required
               >
@@ -141,9 +156,11 @@
             class="inline float-right link text-right mb-3 px-2"
             @click.prevent="conditions.push({})"
           > + {{ t('add_condition') }}</a>
-          <button class="base-button w-full mt-2 modal-save-button">
-            {{ t('save') }}
-          </button>
+          <div class="form-control mt-1">
+            <button class="base-button tpl-new-submit-btn">
+              {{ t('save') }}
+            </button>
+          </div>
         </form>
         <div
           v-if="item.conditions?.[0]?.field_uuid"
@@ -162,8 +179,13 @@
 </template>
 
 <script>
+import { IconX } from '@tabler/icons-vue'
+
 export default {
   name: 'ConditionModal',
+  components: {
+    IconX
+  },
   inject: ['t', 'template', 'withConditions'],
   props: {
     item: {
@@ -211,6 +233,12 @@ export default {
   },
   created () {
     this.item.conditions ||= []
+  },
+  mounted () {
+    document.body.classList.add('overflow-hidden')
+  },
+  unmounted () {
+    document.body.classList.remove('overflow-hidden')
   },
   methods: {
     conditionField (condition) {

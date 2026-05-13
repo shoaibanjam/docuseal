@@ -9,6 +9,7 @@ import ToggleVisible from './elements/toggle_visible';
 import ToggleCookies from './elements/toggle_cookies';
 import DisableHidden from './elements/disable_hidden';
 import TurboModal from './elements/turbo_modal';
+import HtmlModal from './elements/html_modal';
 import FileDropzone from './elements/file_dropzone';
 import MenuActive from './elements/menu_active';
 import ClipboardCopy from './elements/clipboard_copy';
@@ -165,6 +166,7 @@ const safeRegisterElement = (name, element, options = {}) =>
 safeRegisterElement('toggle-visible', ToggleVisible);
 safeRegisterElement('disable-hidden', DisableHidden);
 safeRegisterElement('turbo-modal', TurboModal);
+safeRegisterElement('html-modal', HtmlModal);
 safeRegisterElement('file-dropzone', FileDropzone);
 safeRegisterElement('menu-active', MenuActive);
 safeRegisterElement('clipboard-copy', ClipboardCopy);

@@ -129,7 +129,7 @@
               autocomplete="off"
             >
             <button
-              class="base-button md:!px-6 hidden md:flex items-center space-x-2 builder-sign-button"
+              class="tpl-show-action-btn tpl-show-action-btn--outline hidden md:inline-flex items-center gap-2 builder-sign-button"
               type="submit"
             >
               <IconWritingSign
@@ -145,7 +145,7 @@
             v-else-if="withSignYourselfButton"
             id="sign_yourself_button"
             :href="`/templates/${template.id}/submissions/new?selfsign=true`"
-            class="base-button md:!px-6 hidden md:flex items-center space-x-2 builder-sign-button"
+            class="tpl-show-action-btn tpl-show-action-btn--outline hidden md:inline-flex items-center gap-2 builder-sign-button"
             data-turbo-frame="modal"
             @click="maybeShowErrorTemplateAlert"
           >
@@ -162,7 +162,7 @@
             id="send_button"
             :href="`/templates/${template.id}/submissions/new?with_link=true`"
             data-turbo-frame="modal"
-            class="white-button md:!px-6 builder-send-button"
+            class="tpl-show-action-btn tpl-show-action-btn--outline hidden md:inline-flex items-center gap-2 builder-send-button"
             @click="maybeShowErrorTemplateAlert"
           >
             <IconUsersPlus
@@ -179,7 +179,7 @@
             class="flex builder-save-group"
           >
             <button
-              class="base-button !rounded-r-none !pr-2 builder-save-button"
+              class="tpl-show-action-btn tpl-show-action-btn--primary !rounded-r-none !pr-2 builder-save-button"
               :class="{ disabled: isSaving }"
               v-bind="isSaving ? { disabled: true } : {}"
               @click.prevent="onSaveClick"
@@ -198,14 +198,14 @@
               </span>
             </button>
             <div
-              class="dropdown dropdown-end"
+              class="dropdown dropdown-end builder-save-dropdown-wrap"
               :class="{ 'dropdown-open': isDownloading }"
             >
               <label
                 tabindex="0"
-                class="base-button !rounded-l-none !pl-1 !pr-2 !border-l-neutral-500 builder-save-dropdown-trigger"
+                class="tpl-show-action-btn tpl-show-action-btn--primary !rounded-l-none !pl-1 !pr-2 builder-save-dropdown-trigger"
               >
-                <span class="text-sm align-text-top">
+                <span class="inline-flex items-center justify-center leading-none">
                   <IconChevronDown class="w-5 h-5 flex-shrink-0" />
                 </span>
               </label>
@@ -262,7 +262,7 @@
             </div>
             <button
               type="button"
-              class="white-button md:!px-4 builder-copy-link-button"
+              class="tpl-show-action-btn tpl-show-action-btn--outline hidden md:inline-flex items-center gap-2 builder-copy-link-button"
               :title="t('copy')"
               @click.prevent="copyTemplateLink"
             >
@@ -275,7 +275,7 @@
           <a
             v-else
             :href="`/templates/${template.id}`"
-            class="base-button"
+            class="tpl-show-action-btn tpl-show-action-btn--outline"
           >
             <span class="hidden md:inline">
               {{ t('back') }}
@@ -2694,8 +2694,12 @@ export default {
       }, [])
     },
     async onDocumentRemove (item) {
-      const isConfirmed = window.showConfirmToast
-        ? await window.showConfirmToast(this.t('are_you_sure_'), { confirmText: this.t('remove'), cancelText: this.t('cancel') })
+      const isConfirmed = window.showConfirmModal
+        ? await window.showConfirmModal(this.t('are_you_sure_'), {
+            confirmText: this.t('remove'),
+            cancelText: this.t('cancel'),
+            variant: 'danger',
+          })
         : window.confirm(this.t('are_you_sure_'))
 
       if (isConfirmed) {

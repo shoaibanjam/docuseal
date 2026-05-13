@@ -1,18 +1,38 @@
 <% uuid = local_assigns[:uuid] || SecureRandom.uuid %>
-<input type="checkbox" id="<%= uuid %>" class="modal-toggle">
-<div id="<%= local_assigns[:id] %>" class="modal items-start !animate-none overflow-y-auto <%= local_assigns[:modal_class] %>">
-  <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none <%= local_assigns[:content_class] %>">
-    <% if local_assigns[:title] %>
-      <div class="flex justify-between items-center border-b pb-2 mb-2 font-medium <%= local_assigns[:header_class] %>">
-        <span>
-          <%= local_assigns[:title] %>
-        </span>
-        <label for="<%= uuid %>" class="text-xl">&times;</label>
-      </div>
+<% enhanced_modal = !!local_assigns[:enhanced_modal] %>
+<%= content_tag('html-modal') do %>
+  <input type="checkbox" id="<%= uuid %>" class="modal-toggle">
+  <div id="<%= local_assigns[:id] %>" class="modal <%= enhanced_modal ? 'modal--signature-editor !animate-none overflow-y-auto' : 'items-start !animate-none overflow-y-auto' %> <%= local_assigns[:modal_class] %>">
+    <% if enhanced_modal %>
+      <label for="<%= uuid %>" class="turbo-modal-backdrop absolute inset-0 cursor-pointer z-0" aria-hidden="true"></label>
     <% end %>
-    <div class="<%= local_assigns[:body_class] %>">
-      <%= yield %>
+    <div class="modal-box <%= enhanced_modal ? 'pt-4 pb-6 px-6 mt-20 max-h-none relative z-10 modal-box--signature-editor' : 'pt-4 pb-6 px-6 mt-20 max-h-none' %> <%= local_assigns[:content_class] %>">
+      <% if local_assigns[:title] %>
+        <% if enhanced_modal %>
+          <header class="signature-modal__header <%= local_assigns[:header_class] %>">
+            <div class="signature-modal__title-row">
+              <h2 class="signature-modal__title"><%= local_assigns[:title] %></h2>
+              <label for="<%= uuid %>" class="signature-modal__close" aria-label="<%= t('close', default: 'Close') %>">
+                <%= svg_icon('x', class: 'w-5 h-5 stroke-[1.75]') %>
+              </label>
+            </div>
+            <div class="signature-modal__head-divider" aria-hidden="true"></div>
+          </header>
+        <% else %>
+          <div class="flex justify-between items-center border-b pb-2 mb-2 font-medium <%= local_assigns[:header_class] %>">
+            <span>
+              <%= local_assigns[:title] %>
+            </span>
+            <label for="<%= uuid %>" class="text-xl">&times;</label>
+          </div>
+        <% end %>
+      <% end %>
+      <div class="<%= 'signature-modal__body' if enhanced_modal %> <%= local_assigns[:body_class] %>">
+        <%= yield %>
+      </div>
     </div>
+    <% unless enhanced_modal %>
+      <label class="modal-backdrop" for="<%= uuid %>"></label>
+    <% end %>
   </div>
-  <label class="modal-backdrop" for="<%= uuid %>"></label>
-</div>
+<% end %>

@@ -20,9 +20,6 @@
     <div class="space-x-3 flex items-center">
       <% last_submitter = @submission.submitters.to_a.select(&:completed_at?).max_by(&:completed_at) %>
       <% is_all_completed = @submission.submitters.to_a.all?(&:completed_at?) %>
-      <% if signed_in? && can?(:create, @submission) && @submission.archived_at? && !is_all_completed %>
-        <%= button_to button_title(title: t('unarchive'), disabled_with: t('unarchive')[0..-2], icon: svg_icon('rotate', class: 'w-6 h-6')), submission_unarchive_index_path(@submission), class: 'btn btn-primary btn-ghost text-base hidden md:flex' %>
-      <% end %>
       <theme-toggle class="inline-flex">
         <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
           <span data-theme-icon="sun">
@@ -33,20 +30,23 @@
           </span>
         </button>
       </theme-toggle>
+      <% if signed_in? && can?(:create, @submission) && @submission.archived_at? && !is_all_completed %>
+        <%= button_to button_title(title: t('unarchive'), disabled_with: t('unarchiving', default: 'Unarchiving'), icon: svg_icon('rotate', class: 'w-5 h-5')), submission_unarchive_index_path(@submission), class: 'tpl-show-action-btn tpl-show-action-btn--outline hidden md:inline-flex', form: { class: 'inline-flex' } %>
+      <% end %>
       <% if @submission.audit_trail.present? %>
-        <a href="<%= ActiveStorage::Blob.proxy_path(@submission.audit_trail.blob, expires_at: 4.hours.from_now) %>" class="white-button" target="_blank">
-          <%= svg_icon('external_link', class: 'w-6 h-6') %>
+        <a href="<%= ActiveStorage::Blob.proxy_path(@submission.audit_trail.blob, expires_at: 4.hours.from_now) %>" class="tpl-show-action-btn tpl-show-action-btn--outline inline-flex items-center gap-2" target="_blank">
+          <%= svg_icon('external_link', class: 'w-5 h-5') %>
           <span class="hidden md:inline"><%= t('audit_log') %></span>
         </a>
       <% elsif signed_in? %>
-        <%= link_to submission_events_path(@submission), class: 'white-button', data: { turbo_frame: :modal } do %>
-          <%= svg_icon('logs', class: 'w-6 h-6') %>
-          <span class="hidden md:block"><%= t('event_log') %></span>
+        <%= link_to submission_events_path(@submission), class: 'tpl-show-action-btn tpl-show-action-btn--outline inline-flex items-center gap-2', data: { turbo_frame: :modal } do %>
+          <%= svg_icon('logs', class: 'w-5 h-5') %>
+          <span class="hidden md:inline"><%= t('event_log') %></span>
         <% end %>
       <% end %>
       <% if last_submitter %>
         <% if is_all_completed || !is_combined_enabled %>
-          <div class="join relative">
+          <div class="join relative submission-show-download-group">
             <download-button data-src="<%= submitter_download_index_path(last_submitter.slug, { sig: params[:sig], combined: is_combined_enabled, admin: (params[:sig].blank? && signed_in? && can?(:read, @submission)) }.compact) %>" class="base-button <%= '!rounded-r-none !pr-2' if is_all_completed && !is_combined_enabled %>">
               <span class="flex items-center justify-center space-x-2" data-target="download-button.defaultButton">
                 <%= svg_icon('download', class: 'w-6 h-6') %>
@@ -64,9 +64,9 @@
                     <%= svg_icon('chevron_down', class: 'w-6 h-6 flex-shrink-0 stroke-2') %>
                   </span>
                 </label>
-                <ul tabindex="0" class="z-10 dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-right">
+                <ul tabindex="0" class="z-10 dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-right submission-show-download-dropdown-menu">
                   <li>
-                    <download-button data-src="<%= submitter_download_index_path(last_submitter.slug, { sig: params[:sig], combined: true }.compact) %>" class="flex items-center">
+                    <download-button data-src="<%= submitter_download_index_path(last_submitter.slug, { sig: params[:sig], combined: true }.compact) %>" class="submission-show-download-menu-item flex w-full cursor-pointer items-center">
                       <span class="flex items-center justify-center space-x-2" data-target="download-button.defaultButton">
                         <%= svg_icon('download', class: 'w-6 h-6 flex-shrink-0') %>
                         <span class="whitespace-nowrap"><%= t('download_combined_pdf') %></span>
@@ -83,7 +83,7 @@
           </div>
         <% end %>
       <% elsif @submission.submitters.to_a.size == 1 && !@submission.expired? && !@submission.submitters.to_a.first.declined_at? && !@submission.archived_at? && !@submission.template&.archived_at? %>
-        <%= render 'shared/clipboard_copy', text: submit_form_url(slug: @submission.submitters.to_a.first.slug, host: form_link_host), class: 'base-button', icon_class: 'w-6 h-6 text-white', copy_title: t('copy_share_link'), copied_title: t('copied_to_clipboard') %>
+        <%= render 'shared/clipboard_copy', text: submit_form_url(slug: @submission.submitters.to_a.first.slug, host: form_link_host), class: 'tpl-show-action-btn tpl-show-action-btn--outline inline-flex items-center gap-2', icon_class: 'w-5 h-5 shrink-0', copy_title: t('copy_share_link'), copied_title: t('copied_to_clipboard') %>
       <% end %>
     </div>
   </div>
@@ -252,14 +252,14 @@
             <% end %>
             <% if signed_in? && submitter && !submitter.completed_at? && !@submission.archived_at? && !@submission.template&.archived_at? && can?(:create, @submission) && !@submission.expired? && !submitter.declined_at? %>
               <div class="mt-2 mb-1">
-                <a class="btn btn-sm btn-primary w-full" target="_blank" href="<%= submit_form_path(slug: submitter.slug) %>">
+                <a class="tpl-show-action-btn tpl-show-action-btn--outline w-full justify-center text-center" target="_blank" href="<%= submit_form_path(slug: submitter.slug) %>">
                   <%= t('sign_in_person') %>
                 </a>
               </div>
             <% end %>
             <% if signed_in? && submitter && submitter.completed_at? && submitter.email == current_user.email && submitter.completed_at > 1.month.ago && can?(:update, @submission) %>
               <div class="mt-2 mb-1">
-                <%= button_to t('resubmit'), submitters_resubmit_path(submitter), method: :put, class: 'btn btn-sm btn-primary w-full', form: { target: '_blank' }, data: { turbo: false } %>
+                <%= button_to t('resubmit'), submitters_resubmit_path(submitter), method: :put, class: 'tpl-show-action-btn tpl-show-action-btn--outline w-full justify-center', form: { target: '_blank' }, data: { turbo: false } %>
               </div>
             <% end %>
           </div>

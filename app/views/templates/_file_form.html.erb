@@ -1,6 +1,6 @@
 <%= form_for @template, data: { turbo_frame: :_top }, html: { autocomplete: :off } do |f| %>
   <div class="form-control mt-4">
-    <%= f.text_field :name, required: true, placeholder: t('profile_placeholder_template_name', default: 'Sales proposal'), class: 'base-input w-full', dir: 'auto' %>
+    <%= f.text_field :name, required: true, placeholder: t('profile_placeholder_document_name', default: 'Document name'), class: 'base-input w-full', dir: 'auto' %>
   </div>
   <% folder_value = params[:folder_name].presence || TemplateFolder::DEFAULT_NAME %>
   <div class="tpl-new-folder-picker">
@@ -9,7 +9,7 @@
     </label>
     <folder-autocomplete class="flex justify-between items-center w-full bg-transparent">
       <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer flex-1 min-w-0">
-        <input id="folder_name" placeholder="<%= t('profile_placeholder_folder_path', default: 'Marketing / Contracts') %>" type="text" class="tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none" name="folder_name" value="<%= folder_value %>" autocomplete="off">
+        <input id="folder_name" placeholder="<%= t('profile_placeholder_folder_name', default: 'Folder name') %>" type="text" class="tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none" name="folder_name" value="<%= folder_value %>" autocomplete="off">
       </set-value>
       <set-value data-on="click" data-value="" data-input-id="folder_name" class="peer-focus-within:hidden whitespace-nowrap">
         <label for="folder_name" data-clear-on-focus="true" class="tpl-new-change-folder-link shrink-0 cursor-pointer">
