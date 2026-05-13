@@ -3,16 +3,77 @@ import autocomplete from 'autocompleter'
 export default class extends HTMLElement {
   connectedCallback () {
     if (this.dataset.enabled === 'false') return
+    if (this.autocompleteInstance) return
 
-    autocomplete({
+    const menuInTplForm = !!this.input?.closest('.tpl-new-folder-picker')
+
+    this.autocompleteInstance = autocomplete({
       input: this.input,
+      className: menuInTplForm ? 'tpl-new-folder-autocomplete-menu' : '',
+      customize: menuInTplForm ? this.alignPickerMenu : undefined,
+      disableAutoSelect: menuInTplForm,
       preventSubmit: this.dataset.submitOnSelect === 'true' ? 0 : 1,
       minLength: 0,
-      showOnFocus: true,
-      onSelect: this.onSelect,
+      showOnFocus: !menuInTplForm,
+      click: menuInTplForm ? ({ fetch }) => fetch() : undefined,
+      onSelect: (item) => {
+        this.onSelect(item)
+        this.setPickerOpen(false)
+      },
       render: this.render,
       fetch: this.fetch
     })
+
+    if (menuInTplForm) {
+      this.changeFolderLink = this.querySelector('.tpl-new-change-folder-link')
+      this.changeFolderLink?.addEventListener('click', this.onChangeFolderClick)
+      this.input.addEventListener('blur', this.onInputBlur)
+    }
+  }
+
+  disconnectedCallback () {
+    this.autocompleteInstance?.destroy()
+    this.autocompleteInstance = null
+    this.changeFolderLink?.removeEventListener('click', this.onChangeFolderClick)
+    this.input?.removeEventListener('blur', this.onInputBlur)
+  }
+
+  onChangeFolderClick = () => {
+    window.requestAnimationFrame(() => {
+      this.autocompleteInstance?.fetch()
+    })
+  }
+
+  onInputBlur = () => {
+    window.setTimeout(() => {
+      if (document.activeElement !== this.input) {
+        this.setPickerOpen(false)
+      }
+    }, 200)
+  }
+
+  setPickerOpen = (open) => {
+    const picker = this.input?.closest('.tpl-new-folder-picker')
+    if (!picker) return
+
+    picker.classList.toggle('tpl-new-folder-picker--open', open)
+  }
+
+  alignPickerMenu = (input, _inputRect, container, maxHeight) => {
+    const picker = input.closest('.tpl-new-folder-picker')
+    if (!picker) return
+
+    const pickerRect = picker.getBoundingClientRect()
+    const viewportSpace = window.innerHeight - pickerRect.bottom - 8
+
+    container.style.position = 'fixed'
+    container.style.width = `${pickerRect.width}px`
+    container.style.left = `${pickerRect.left}px`
+    container.style.top = `${pickerRect.bottom}px`
+    container.style.maxHeight = `${Math.max(120, Math.min(maxHeight, viewportSpace))}px`
+    container.style.zIndex = '10001'
+
+    this.setPickerOpen(true)
   }
 
   onSelect = (item) => {

@@ -17,9 +17,17 @@
         </label>
       <% end %>
       <div class="flex gap-2 mt-3">
+        <label for="embedding_url" class="sr-only"><%= t('embedding_url') %></label>
         <input id="embedding_url" type="text" value="<%= start_form_url(slug: @template.slug, host: form_link_host) %>" class="base-input w-full" autocomplete="off" readonly>
         <check-on-click data-element-id="template_shared_link">
-          <%= render 'shared/clipboard_copy', icon: 'copy', text: start_form_url(slug: @template.slug, host: form_link_host), class: 'base-button', icon_class: 'w-6 h-6 text-white', copy_title: t('copy'), copied_title: t('copied') %>
+          <%= render 'shared/clipboard_copy',
+                icon: 'copy',
+                text: start_form_url(slug: @template.slug, host: form_link_host),
+                always_show_label: true,
+                class: 'base-button profile-settings-btn-primary inline-flex cursor-pointer items-center justify-center gap-2 px-5 py-0 shrink-0 min-h-[2.75rem] self-stretch',
+                icon_class: 'w-5 h-5 shrink-0',
+                copy_title: t('copy'),
+                copied_title: t('copied') %>
         </check-on-click>
       </div>
     <% end %>
@@ -71,9 +79,9 @@
           <% if Docuseal.multitenant? || Accounts.can_send_emails?(current_account) %>
             <%= form_for @template, url: template_preferences_path(@template), method: :post, html: { autocomplete: 'off', class: 'mt-4' }, data: { close_on_submit: false } do |f| %>
               <%= f.fields_for :preferences, Struct.new(:shared_link_2fa).new(@template.preferences['shared_link_2fa'] == true) do |ff| %>
-                <label for="template_preferences_shared_link_2fa" class="flex items-center mt-4 h-14 justify-between gap-1 alert bg-base-100 border-base-300">
-                  <span><%= t('request_email_otp_verification_with_shared_link') %></span>
-                  <submit-form data-on="change" class="flex">
+                <label for="template_preferences_shared_link_2fa" class="flex items-center mt-4 justify-between gap-4 px-4 py-3.5 alert bg-base-100 border-base-300">
+                  <span class="pr-2 leading-snug"><%= t('request_email_otp_verification_with_shared_link') %></span>
+                  <submit-form data-on="change" class="flex shrink-0">
                     <%= ff.check_box :shared_link_2fa, { checked: ff.object.shared_link_2fa == true, disabled: !can?(:update, @template), class: 'toggle' }, 'true', 'false' %>
                   </submit-form>
                 </label>

@@ -9,15 +9,18 @@
       <div class="mb-2">
         <submitter-item class="form-control">
           <submitters-autocomplete data-field="name">
-            <%= text_field_tag 'submitter[name]', @submitter.name, autocomplete: 'off', class: 'base-input !h-10 w-full', placeholder: "#{t('name')} (#{t('optional')})", dir: 'auto' %>
+            <%= label_tag 'submitter_name', t('name'), class: 'sr-only' %>
+            <%= text_field_tag 'submitter[name]', @submitter.name, autocomplete: 'off', class: 'base-input !h-10 w-full', placeholder: "#{t('name')} (#{t('optional')})", dir: 'auto', id: 'submitter_name' %>
           </submitters-autocomplete>
           <div class="grid md:grid-cols-2 gap-1.5 mt-1.5">
             <submitters-autocomplete data-field="email">
-              <%= email_field_tag 'submitter[email]', @submitter.email, autocomplete: 'off', class: 'base-input !h-10 mt-1.5 w-full', placeholder: "#{t('email')} (#{t('optional')})" %>
+              <%= label_tag 'submitter_email', t('email'), class: 'sr-only' %>
+              <%= email_field_tag 'submitter[email]', @submitter.email, autocomplete: 'off', class: 'base-input !h-10 mt-1.5 w-full', placeholder: "#{t('email')} (#{t('optional')})", id: 'submitter_email' %>
             </submitters-autocomplete>
             <custom-validation data-invalid-message="<%= t('use_international_format_1xxx_') %>">
               <submitters-autocomplete data-field="phone">
-                <%= telephone_field_tag 'submitter[phone]', @submitter.phone, autocomplete: 'off', pattern: '^\+[0-9\s\-]+$', class: 'base-input !h-10 mt-1.5 w-full', placeholder: "#{t('phone')} (#{t('optional')})" %>
+                <%= label_tag 'submitter_phone', t('phone'), class: 'sr-only' %>
+                <%= telephone_field_tag 'submitter[phone]', @submitter.phone, autocomplete: 'off', pattern: '^\+[0-9\s\-]+$', class: 'base-input !h-10 mt-1.5 w-full', placeholder: "#{t('phone')} (#{t('optional')})", id: 'submitter_phone' %>
               </submitters-autocomplete>
             </custom-validation>
           </div>

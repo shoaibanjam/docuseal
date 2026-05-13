@@ -52,7 +52,7 @@
             </label>
           <% end %>
         </div>
-        <%= f.text_field :subject, value: local_assigns[:submitter_email_message]&.subject.presence || submitter_preferences_index.dig(local_assigns[:submitter]&.uuid, 'request_email_subject').presence || template&.preferences&.dig('request_email_subject').presence || config.value['subject'], required: true, class: '!text-sm base-input w-full', dir: 'auto' %>
+        <%= f.text_field :subject, value: local_assigns[:submitter_email_message]&.subject.presence || submitter_preferences_index.dig(local_assigns[:submitter]&.uuid, 'request_email_subject').presence || template&.preferences&.dig('request_email_subject').presence || config.value['subject'], required: true, class: '!text-sm base-input w-full', dir: 'auto', placeholder: t('personalization_placeholder_email_subject') %>
       </div>
       <div class="form-control">
         <%= f.label :message, t('body'), class: 'label' %>
@@ -88,7 +88,7 @@
                 <div class="flex justify-between">
                   <%= ff.label :subject, t('subject'), class: 'label' %>
                 </div>
-                <%= ff.text_field :subject, value: local_assigns[:submitter_email_message]&.subject.presence || submitter_preferences_index.dig(submitter['uuid'], 'request_email_subject').presence || template&.preferences&.dig('request_email_subject').presence || config.value['subject'], required: true, class: '!text-sm base-input w-full', dir: 'auto' %>
+                <%= ff.text_field :subject, value: local_assigns[:submitter_email_message]&.subject.presence || submitter_preferences_index.dig(submitter['uuid'], 'request_email_subject').presence || template&.preferences&.dig('request_email_subject').presence || config.value['subject'], required: true, class: '!text-sm base-input w-full', dir: 'auto', placeholder: t('personalization_placeholder_email_subject') %>
               </div>
               <div class="form-control">
                 <%= ff.label :message, t('body'), class: 'label' %>

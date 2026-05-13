@@ -3329,6 +3329,72 @@ kbd {
   border-radius: var(--ds-radius-8);
 }
 
+.modal-box--preferences,
+.modal-box--profile-copy,
+.modal-box--share-link {
+  --profile-accent: #10b981;
+  --profile-accent-contrast: #022c22;
+}
+
+.modal-box--preferences .profile-settings-btn-primary.base-button,
+.modal-box--preferences clipboard-copy label.profile-settings-btn-primary,
+.modal-box--profile-copy .profile-settings-btn-primary.base-button,
+.modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary,
+.modal-box--share-link .profile-settings-btn-primary.base-button,
+.modal-box--share-link clipboard-copy label.profile-settings-btn-primary {
+  background: var(--profile-accent);
+  border: 1px solid color-mix(in srgb, var(--profile-accent) 88%, black);
+  color: var(--profile-accent-contrast);
+  min-height: 2.75rem;
+  height: 2.75rem;
+  padding-left: 1.35rem;
+  padding-right: 1.35rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: transform 0.15s ease, filter 0.15s ease, background-color 0.15s ease;
+}
+
+.modal-box--preferences .profile-settings-btn-primary.base-button:hover,
+.modal-box--preferences clipboard-copy label.profile-settings-btn-primary:hover,
+.modal-box--profile-copy .profile-settings-btn-primary.base-button:hover,
+.modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary:hover,
+.modal-box--share-link .profile-settings-btn-primary.base-button:hover,
+.modal-box--share-link clipboard-copy label.profile-settings-btn-primary:hover {
+  filter: brightness(1.06);
+}
+
+.modal-box--preferences .profile-settings-btn-primary.base-button:active,
+.modal-box--preferences clipboard-copy label.profile-settings-btn-primary:active,
+.modal-box--profile-copy .profile-settings-btn-primary.base-button:active,
+.modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary:active,
+.modal-box--share-link .profile-settings-btn-primary.base-button:active,
+.modal-box--share-link clipboard-copy label.profile-settings-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.modal-box--preferences .profile-settings-btn-primary.base-button svg,
+.modal-box--preferences clipboard-copy label.profile-settings-btn-primary svg,
+.modal-box--profile-copy .profile-settings-btn-primary.base-button svg,
+.modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary svg,
+.modal-box--share-link .profile-settings-btn-primary.base-button svg,
+.modal-box--share-link clipboard-copy label.profile-settings-btn-primary svg {
+  color: currentColor;
+  stroke: currentColor;
+}
+
+[data-theme='docuseal-light'] .modal-box--preferences .profile-settings-btn-primary.base-button,
+[data-theme='docuseal-light'] .modal-box--preferences clipboard-copy label.profile-settings-btn-primary,
+[data-theme='docuseal-light'] .modal-box--profile-copy .profile-settings-btn-primary.base-button,
+[data-theme='docuseal-light'] .modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary,
+[data-theme='docuseal-light'] .modal-box--share-link .profile-settings-btn-primary.base-button,
+[data-theme='docuseal-light'] .modal-box--share-link clipboard-copy label.profile-settings-btn-primary {
+  background: var(--profile-accent) !important;
+  border-color: color-mix(in srgb, var(--profile-accent) 88%, black) !important;
+  color: var(--profile-accent-contrast) !important;
+}
+
 [data-theme='docuseal-light'] .modal-box--preferences {
   border-color: rgba(18, 35, 60, 0.16);
   box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
@@ -3348,7 +3414,11 @@ kbd {
 }
 
 .modal-box--signature-editor.modal-box.modal-box--submissions-filter {
-  width: min(100%, 32rem);
+  width: 28.5rem !important;
+  max-width: calc(100vw - 2rem) !important;
+  min-width: 0 !important;
+  flex-shrink: 0;
+  margin-inline: auto;
 }
 
 .modal-box--signature-editor.modal-box.modal-box--event-log {
@@ -5731,6 +5801,7 @@ table tbody tr:hover {
 .tpl-new-folder-picker {
   display: flex;
   align-items: center;
+  width: 100%;
   margin: 0.75rem 0 1rem;
   padding: 0.125rem 0;
   gap: 0.25rem;
@@ -5858,13 +5929,40 @@ table tbody tr:hover {
   box-shadow: inset 0 1px 2px rgba(10, 25, 44, 0.04);
 }
 
-.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-input {
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-input,
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-input:hover:not(:focus),
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-input:focus {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
   outline: none !important;
   border-radius: 0 !important;
   padding: 0 0.35rem !important;
+}
+
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-picker--open,
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-picker:focus-within {
+  border-color: var(--profile-accent);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.18),
+    0 0 0 3px color-mix(in srgb, var(--profile-accent) 28%, transparent);
+}
+
+[data-theme='docuseal-light']
+  .modal-box--signature-editor:has(.tpl-new-folder-picker)
+  .tpl-new-folder-picker--open,
+[data-theme='docuseal-light']
+  .modal-box--signature-editor:has(.tpl-new-folder-picker)
+  .tpl-new-folder-picker:focus-within {
+  border-color: var(--profile-accent);
+  box-shadow:
+    inset 0 1px 2px rgba(10, 25, 44, 0.04),
+    0 0 0 3px color-mix(in srgb, var(--profile-accent) 24%, transparent);
+}
+
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-picker--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .modal-box--signature-editor:has(.tpl-new-folder-picker) .template-folder-name-input,

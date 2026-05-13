@@ -29,6 +29,7 @@ const en = {
   recurrent: 'Recurrent',
   one_off: 'One-off',
   search_field: 'Search field',
+  field_name: 'Field Name',
   field_not_found: 'Field not found',
   clear: 'Clear',
   align: 'Align',

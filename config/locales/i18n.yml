@@ -332,6 +332,14 @@ en: &en
   personalization_placeholder_logo_file_title: 'Choose PNG, JPG, or SVG (recommended max height ~64px)'
   personalization_placeholder_email_body_html: 'Paste full HTML email content…'
   personalization_placeholder_email_body_markdown: 'Write the email body in Markdown (bold, links, variables from the menu…)…'
+  profile_placeholder_document_name: Document name
+  profile_placeholder_folder_name: Folder name
+  profile_placeholder_subfolder_name: Subfolder name
+  profile_placeholder_email: you@company.com
+  preferences_placeholder_redirect_url: https://example.com/thank-you
+  preferences_placeholder_completion_message: Thank you for completing the form. You will hear from us shortly.
+  otp_code_placeholder: XXX-XXX
+  field_name: Field Name
   show_confetti_on_successful_completion: Show confetti on successful completion
   attach_audit_log_pdf: Attach audit log PDF
   attach_documents: Attach documents

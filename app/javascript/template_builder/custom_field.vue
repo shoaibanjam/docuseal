@@ -28,7 +28,7 @@
           <Contenteditable
             ref="name"
             :model-value="field.name"
-            :placeholder="'Field Name'"
+            :placeholder="t('field_name')"
             :icon-inline="true"
             :icon-width="18"
             :min-width="isNew ? '100px' : '2px'"
