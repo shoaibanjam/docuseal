@@ -3,8 +3,8 @@
   <div class="max-w-7xl mx-auto px-4 md:px-6 py-3.5 md:py-4 flex items-center justify-between">
     <div class="flex items-center gap-3 md:gap-8 text-primary-content min-w-0">
       <% if signed_in? %>
-        <label for="app-sidebar-drawer" class="btn btn-ghost btn-square shrink-0 lg:hidden -ml-2" aria-label="<%= t('open_menu', default: 'Open menu') %>">
-          <%= svg_icon('layout_list', class: 'w-6 h-6 stroke-2') %>
+        <label for="app-sidebar-drawer" class="app-navbar-menu-trigger lg:hidden -ml-2" aria-label="<%= t('open_menu', default: 'Open menu') %>">
+          <%= svg_icon('list', class: 'app-navbar-menu-trigger__icon') %>
         </label>
       <% end %>
       <a href="<%= root_path %>" class="navbar-brand-link text-2xl font-bold items-center flex space-x-2 text-primary-content truncate">

@@ -8,6 +8,7 @@ import ScrollButtons from './elements/scroll_buttons'
 import PageContainer from './elements/page_container'
 import SubmitForm from './elements/submit_form'
 import ThemeToggle, { initTheme } from './lib/theme'
+import HtmlModal from './elements/html_modal'
 
 initTheme()
 
@@ -20,6 +21,7 @@ safeRegisterElement('scroll-buttons', ScrollButtons)
 safeRegisterElement('page-container', PageContainer)
 safeRegisterElement('submit-form', SubmitForm)
 safeRegisterElement('theme-toggle', ThemeToggle)
+safeRegisterElement('html-modal', HtmlModal)
 safeRegisterElement('submission-form', class extends HTMLElement {
   connectedCallback () {
     this.appElem = document.createElement('div')

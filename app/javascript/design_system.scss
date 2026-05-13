@@ -85,6 +85,23 @@
   --ds-z-modal: 80;
   --ds-z-toast: 90;
   --ds-z-tooltip: 100;
+
+  --stitch-surface: #051427;
+  --stitch-surface-low: #0d1c2f;
+  --stitch-surface-container: #122033;
+  --stitch-surface-high: #1d2b3e;
+  --stitch-surface-highest: #28354a;
+  --stitch-on-surface: #d5e3fe;
+  --stitch-on-primary-container: #74829a;
+  --stitch-on-surface-variant: #c5c6cd;
+  --stitch-outline: #8e9097;
+  --stitch-outline-variant: #44474c;
+  --stitch-secondary: #04be99;
+  --stitch-secondary-dim: #46ddb7;
+  --stitch-secondary-fixed: #69fad2;
+  --stitch-on-secondary: #00382b;
+  --stitch-error: #ffb4ab;
+  --stitch-error-container: #93000a;
 }
 
 [data-theme='docuseal-light'] {
@@ -1291,6 +1308,12 @@
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus {
   background-color: #ffffff !important;
   border-color: #04be99 !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input::placeholder,
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select.base-select--placeholder {
+  color: rgba(18, 35, 60, 0.45) !important;
+  opacity: 1;
 }
 
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input {
@@ -2685,8 +2708,9 @@
 }
 
 [data-theme='docuseal-light'] template-builder .builder-template-name,
-[data-theme='docuseal-light'] template-builder .builder-topbar,
-[data-theme='docuseal-light'] template-builder .builder-topbar * {
+[data-theme='docuseal-light'] template-builder .builder-template-name *,
+[data-theme='docuseal-light'] template-builder .builder-topbar-left,
+[data-theme='docuseal-light'] template-builder .builder-topbar-left * {
   color: #12233c !important;
 }
 
@@ -2753,17 +2777,13 @@ template-builder .builder-draw-field-link {
   color: #0a5847 !important;
 }
 
-[data-theme='docuseal-light'] template-builder .builder-top-action,
-[data-theme='docuseal-light'] template-builder .builder-send-button,
-[data-theme='docuseal-light'] template-builder .builder-copy-link-button {
+[data-theme='docuseal-light'] template-builder .builder-top-action {
   background: #ffffff !important;
   border-color: rgba(18, 35, 60, 0.2) !important;
   color: #12233c !important;
 }
 
-[data-theme='docuseal-light'] template-builder .builder-top-action:hover,
-[data-theme='docuseal-light'] template-builder .builder-send-button:hover,
-[data-theme='docuseal-light'] template-builder .builder-copy-link-button:hover {
+[data-theme='docuseal-light'] template-builder .builder-top-action:hover {
   background: #f4f9ff !important;
   border-color: rgba(4, 190, 153, 0.65) !important;
 }
@@ -2876,32 +2896,6 @@ template-builder .builder-draw-field-link {
   color: #d5e3fe !important;
 }
 
-[data-theme='docuseal-light'] template-builder .builder-sign-button {
-  background: transparent !important;
-  border-color: rgba(4, 190, 153, 0.62) !important;
-  color: #02725c !important;
-}
-
-[data-theme='docuseal-light'] template-builder .builder-sign-button:hover {
-  background: rgba(4, 190, 153, 0.1) !important;
-  color: #015844 !important;
-}
-
-[data-theme='docuseal-light'] template-builder .builder-save-button,
-[data-theme='docuseal-light'] template-builder .builder-save-dropdown-trigger {
-  background: #04be99 !important;
-  border-color: #03987a !important;
-  color: #00382b !important;
-}
-
-[data-theme='docuseal-light'] template-builder .builder-save-button:hover,
-[data-theme='docuseal-light']
-  template-builder
-  .builder-save-dropdown-trigger:hover {
-  background: #03a786 !important;
-  border-color: #02866b !important;
-}
-
 [data-theme='docuseal-light']
   template-builder
   .builder-save-dropdown-menu
@@ -2928,6 +2922,40 @@ template-builder .builder-draw-field-link {
   template-builder
   .builder-save-dropdown-menu
   .builder-save-menu-item:hover {
+  background: #eef6ff !important;
+  color: #0c2a46 !important;
+}
+
+[data-theme='docuseal-light']
+  .submission-show-page
+  .submission-show-download-dropdown-menu
+  .submission-show-download-menu-item {
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light']
+  .submission-show-page
+  .submission-show-download-dropdown-menu
+  .submission-show-download-menu-item
+  svg,
+[data-theme='docuseal-light']
+  .submission-show-page
+  .submission-show-download-dropdown-menu
+  .submission-show-download-menu-item
+  svg
+  * {
+  color: #32587f !important;
+  stroke: #32587f !important;
+}
+
+[data-theme='docuseal-light']
+  .submission-show-page
+  .submission-show-download-dropdown-menu
+  .submission-show-download-menu-item:hover,
+[data-theme='docuseal-light']
+  .submission-show-page
+  .submission-show-download-dropdown-menu
+  .submission-show-download-menu-item:focus-visible {
   background: #eef6ff !important;
   color: #0c2a46 !important;
 }

@@ -10,7 +10,7 @@
             <% template.name.split(/(_)/).each do |item| %><%= item %><wbr><% end %>
           </h1>
           <% if template.archived_at? %>
-            <span class="tpl-show-archived-badge"><%= t('archived') %></span>
+            <span class="templates-dashboard-archived-badge shrink-0 self-center"><%= t('archived') %></span>
           <% end %>
           <%= render 'templates/access_icon', template: @template %>
         </div>

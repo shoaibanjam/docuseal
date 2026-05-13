@@ -350,8 +350,12 @@ export default {
       this.$emit('update:model-value', submitter.uuid)
     },
     async remove (submitter) {
-      const isConfirmed = window.showConfirmToast
-        ? await window.showConfirmToast(this.t('are_you_sure_'), { confirmText: this.t('remove'), cancelText: this.t('cancel') })
+      const isConfirmed = window.showConfirmModal
+        ? await window.showConfirmModal(this.t('are_you_sure_'), {
+            confirmText: this.t('remove'),
+            cancelText: this.t('cancel'),
+            variant: 'danger',
+          })
         : window.confirm(this.t('are_you_sure_'))
 
       if (isConfirmed) {
