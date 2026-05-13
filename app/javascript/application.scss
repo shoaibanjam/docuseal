@@ -3273,7 +3273,8 @@ kbd {
   gap: 1rem;
 }
 
-.modal-box--add-recipients .add-recipients-edit-message-link {
+.modal-box--add-recipients .add-recipients-edit-message-link,
+.modal-box--edit-recipient .add-recipients-edit-message-link {
   cursor: pointer;
   color: var(--profile-accent, var(--stitch-secondary));
   text-decoration: underline;
@@ -3283,19 +3284,26 @@ kbd {
 
 .modal-box--add-recipients label:hover .add-recipients-edit-message-link,
 .modal-box--add-recipients .add-recipients-edit-message-link:hover,
-.modal-box--add-recipients .add-recipients-edit-message-link:focus-visible {
+.modal-box--add-recipients .add-recipients-edit-message-link:focus-visible,
+.modal-box--edit-recipient label:hover .add-recipients-edit-message-link,
+.modal-box--edit-recipient .add-recipients-edit-message-link:hover,
+.modal-box--edit-recipient .add-recipients-edit-message-link:focus-visible {
   color: color-mix(in srgb, var(--profile-accent, var(--stitch-secondary)) 84%, white);
   filter: brightness(1.08);
   outline: none;
 }
 
-[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link {
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-edit-message-link {
   color: #0f6f5a;
 }
 
 [data-theme='docuseal-light'] .modal-box--add-recipients label:hover .add-recipients-edit-message-link,
 [data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link:hover,
-[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link:focus-visible {
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link:focus-visible,
+[data-theme='docuseal-light'] .modal-box--edit-recipient label:hover .add-recipients-edit-message-link,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-edit-message-link:hover,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-edit-message-link:focus-visible {
   color: #085746;
   filter: none;
 }
@@ -3490,6 +3498,22 @@ kbd {
   background: var(--profile-accent) !important;
   border-color: color-mix(in srgb, var(--profile-accent) 88%, black) !important;
   color: var(--profile-accent-contrast) !important;
+}
+
+.modal-box--preferences .ds-pro-lock-link,
+.modal-box--profile-copy .ds-pro-lock-link {
+  color: var(--profile-accent);
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, filter 0.15s ease;
+}
+
+.modal-box--preferences .ds-pro-lock-link:hover,
+.modal-box--preferences .ds-pro-lock-link:focus-visible,
+.modal-box--profile-copy .ds-pro-lock-link:hover,
+.modal-box--profile-copy .ds-pro-lock-link:focus-visible {
+  color: color-mix(in srgb, var(--profile-accent) 84%, white);
+  filter: brightness(1.08);
+  outline: none;
 }
 
 [data-theme='docuseal-light'] .modal-box--preferences {

@@ -10,9 +10,11 @@
         <%= f.fields_for :submitters, item = Struct.new(:name, :uuid, :is_requester, :email, :invite_by_uuid, :invite_via_field_uuid, :optional_invite_by_uuid, :linked_to_uuid, :order, :option).new(*submitter.values_at('name', 'uuid', 'is_requester', 'email', 'invite_by_uuid', 'invite_via_field_uuid', 'optional_invite_by_uuid', 'linked_to_uuid', 'order')), index: do |ff| %>
           <% item.option = item.is_requester.present? ? 'is_requester' : (item.email.present? ? 'email' : (item.linked_to_uuid.present? ? "linked_to_#{item.linked_to_uuid}" : (item.invite_by_uuid.present? ? "invite_by_#{item.invite_by_uuid}" : (item.optional_invite_by_uuid.present? ? "optional_invite_by_#{item.optional_invite_by_uuid}" : (item.invite_via_field_uuid.present? ? 'invite_via_field' : ''))))) %>
           <%= ff.hidden_field :uuid %>
+          <% recipient_name_field_id = "template_recipient_name_#{submitter['uuid']}" %>
           <div class="form-control">
+            <%= ff.label :name, t('name'), class: 'label text-sm pb-0', for: recipient_name_field_id %>
             <div class="flex justify-between">
-              <%= ff.text_field :name, class: 'template-recipient-name-input w-full outline-none border-transparent focus:border-transparent focus:ring-0 bg-base-100 px-1 peer mb-2', autocomplete: 'off', placeholder: "#{index + 1}#{(index + 1).ordinal} #{t('party')}", required: true %>
+              <%= ff.text_field :name, id: recipient_name_field_id, class: 'template-recipient-name-input w-full outline-none border-transparent focus:border-transparent focus:ring-0 bg-base-100 px-1 peer mb-2', autocomplete: 'off', placeholder: "#{index + 1}#{(index + 1).ordinal} #{t('party')}", required: true %>
               <% if template.submitters.size > 2 %>
                 <div id="order_<%= submitter['uuid'] %>" class="mr-0.5">
                   <% if is_order_set %>
@@ -26,7 +28,9 @@
               <% end %>
             </div>
             <% if template.submitters.size == 2 %>
-              <%= tag.input name: ff.field_name(:email), value: ff.object.email, type: :email, multiple: true, autocomplete: 'off', placeholder: t('default_email'), id: email_field_uuid = SecureRandom.uuid, disabled: is_email_disabled = ff.object.is_requester || ff.object.invite_by_uuid.present? || ff.object.optional_invite_by_uuid.present? || ff.object.invite_via_field_uuid.present?, class: "base-input w-full #{'hidden' if ff.object.invite_by_uuid.present? || ff.object.optional_invite_by_uuid.present? || ff.object.invite_via_field_uuid.present?}" %>
+              <% email_field_uuid = SecureRandom.uuid %>
+              <%= label_tag email_field_uuid, t('email'), class: 'label text-sm' %>
+              <%= tag.input name: ff.field_name(:email), value: ff.object.email, type: :email, multiple: true, autocomplete: 'off', placeholder: t('default_email'), id: email_field_uuid, disabled: is_email_disabled = ff.object.is_requester || ff.object.invite_by_uuid.present? || ff.object.optional_invite_by_uuid.present? || ff.object.invite_via_field_uuid.present?, class: "base-input w-full #{'hidden' if ff.object.invite_by_uuid.present? || ff.object.optional_invite_by_uuid.present? || ff.object.invite_via_field_uuid.present?}" %>
               <% if index == 1 %>
                 <% invite_fields = template.fields.select { |field| field['name'].present? && field['submitter_uuid'] != submitter['uuid'] } %>
                 <disable-hidden id="<%= invite_by_selector_id = SecureRandom.uuid %>" class="<%= 'hidden' if ff.object.invite_by_uuid.blank? && ff.object.optional_invite_by_uuid.blank? && ff.object.invite_via_field_uuid.blank? %>">
@@ -47,6 +51,7 @@
                   <%= ff.select :option, [[t('not_specified'), 'not_set'], (local_assigns[:with_submission_requester] == false ? nil : [t('submission_requester'), 'is_requester']), [t('specified_email'), 'email'], *(template.submitters - [submitter]).flat_map { |e| [[t('invite_by_name', name: e['name']), "invite_by_#{e['uuid']}"], [t('invite_by_name', name: e['name']) + " (#{t(:optional).capitalize})", "optional_invite_by_#{e['uuid']}"]] }, *(template.submitters - [submitter]).map { |e| [t('same_as_name', name: e['name']), "linked_to_#{e['uuid']}"] }, (invite_fields.present? ? [t('invite_via_form_field'), 'invite_via_field'] : nil)].compact, {}, class: 'base-select mb-3' %>
                 </toggle-attribute>
               </toggle-attribute>
+              <%= label_tag email_field_uuid, t('email'), class: "label text-sm #{'hidden' if item.option != 'email'}" %>
               <%= tag.input name: ff.field_name(:email), type: :email, value: ff.object.email, multiple: true, class: "base-input #{'hidden' if item.option != 'email'}", autocomplete: 'off', placeholder: t('default_email'), id: email_field_uuid %>
               <% if invite_fields.present? %>
                 <disable-hidden id="<%= invite_field_wrapper_uuid %>" class="<%= 'hidden' if item.option != 'invite_via_field' %>">

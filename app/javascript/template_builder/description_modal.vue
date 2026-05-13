@@ -34,6 +34,7 @@
                 v-model="description"
                 dir="auto"
                 class="base-textarea !text-base w-full"
+                :placeholder="t('description')"
                 :readonly="!editable"
                 @input="resizeTextarea"
               />
@@ -52,6 +53,7 @@
                 dir="auto"
                 :readonly="!editable"
                 class="base-input !text-base w-full"
+                :placeholder="t('display_title')"
               >
             </div>
           </div>

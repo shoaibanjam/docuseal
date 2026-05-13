@@ -15,18 +15,18 @@
         <div class="grid gap-2 md:grid-cols-2 md:gap-4">
           <div class="form-control">
             <%= ff.label :first_name, t('first_name'), class: 'label' %>
-            <%= ff.text_field :first_name, required: true, class: 'base-input' %>
+            <%= ff.text_field :first_name, required: true, class: 'base-input', placeholder: t('profile_placeholder_first_name', default: 'Alex') %>
           </div>
           <div class="form-control">
             <%= ff.label :last_name, t('last_name'), class: 'label' %>
-            <%= ff.text_field :last_name, required: true, class: 'base-input' %>
+            <%= ff.text_field :last_name, required: true, class: 'base-input', placeholder: t('profile_placeholder_last_name', default: 'Rivera') %>
           </div>
         </div>
       <% end %>
       <%= fields_for @user do |ff| %>
         <div class="form-control">
           <%= ff.label :email, t('email'), class: 'label' %>
-          <%= ff.email_field :email, required: true, class: 'base-input' %>
+          <%= ff.email_field :email, required: true, class: 'base-input', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
         </div>
       <% end %>
       <%= fields_for @account do |ff| %>
@@ -34,7 +34,7 @@
         <%= ff.hidden_field :timezone %>
         <div class="form-control">
           <%= ff.label :name, t('company_name'), class: 'label' %>
-          <%= ff.text_field :name, required: true, class: 'base-input' %>
+          <%= ff.text_field :name, required: true, class: 'base-input', placeholder: t('account_placeholder_company_name', default: 'Acme Corp') %>
         </div>
       <% end %>
       <%= fields_for @user do |ff| %>
@@ -59,7 +59,7 @@
             <set-origin-url data-input-id="encrypted_config_value"></set-origin-url>
           <% end %>
           <%= ff.label :value, t('app_url'), class: 'label' %>
-          <%= ff.text_field :value, required: true, class: 'base-input' %>
+          <%= ff.text_field :value, required: true, class: 'base-input', placeholder: t('setup_placeholder_app_url', default: 'https://sign.example.com') %>
         </div>
       <% end %>
       <%= fields_for @account do |ff| %>

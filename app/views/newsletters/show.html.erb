@@ -2,7 +2,8 @@
   <h1 class="text-4xl font-bold text-center my-8">👨‍💻 <%= t('developer_newsletters') %></h1>
   <%= form_for current_user, url: newsletter_path do |f| %>
     <div class="form-control">
-      <%= f.email_field :email, placeholder: t('email'), required: true, class: 'base-input' %>
+      <%= f.label :email, t('email'), class: 'label' %>
+      <%= f.email_field :email, placeholder: t('profile_placeholder_email', default: 'you@company.com'), required: true, class: 'base-input' %>
     </div>
     <div class="form-control mt-4">
       <%= f.button button_title, class: 'base-button' %>

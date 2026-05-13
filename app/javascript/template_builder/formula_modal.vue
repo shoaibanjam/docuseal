@@ -51,11 +51,20 @@
           </button>
         </div>
         <div>
+          <label
+            dir="auto"
+            class="label text-sm"
+            for="formula_expression"
+          >
+            {{ t('formula') }}
+          </label>
           <div class="flex">
             <textarea
+              id="formula_expression"
               ref="textarea"
               v-model="formula"
               class="base-textarea !rounded-xl !text-base font-mono w-full !outline-0 !ring-0 !px-3"
+              :placeholder="t('type_value')"
               :readonly="!editable"
               required="true"
               @input="resizeTextarea"

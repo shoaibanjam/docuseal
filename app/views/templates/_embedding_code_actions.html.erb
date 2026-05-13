@@ -1,0 +1,11 @@
+<div class="embedding-snippet__actions flex items-center justify-end gap-2 flex-wrap mb-2">
+  <%= link_to t('learn_more'), 'https://trustseal.cybroscloud.com/', target: '_blank', rel: 'noopener', data: { turbo: false }, class: 'tpl-show-action-btn tpl-show-action-btn--outline inline-flex items-center justify-center shrink-0 min-h-[2.75rem] px-4' %>
+  <%= render 'shared/clipboard_copy',
+        icon: 'copy',
+        text: copy_text,
+        always_show_label: true,
+        class: 'base-button profile-settings-btn-primary inline-flex cursor-pointer items-center justify-center gap-2 px-5 py-0 shrink-0 min-h-[2.75rem]',
+        icon_class: 'w-5 h-5 shrink-0',
+        copy_title: t('copy'),
+        copied_title: t('copied') %>
+</div>
