@@ -3214,6 +3214,103 @@ kbd {
   width: min(100%, 620px);
 }
 
+.modal-box--add-recipients:has(.tpl-new-form) .label {
+  padding: 0 0 0.35rem;
+  margin-bottom: 0;
+  min-height: 0;
+  color: var(--profile-text-secondary, color-mix(in srgb, var(--ds-text) 70%, transparent));
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.modal-box--add-recipients:has(.tpl-new-form) .form-control .label {
+  margin-bottom: 0 !important;
+  min-height: 0;
+  padding: 0 0 0.35rem;
+}
+
+.modal-box--add-recipients:has(.tpl-new-form) .form-control {
+  gap: 0;
+}
+
+.modal-box--add-recipients:has(.tpl-new-form) .form-control > * + * {
+  margin-top: 0 !important;
+}
+
+.modal-box--add-recipients:has(.tpl-new-form) .grid > .form-control + .form-control {
+  margin-top: 0 !important;
+}
+
+.modal-box--add-recipients:has(.tpl-new-form) .form-control + .form-control:not(:has(.base-button)) {
+  margin-top: 1rem;
+}
+
+.add-recipients-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+}
+
+.add-recipients-checkbox-label .base-checkbox {
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.add-recipients-checkbox-caption {
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--ds-text) 92%, transparent);
+}
+
+.add-recipients-send-email-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-box--add-recipients .add-recipients-edit-message-link {
+  cursor: pointer;
+  color: var(--profile-accent, var(--stitch-secondary));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, filter 0.15s ease;
+}
+
+.modal-box--add-recipients label:hover .add-recipients-edit-message-link,
+.modal-box--add-recipients .add-recipients-edit-message-link:hover,
+.modal-box--add-recipients .add-recipients-edit-message-link:focus-visible {
+  color: color-mix(in srgb, var(--profile-accent, var(--stitch-secondary)) 84%, white);
+  filter: brightness(1.08);
+  outline: none;
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link {
+  color: #0f6f5a;
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients label:hover .add-recipients-edit-message-link,
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link:hover,
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link:focus-visible {
+  color: #085746;
+  filter: none;
+}
+
+.add-recipients-message-card .add-recipients-save-default-option {
+  margin-top: 1rem;
+}
+
+.modal-box--add-recipients:has(.tpl-new-form)
+  .add-recipients-message-card
+  .form-control
+  > .add-recipients-save-default-option {
+  margin-top: 1rem !important;
+}
+
 .add-recipients-modal__tabs {
   padding: 0.2rem;
   border-radius: 9999px;
@@ -5467,7 +5564,7 @@ table tbody tr:hover {
   white-space: nowrap;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease,
-    color 0.15s ease, transform 0.12s ease;
+    color 0.15s ease, transform 0.12s ease, filter 0.15s ease;
 }
 
 .tpl-show-action-btn--outline {
@@ -5488,6 +5585,22 @@ table tbody tr:hover {
   border: 1px solid color-mix(in srgb, var(--profile-accent) 88%, black);
   background: var(--profile-accent);
   color: var(--profile-accent-contrast);
+}
+
+.tpl-show-action-btn--primary:hover:not(:disabled):not(.disabled),
+.tpl-show-action-btn--primary:focus-visible:not(:disabled):not(.disabled),
+.profile-settings-btn-primary.base-button:hover:not(:disabled):not(.disabled),
+.profile-settings-btn-primary.base-button:focus-visible:not(:disabled):not(.disabled),
+clipboard-copy label.profile-settings-btn-primary:hover:not(:disabled):not(.disabled),
+clipboard-copy label.profile-settings-btn-primary:focus-visible:not(:disabled):not(.disabled) {
+  filter: brightness(1.06);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 12%, transparent);
+}
+
+.tpl-show-action-btn--primary:active:not(:disabled):not(.disabled),
+.profile-settings-btn-primary.base-button:active:not(:disabled):not(.disabled),
+clipboard-copy label.profile-settings-btn-primary:active:not(:disabled):not(.disabled) {
+  transform: scale(0.98);
 }
 
 /* --- Submissions Section --- */
@@ -5585,6 +5698,26 @@ table tbody tr:hover {
   font-weight: 700;
   color: var(--profile-text);
   letter-spacing: -0.02em;
+}
+
+.ds-submission-sign-btn.base-button.profile-settings-btn-primary {
+  background: var(--profile-accent);
+  border: 1px solid color-mix(in srgb, var(--profile-accent) 88%, black);
+  color: var(--profile-accent-contrast);
+  height: 32px;
+  min-height: 32px;
+  padding-inline: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--ds-radius-8);
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ds-submission-sign-btn--compact.base-button.profile-settings-btn-primary {
+  height: 32px;
+  min-height: 32px;
+  padding-inline: 0.75rem;
+  font-size: 0.75rem;
 }
 
 @media (min-width: 768px) {
@@ -6217,46 +6350,6 @@ template-builder .builder-template-name:focus-within [contenteditable] {
 }
 
 /* Template builder topbar — same action system as template show (.tpl-show-action-btn) */
-template-builder .builder-topbar .builder-save-group {
-  display: inline-flex;
-  align-items: stretch;
-  gap: 0;
-}
-
-/* DaisyUI .dropdown is inline-block; stretch it so the chevron segment matches save button height */
-template-builder .builder-topbar .builder-save-group .builder-save-dropdown-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  align-self: stretch;
-}
-
-template-builder .builder-topbar .builder-save-group .builder-save-button {
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-  align-self: stretch;
-}
-
-template-builder .builder-topbar .builder-save-group .builder-save-dropdown-trigger {
-  flex: 1 1 auto;
-  width: 100%;
-  min-height: 0;
-  box-sizing: border-box;
-  border-top-left-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
-  border-left-width: 1px !important;
-  border-left-style: solid !important;
-  border-left-color: color-mix(
-    in srgb,
-    var(--profile-accent-contrast) 22%,
-    var(--profile-accent)
-  ) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1;
-}
-
 template-builder .builder-topbar .builder-save-button.disabled,
 template-builder .builder-topbar .builder-save-button:disabled {
   opacity: 0.65 !important;
@@ -6372,17 +6465,127 @@ template-builder
   stroke: none !important;
 }
 
-/* Submission show — download row: keep base-button look; match profile action typography */
-.submission-show-page .submission-show-download-group download-button,
-.submission-show-page .submission-show-download-group label.base-button {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-transform: none;
-  letter-spacing: normal;
+/* Submission show + builder — split primary actions share save-style segments */
+.submission-show-page .submission-show-split-action-group,
+template-builder .builder-topbar .builder-save-group {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  border-radius: var(--ds-radius-8);
+}
+
+.submission-show-page .submission-show-send-email-group {
+  display: flex;
+  width: 100%;
+}
+
+.submission-show-page .submission-show-split-action-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+}
+
+.submission-show-page .submission-show-split-action-main .submission-show-split-action-button {
+  width: 100%;
+}
+
+.submission-show-page .submission-show-split-action-group .submission-show-split-action-dropdown-wrap,
+template-builder .builder-topbar .builder-save-group .builder-save-dropdown-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-self: stretch;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0;
+  min-width: 0;
+}
+
+.submission-show-page .submission-show-split-action-group .submission-show-split-action-button,
+.submission-show-page .submission-show-split-action-group download-button.submission-show-split-action-button,
+template-builder .builder-topbar .builder-save-group .builder-save-button {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.submission-show-page .submission-show-split-action-group .submission-show-split-action-dropdown-trigger,
+template-builder .builder-topbar .builder-save-group .builder-save-dropdown-trigger {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  min-width: 0;
+  box-sizing: border-box;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-left-width: 1px !important;
+  border-left-style: solid !important;
+  border-left-color: color-mix(
+    in srgb,
+    var(--profile-accent-contrast) 22%,
+    var(--profile-accent)
+  ) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.submission-show-page .submission-show-split-action-group .tpl-show-action-btn--primary:hover,
+.submission-show-page .submission-show-split-action-group .tpl-show-action-btn--primary:focus-visible,
+.submission-show-page .submission-show-split-action-group .tpl-show-action-btn--primary:active,
+template-builder .builder-topbar .builder-save-group .tpl-show-action-btn--primary:hover,
+template-builder .builder-topbar .builder-save-group .tpl-show-action-btn--primary:focus-visible,
+template-builder .builder-topbar .builder-save-group .tpl-show-action-btn--primary:active {
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+.submission-show-page .submission-show-split-action-group:has(.tpl-show-action-btn--primary:hover),
+.submission-show-page .submission-show-split-action-group:has(.tpl-show-action-btn--primary:focus-visible),
+template-builder .builder-topbar .builder-save-group:has(.tpl-show-action-btn--primary:hover),
+template-builder .builder-topbar .builder-save-group:has(.tpl-show-action-btn--primary:focus-visible) {
+  filter: brightness(1.06);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 12%, transparent);
+}
+
+.submission-show-page
+  .submission-show-split-action-group
+  .submission-show-split-action-dropdown-wrap
+  > ul.submission-show-download-dropdown-menu.dropdown-content,
+.submission-show-page
+  .submission-show-split-action-group
+  .submission-show-split-action-dropdown-wrap
+  > ul.submission-show-send-email-dropdown-menu.dropdown-content {
+  position: absolute !important;
+  top: 100% !important;
+  bottom: auto !important;
+  right: 0 !important;
+  left: auto !important;
+  transform: none !important;
+  margin-top: 0.5rem !important;
+}
+
+.submission-show-page .submission-show-split-action-group .tpl-show-action-btn svg,
+.submission-show-page .submission-show-split-action-group .tpl-show-action-btn svg *,
+template-builder .builder-topbar .builder-save-group .tpl-show-action-btn svg,
+template-builder .builder-topbar .builder-save-group .tpl-show-action-btn svg * {
+  color: currentColor;
+  stroke: currentColor;
 }
 
 /* Submission show — combined PDF row: same hover/focus as template builder save menu */
-.submission-show-page .submission-show-download-dropdown-menu .submission-show-download-menu-item {
+.submission-show-page .submission-show-download-dropdown-menu .submission-show-download-menu-item,
+.submission-show-page .submission-show-send-email-dropdown-menu .submission-show-send-email-menu-item {
   width: 100%;
   min-height: 2.2rem;
   display: flex;
@@ -6394,6 +6597,12 @@ template-builder
   color: #d6e6ff !important;
   font-weight: 500;
   transition: background 0.15s ease, color 0.15s ease;
+}
+
+.submission-show-page .submission-show-send-email-dropdown-menu .submission-show-send-email-menu-item:hover,
+.submission-show-page .submission-show-send-email-dropdown-menu .submission-show-send-email-menu-item:focus-visible {
+  background: rgba(29, 43, 62, 0.95) !important;
+  color: #f3fbff !important;
 }
 
 .submission-show-page .submission-show-download-dropdown-menu .submission-show-download-menu-item svg,
@@ -6830,6 +7039,14 @@ template-builder .builder-draw-overlay {
 
 .profile-settings-page .profile-settings-btn-primary.base-button:active {
   transform: scale(0.98);
+}
+
+.profile-settings-page .ds-submission-sign-btn.base-button.profile-settings-btn-primary {
+  height: 32px;
+  min-height: 32px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.75rem;
 }
 
 .profile-settings-page .tpl-show-action-btn.profile-settings-btn-primary.base-button {

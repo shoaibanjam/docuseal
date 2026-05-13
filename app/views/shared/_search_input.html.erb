@@ -1,10 +1,14 @@
+<% search_input_id = local_assigns[:input_id] || 'search' %>
+<% search_label = local_assigns.fetch(:label, t('search')) %>
+<% search_placeholder = local_assigns.fetch(:placeholder, "#{t('search')}...") %>
 <form action="<%= url_for %>" method="get" class="flex items-center">
   <% Submissions::Filter::ALLOWED_PARAMS.each do |key| %>
     <% if params[key].present? %>
       <input name="<%= key %>" value="<%= params[key] %>" class="hidden">
     <% end %>
   <% end %>
-  <search-input data-title="<%= local_assigns[:title_selector] || 'h1' %>" class="flex items-center w-full max-w-sm">
+  <search-input data-title="<%= local_assigns[:title_selector] || 'h1' %>" class="search-control flex items-center w-full max-w-sm">
+    <label for="<%= search_input_id %>" class="search-control__label"><%= search_label %></label>
     <div class="relative w-full">
       <% if params[:q].present? %>
         <div class="search-input-clear-slot absolute inset-y-1 left-2 z-10 flex w-11 items-center justify-center">
@@ -13,15 +17,14 @@
           </a>
         </div>
       <% end %>
-      <label for="search" class="sr-only"><%= t('search') %></label>
-      <input id="search" name="q" value="<%= params[:q] %>" class="base-input search-input-field text-sm md:text-base pl-4 pr-12 w-full <%= 'search-input-field--with-clear' if params[:q].present? %>" placeholder="<%= local_assigns.fetch(:placeholder, "#{t('search')}...") %>">
+      <input id="<%= search_input_id %>" name="q" value="<%= params[:q] %>" class="base-input search-input-field text-sm md:text-base pl-4 pr-12 w-full <%= 'search-input-field--with-clear' if params[:q].present? %>" placeholder="<%= search_placeholder %>">
       <button type="submit" title="<%= t('search') %>" class="btn btn-ghost btn-circle absolute inset-y-0 right-1 my-1">
-      <span class="enabled">
-        <%= svg_icon('search', class: 'w-6 h-6 stroke-2') %>
-      </span>
-      <span class="disabled">
-        <%= svg_icon('loader', class: 'w-5 h-5 animate-spin') %>
-      </span>
+        <span class="enabled">
+          <%= svg_icon('search', class: 'w-6 h-6 stroke-2') %>
+        </span>
+        <span class="disabled">
+          <%= svg_icon('loader', class: 'w-5 h-5 animate-spin') %>
+        </span>
       </button>
     </div>
   </search-input>

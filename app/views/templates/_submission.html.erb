@@ -81,11 +81,9 @@
         <% elsif !submission.archived_at? && !template&.archived_at? && !submission.expired? && !submitter.declined_at? %>
           <% if current_user.email == submitter.email %>
             <div class="flex-1 md:flex-none md:w-36 flex">
-              <a href="<%= submit_form_path(slug: submitter.slug) %>" data-turbo="false" target="_blank" id="sign_yourself_button" class="btn btn-sm btn-primary w-full md:w-36 flex z-[1]">
-                <span class="flex items-center justify-center space-x-1 md:space-x-2">
-                  <% if t('sign_now').length < 12 %>
-                    <%= svg_icon('writing_sign', class: 'w-4 h-4 stroke-2') %>
-                  <% end %>
+              <a href="<%= submit_form_path(slug: submitter.slug) %>" data-turbo="false" target="_blank" id="sign_yourself_button" class="base-button profile-settings-btn-primary inline-flex items-center justify-center gap-2 ds-submission-sign-btn w-full md:w-36 z-[1]">
+                <span class="flex items-center justify-center gap-2">
+                  <%= svg_icon('writing_sign', class: 'w-5 h-5 stroke-2 shrink-0') %>
                   <span class="inline shrink-0"><%= t('sign_now') %></span>
                 </span>
               </a>
@@ -167,11 +165,9 @@
                 <% elsif !template&.archived_at? && !submission.archived_at? && !is_submission_completed && !submission.expired? && !submitter.declined_at? %>
                   <div class="relative flex items-center space-x-3">
                     <% if current_user.email == submitter.email %>
-                      <a href="<%= submit_form_path(slug: submitter.slug) %>" data-turbo="false" target="_blank" id="sign_yourself_button" class="absolute md:relative top-0 right-0 btn btn-xs btn-primary w-28 md:w-36 z-[1]">
-                        <span class="flex items-center justify-center space-x-1 md:space-x-2">
-                          <% if t('sign_now').length < 12 %>
-                            <%= svg_icon('writing_sign', class: 'w-4 h-4 stroke-2') %>
-                          <% end %>
+                      <a href="<%= submit_form_path(slug: submitter.slug) %>" data-turbo="false" target="_blank" id="sign_yourself_button" class="base-button profile-settings-btn-primary inline-flex items-center justify-center gap-2 ds-submission-sign-btn ds-submission-sign-btn--compact absolute md:relative top-0 right-0 w-28 md:w-36 z-[1]">
+                        <span class="flex items-center justify-center gap-2">
+                          <%= svg_icon('writing_sign', class: 'w-4 h-4 stroke-2 shrink-0 md:w-5 md:h-5') %>
                           <span class="inline shrink-0"><%= t('sign_now') %></span>
                         </span>
                       </a>
