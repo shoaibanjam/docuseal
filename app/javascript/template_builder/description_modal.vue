@@ -1,65 +1,79 @@
 <template>
-  <div
-    class="modal modal-open items-start !animate-none overflow-y-auto"
-  >
+  <div class="modal modal-open modal--signature-editor !animate-none overflow-y-auto">
     <div
-      class="absolute top-0 bottom-0 right-0 left-0"
+      class="turbo-modal-backdrop absolute inset-0 cursor-pointer z-0"
+      aria-hidden="true"
       @click.prevent="$emit('close')"
     />
-    <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none w-full max-w-xl">
-      <div class="flex justify-between items-center border-b pb-2 mb-2 font-medium">
-        <span class="modal-title">
-          {{ (defaultField ? (defaultField.title || field.title || field.name) : field.name) || buildDefaultName(field) }}
-        </span>
-        <a
-          href="#"
-          class="text-xl modal-close-button"
-          @click.prevent="$emit('close')"
-        >&times;</a>
-      </div>
-      <div>
-        <form @submit.prevent="saveAndClose">
-          <div class="space-y-1 mb-1">
-            <div>
-              <label
-                dir="auto"
-                class="label text-sm"
-                for="description_field"
-              >
-                {{ t('description') }}
-              </label>
-              <textarea
-                id="description_field"
-                ref="textarea"
-                v-model="description"
-                dir="auto"
-                class="base-textarea !text-base w-full"
-                :placeholder="t('description')"
-                :readonly="!editable"
-                @input="resizeTextarea"
-              />
-            </div>
-            <div>
-              <label
-                dir="auto"
-                class="label text-sm"
-                for="title_field"
-              >
-                {{ t('display_title') }} ({{ t('optional') }})
-              </label>
-              <input
-                id="title_field"
-                v-model="title"
-                dir="auto"
-                :readonly="!editable"
-                class="base-input !text-base w-full"
-                :placeholder="t('display_title')"
-              >
-            </div>
-          </div>
-          <button class="base-button w-full mt-4 modal-save-button">
-            {{ t('save') }}
+    <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none relative z-10 w-full modal-box--signature-editor modal-box--decline">
+      <header class="signature-modal__header">
+        <div class="signature-modal__title-row">
+          <h2 class="signature-modal__title">
+            {{ (defaultField ? (defaultField.title || field.title || field.name) : field.name) || buildDefaultName(field) }}
+          </h2>
+          <button
+            type="button"
+            class="signature-modal__close"
+            :aria-label="t('close', 'Close')"
+            @click.prevent="$emit('close')"
+          >
+            <IconX
+              class="w-5 h-5"
+              stroke-width="1.75"
+            />
           </button>
+        </div>
+        <div
+          class="signature-modal__head-divider"
+          aria-hidden="true"
+        />
+      </header>
+      <div class="signature-modal__body">
+        <form
+          class="tpl-new-form"
+          @submit.prevent="saveAndClose"
+        >
+          <div class="form-control">
+            <label
+              dir="auto"
+              class="label"
+              for="description_field"
+            >
+              {{ t('description') }}
+            </label>
+            <textarea
+              id="description_field"
+              ref="textarea"
+              v-model="description"
+              dir="auto"
+              class="base-input w-full"
+              :placeholder="t('description')"
+              :readonly="!editable"
+              @input="resizeTextarea"
+            />
+          </div>
+          <div class="form-control">
+            <label
+              dir="auto"
+              class="label"
+              for="title_field"
+            >
+              {{ t('display_title') }} ({{ t('optional') }})
+            </label>
+            <input
+              id="title_field"
+              v-model="title"
+              dir="auto"
+              :readonly="!editable"
+              class="base-input w-full"
+              :placeholder="t('display_title')"
+            >
+          </div>
+          <div class="form-control mt-1">
+            <button class="base-button tpl-new-submit-btn">
+              {{ t('save') }}
+            </button>
+          </div>
         </form>
       </div>
     </div>
@@ -67,8 +81,13 @@
 </template>
 
 <script>
+import { IconX } from '@tabler/icons-vue'
+
 export default {
   name: 'DescriptionModal',
+  components: {
+    IconX
+  },
   inject: ['t', 'template'],
   props: {
     field: {
@@ -98,7 +117,11 @@ export default {
     }
   },
   mounted () {
+    document.body.classList.add('overflow-hidden')
     this.resizeTextarea()
+  },
+  unmounted () {
+    document.body.classList.remove('overflow-hidden')
   },
   methods: {
     saveAndClose () {
