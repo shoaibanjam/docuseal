@@ -5415,16 +5415,9 @@ table tbody tr:hover {
 }
 
 .tpl-show-action-btn--primary {
-  border: 1px solid var(--profile-accent);
+  border: 1px solid color-mix(in srgb, var(--profile-accent) 88%, black);
   background: var(--profile-accent);
   color: var(--profile-accent-contrast);
-}
-
-.tpl-show-action-btn--primary:hover,
-.tpl-show-action-btn--primary:focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 22%, transparent),
-    var(--ds-shadow-md);
-  transform: translateY(-1px);
 }
 
 /* --- Submissions Section --- */
@@ -6739,6 +6732,15 @@ template-builder .builder-draw-overlay {
 
 .profile-settings-page .profile-settings-btn-primary.base-button:active {
   transform: scale(0.98);
+}
+
+.profile-settings-page .tpl-show-action-btn.profile-settings-btn-primary.base-button {
+  height: auto;
+  min-height: 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: var(--ds-radius-8);
 }
 
 .profile-settings-page .profile-settings-btn-secondary.base-button {

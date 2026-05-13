@@ -62,7 +62,7 @@
 
   <div class="tpl-show-actions">
     <% if !template.archived_at? && can?(:destroy, template) %>
-      <%= button_to button_title(title: t('archive'), disabled_with: t('archiving'), title_class: 'inline', icon: svg_icon('archive', class: 'w-5 h-5')), template_path(template), class: 'tpl-show-action-btn tpl-show-action-btn--outline', form_class: 'flex-1 md:flex-none', method: :delete, data: { turbo_confirm: t('are_you_sure_') } %>
+      <%= button_to button_title(title: t('archive'), disabled_with: t('archiving'), title_class: 'inline', icon: svg_icon('archive', class: 'w-5 h-5')), template_path(template), class: 'tpl-show-action-btn tpl-show-action-btn--outline w-full md:w-auto', form: { class: 'inline-flex flex-1 md:flex-none min-w-0' }, method: :delete, data: { turbo_confirm: t('are_you_sure_') } %>
     <% end %>
     <% if can?(:create, current_account.templates.new(author: current_user)) %>
       <%= link_to new_template_clone_path(template), class: 'tpl-show-action-btn tpl-show-action-btn--outline flex-1 md:flex-none', data: { turbo_frame: :modal } do %>
@@ -72,7 +72,7 @@
     <% end %>
     <% if !template.archived_at? %>
       <% if can?(:update, template) %>
-        <%= link_to edit_template_path(template), class: 'tpl-show-action-btn tpl-show-action-btn--primary flex-1 md:flex-none' do %>
+        <%= link_to edit_template_path(template), class: 'tpl-show-action-btn tpl-show-action-btn--primary base-button profile-settings-btn-primary flex-1 md:flex-none' do %>
           <%= svg_icon('pencil', class: 'w-5 h-5') %>
           <span><%= t('edit') %></span>
         <% end %>
@@ -85,7 +85,7 @@
     <% end %>
     <% if template.archived_at? %>
       <% if can?(:create, template) %>
-        <%= button_to button_title(title: t('restore'), disabled_with: t('restoring'), icon: svg_icon('rotate', class: 'w-5 h-5')), template_restore_index_path(template), class: 'tpl-show-action-btn tpl-show-action-btn--outline flex-1 md:flex-none' %>
+        <%= button_to button_title(title: t('restore'), disabled_with: t('restoring'), icon: svg_icon('rotate', class: 'w-5 h-5')), template_restore_index_path(template), class: 'tpl-show-action-btn tpl-show-action-btn--outline w-full md:w-auto', form: { class: 'inline-flex flex-1 md:flex-none min-w-0' } %>
       <% end %>
       <%= link_to template_preview_path(template), class: 'tpl-show-action-btn tpl-show-action-btn--outline flex-1 md:flex-none' do %>
         <%= svg_icon('file_text', class: 'w-5 h-5') %>

@@ -20,8 +20,8 @@
         <% if with_filters %>
           <%= render 'shared/search_input', title_selector: 'h2' %>
         <% end %>
-        <%= link_to new_template_submissions_export_path(@template, params.permit(:q, *Submissions::Filter::ALLOWED_PARAMS).merge(archived: true)), class: 'tpl-show-icon-btn hidden md:flex', data: { turbo_frame: 'modal' } do %>
-          <%= svg_icon('download', class: 'w-5 h-5 stroke-2') %>
+        <%= link_to new_template_submissions_export_path(@template, params.permit(:q, *Submissions::Filter::ALLOWED_PARAMS).merge(archived: true)), class: 'tpl-show-action-btn tpl-show-action-btn--outline hidden md:inline-flex', data: { turbo_frame: 'modal' } do %>
+          <%= svg_icon('download', class: 'w-5 h-5') %>
           <span><%= t('export') %></span>
         <% end %>
       </div>
