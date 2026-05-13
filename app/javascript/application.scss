@@ -3552,6 +3552,23 @@ kbd {
   padding-right: 0.125rem;
 }
 
+.event-log-modal__body .event-log-timeline {
+  border-color: color-mix(in srgb, var(--stitch-on-surface) 22%, transparent);
+}
+
+.event-log-modal__body .event-log-timeline-marker {
+  color: #1e293b;
+  --tw-ring-color: var(--stitch-surface-high);
+}
+
+.event-log-modal__body .event-log-timeline-marker svg {
+  stroke: currentColor;
+}
+
+[data-theme='docuseal-light'] .event-log-modal__body .event-log-timeline-marker {
+  --tw-ring-color: #ffffff;
+}
+
 .modal-box--signature-editor.modal-box.modal-box--edit-recipient {
   width: min(100%, 36.875rem);
 }

@@ -7,9 +7,9 @@
   body_class: 'event-log-modal__body',
   close_after_submit: false do %>
   <div class="pl-6 pr-3 py-3 sm:pl-8 sm:pr-4 sm:py-4">
-    <ol class="relative border-s border-base-300 space-y-6">
+    <ol class="event-log-timeline relative border-s border-base-300 space-y-6">
       <li class="ml-7">
-        <span class="absolute flex items-center justify-center w-7 h-7 rounded-full -start-3.5 ring-8 ring-base-100 text-base-content bg-gray-200">
+        <span class="event-log-timeline-marker absolute flex items-center justify-center w-7 h-7 rounded-full -start-3.5 ring-8 bg-gray-200">
           <%= svg_icon('file_text', class: 'w-4 h-4') %>
         </span>
         <p class="text-sm leading-none text-base-content/60 pt-1.5">
@@ -30,7 +30,7 @@
         <% bg_class = event_colors[submitters_uuids.index(submitter.uuid) % event_colors.length] %>
         <% submitter_name = event.event_type.include?('sms') || event.event_type.include?('phone') ? (event.data['phone'] || submitter.phone) : (submitter.name || submitter.email || submitter.phone) %>
         <li class="ml-7">
-          <span class="absolute flex items-center justify-center w-7 h-7 rounded-full -start-3.5 ring-8 ring-base-100 text-base-content <%= bg_class %>">
+          <span class="event-log-timeline-marker absolute flex items-center justify-center w-7 h-7 rounded-full -start-3.5 ring-8 <%= bg_class %>">
             <%= svg_icon(SubmissionEventsController::SUBMISSION_EVENT_ICONS.fetch(event.event_type, 'circle_dot'), class: 'w-4 h-4') %>
           </span>
           <div class="flex items-center space-x-1 pt-1.5">
