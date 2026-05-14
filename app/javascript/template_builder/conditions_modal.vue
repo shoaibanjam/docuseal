@@ -88,9 +88,9 @@
                   :class="{ 'base-select--placeholder': !condition.field_uuid }"
                   required
                   @change="[
-                    condition.field_uuid = $event.target.value,
+                    condition.field_uuid = $event.target.value || undefined,
                     delete condition.value,
-                    (conditionActions(condition).includes(condition.action) ? '' : condition.action = conditionActions(condition)[0])
+                    delete condition.action
                   ]"
                 >
                   <option
@@ -121,15 +121,33 @@
                 </label>
                 <select
                   :id="`condition-${cindex}-action`"
-                  v-model="condition.action"
                   class="base-select w-full"
+                  :class="{ 'base-select--placeholder': !!condition.field_uuid && !condition.action }"
                   :disabled="!condition.field_uuid"
                   :required="!!condition.field_uuid"
+                  @change="condition.action = $event.target.value || undefined"
                 >
+                  <option
+                    v-if="!condition.field_uuid"
+                    value=""
+                    disabled
+                    hidden
+                    selected
+                  ></option>
+                  <option
+                    v-else-if="!condition.action"
+                    value=""
+                    disabled
+                    hidden
+                    selected
+                  >
+                    {{ t('select_action_') }}
+                  </option>
                   <option
                     v-for="action in conditionActions(condition)"
                     :key="action"
                     :value="action"
+                    :selected="condition.action === action"
                   >
                     {{ t(action) }}
                   </option>
