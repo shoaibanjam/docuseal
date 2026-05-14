@@ -91,13 +91,21 @@
                 data-theme-icon="sun"
                 class="inline-flex items-center"
               >
-                <IconSun width="20" />
+                <IconSun
+                  width="20"
+                  height="20"
+                  :stroke-width="1.75"
+                />
               </span>
               <span
                 data-theme-icon="moon"
                 class="hidden inline-flex items-center"
               >
-                <IconMoon width="20" />
+                <IconMoon
+                  width="20"
+                  height="20"
+                  :stroke-width="1.75"
+                />
               </span>
             </button>
           </theme-toggle>

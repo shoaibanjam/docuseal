@@ -1,7 +1,7 @@
 <%= content_for(:canonical_url, new_user_session_url) %>
 <div class="profile-settings-page auth-page">
   <div class="auth-shell">
-    <div class="auth-card">
+    <div class="auth-card settings-card">
       <div class="auth-header">
         <%= render 'devise/shared/select_server' if Docuseal.multitenant? %>
         <h1 class="auth-title"><%= t('sign_in') %></h1>
