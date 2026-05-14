@@ -1,8 +1,9 @@
 <% get_started_path = Docuseal.multitenant? ? sign_up_path : new_user_registration_path %>
 <% login_path = new_user_session_path %>
 
-<main class="landing-page landing-page--cloud landing-page--refined bg-[#050a14] text-slate-100">
-  <a href="#landing-hero" class="landing-skip-link sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:inline-flex focus:rounded-lg focus:bg-emerald-400 focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-[#07111f] focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:ring-offset-2 focus:ring-offset-[#050a14]"><%= t('skip_to_main_content', default: 'Skip to main content') %></a>
+<div class="profile-settings-page landing-page-shell">
+  <main class="landing-page landing-page--cloud landing-page--refined">
+    <a href="#landing-hero" class="landing-skip-link sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:inline-flex focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:shadow-lg focus:outline-none"><%= t('skip_to_main_content', default: 'Skip to main content') %></a>
   <%= render 'pages/landing/nav', get_started_path: get_started_path, login_path: login_path %>
   <%= render 'pages/landing/hero', get_started_path: get_started_path %>
   <%= render 'pages/landing/social_proof' %>
@@ -18,7 +19,8 @@
   <%= render 'pages/landing/faq' %>
   <%= render 'pages/landing/final_cta', get_started_path: get_started_path, login_path: login_path %>
   <%= render 'pages/landing/footer', login_path: login_path %>
-</main>
+  </main>
+</div>
 
 <div class="landing-section landing-attribution">
   <%= render 'shared/attribution', with_counter: true %>

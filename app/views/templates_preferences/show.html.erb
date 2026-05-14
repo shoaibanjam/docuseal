@@ -6,12 +6,12 @@
   <% options << [t('api_and_embedding'), 'api'] if show_api %>
   <% if options.size > 1 %>
     <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="preferences-modal__tabs-wrap">
-      <div class="join preferences-modal__tabs">
-        <% options.each_with_index do |(label, value), index| %>
-          <span>
-            <%= radio_button_tag 'option', value, value == 'general', class: 'peer hidden', data: { action: 'change:toggle-visible#trigger' } %>
-            <label for="option_<%= value %>" class="<%= '!rounded-s-full' if index.zero? %> btn btn-sm join-item normal-case preferences-modal__tab peer-checked:!bg-secondary peer-checked:!text-[#022628] peer-checked:!border-secondary <%= 'px-8 md:px-0' if value.in?(%w[general recipients]) %> <%= options.size > 2 ? 'md:w-44' : 'md:w-48' %>">
-              <%= label %>
+      <div class="preferences-modal__tabs" role="radiogroup" aria-label="<%= t('preferences', default: 'Preferences') %>">
+        <% options.each do |(label, value)| %>
+          <span class="preferences-modal__segment-wrap">
+            <%= radio_button_tag 'option', value, value == 'general', class: 'preferences-modal__segment-input', id: "option_#{value}", data: { action: 'change:toggle-visible#trigger' } %>
+            <label for="option_<%= value %>" class="preferences-modal__segment">
+              <span class="preferences-modal__segment-text"><%= label %></span>
             </label>
           </span>
         <% end %>
