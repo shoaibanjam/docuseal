@@ -1,67 +1,71 @@
 <%= content_for(:canonical_url, new_user_session_url) %>
-<div class="auth-shell">
-  <div class="auth-card">
-    <div class="auth-header">
-      <%= render 'devise/shared/select_server' if Docuseal.multitenant? %>
-      <h1 class="auth-title"><%= t('sign_in') %></h1>
-    </div>
-    <%= form_for(resource, as: resource_name, html: { class: 'space-y-6' }, data: { turbo: params[:redir].blank? }, url: session_path(resource_name)) do |f| %>
-    <%= render 'hidden_fields' %>
-    <div class="space-y-2" dir="auto">
-      <div class="form-control">
-        <%= f.label :email, t(:email), class: 'label' %>
-        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
+<div class="profile-settings-page auth-page">
+  <div class="auth-shell">
+    <div class="auth-card">
+      <div class="auth-header">
+        <%= render 'devise/shared/select_server' if Docuseal.multitenant? %>
+        <h1 class="auth-title"><%= t('sign_in') %></h1>
       </div>
-      <div class="form-control">
-        <%= f.label :password, t(:password), class: 'label' %>
-        <%= f.password_field :password, autocomplete: 'current-password', class: 'base-input', placeholder: t('profile_placeholder_current_password', default: '••••••••••••') %>
-      </div>
-    </div>
-    <div class="form-control">
-      <%= f.button button_title(title: t(:sign_in), disabled_with: t(:signing_in)), class: 'base-button w-full' %>
-    </div>
-    <% end %>
-    <% if @show_confirmation_resend_option %>
-      <div class="mt-4">
-        <%= form_with url: user_confirmation_path, method: :post, class: 'form-control' do %>
-          <% if @confirmation_resend_email.present? %>
-            <%= hidden_field_tag 'user[email]', @confirmation_resend_email %>
-          <% else %>
-            <div class="form-control mb-2">
-              <%= label_tag 'resend_confirmation_email_input', t(:email), class: 'label' %>
-              <%= email_field_tag 'user[email]', nil, id: 'resend_confirmation_email_input', required: true, class: 'base-input', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
-            </div>
-          <% end %>
-          <%= hidden_field_tag :redir, params[:redir] if params[:redir].present? %>
-          <%= hidden_field_tag :lang, params[:lang] if params[:lang].present? %>
-          <%= button_tag t('resend_confirmation_email', default: 'Resend confirmation email'), class: 'white-button w-full', type: :submit %>
+      <div class="tpl-new-form">
+        <%= form_for(resource, as: resource_name, data: { turbo: params[:redir].blank? }, url: session_path(resource_name)) do |f| %>
+          <%= render 'hidden_fields' %>
+          <div class="form-control" dir="auto">
+            <%= f.label :email, t(:email), class: 'label' %>
+            <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input w-full', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
+          </div>
+          <div class="form-control">
+            <%= f.label :password, t(:password), class: 'label' %>
+            <%= f.password_field :password, autocomplete: 'current-password', class: 'base-input w-full', placeholder: t('profile_placeholder_current_password', default: '••••••••••••') %>
+          </div>
+          <div class="form-control">
+            <%= f.button button_title(title: t(:sign_in), disabled_with: t(:signing_in)), class: 'base-button profile-settings-btn-primary tpl-new-submit-btn' %>
+          </div>
         <% end %>
-        <p class="text-xs text-primary-content/70 mt-2">
-          <%= t('resend_confirmation_limit_hint', default: 'You can resend up to 2 times per 10 minutes.') %>
-        </p>
-      </div>
-    <% end %>
-    <% if devise_mapping.omniauthable? %>
-      <div class="pt-4 mt-2 border-t border-base-300/70 space-y-4">
-        <% if User.omniauth_providers.include?(:google_oauth2) %>
-          <%= form_for '', url: user_google_oauth2_omniauth_authorize_path, data: { turbo: false }, method: :post do |f| %>
-            <set-timezone data-input-id="state" data-params="true"></set-timezone>
-            <%= hidden_field_tag :state, { redir: params[:redir].to_s }.compact_blank.to_query %>
-            <%= f.button button_title(title: t('sign_in_with_google'), icon: svg_icon('brand_google', class: 'w-6 h-6')), class: 'white-button w-full mt-1' %>
-          <% end %>
+        <% if @show_confirmation_resend_option %>
+          <div class="auth-card__section">
+            <%= form_with url: user_confirmation_path, method: :post, class: 'tpl-new-form' do %>
+              <% if @confirmation_resend_email.present? %>
+                <%= hidden_field_tag 'user[email]', @confirmation_resend_email %>
+              <% else %>
+                <div class="form-control">
+                  <%= label_tag 'resend_confirmation_email_input', t(:email), class: 'label' %>
+                  <%= email_field_tag 'user[email]', nil, id: 'resend_confirmation_email_input', required: true, class: 'base-input w-full', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
+                </div>
+              <% end %>
+              <%= hidden_field_tag :redir, params[:redir] if params[:redir].present? %>
+              <%= hidden_field_tag :lang, params[:lang] if params[:lang].present? %>
+              <div class="form-control">
+                <%= button_tag t('resend_confirmation_email', default: 'Resend confirmation email'), class: 'white-button profile-settings-btn-outline w-full', type: :submit %>
+              </div>
+            <% end %>
+            <p class="auth-card__hint">
+              <%= t('resend_confirmation_limit_hint', default: 'You can resend up to 2 times per 10 minutes.') %>
+            </p>
+          </div>
         <% end %>
-        <% if User.omniauth_providers.include?(:microsoft_office365) %>
-          <%= form_for '', url: user_microsoft_office365_omniauth_authorize_path, data: { turbo: false }, method: :post do |f| %>
-            <set-timezone data-input-id="state_microsoft" data-params="true"></set-timezone>
-            <%= hidden_field_tag :state, { redir: params[:redir].to_s }.compact_blank.to_query, id: 'state_microsoft' %>
-            <%= f.button button_title(title: t('sign_in_with_microsoft'), icon: svg_icon('brand_microsoft', class: 'w-6 h-6')), class: 'white-button w-full' %>
-          <% end %>
+        <% if devise_mapping.omniauthable? %>
+          <div class="auth-card__divider space-y-3">
+            <% if User.omniauth_providers.include?(:google_oauth2) %>
+              <%= form_for '', url: user_google_oauth2_omniauth_authorize_path, data: { turbo: false }, method: :post do |f| %>
+                <set-timezone data-input-id="state" data-params="true"></set-timezone>
+                <%= hidden_field_tag :state, { redir: params[:redir].to_s }.compact_blank.to_query %>
+                <%= f.button button_title(title: t('sign_in_with_google'), icon: svg_icon('brand_google', class: 'w-6 h-6')), class: 'white-button profile-settings-btn-outline w-full' %>
+              <% end %>
+            <% end %>
+            <% if User.omniauth_providers.include?(:microsoft_office365) %>
+              <%= form_for '', url: user_microsoft_office365_omniauth_authorize_path, data: { turbo: false }, method: :post do |f| %>
+                <set-timezone data-input-id="state_microsoft" data-params="true"></set-timezone>
+                <%= hidden_field_tag :state, { redir: params[:redir].to_s }.compact_blank.to_query, id: 'state_microsoft' %>
+                <%= f.button button_title(title: t('sign_in_with_microsoft'), icon: svg_icon('brand_microsoft', class: 'w-6 h-6')), class: 'white-button profile-settings-btn-outline w-full' %>
+              <% end %>
+            <% end %>
+          </div>
         <% end %>
+        <div class="auth-card__footer">
+          <%= render 'extra_links' %>
+          <%= render 'devise/shared/links' %>
+        </div>
       </div>
-    <% end %>
-    <div class="mt-6 space-y-3 text-sm text-primary-content/80">
-      <%= render 'extra_links' %>
-      <%= render 'devise/shared/links' %>
     </div>
   </div>
 </div>
