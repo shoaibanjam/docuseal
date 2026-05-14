@@ -6330,6 +6330,10 @@ template-builder {
   display: block;
   height: calc(100vh - 4rem);
   background: #071325;
+  --profile-border: #1f2937;
+  --profile-text: #f9fafb;
+  --profile-text-secondary: #9ca3af;
+  --profile-accent: #10b981;
 }
 
 template-builder > div {
@@ -6398,6 +6402,33 @@ template-builder .builder-topbar .tpl-show-action-btn svg,
 template-builder .builder-topbar .tpl-show-action-btn svg * {
   color: currentColor;
   stroke: currentColor;
+}
+
+template-builder .builder-topbar .tpl-show-action-btn.tpl-show-action-btn--outline,
+template-builder .builder-topbar a.tpl-show-action-btn.tpl-show-action-btn--outline,
+template-builder .builder-topbar button.tpl-show-action-btn.tpl-show-action-btn--outline {
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--ds-radius-8);
+  border: 1px solid color-mix(in srgb, var(--profile-border) 90%, transparent);
+  background: transparent;
+  color: var(--profile-text);
+  box-shadow: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+template-builder .builder-topbar .tpl-show-action-btn.tpl-show-action-btn--outline:hover,
+template-builder .builder-topbar .tpl-show-action-btn.tpl-show-action-btn--outline:focus-visible,
+template-builder .builder-topbar a.tpl-show-action-btn.tpl-show-action-btn--outline:hover,
+template-builder .builder-topbar a.tpl-show-action-btn.tpl-show-action-btn--outline:focus-visible,
+template-builder .builder-topbar button.tpl-show-action-btn.tpl-show-action-btn--outline:hover,
+template-builder .builder-topbar button.tpl-show-action-btn.tpl-show-action-btn--outline:focus-visible {
+  border-color: color-mix(in srgb, var(--profile-accent) 50%, var(--profile-border));
+  background: color-mix(in srgb, var(--profile-accent) 6%, transparent);
+  color: var(--profile-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 10%, transparent);
 }
 
 template-builder .builder-top-action {

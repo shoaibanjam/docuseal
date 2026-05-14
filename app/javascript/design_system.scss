@@ -2720,11 +2720,32 @@
 /* Template builder full light theme */
 [data-theme='docuseal-light'] template-builder {
   background: #edf4fb !important;
+  --profile-border: #e5e7eb;
+  --profile-text: #111827;
+  --profile-text-secondary: #6b7280;
+  --profile-accent: #10b981;
 }
 
 [data-theme='docuseal-light'] template-builder .builder-topbar {
   background: rgba(245, 248, 251, 0.94) !important;
   border-bottom-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-topbar .tpl-show-action-btn.tpl-show-action-btn--outline,
+[data-theme='docuseal-light'] template-builder .builder-topbar a.tpl-show-action-btn.tpl-show-action-btn--outline,
+[data-theme='docuseal-light'] template-builder .builder-topbar button.tpl-show-action-btn.tpl-show-action-btn--outline {
+  background: #ffffff !important;
+  color: var(--profile-text) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-topbar .tpl-show-action-btn.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-light'] template-builder .builder-topbar .tpl-show-action-btn.tpl-show-action-btn--outline:focus-visible,
+[data-theme='docuseal-light'] template-builder .builder-topbar a.tpl-show-action-btn.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-light'] template-builder .builder-topbar a.tpl-show-action-btn.tpl-show-action-btn--outline:focus-visible,
+[data-theme='docuseal-light'] template-builder .builder-topbar button.tpl-show-action-btn.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-light'] template-builder .builder-topbar button.tpl-show-action-btn.tpl-show-action-btn--outline:focus-visible {
+  background: #eef7f4 !important;
+  color: var(--profile-accent) !important;
 }
 
 [data-theme='docuseal-light'] template-builder .builder-template-name,
