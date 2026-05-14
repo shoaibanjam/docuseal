@@ -75,80 +75,138 @@
                   @click.prevent="conditions.splice(cindex, 1)"
                 > {{ t('remove') }}</a>
               </div>
-              <select
-                class="base-select w-full"
-                :class="{ 'base-select--placeholder': !condition.field_uuid }"
-                required
-                @change="[
-                  condition.field_uuid = $event.target.value,
-                  delete condition.value,
-                  (conditionActions(condition).includes(condition.action) ? '' : condition.action = conditionActions(condition)[0])
-                ]"
-              >
-                <option
-                  value=""
-                  disabled
-                  hidden
-                  :selected="!condition.field_uuid"
+              <div class="form-control">
+                <label
+                  class="label"
+                  :for="`condition-${cindex}-field`"
                 >
-                  {{ t('select_field_') }}
-                </option>
-                <option
-                  v-for="f in fields"
-                  :key="f.uuid"
-                  :value="f.uuid"
-                  class="text-base-content"
-                  :selected="condition.field_uuid === f.uuid"
+                  {{ t('field') }}
+                </label>
+                <select
+                  :id="`condition-${cindex}-field`"
+                  class="base-select w-full"
+                  :class="{ 'base-select--placeholder': !condition.field_uuid }"
+                  required
+                  @change="[
+                    condition.field_uuid = $event.target.value || undefined,
+                    delete condition.value,
+                    delete condition.action
+                  ]"
                 >
-                  {{ f.name || buildDefaultName(f) }}
-                </option>
-              </select>
-              <select
-                v-model="condition.action"
-                class="base-select w-full"
-                :disabled="!condition.field_uuid"
-                :required="!!condition.field_uuid"
-              >
-                <option
-                  v-for="action in conditionActions(condition)"
-                  :key="action"
-                  :value="action"
+                  <option
+                    value=""
+                    disabled
+                    hidden
+                    :selected="!condition.field_uuid"
+                  >
+                    {{ t('select_field_') }}
+                  </option>
+                  <option
+                    v-for="f in fields"
+                    :key="f.uuid"
+                    :value="f.uuid"
+                    class="text-base-content"
+                    :selected="condition.field_uuid === f.uuid"
+                  >
+                    {{ f.name || buildDefaultName(f) }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-control">
+                <label
+                  class="label"
+                  :for="`condition-${cindex}-action`"
                 >
-                  {{ t(action) }}
-                </option>
-              </select>
-              <select
+                  {{ t('action') }}
+                </label>
+                <select
+                  :id="`condition-${cindex}-action`"
+                  class="base-select w-full"
+                  :class="{ 'base-select--placeholder': !!condition.field_uuid && !condition.action }"
+                  :disabled="!condition.field_uuid"
+                  :required="!!condition.field_uuid"
+                  @change="condition.action = $event.target.value || undefined"
+                >
+                  <option
+                    v-if="!condition.field_uuid"
+                    value=""
+                    disabled
+                    hidden
+                    selected
+                  ></option>
+                  <option
+                    v-else-if="!condition.action"
+                    value=""
+                    disabled
+                    hidden
+                    selected
+                  >
+                    {{ t('select_action_') }}
+                  </option>
+                  <option
+                    v-for="action in conditionActions(condition)"
+                    :key="action"
+                    :value="action"
+                    :selected="condition.action === action"
+                  >
+                    {{ t(action) }}
+                  </option>
+                </select>
+              </div>
+              <div
                 v-if="['radio', 'select', 'multiple'].includes(conditionField(condition)?.type) && conditionField(condition)?.options"
-                v-model="condition.value"
-                class="base-select w-full"
-                :class="{ 'base-select--placeholder': !condition.value }"
-                required
+                class="form-control"
               >
-                <option
-                  value=""
-                  disabled
-                  hidden
+                <label
+                  class="label"
+                  :for="`condition-${cindex}-value`"
                 >
-                  {{ t('select_value_') }}
-                </option>
-                <option
-                  v-for="(option, index) in conditionField(condition).options"
-                  :key="option.uuid"
-                  :value="option.uuid"
-                  class="text-base-content"
+                  {{ t('value') }}
+                </label>
+                <select
+                  :id="`condition-${cindex}-value`"
+                  v-model="condition.value"
+                  class="base-select w-full"
+                  :class="{ 'base-select--placeholder': !condition.value }"
+                  required
                 >
-                  {{ option.value || `${t('option')} ${index + 1}` }}
-                </option>
-              </select>
-              <input
+                  <option
+                    value=""
+                    disabled
+                    hidden
+                  >
+                    {{ t('select_value_') }}
+                  </option>
+                  <option
+                    v-for="(option, index) in conditionField(condition).options"
+                    :key="option.uuid"
+                    :value="option.uuid"
+                    class="text-base-content"
+                  >
+                    {{ option.value || `${t('option')} ${index + 1}` }}
+                  </option>
+                </select>
+              </div>
+              <div
                 v-else-if="conditionField(condition)?.type === 'number' && ['equal', 'not_equal', 'greater_than', 'less_than'].includes(condition.action)"
-                v-model="condition.value"
-                type="number"
-                step="any"
-                class="base-input w-full"
-                :placeholder="t('type_value')"
-                required
+                class="form-control"
               >
+                <label
+                  class="label"
+                  :for="`condition-${cindex}-value`"
+                >
+                  {{ t('value') }}
+                </label>
+                <input
+                  :id="`condition-${cindex}-value`"
+                  v-model="condition.value"
+                  type="number"
+                  step="any"
+                  class="base-input w-full"
+                  :placeholder="t('type_value')"
+                  required
+                >
+              </div>
             </div>
           </div>
           <a

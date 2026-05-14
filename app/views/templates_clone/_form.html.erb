@@ -2,27 +2,30 @@
   <% accounts = Account.accessible_by(true_ability).where.not(id: true_user.account.testing_accounts).where(User.where(User.arel_table[:account_id].eq(Account.arel_table[:id])).arel.exists).active %>
   <% if (can?(:manage, :tenants) || true_user != current_user) && accounts.where.not(id: current_account.id).exists? %>
     <div class="form-control -mb-2 mt-2">
+      <%= label_tag :account_id, t('account'), class: 'label' %>
       <%= select_tag :account_id, options_for_select([current_account, *accounts.order(:name)].uniq.map { |e| [e.name, e.id] }, current_account.id), required: true, class: 'base-select' %>
     </div>
   <% end %>
   <div class="form-control mt-4">
+    <%= f.label :name, t('document_name'), class: 'label' %>
     <%= f.text_field :name, required: true, placeholder: t('profile_placeholder_document_name', default: 'Document name'), class: 'base-input w-full', dir: 'auto' %>
   </div>
-  <div class="tpl-new-folder-picker">
-    <label for="folder_name" class="tpl-new-folder-icon">
-      <%= svg_icon('folder', class: 'w-5 h-5') %>
-    </label>
-    <% clone_folder_value = params[:folder_name].presence || @base_template&.folder&.full_name || TemplateFolder::DEFAULT_NAME %>
-    <folder-autocomplete class="flex justify-between items-center w-full bg-transparent">
-      <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer flex-1 min-w-0">
-        <input id="folder_name" placeholder="<%= t('profile_placeholder_folder_name', default: 'Folder name') %>" type="text" class="tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none" name="folder_name" value="<%= clone_folder_value %>" autocomplete="off">
-      </set-value>
-      <set-value data-on="click" data-value="" data-input-id="folder_name" class="peer-focus-within:hidden whitespace-nowrap">
-        <label for="folder_name" data-clear-on-focus="true" class="tpl-new-change-folder-link shrink-0 cursor-pointer">
+  <div class="form-control">
+    <%= label_tag :folder_name, t('folder'), class: 'label' %>
+    <div class="tpl-new-folder-picker">
+      <span class="tpl-new-folder-icon" aria-hidden="true">
+        <%= svg_icon('folder', class: 'w-5 h-5') %>
+      </span>
+      <% clone_folder_value = params[:folder_name].presence || @base_template&.folder&.full_name || TemplateFolder::DEFAULT_NAME %>
+      <folder-autocomplete class="tpl-new-folder-autocomplete">
+        <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer flex-1 min-w-0">
+          <input id="folder_name" placeholder="<%= t('profile_placeholder_folder_name', default: 'Folder name') %>" type="text" class="tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none" name="folder_name" value="<%= clone_folder_value %>" autocomplete="off">
+        </set-value>
+          <label for="folder_name" class="tpl-new-change-folder-link shrink-0 cursor-pointer peer-focus-within:invisible peer-focus-within:pointer-events-none whitespace-nowrap">
           <%= t('change_folder') %>
         </label>
-      </set-value>
-    </folder-autocomplete>
+      </folder-autocomplete>
+    </div>
   </div>
   <div class="form-control">
     <%= f.button button_title(title: t('submit'), disabled_with: t('creating')), class: 'base-button tpl-new-submit-btn' %>

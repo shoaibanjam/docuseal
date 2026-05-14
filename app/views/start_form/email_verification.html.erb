@@ -29,7 +29,8 @@
         <%= f.hidden_field 'submitter[name]', value: params[:name] || @submitter&.name %>
         <%= f.hidden_field 'submitter[email]', value: params[:email] || @submitter&.email %>
         <%= f.hidden_field 'submitter[phone]', value: params[:phone] || @submitter&.phone %>
-        <%= f.text_field :one_time_code, required: true, class: 'base-input text-center', placeholder: 'XXX-XXX' %>
+        <%= f.label :one_time_code, t('verification_code'), class: 'label' %>
+        <%= f.text_field :one_time_code, required: true, class: 'base-input text-center', placeholder: t('otp_code_placeholder', default: 'XXX-XXX') %>
         <div class="flex justify-between items-center mt-1">
           <span>
             <% if flash[:alert] %>

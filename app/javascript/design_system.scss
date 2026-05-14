@@ -1890,6 +1890,26 @@
 }
 
 /* Search clear button lane in submissions/templates search input */
+.search-control {
+  position: relative;
+}
+
+.search-control__label {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 0.25rem);
+  z-index: 1;
+  font-size: 0.9125rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--profile-text, var(--stitch-on-surface)) 72%, transparent);
+  white-space: nowrap;
+}
+
+[data-theme='docuseal-light'] .search-control__label {
+  color: rgba(18, 35, 60, 0.72);
+}
+
 .search-input-field--with-clear {
   padding-left: 3.7rem !important;
 }
@@ -2700,11 +2720,32 @@
 /* Template builder full light theme */
 [data-theme='docuseal-light'] template-builder {
   background: #edf4fb !important;
+  --profile-border: #e5e7eb;
+  --profile-text: #111827;
+  --profile-text-secondary: #6b7280;
+  --profile-accent: #10b981;
 }
 
 [data-theme='docuseal-light'] template-builder .builder-topbar {
   background: rgba(245, 248, 251, 0.94) !important;
   border-bottom-color: rgba(18, 35, 60, 0.12) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-topbar .tpl-show-action-btn.tpl-show-action-btn--outline,
+[data-theme='docuseal-light'] template-builder .builder-topbar a.tpl-show-action-btn.tpl-show-action-btn--outline,
+[data-theme='docuseal-light'] template-builder .builder-topbar button.tpl-show-action-btn.tpl-show-action-btn--outline {
+  background: #ffffff !important;
+  color: var(--profile-text) !important;
+}
+
+[data-theme='docuseal-light'] template-builder .builder-topbar .tpl-show-action-btn.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-light'] template-builder .builder-topbar .tpl-show-action-btn.tpl-show-action-btn--outline:focus-visible,
+[data-theme='docuseal-light'] template-builder .builder-topbar a.tpl-show-action-btn.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-light'] template-builder .builder-topbar a.tpl-show-action-btn.tpl-show-action-btn--outline:focus-visible,
+[data-theme='docuseal-light'] template-builder .builder-topbar button.tpl-show-action-btn.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-light'] template-builder .builder-topbar button.tpl-show-action-btn.tpl-show-action-btn--outline:focus-visible {
+  background: #eef7f4 !important;
+  color: var(--profile-accent) !important;
 }
 
 [data-theme='docuseal-light'] template-builder .builder-template-name,
@@ -2929,7 +2970,11 @@ template-builder .builder-draw-field-link {
 [data-theme='docuseal-light']
   .submission-show-page
   .submission-show-download-dropdown-menu
-  .submission-show-download-menu-item {
+  .submission-show-download-menu-item,
+[data-theme='docuseal-light']
+  .submission-show-page
+  .submission-show-send-email-dropdown-menu
+  .submission-show-send-email-menu-item {
   color: #12233c !important;
 }
 
@@ -2955,7 +3000,15 @@ template-builder .builder-draw-field-link {
 [data-theme='docuseal-light']
   .submission-show-page
   .submission-show-download-dropdown-menu
-  .submission-show-download-menu-item:focus-visible {
+  .submission-show-download-menu-item:focus-visible,
+[data-theme='docuseal-light']
+  .submission-show-page
+  .submission-show-send-email-dropdown-menu
+  .submission-show-send-email-menu-item:hover,
+[data-theme='docuseal-light']
+  .submission-show-page
+  .submission-show-send-email-dropdown-menu
+  .submission-show-send-email-menu-item:focus-visible {
   background: #eef6ff !important;
   color: #0c2a46 !important;
 }

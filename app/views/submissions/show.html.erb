@@ -46,22 +46,22 @@
       <% end %>
       <% if last_submitter %>
         <% if is_all_completed || !is_combined_enabled %>
-          <div class="join relative submission-show-download-group">
-            <download-button data-src="<%= submitter_download_index_path(last_submitter.slug, { sig: params[:sig], combined: is_combined_enabled, admin: (params[:sig].blank? && signed_in? && can?(:read, @submission)) }.compact) %>" class="base-button <%= '!rounded-r-none !pr-2' if is_all_completed && !is_combined_enabled %>">
-              <span class="flex items-center justify-center space-x-2" data-target="download-button.defaultButton">
-                <%= svg_icon('download', class: 'w-6 h-6') %>
+          <span class="submission-show-download-group submission-show-split-action-group">
+            <download-button data-src="<%= submitter_download_index_path(last_submitter.slug, { sig: params[:sig], combined: is_combined_enabled, admin: (params[:sig].blank? && signed_in? && can?(:read, @submission)) }.compact) %>" class="tpl-show-action-btn tpl-show-action-btn--primary submission-show-split-action-button submission-show-download-button <%= '!rounded-r-none !pr-2' if is_all_completed && !is_combined_enabled %>">
+              <span class="flex items-center justify-center gap-2" data-target="download-button.defaultButton">
+                <%= svg_icon('download', class: 'w-5 h-5 stroke-2 shrink-0') %>
                 <span class="hidden md:inline"><%= t('download') %></span>
               </span>
-              <span class="flex items-center justify-center space-x-2 hidden" data-target="download-button.loadingButton">
-                <%= svg_icon('loader', class: 'w-6 h-6 animate-spin') %>
+              <span class="flex items-center justify-center gap-2 hidden" data-target="download-button.loadingButton">
+                <%= svg_icon('loader', class: 'w-5 h-5 animate-spin shrink-0') %>
                 <span class="hidden md:inline"><%= t('downloading') %></span>
               </span>
             </download-button>
             <% if is_all_completed && !is_combined_enabled %>
-              <div class="dropdown dropdown-end">
-                <label tabindex="0" class="base-button !rounded-l-none !pl-1 !pr-2 !border-l-neutral-500">
-                  <span class="text-sm align-text-top">
-                    <%= svg_icon('chevron_down', class: 'w-6 h-6 flex-shrink-0 stroke-2') %>
+              <div class="dropdown dropdown-end submission-show-split-action-dropdown-wrap submission-show-download-dropdown-wrap">
+                <label tabindex="0" class="tpl-show-action-btn tpl-show-action-btn--primary submission-show-split-action-dropdown-trigger submission-show-download-dropdown-trigger">
+                  <span class="inline-flex items-center justify-center leading-none">
+                    <%= svg_icon('chevron_down', class: 'w-5 h-5 flex-shrink-0') %>
                   </span>
                 </label>
                 <ul tabindex="0" class="z-10 dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-right submission-show-download-dropdown-menu">
@@ -80,7 +80,7 @@
                 </ul>
               </div>
             <% end %>
-          </div>
+          </span>
         <% end %>
       <% elsif @submission.submitters.to_a.size == 1 && !@submission.expired? && !@submission.submitters.to_a.first.declined_at? && !@submission.archived_at? && !@submission.template&.archived_at? %>
         <%= render 'shared/clipboard_copy', text: submit_form_url(slug: @submission.submitters.to_a.first.slug, host: form_link_host), class: 'tpl-show-action-btn tpl-show-action-btn--outline inline-flex items-center gap-2', icon_class: 'w-5 h-5 shrink-0', copy_title: t('copy_share_link'), copied_title: t('copied_to_clipboard') %>
@@ -244,7 +244,7 @@
             <% end %>
             <% if signed_in? && submitter && submitter.email && !submitter.completed_at && !@submission.archived_at? && !@submission.template&.archived_at? && can?(:update, @submission) && Accounts.can_send_emails?(current_account) && !@submission.expired? && !submitter.declined_at? %>
               <div class="mt-2 mb-1">
-                <%= button_to button_title(title: submitter.sent_at? ? t('re_send_email') : t('send_email'), disabled_with: t('sending')), submitter_send_email_index_path(submitter_slug: submitter.slug), class: 'btn btn-sm btn-primary w-full' %>
+                <%= button_to button_title(title: submitter.sent_at? ? t('re_send_email') : t('send_email'), disabled_with: t('sending')), submitter_send_email_index_path(submitter_slug: submitter.slug), class: 'tpl-show-action-btn tpl-show-action-btn--primary w-full justify-center' %>
               </div>
             <% end %>
             <% if signed_in? && submitter && submitter.phone && !submitter.completed_at && !@submission.archived_at? && !@submission.template&.archived_at? && can?(:update, @submission) && !@submission.expired? && !submitter.declined_at? %>

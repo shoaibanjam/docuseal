@@ -1,9 +1,8 @@
 <%= render 'filter_modal', title: t('folder'), default_params: params.permit(*(Submissions::Filter::ALLOWED_PARAMS - ['folder'])) do %>
-  <div class="space-y-2">
-    <div class="form-control mt-6">
-      <folder-autocomplete class="flex justify-between w-full">
-        <input id="folder_name" placeholder="<%= t('folder_name') %>" type="text" class="base-input w-full" name="folder" value="<%= params[:folder] %>" autocomplete="off">
-      </folder-autocomplete>
-    </div>
+  <div class="form-control">
+    <%= label_tag :folder_name, t('folder_name'), class: 'label' %>
+    <folder-autocomplete class="block w-full">
+      <input id="folder_name" placeholder="<%= t('folder_name') %>" type="text" class="base-input w-full" name="folder" value="<%= params[:folder] %>" autocomplete="off">
+    </folder-autocomplete>
   </div>
 <% end %>

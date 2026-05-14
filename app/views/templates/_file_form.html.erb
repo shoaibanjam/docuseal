@@ -1,24 +1,26 @@
 <%= form_for @template, data: { turbo_frame: :_top }, html: { autocomplete: :off } do |f| %>
   <div class="form-control mt-4">
+    <%= f.label :name, t('document_name'), class: 'label' %>
     <%= f.text_field :name, required: true, placeholder: t('profile_placeholder_document_name', default: 'Document name'), class: 'base-input w-full', dir: 'auto' %>
   </div>
   <% folder_value = params[:folder_name].presence || TemplateFolder::DEFAULT_NAME %>
-  <div class="tpl-new-folder-picker">
-    <label for="folder_name" class="tpl-new-folder-icon">
-      <%= svg_icon('folder', class: 'w-5 h-5') %>
-    </label>
-    <folder-autocomplete class="flex justify-between items-center w-full bg-transparent">
-      <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer flex-1 min-w-0">
-        <input id="folder_name" placeholder="<%= t('profile_placeholder_folder_name', default: 'Folder name') %>" type="text" class="tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none" name="folder_name" value="<%= folder_value %>" autocomplete="off">
-      </set-value>
-      <set-value data-on="click" data-value="" data-input-id="folder_name" class="peer-focus-within:hidden whitespace-nowrap">
-        <label for="folder_name" data-clear-on-focus="true" class="tpl-new-change-folder-link shrink-0 cursor-pointer">
+  <div class="form-control">
+    <%= label_tag :folder_name, t('folder'), class: 'label' %>
+    <div class="tpl-new-folder-picker">
+      <span class="tpl-new-folder-icon" aria-hidden="true">
+        <%= svg_icon('folder', class: 'w-5 h-5') %>
+      </span>
+      <folder-autocomplete class="tpl-new-folder-autocomplete">
+        <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer flex-1 min-w-0">
+          <input id="folder_name" placeholder="<%= t('profile_placeholder_folder_name', default: 'Folder name') %>" type="text" class="tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none" name="folder_name" value="<%= folder_value %>" autocomplete="off">
+        </set-value>
+        <label for="folder_name" class="tpl-new-change-folder-link shrink-0 cursor-pointer peer-focus-within:invisible peer-focus-within:pointer-events-none whitespace-nowrap">
           <%= t('change_folder') %>
         </label>
-      </set-value>
-    </folder-autocomplete>
+      </folder-autocomplete>
+    </div>
   </div>
-  <div class="form-control mt-1">
+  <div class="form-control">
     <%= f.button button_title(title: t('create'), disabled_with: t('creating')), class: 'base-button tpl-new-submit-btn' %>
   </div>
 <% end %>

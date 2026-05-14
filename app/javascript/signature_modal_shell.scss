@@ -2,6 +2,10 @@ html-modal {
   display: contents;
 }
 
+turbo-frame#modal {
+  display: contents;
+}
+
 .modal-box {
   background: var(--stitch-surface-high);
   color: var(--stitch-on-surface);
@@ -38,15 +42,28 @@ html-modal {
 }
 
 .modal-box--signature-editor.modal-box {
-  width: min(100%, 28.5rem) !important;
-  max-width: 28.5rem !important;
+  width: 28.5rem !important;
+  max-width: calc(100vw - 2rem) !important;
+  min-width: 0 !important;
+  flex-shrink: 0;
   margin-top: 0 !important;
+  margin-inline: auto;
   padding: clamp(1.35rem, 4vw, 2rem);
   border-radius: 1rem;
   border: 1px solid color-mix(in srgb, var(--stitch-on-surface) 12%, transparent);
   box-shadow: var(--ds-shadow-lg, 0 20px 42px rgba(10, 25, 44, 0.14)),
     inset 0 1px 0 color-mix(in srgb, var(--stitch-surface-low) 40%, transparent);
   transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.modal-box--signature-editor.modal-box.modal-box--submissions-filter {
+  width: 28.5rem !important;
+  max-width: calc(100vw - 2rem) !important;
+  min-width: 0 !important;
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin-inline: auto;
 }
 
 .modal-box--signature-editor.modal-box.modal-box--decline {
@@ -130,11 +147,56 @@ html-modal {
 
 .tpl-new-form {
   padding: 0.5rem 0 0;
+  width: 100%;
   --profile-surface-inset: #0d1320;
   --profile-border: #1f2937;
   --profile-text: #f9fafb;
   --profile-text-secondary: #9ca3af;
   --profile-accent: #10b981;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .signature-modal__body.tpl-new-form,
+.modal-box--signature-editor:has(.tpl-new-form) .signature-modal__body.tpl-new-form form {
+  width: 100%;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .label {
+  padding: 0 0 0.35rem;
+  margin-bottom: 0;
+  min-height: 0;
+  color: var(--profile-text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .form-control .label {
+  margin-bottom: 0 !important;
+  min-height: 0;
+  padding: 0 0 0.35rem;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .form-control {
+  gap: 0;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .form-control > * + * {
+  margin-top: 0 !important;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .form-control + .form-control:not(:has(.tpl-new-submit-btn)) {
+  margin-top: 1rem;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .grid > .form-control + .form-control {
+  margin-top: 0 !important;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .form-control .tpl-new-folder-picker {
+  margin: 0 0 0.35rem;
+}
+
+.modal-box--signature-editor:has(.tpl-new-form) .form-control:has(.tpl-new-submit-btn) {
+  margin-top: 1.25rem;
 }
 
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .tpl-new-form {
@@ -167,8 +229,7 @@ html-modal {
 
 .modal-box--signature-editor:has(.tpl-new-form) .base-input,
 .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input,
-.modal-box--signature-editor:has(.tpl-new-form) select.base-select,
-.modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input {
+.modal-box--signature-editor:has(.tpl-new-form) select.base-select {
   background-color: var(--profile-surface-inset);
   border: 1px solid color-mix(in srgb, #ffffff 14%, var(--profile-border));
   color: var(--profile-text);
@@ -177,8 +238,7 @@ html-modal {
 
 .modal-box--signature-editor:has(.tpl-new-form) .base-input::placeholder,
 .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input::placeholder,
-.modal-box--signature-editor:has(.tpl-new-form) select.base-select.base-select--placeholder,
-.modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input::placeholder {
+.modal-box--signature-editor:has(.tpl-new-form) select.base-select.base-select--placeholder {
   color: color-mix(
     in srgb,
     var(--profile-text-secondary) 92%,
@@ -189,16 +249,14 @@ html-modal {
 
 .modal-box--signature-editor:has(.tpl-new-form) .base-input:hover:not(:focus),
 .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input:hover:not(:focus),
-.modal-box--signature-editor:has(.tpl-new-form) select.base-select:hover:not(:focus),
-.modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input:hover:not(:focus) {
+.modal-box--signature-editor:has(.tpl-new-form) select.base-select:hover:not(:focus) {
   border-color: color-mix(in srgb, var(--profile-accent) 45%, var(--profile-border));
   background-color: color-mix(in srgb, #ffffff 6%, var(--profile-surface-inset));
 }
 
 .modal-box--signature-editor:has(.tpl-new-form) .base-input:focus,
 .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input:focus,
-.modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus,
-.modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input:focus {
+.modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus {
   outline: none;
   border-color: var(--profile-accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 28%, transparent);
@@ -212,8 +270,7 @@ html-modal {
 
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input,
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input,
-[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select,
-[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input {
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select {
   background-color: #ffffff !important;
   color: var(--profile-text) !important;
   border-color: color-mix(
@@ -226,8 +283,7 @@ html-modal {
 
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input::placeholder,
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input::placeholder,
-[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select.base-select--placeholder,
-[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input::placeholder {
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select.base-select--placeholder {
   color: color-mix(
     in srgb,
     var(--profile-text-secondary) 88%,
@@ -237,8 +293,7 @@ html-modal {
 
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input:hover:not(:focus),
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input:hover:not(:focus),
-[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select:hover:not(:focus),
-[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input:hover:not(:focus) {
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select:hover:not(:focus) {
   background-color: #ffffff !important;
   border-color: color-mix(
     in srgb,
@@ -249,10 +304,70 @@ html-modal {
 
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input:focus,
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input:focus,
-[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus,
-[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .tpl-new-folder-input:focus {
+[data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus {
   background-color: #ffffff !important;
   border-color: var(--profile-accent) !important;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--profile-accent) 35%, transparent),
     0 0 0 3px color-mix(in srgb, var(--profile-accent) 24%, transparent) !important;
+}
+
+.modal-box--signature-editor .tpl-new-folder-picker folder-autocomplete.tpl-new-folder-autocomplete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.modal-box--signature-editor .tpl-new-folder-picker folder-autocomplete.tpl-new-folder-autocomplete > set-value:first-of-type {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.modal-box--signature-editor:has(.tpl-new-folder-picker) .tpl-new-folder-picker--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.autocomplete.tpl-new-folder-autocomplete-menu {
+  --profile-surface-inset: #0d1320;
+  --profile-border: #1f2937;
+  --profile-text: #f9fafb;
+  --profile-accent: #10b981;
+  margin-top: 0 !important;
+  border-radius: 0 0 var(--ds-radius-8) var(--ds-radius-8);
+  border: 1px solid color-mix(in srgb, #ffffff 14%, var(--profile-border));
+  border-top: 0;
+  background: var(--profile-surface-inset);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.28);
+  z-index: 10001;
+}
+
+.autocomplete.tpl-new-folder-autocomplete-menu > div {
+  color: var(--profile-text);
+  padding: 0.5rem 0.75rem;
+}
+
+.autocomplete.tpl-new-folder-autocomplete-menu > div:hover:not(.group) {
+  background: color-mix(in srgb, var(--profile-accent) 14%, var(--profile-surface-inset));
+  color: var(--profile-text);
+}
+
+.autocomplete.tpl-new-folder-autocomplete-menu > div.selected {
+  background: transparent;
+  color: var(--profile-text);
+}
+
+[data-theme='docuseal-light'] .autocomplete.tpl-new-folder-autocomplete-menu {
+  --profile-surface-inset: #ffffff;
+  --profile-border: #e5e7eb;
+  --profile-text: #111827;
+  --profile-accent: #10b981;
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 16px 32px rgba(10, 25, 44, 0.14);
+}
+
+[data-theme='docuseal-light'] .autocomplete.tpl-new-folder-autocomplete-menu > div:hover:not(.group) {
+  background: color-mix(in srgb, var(--profile-accent) 12%, #ffffff);
 }

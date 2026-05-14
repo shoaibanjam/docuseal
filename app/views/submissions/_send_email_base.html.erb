@@ -1,12 +1,13 @@
 <% submitter_preferences_index = template&.preferences&.dig('submitters').to_a.index_by { |e| e['uuid'] } %>
 <% template_submitters = local_assigns[:submitter]&.submission&.template_submitters || template.submitters %>
 <% message_field_id = "message_field_#{SecureRandom.hex(3)}" %>
-<div class="form-control">
+<div class="add-recipients-send-email-block">
+  <div class="form-control add-recipients-send-email-options">
   <% can_send_emails = Accounts.can_send_emails?(current_account) %>
   <div class="flex justify-between items-center">
-    <%= f.label :send_email, for: uuid = SecureRandom.uuid, class: 'flex items-center cursor-pointer' do %>
+    <%= f.label :send_email, for: uuid = SecureRandom.uuid, class: 'add-recipients-checkbox-label' do %>
       <%= f.check_box :send_email, id: uuid, class: 'base-checkbox', disabled: !can_send_emails || local_assigns[:disable_email], checked: can_send_emails && !local_assigns.key?(:resend_email) && !local_assigns[:disable_email] && template&.preferences&.dig('request_email_enabled') != false %>
-      <span class="label"><%= local_assigns[:resend_email] ? t('re_send_email') : t('send_email') %></span>
+      <span class="add-recipients-checkbox-caption"><%= local_assigns[:resend_email] ? t('re_send_email') : t('send_email') %></span>
     <% end %>
     <div>
       <% if can_send_emails %>
@@ -15,7 +16,7 @@
           <toggle-visible data-element-ids="<%= [message_field_id].to_json %>" class="flex">
             <label>
               <%= f.check_box :is_custom_message, checked: false, class: 'hidden peer', data: { action: 'change:toggle-visible#trigger', type: 'checkbox' } %>
-              <span class="link peer-checked:hidden"><%= t('edit_message') %></span>
+              <span class="link add-recipients-edit-message-link peer-checked:hidden"><%= t('edit_message') %></span>
             </label>
           </toggle-visible>
         <% end %>
@@ -37,9 +38,9 @@
       </div>
     </div>
   <% end %>
-</div>
+  </div>
 <% config = AccountConfigs.find_or_initialize_for_key(current_account, AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY) %>
-<div id="<%= message_field_id %>" class="card card-compact bg-base-300/40 hidden">
+<div id="<%= message_field_id %>" class="card card-compact bg-base-300/40 hidden add-recipients-message-card">
   <div class="card-body">
     <%= tag.input id: toggle_uuid = SecureRandom.uuid, value: '1', name: 'request_email_per_submitter', class: 'peer', type: 'checkbox', hidden: true, checked: local_assigns[:message_per_submitter] != false && template&.preferences&.dig('submitters').to_a.size > 1 %>
     <div class="peer-checked:hidden form-control space-y-2">
@@ -52,16 +53,16 @@
             </label>
           <% end %>
         </div>
-        <%= f.text_field :subject, value: local_assigns[:submitter_email_message]&.subject.presence || submitter_preferences_index.dig(local_assigns[:submitter]&.uuid, 'request_email_subject').presence || template&.preferences&.dig('request_email_subject').presence || config.value['subject'], required: true, class: '!text-sm base-input w-full', dir: 'auto' %>
+        <%= f.text_field :subject, value: local_assigns[:submitter_email_message]&.subject.presence || submitter_preferences_index.dig(local_assigns[:submitter]&.uuid, 'request_email_subject').presence || template&.preferences&.dig('request_email_subject').presence || config.value['subject'], required: true, class: '!text-sm base-input w-full', dir: 'auto', placeholder: t('personalization_placeholder_email_subject') %>
       </div>
       <div class="form-control">
         <%= f.label :message, t('body'), class: 'label' %>
         <% body_variables = AccountConfig::EMAIL_VARIABLES[AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY] %>
         <%= render 'personalization_settings/markdown_editor', name: f.field_name(:body), value: local_assigns[:submitter_email_message]&.body.presence || submitter_preferences_index.dig(local_assigns[:submitter]&.uuid, 'request_email_body').presence || template&.preferences&.dig('request_email_body').presence || config.value['body'], variables: body_variables %>
         <% unless local_assigns.fetch(:disable_save_as_default_template_option, false) %>
-          <label for="<%= uuid = SecureRandom.uuid %>" class="flex items-center cursor-pointer">
+          <label for="<%= uuid = SecureRandom.uuid %>" class="add-recipients-checkbox-label add-recipients-save-default-option">
             <%= check_box_tag :save_message, id: uuid, class: 'base-checkbox', checked: false %>
-            <span class="label"><%= t('save_as_default_template_message') %></span>
+            <span class="add-recipients-checkbox-caption"><%= t('save_as_default_template_message') %></span>
           </label>
         <% end %>
       </div>
@@ -88,7 +89,7 @@
                 <div class="flex justify-between">
                   <%= ff.label :subject, t('subject'), class: 'label' %>
                 </div>
-                <%= ff.text_field :subject, value: local_assigns[:submitter_email_message]&.subject.presence || submitter_preferences_index.dig(submitter['uuid'], 'request_email_subject').presence || template&.preferences&.dig('request_email_subject').presence || config.value['subject'], required: true, class: '!text-sm base-input w-full', dir: 'auto' %>
+                <%= ff.text_field :subject, value: local_assigns[:submitter_email_message]&.subject.presence || submitter_preferences_index.dig(submitter['uuid'], 'request_email_subject').presence || template&.preferences&.dig('request_email_subject').presence || config.value['subject'], required: true, class: '!text-sm base-input w-full', dir: 'auto', placeholder: t('personalization_placeholder_email_subject') %>
               </div>
               <div class="form-control">
                 <%= ff.label :message, t('body'), class: 'label' %>
@@ -99,5 +100,6 @@
         <% end %>
       </div>
     <% end %>
+  </div>
   </div>
 </div>

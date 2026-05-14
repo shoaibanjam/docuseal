@@ -275,10 +275,15 @@
           <a
             v-else
             :href="`/templates/${template.id}`"
-            class="tpl-show-action-btn tpl-show-action-btn--outline"
+            class="tpl-show-action-btn tpl-show-action-btn--outline hidden md:inline-flex items-center gap-2 builder-exit-preview-button"
+            data-turbo="false"
           >
-            <span class="hidden md:inline">
-              {{ t('back') }}
+            <IconDoorExit
+              width="22"
+              class="inline"
+            />
+            <span class="hidden md:inline whitespace-nowrap">
+              {{ t('exit_preview') }}
             </span>
           </a>
         </template>
@@ -318,6 +323,7 @@
           @change="save"
         />
         <div
+          v-if="editable && (withUploadButton || withAddPageButton)"
           class="sticky bottom-0 py-2 space-y-2 builder-documents-rail-footer"
           :style="builderSurfaceStyle"
         >
@@ -644,7 +650,7 @@ import DocumentPreview from './preview'
 import DocumentControls from './controls'
 import MobileFields from './mobile_fields'
 import FieldSubmitter from './field_submitter'
-import { IconPlus, IconUsersPlus, IconDeviceFloppy, IconChevronDown, IconEye, IconWritingSign, IconInnerShadowTop, IconInfoCircle, IconAdjustments, IconDownload, IconShare, IconSun, IconMoon } from '@tabler/icons-vue'
+import { IconPlus, IconUsersPlus, IconDeviceFloppy, IconChevronDown, IconEye, IconWritingSign, IconInnerShadowTop, IconInfoCircle, IconAdjustments, IconDownload, IconShare, IconSun, IconMoon, IconDoorExit } from '@tabler/icons-vue'
 import { v4 } from 'uuid'
 import { ref, computed, toRaw, defineAsyncComponent } from 'vue'
 import * as i18n from './i18n'
@@ -677,7 +683,8 @@ export default {
     IconEye,
     IconDeviceFloppy,
     IconSun,
-    IconMoon
+    IconMoon,
+    IconDoorExit
   },
   provide () {
     return {

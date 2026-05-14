@@ -1,4 +1,4 @@
-<%= form_for '', url: template_submissions_path(template), html: { class: 'space-y-4', autocomplete: 'off' }, data: { turbo_frame: :_top } do |f| %>
+<%= form_for '', url: template_submissions_path(template), html: { class: 'space-y-4 tpl-new-form', autocomplete: 'off' }, data: { turbo_frame: :_top } do |f| %>
   <% submitters = template.submitters.reject { |e| e['invite_by_uuid'].present? || e['optional_invite_by_uuid'].present? || e['invite_via_field_uuid'].present? } %>
   <dynamic-list class="space-y-4">
     <div class="space-y-4">
@@ -19,6 +19,7 @@
                     </label>
                   <% end %>
                   <input type="hidden" name="submission[1][submitters][][uuid]" value="<%= item['uuid'] %>">
+                  <label class="label" for="phone_phone_<%= item['uuid'] %>"><%= t('phone') %></label>
                   <custom-validation data-invalid-message="<%= t('use_international_format_1xxx_') %>">
                     <submitters-autocomplete data-field="phone">
                       <linked-input data-target-id="<%= "phone_phone_#{item['linked_to_uuid']}" if item['linked_to_uuid'].present? %>">
@@ -27,15 +28,17 @@
                     </submitters-autocomplete>
                   </custom-validation>
                   <% if submitters.size > 1 %>
+                    <label class="label" for="phone_name_<%= item['uuid'] %>"><%= "#{t('name')} (#{t('optional')})" %></label>
                     <submitters-autocomplete data-field="name">
                       <linked-input data-target-id="<%= "phone_name_#{item['linked_to_uuid']}" if item['linked_to_uuid'].present? %>">
-                        <input type="text" name="submission[1][submitters][][name]" autocomplete="off" class="base-input !h-10 mt-1.5 w-full" placeholder="<%= "#{t('name')} (#{t('optional')})" %>" value="<%= (params[:selfsign] && index.zero?) || item['is_requester'] ? current_user.full_name : '' %>" dir="auto" id="phone_name_<%= item['uuid'] %>">
+                        <input type="text" name="submission[1][submitters][][name]" autocomplete="off" class="base-input !h-10 w-full" placeholder="<%= "#{t('name')} (#{t('optional')})" %>" value="<%= (params[:selfsign] && index.zero?) || item['is_requester'] ? current_user.full_name : '' %>" dir="auto" id="phone_name_<%= item['uuid'] %>">
                       </linked-input>
                     </submitters-autocomplete>
                   <% end %>
                 </div>
                 <% if submitters.size == 1 %>
                   <div class="form-control flex">
+                    <label class="label" for="phone_name_<%= item['uuid'] %>"><%= "#{t('name')} (#{t('optional')})" %></label>
                     <submitters-autocomplete data-field="name">
                       <linked-input data-target-id="<%= "phone_name_#{item['linked_to_uuid']}" if item['linked_to_uuid'].present? %>">
                         <input type="text" name="submission[1][submitters][][name]" autocomplete="off" class="base-input !h-10 w-full" placeholder="<%= "#{t('name')} (#{t('optional')})" %>" value="<%= (params[:selfsign] && index.zero?) || item['is_requester'] ? current_user.full_name : '' %>" dir="auto" id="phone_name_<%= item['uuid'] %>">

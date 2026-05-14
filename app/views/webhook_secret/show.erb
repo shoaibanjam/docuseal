@@ -24,7 +24,7 @@
           </div>
           <div class="form-control">
             <%= ff.label :value, t('value'), class: 'label' %>
-            <%= ff.text_field :value, class: 'base-input w-full' %>
+            <%= ff.text_field :value, class: 'base-input w-full', placeholder: t('webhook_placeholder_secret_value', default: '••••••••••••') %>
           </div>
         <% end %>
       </div>

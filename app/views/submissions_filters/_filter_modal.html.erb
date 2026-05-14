@@ -1,12 +1,12 @@
-<%= render 'shared/turbo_modal', title: local_assigns[:title], enhanced_modal: true, content_class: 'modal-box--submissions-filter' do %>
-  <%= form_for '', url: params[:path], method: :get, data: { turbo_frame: :_top }, html: { autocomplete: :off } do |f| %>
+<%= render 'shared/turbo_modal', title: local_assigns[:title], enhanced_modal: true, content_class: 'modal-box--submissions-filter', body_class: 'tpl-new-form' do %>
+  <%= form_for '', url: params[:path], method: :get, data: { turbo_frame: :_top }, html: { autocomplete: :off, class: 'w-full' } do |f| %>
     <%= hidden_field_tag :q, params[:q] if params[:q].present? %>
     <% local_assigns[:default_params].each do |key, value| %>
       <%= hidden_field_tag(key, value) if value.present? %>
     <% end %>
     <%= yield %>
-    <div class="form-control mt-4">
-      <%= f.button button_title(title: t('apply'), disabled_with: t('applying')), name: nil, class: 'base-button' %>
+    <div class="form-control">
+      <%= f.button button_title(title: t('apply'), disabled_with: t('applying')), name: nil, class: 'base-button tpl-new-submit-btn' %>
     </div>
     <% if params[:with_remove] %>
       <div class="text-center w-full mt-4">

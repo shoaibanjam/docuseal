@@ -10,11 +10,11 @@
     <div class="space-y-2" dir="auto">
       <div class="form-control">
         <%= f.label :email, t(:email), class: 'label' %>
-        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input' %>
+        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
       </div>
       <div class="form-control">
         <%= f.label :password, t(:password), class: 'label' %>
-        <%= f.password_field :password, autocomplete: 'current-password', class: 'base-input' %>
+        <%= f.password_field :password, autocomplete: 'current-password', class: 'base-input', placeholder: t('profile_placeholder_current_password', default: '••••••••••••') %>
       </div>
     </div>
     <div class="form-control">
@@ -29,7 +29,7 @@
           <% else %>
             <div class="form-control mb-2">
               <%= label_tag 'resend_confirmation_email_input', t(:email), class: 'label' %>
-              <%= email_field_tag 'user[email]', nil, id: 'resend_confirmation_email_input', required: true, class: 'base-input' %>
+              <%= email_field_tag 'user[email]', nil, id: 'resend_confirmation_email_input', required: true, class: 'base-input', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
             </div>
           <% end %>
           <%= hidden_field_tag :redir, params[:redir] if params[:redir].present? %>

@@ -1,25 +1,38 @@
 <% banner_html = capture do %>
-  <div class="sticky top-0 z-50 bg-base-100 py-2 px-2 flex items-center" style="margin: 0px -8px -16px -8px">
-    <div class="text-xl md:text-3xl font-semibold focus:text-clip" style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-      <%= @template.name %>
-    </div>
-    <div class="flex items-center" style="margin-left: 20px; flex-shrink: 0">
-      <% if @template.submitters.size > 1 %>
-        <form action="<%= template_form_path(@template) %>" method="get" class="mr-3">
-          <submit-form data-on="change">
-            <select name="uuid" class="select base-input text-center font-normal" style="width: 180px; flex-shrink: 0;">
-              <% @template.submitters.each do |submitter| %>
-                <%= tag.option(value: submitter['uuid'], selected: submitter['uuid'] == @submitter.uuid) do %>
-                  <%= submitter['name'] %>
+  <div id="preview_form_header" class="signing-form-header sticky min-[1230px]:static top-0 z-50 p-3 md:p-4 md:-mx-[8px]">
+    <div class="signing-form-header-row">
+      <div class="signing-form-hero min-w-0">
+        <div class="signing-form-hero-avatar" aria-hidden="true">
+          <%= svg_icon('file_text', class: 'w-5 h-5') %>
+        </div>
+        <div class="signing-form-hero-copy min-w-0">
+          <p class="signing-form-hero-eyebrow"><%= t('preview') %></p>
+          <div class="signing-form-title text-xl md:text-2xl font-medium focus:text-clip truncate">
+            <%= @template.name %>
+          </div>
+        </div>
+      </div>
+      <div class="signing-form-actions flex items-center gap-2 flex-shrink-0">
+        <% if @template.submitters.size > 1 %>
+          <form action="<%= template_form_path(@template) %>" method="get" class="min-w-0">
+            <submit-form data-on="change">
+              <label for="preview_party_uuid" class="sr-only"><%= t('party') %></label>
+              <select id="preview_party_uuid" name="uuid" class="base-input signing-form-action !h-9 !min-h-0 !w-[11.25rem] !max-w-full !px-3 !text-xs md:!text-sm text-center font-normal">
+                <% @template.submitters.each do |submitter| %>
+                  <%= tag.option(value: submitter['uuid'], selected: submitter['uuid'] == @submitter.uuid) do %>
+                    <%= submitter['name'] %>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </select>
-          </submit-form>
-        </form>
-      <% end %>
-      <a href="<%= edit_template_path(@template) %>" class="base-button preview-exit-button !text-white hover:!text-white focus:!text-white" data-turbo="false" style="flex-shrink: 0; padding: 0px 24px; color: #f2fffc !important;">
-        <%= t('exit_preview') %>
-      </a>
+              </select>
+            </submit-form>
+          </form>
+        <% end %>
+        <%= link_to edit_template_path(@template),
+              class: 'base-button shrink-0 no-underline',
+              data: { turbo: false } do %>
+          <%= t('exit_preview') %>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

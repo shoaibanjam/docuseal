@@ -231,6 +231,28 @@ button[disabled] .enabled, button.btn-disabled .enabled {
   justify-content: flex-end;
 }
 
+.signing-form-header a.base-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, #10b981 88%, black);
+  background-color: #10b981;
+  color: #022c22;
+  transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+}
+
+.signing-form-header a.base-button:hover,
+.signing-form-header a.base-button:focus-visible {
+  filter: brightness(1.06);
+  box-shadow: 0 0 0 3px color-mix(in srgb, #10b981 12%, transparent);
+  color: #022c22;
+}
+
+.signing-form-header a.base-button:active {
+  transform: scale(0.98);
+}
+
 .signing-page-sheet {
   border-radius: 0.9rem;
   overflow: hidden;

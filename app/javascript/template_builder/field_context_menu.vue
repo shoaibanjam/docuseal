@@ -452,6 +452,13 @@
       @save="savePrice"
     >
       <div>
+        <label
+          dir="auto"
+          class="label text-sm"
+          for="price_value"
+        >
+          {{ t('price') }}
+        </label>
         <input
           id="price_value"
           v-model="priceValue"
@@ -470,13 +477,20 @@
       @save="savePaymentLink"
     >
       <div>
+        <label
+          dir="auto"
+          class="label text-sm"
+          for="payment_link_value"
+        >
+          {{ t('payment_link') }}
+        </label>
         <input
           id="payment_link_value"
           v-model="paymentLinkValue"
           dir="auto"
           type="text"
           class="base-input !text-base w-full"
-          placeholder="plink_XXXXX"
+          :placeholder="t('payment_link')"
         >
       </div>
     </ContextModal>

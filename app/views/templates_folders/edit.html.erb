@@ -20,31 +20,33 @@
         </toggle-visible>
         <div class="form-control mt-4">
           <folder-autocomplete class="block" data-submit-on-select="true" data-parent-name="<%= @template.folder.parent_folder&.name || @template.folder.name %>" data-enabled="<%= params[:autocomplete] != 'false' %>">
+            <%= f.label :name, t('folder_name'), class: 'label', for: 'subfolder_name' %>
             <%= f.text_field :name, required: true, placeholder: t('profile_placeholder_subfolder_name', default: 'Subfolder name'), class: 'base-input w-full', autofocus: true, id: 'subfolder_name', dir: 'auto' %>
           </folder-autocomplete>
         </div>
-        <div class="form-control mt-1">
+        <div class="form-control">
           <%= f.button button_title(title: t('move'), disabled_with: t('moving')), class: 'base-button tpl-new-submit-btn' %>
         </div>
       <% end %>
     <% end %>
     <%= form_for '', url: template_folder_path(@template), method: :put, data: { turbo_frame: :_top }, html: { id: 'folder_form', autocomplete: :off, class: (with_subfolder ? 'hidden' : nil) } do |f| %>
-      <div class="tpl-new-folder-picker">
-        <label for="folder_name" class="tpl-new-folder-icon">
-          <%= svg_icon('folder', class: 'w-5 h-5') %>
-        </label>
-        <folder-autocomplete class="flex justify-between items-center w-full bg-transparent" data-submit-on-select="true" data-enabled="<%= params[:autocomplete] != 'false' %>">
+      <div class="form-control">
+        <%= f.label :name, t('folder'), class: 'label', for: 'folder_name' %>
+        <div class="tpl-new-folder-picker">
+          <span class="tpl-new-folder-icon" aria-hidden="true">
+            <%= svg_icon('folder', class: 'w-5 h-5') %>
+          </span>
+          <folder-autocomplete class="tpl-new-folder-autocomplete" data-submit-on-select="true" data-enabled="<%= params[:autocomplete] != 'false' %>">
           <set-value data-on="blur" data-value="<%= TemplateFolder::DEFAULT_NAME %>" data-empty-only="true" class="peer flex-1 min-w-0">
-            <%= f.text_field :name, required: true, placeholder: t('profile_placeholder_folder_name', default: 'Folder name'), class: 'tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none', autofocus: true, id: 'folder_name', autocomplete: 'off', dir: 'auto' %>
+            <%= f.text_field :name, required: true, placeholder: t('profile_placeholder_folder_name', default: 'Folder name'), class: 'tpl-new-folder-input block w-full min-w-0 max-w-none outline-none rounded px-2 h-11 text-base shadow-none appearance-none', id: 'folder_name', autocomplete: 'off', dir: 'auto' %>
           </set-value>
-          <set-value data-on="click" data-value="" data-input-id="folder_name" class="peer-focus-within:hidden whitespace-nowrap">
-            <label for="folder_name" data-clear-on-focus="true" class="tpl-new-change-folder-link shrink-0 cursor-pointer">
-              <%= t('change_folder') %>
-            </label>
-          </set-value>
+          <label for="folder_name" class="tpl-new-change-folder-link shrink-0 cursor-pointer peer-focus-within:invisible peer-focus-within:pointer-events-none whitespace-nowrap">
+            <%= t('change_folder') %>
+          </label>
         </folder-autocomplete>
+        </div>
       </div>
-      <div class="form-control mt-1">
+      <div class="form-control">
         <%= f.button button_title(title: t('move'), disabled_with: t('moving')), class: 'base-button tpl-new-submit-btn' %>
       </div>
     <% end %>

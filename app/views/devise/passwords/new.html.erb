@@ -11,7 +11,7 @@
       <div class="space-y-2" dir="auto">
         <div class="form-control">
           <%= f.label :email, t(:email), class: 'label' %>
-          <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input' %>
+          <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
         </div>
       </div>
 
