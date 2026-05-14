@@ -1,7 +1,7 @@
 <%= render 'shared/navbar_warning' %>
 <header class="main-navbar w-full border-b border-white/5 sticky top-0 z-20 backdrop-blur-xl transition-shadow duration-200">
-  <div class="max-w-7xl mx-auto px-4 md:px-6 py-3.5 md:py-4 flex items-center justify-between">
-    <div class="flex items-center gap-3 md:gap-8 text-primary-content min-w-0">
+  <div class="main-navbar__inner w-full px-4 md:px-6 py-3.5 md:py-4 flex items-center justify-between gap-4">
+    <div class="main-navbar__start flex items-center gap-2 md:gap-3 text-primary-content min-w-0">
       <% if signed_in? %>
         <label for="app-sidebar-drawer" class="app-navbar-menu-trigger lg:hidden -ml-2" aria-label="<%= t('open_menu', default: 'Open menu') %>">
           <%= svg_icon('list', class: 'app-navbar-menu-trigger__icon') %>
@@ -12,7 +12,19 @@
       </a>
     </div>
     <% if signed_in? %>
-      <div class="space-x-4 flex items-center shrink-0">
+      <div class="main-navbar__end flex items-center gap-3 md:gap-4 shrink-0">
+        <% if Docuseal.demo? %>
+          <a href="https://docuseal.com/sign_up" class="btn btn-neutral btn-sm btn-outline inline-flex items-center justify-center" style="height: 37px">
+            <%= t('sign_up') %>
+          </a>
+          <span class="hidden sm:inline">
+            <%= render 'shared/github_button' %>
+          </span>
+        <% else %>
+          <div class="flex items-center gap-3 md:gap-4">
+            <%= render 'shared/navbar_buttons' %>
+          </div>
+        <% end %>
         <theme-toggle class="inline-flex">
           <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
             <span data-theme-icon="sun">
@@ -23,21 +35,17 @@
             </span>
           </button>
         </theme-toggle>
-        <% if Docuseal.demo? %>
-          <a href="https://docuseal.com/sign_up" class="btn btn-neutral btn-sm btn-outline inline-flex items-center justify-center" style="height: 37px">
-            <%= t('sign_up') %>
-          </a>
-          <span class="hidden sm:inline">
-            <%= render 'shared/github_button' %>
-          </span>
-        <% else %>
-          <div class="flex items-center justify-center space-x-4 mr-1">
-            <%= render 'shared/navbar_buttons' %>
-          </div>
-        <% end %>
       </div>
     <% else %>
-    <div class="flex items-center justify-center space-x-2">
+    <div class="main-navbar__end flex items-center gap-3 md:gap-4 shrink-0">
+      <% if request.path != new_user_session_path && request.path != setup_index_path %>
+        <%= link_to new_user_session_path({ lang: params[:lang] }.compact_blank), class: 'font-medium text-lg' do %>
+          <span class="flex items-center justify-center space-x-1">
+            <%= svg_icon('login', class: 'w-6 h-6') %>
+            <span><%= t('sign_in') %></span>
+          </span>
+        <% end %>
+      <% end %>
       <theme-toggle class="inline-flex items-center justify-center">
         <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
           <span data-theme-icon="sun">
@@ -48,14 +56,6 @@
           </span>
         </button>
       </theme-toggle>
-      <% if request.path != new_user_session_path && request.path != setup_index_path %>
-        <%= link_to new_user_session_path({ lang: params[:lang] }.compact_blank), class: 'font-medium text-lg' do %>
-          <span class="flex items-center justify-center space-x-1">
-            <%= svg_icon('login', class: 'w-6 h-6') %>
-            <span><%= t('sign_in') %></span>
-          </span>
-        <% end %>
-      <% end %>
     </div>
     <% end %>
   </div>

@@ -206,6 +206,7 @@
   line-height: 0;
   position: relative;
   z-index: 1;
+  color: currentColor;
   transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.2, 0.85, 0.25, 1);
 }
 
@@ -213,59 +214,12 @@
   display: none !important;
 }
 
-.theme-toggle-btn [data-theme-icon]:not(.hidden) {
-  width: 1.625rem;
-  height: 1.625rem;
-  border-radius: 9999px;
-  background: linear-gradient(
-    155deg,
-    color-mix(in srgb, var(--ds-text) 10%, transparent),
-    color-mix(in srgb, var(--ds-bg-active) 35%, transparent)
-  );
-  border: 1px solid color-mix(in srgb, var(--ds-border) 85%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ds-text) 12%, transparent);
-}
-
 .theme-toggle-btn [data-theme-icon] svg {
   width: var(--theme-toggle-icon);
   height: var(--theme-toggle-icon);
-  stroke-width: 2;
-  transition: color 0.2s ease, stroke 0.2s ease, transform 0.22s cubic-bezier(0.2, 0.85, 0.25, 1),
-    filter 0.22s ease;
-}
-
-.theme-toggle-btn [data-theme-icon='sun']:not(.hidden) {
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, #fbbf24 32%, transparent),
-    color-mix(in srgb, #f59e0b 14%, transparent)
-  );
-  border-color: color-mix(in srgb, #fbbf24 42%, var(--ds-border));
-  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff7ed 55%, transparent),
-    0 0 20px color-mix(in srgb, #fbbf24 22%, transparent);
-}
-
-.theme-toggle-btn [data-theme-icon='moon']:not(.hidden) {
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--ds-primary-400) 28%, transparent),
-    color-mix(in srgb, #38bdf8 12%, transparent)
-  );
-  border-color: color-mix(in srgb, var(--ds-primary-300) 38%, var(--ds-border));
-  box-shadow: inset 0 1px 0 color-mix(in srgb, #e0f2fe 35%, transparent),
-    0 0 18px color-mix(in srgb, var(--ds-primary-400) 20%, transparent);
-}
-
-.theme-toggle-btn [data-theme-icon='sun'] svg {
-  color: color-mix(in srgb, #ffde8f 90%, var(--ds-text));
   stroke: currentColor;
-  filter: drop-shadow(0 0 6px color-mix(in srgb, #fbbf24 45%, transparent));
-}
-
-.theme-toggle-btn [data-theme-icon='moon'] svg {
-  color: color-mix(in srgb, #b9d8ff 92%, var(--ds-text));
-  stroke: currentColor;
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ds-primary-400) 38%, transparent));
+  color: currentColor;
+  transition: transform 0.22s cubic-bezier(0.2, 0.85, 0.25, 1);
 }
 
 .theme-toggle-btn:hover {
@@ -286,7 +240,7 @@
 }
 
 .theme-toggle-btn:hover [data-theme-icon]:not(.hidden) svg {
-  transform: scale(1.06) rotate(-5deg);
+  transform: scale(1.05);
 }
 
 .theme-toggle-btn:active {
@@ -320,11 +274,6 @@
   opacity: 0.4;
 }
 
-.theme-toggle-btn[data-theme='docuseal-light'] [data-theme-icon='moon'] svg {
-  color: color-mix(in srgb, var(--ds-primary-600) 88%, var(--ds-text));
-  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--ds-primary-500) 28%, transparent));
-}
-
 .theme-toggle-btn[data-theme='docuseal-light']:hover {
   border-color: color-mix(in srgb, var(--ds-secondary-500) 52%, var(--ds-border));
   color: var(--ds-secondary-600);
@@ -336,11 +285,6 @@
   color: #d5e3fe;
   border-color: color-mix(in srgb, var(--ds-text) 16%, transparent);
   box-shadow: 0 10px 22px rgba(2, 8, 19, 0.28), inset 0 1px 0 rgba(213, 227, 254, 0.08);
-}
-
-.theme-toggle-btn[data-theme='docuseal-dark'] [data-theme-icon='sun'] svg,
-.theme-toggle-btn[data-theme='docuseal'] [data-theme-icon='sun'] svg {
-  color: #ffde8f;
 }
 
 .theme-toggle-btn[data-theme='docuseal-dark']:hover,

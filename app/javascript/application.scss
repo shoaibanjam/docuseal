@@ -428,6 +428,18 @@ template-builder .builder-tools-panel .tooltip-bottom-start:after {
   color: theme('colors.primary-content');
 }
 
+.main-navbar__inner {
+  width: 100%;
+}
+
+.main-navbar__start {
+  min-width: 0;
+}
+
+.main-navbar__end {
+  margin-left: auto;
+}
+
 /* Ensure dropdown menus have readable text on light surfaces */
 .dropdown-content {
   color: theme('colors.base-content');
@@ -7301,14 +7313,16 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
   padding: 1.5rem 1rem 2.5rem;
 }
 
-.profile-settings-page.auth-page .auth-card {
+.profile-settings-page.auth-page .auth-card.settings-card {
   width: min(100%, 28rem);
   margin-inline: auto;
-  background: var(--profile-surface);
-  border: 1px solid var(--profile-border);
-  border-radius: var(--profile-radius);
-  box-shadow: var(--profile-shadow);
-  color: var(--profile-text);
+  padding: var(--profile-space);
+}
+
+.profile-settings-page.auth-page .auth-card.settings-card .profile-settings-btn-primary.base-button,
+.profile-settings-page.auth-page .auth-card.settings-card .tpl-new-submit-btn,
+.profile-settings-page.auth-page .auth-card.settings-card .profile-settings-btn-outline.white-button {
+  width: 100%;
 }
 
 .profile-settings-page.auth-page .auth-header {
@@ -7337,93 +7351,28 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
   width: 100%;
 }
 
-.profile-settings-page.auth-page .auth-card form > .form-control + .form-control:not(:has(.tpl-new-submit-btn)) {
+.profile-settings-page.auth-page .auth-card.settings-card form > .form-control + .form-control:not(:has(.tpl-new-submit-btn)) {
   margin-top: 1rem;
 }
 
-.profile-settings-page.auth-page .auth-card form > .auth-card__name-row + .form-control {
+.profile-settings-page.auth-page .auth-card.settings-card form > .auth-card__name-row + .form-control {
   margin-top: 1rem;
 }
 
-.profile-settings-page.auth-page .auth-card .auth-card__name-row {
+.profile-settings-page.auth-page .auth-card.settings-card .auth-card__name-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
   align-items: start;
 }
 
-.profile-settings-page.auth-page .auth-card .auth-card__name-row > .form-control {
+.profile-settings-page.auth-page .auth-card.settings-card .auth-card__name-row > .form-control {
   margin-top: 0;
   min-width: 0;
 }
 
-.profile-settings-page.auth-page .auth-card .form-control:has(.tpl-new-submit-btn) {
+.profile-settings-page.auth-page .auth-card.settings-card .form-control:has(.tpl-new-submit-btn) {
   margin-top: 1.25rem;
-}
-
-.profile-settings-page.auth-page .auth-card .label,
-.profile-settings-page.auth-page .auth-card .label-text {
-  color: var(--profile-text-secondary);
-  font-size: 0.8125rem;
-  font-weight: 500;
-}
-
-.profile-settings-page.auth-page .auth-card .base-input,
-.profile-settings-page.auth-page .auth-card .base-select {
-  background-color: var(--profile-surface-inset);
-  border: 1px solid color-mix(in srgb, #ffffff 14%, var(--profile-border));
-  color: var(--profile-text);
-}
-
-.profile-settings-page.auth-page .auth-card .base-input::placeholder,
-.profile-settings-page.auth-page .auth-card .base-select.base-select--placeholder {
-  color: color-mix(
-    in srgb,
-    var(--profile-text-secondary) 92%,
-    var(--profile-text)
-  );
-  opacity: 1;
-}
-
-.profile-settings-page.auth-page .auth-card .base-input:hover:not(:focus),
-.profile-settings-page.auth-page .auth-card .base-select:hover:not(:focus) {
-  border-color: color-mix(in srgb, var(--profile-accent) 45%, var(--profile-border));
-  background-color: color-mix(in srgb, #ffffff 6%, var(--profile-surface-inset));
-}
-
-.profile-settings-page.auth-page .auth-card .base-input:focus,
-.profile-settings-page.auth-page .auth-card .base-select:focus {
-  outline: none;
-  border-color: var(--profile-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 28%, transparent);
-}
-
-.profile-settings-page.auth-page .profile-settings-btn-primary.base-button,
-.profile-settings-page.auth-page .tpl-new-submit-btn {
-  background: var(--profile-accent);
-  border-color: color-mix(in srgb, var(--profile-accent) 88%, black);
-  color: var(--profile-accent-contrast);
-  height: 2.75rem;
-  min-height: 2.75rem;
-  width: 100%;
-  border-radius: var(--ds-radius-8, 0.5rem);
-  font-weight: 600;
-}
-
-.profile-settings-page.auth-page .profile-settings-btn-outline.white-button {
-  width: 100%;
-  height: 2.75rem;
-  min-height: 2.75rem;
-  border-radius: var(--ds-radius-8, 0.5rem);
-  border-color: var(--profile-border);
-  background: transparent;
-  color: var(--profile-text);
-}
-
-.profile-settings-page.auth-page .profile-settings-btn-outline.white-button:hover {
-  border-color: color-mix(in srgb, var(--profile-accent) 55%, var(--profile-border));
-  background: color-mix(in srgb, var(--profile-accent) 8%, var(--profile-surface));
-  color: var(--profile-text);
 }
 
 .profile-settings-page.auth-page .auth-card__divider {
@@ -7486,15 +7435,84 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
   color: var(--profile-text);
 }
 
-[data-theme='docuseal-light'] .profile-settings-page.auth-page .auth-card .base-input,
-[data-theme='docuseal-light'] .profile-settings-page.auth-page .auth-card .base-select {
+[data-theme='docuseal-light'] .profile-settings-page.auth-page {
+  --profile-bg: #f9fafb;
+  --profile-surface: #ffffff;
+  --profile-surface-inset: #f3f4f6;
+  --profile-border: #e5e7eb;
+  --profile-text: #111827;
+  --profile-text-secondary: #6b7280;
+}
+
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .auth-card.settings-card
+  button.white-button.profile-settings-btn-outline {
   background-color: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.18) !important;
+  color: #111827 !important;
+}
+
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .auth-card.settings-card
+  button.white-button.profile-settings-btn-outline
+  .enabled,
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .auth-card.settings-card
+  button.white-button.profile-settings-btn-outline
+  .enabled
+  span,
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .auth-card.settings-card
+  button.white-button.profile-settings-btn-outline
+  .disabled
+  span {
+  color: #111827 !important;
+}
+
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .auth-card.settings-card
+  button.white-button.profile-settings-btn-outline:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--profile-accent) 10%,
+    #ffffff
+  ) !important;
   border-color: color-mix(
     in srgb,
-    var(--profile-text) 16%,
+    var(--profile-accent) 45%,
     var(--profile-border)
   ) !important;
-  color: var(--profile-text) !important;
+  color: #111827 !important;
+}
+
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .auth-card.settings-card
+  .auth-card__footer
+  select.base-select,
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .auth-card.settings-card
+  select.auth-card__language {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: rgba(18, 35, 60, 0.18) !important;
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, #111827 6%, transparent);
+}
+
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .auth-card.settings-card
+  select.auth-card__language
+  option {
+  background-color: #ffffff;
+  color: #111827;
 }
 
 .profile-settings-page.settings-layout {
@@ -8070,6 +8088,35 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
   background: transparent !important;
   border-color: var(--profile-border) !important;
   color: var(--profile-text) !important;
+}
+
+[data-theme='docuseal-light']
+  .profile-settings-page
+  .settings-card
+  .label
+  .label-text,
+[data-theme='docuseal-light']
+  .profile-settings-page
+  .settings-card
+  .label-text-alt {
+  color: color-mix(in srgb, var(--profile-text) 78%, transparent) !important;
+}
+
+[data-theme='docuseal-light']
+  .profile-settings-page
+  .profile-settings-btn-outline.white-button
+  .enabled,
+[data-theme='docuseal-light']
+  .profile-settings-page
+  .profile-settings-btn-outline.white-button
+  .enabled
+  span,
+[data-theme='docuseal-light']
+  .profile-settings-page
+  .profile-settings-btn-outline.white-button
+  .disabled
+  span {
+  color: inherit !important;
 }
 
 /* Profile / account shell — light theme fine-tuning (tokens + prefs rows + toggles) */
