@@ -1,149 +1,157 @@
 <template>
-  <div
-    class="modal modal-open items-start !animate-none overflow-y-auto"
-  >
+  <div class="modal modal-open modal--signature-editor !animate-none overflow-y-auto">
     <div
-      class="absolute top-0 bottom-0 right-0 left-0"
+      class="turbo-modal-backdrop absolute inset-0 cursor-pointer z-0"
+      aria-hidden="true"
       @click.prevent="$emit('close')"
     />
-    <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none w-full max-w-xl">
-      <div class="flex justify-between items-center border-b pb-2 mb-2 font-medium">
-        <span class="modal-title">
-          {{ t('font') }} - {{ (defaultField ? (defaultField.title || field.title || field.name) : field.name) || buildDefaultName(field) }}
-        </span>
-        <a
-          href="#"
-          class="text-xl modal-close-button"
-          @click.prevent="$emit('close')"
-        >&times;</a>
-      </div>
-      <div class="mt-4">
-        <div>
-          <div class="flex items-center space-x-1.5">
-            <span>
-              <div class="dropdown modal-field-font-dropdown">
+    <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none relative z-10 w-full modal-box--signature-editor modal-box--font-field">
+      <header class="signature-modal__header">
+        <div class="signature-modal__title-row">
+          <h2 class="signature-modal__title">
+            {{ t('font') }} - {{ (defaultField ? (defaultField.title || field.title || field.name) : field.name) || buildDefaultName(field) }}
+          </h2>
+          <button
+            type="button"
+            class="signature-modal__close"
+            :aria-label="t('close', 'Close')"
+            @click.prevent="$emit('close')"
+          >
+            <IconX
+              class="w-5 h-5"
+              stroke-width="1.75"
+            />
+          </button>
+        </div>
+        <div
+          class="signature-modal__head-divider"
+          aria-hidden="true"
+        />
+      </header>
+      <div class="signature-modal__body">
+        <form
+          class="tpl-new-form font-modal"
+          @submit.prevent="saveAndClose"
+        >
+          <div class="font-modal__toolbar">
+            <div class="font-modal__toolbar-row">
+              <div class="dropdown font-modal__font-dropdown">
                 <label
                   tabindex="0"
-                  class="base-input flex items-center justify-between"
-                  style="height: 32px; padding-right: 0; width: 120px"
+                  class="base-input font-modal__font-select"
                   :class="fonts.find((f) => f.value === preferences.font)?.class"
                 >
-                  <span style="margin-top: 1px">
+                  <span class="font-modal__font-select-label">
                     {{ preferences.font || 'Default' }}
                   </span>
                   <IconChevronDown
-                    class="ml-2 mr-2 mt-0.5"
+                    class="font-modal__font-select-icon"
                     width="18"
                     height="18"
                   />
                 </label>
                 <div
                   tabindex="0"
-                  class="dropdown-content p-0 mt-1 block z-10 menu shadow bg-[#0d1c2f] border border-white/10 rounded-md w-52 text-primary-content"
+                  class="dropdown-content font-modal__dropdown-menu menu z-10"
                 >
                   <div
                     v-for="(font, index) in fonts"
                     :key="index"
                     :value="font.value"
-                    :class="{ 'bg-base-300': preferences.font == font.value, [font.class]: true }"
-                    class="hover:bg-base-300 px-2 py-1.5 cursor-pointer"
+                    :class="{ 'font-modal__dropdown-item--active': preferences.font == font.value, [font.class]: true }"
+                    class="font-modal__dropdown-item"
                     @click="[font.value ? preferences.font = font.value : delete preferences.font, closeDropdown()]"
                   >
                     {{ font.label }}
                   </div>
                 </div>
               </div>
-            </span>
-            <span class="relative">
-              <select
-                class="select input-bordered bg-[#010e21] border-white/10 text-primary-content select-sm text-center pl-2"
-                style="font-size: 16px; line-height: 12px; width: 86px; text-align-last: center;"
-                @change="$event.target.value ? preferences.font_size = parseInt($event.target.value) : delete preferences.font_size"
-              >
-                <option
-                  :selected="!preferences.font_size"
-                  value=""
+
+              <div class="font-modal__size-field">
+                <select
+                  class="base-select font-modal__size-select"
+                  @change="$event.target.value ? preferences.font_size = parseInt($event.target.value) : delete preferences.font_size"
                 >
-                  Auto
-                </option>
-                <option
-                  v-for="size in sizes"
-                  :key="size"
-                  :value="size"
-                  :selected="size === preferences.font_size"
-                >
-                  {{ size }}
-                </option>
-              </select>
-              <span
-                class="border-l border-white/10 pl-1.5 absolute bg-[#010e21] bottom-0 pointer-events-none text-sm h-5 text-primary-content/70"
-                style="right: 13px; top: 6px"
-              >
-                pt
-              </span>
-            </span>
-            <span class="flex">
+                  <option
+                    :selected="!preferences.font_size"
+                    value=""
+                  >
+                    Auto
+                  </option>
+                  <option
+                    v-for="size in sizes"
+                    :key="size"
+                    :value="size"
+                    :selected="size === preferences.font_size"
+                  >
+                    {{ size }}
+                  </option>
+                </select>
+                <span class="font-modal__size-suffix">pt</span>
+              </div>
+
               <div
-                class="join"
-                style="height: 32px"
+                class="font-modal__tool-group"
+                role="group"
+                :aria-label="t('font_style', 'Font style')"
               >
                 <button
                   v-for="(type, index) in types"
                   :key="index"
-                  class="btn btn-sm join-item bg-[#010e21] border-white/10 input-bordered hover:border-secondary/30 hover:bg-[#1d2b3e] px-2 text-primary-content"
-                  :class="{ '!bg-base-300': preferences.font_type?.includes(type.value) }"
+                  type="button"
+                  class="font-modal__tool-btn"
+                  :class="{ 'font-modal__tool-btn--active': preferences.font_type?.includes(type.value) }"
                   @click="setFontType(type.value)"
                 >
                   <component :is="type.icon" />
                 </button>
               </div>
-            </span>
-            <span class="flex">
+            </div>
+
+            <div class="font-modal__toolbar-row">
               <div
-                class="join"
-                style="height: 32px"
+                class="font-modal__tool-group"
+                role="group"
+                :aria-label="t('alignment', 'Alignment')"
               >
                 <button
                   v-for="(align, index) in aligns"
                   :key="index"
-                  class="btn btn-sm join-item bg-[#010e21] border-white/10 input-bordered hover:border-secondary/30 hover:bg-[#1d2b3e] px-2 text-primary-content"
-                  :class="{ '!bg-base-300': preferences.align === align.value }"
+                  type="button"
+                  class="font-modal__tool-btn"
+                  :class="{ 'font-modal__tool-btn--active': preferences.align === align.value }"
                   @click="align.value && preferences.align != align.value ? preferences.align = align.value : delete preferences.align"
                 >
                   <component :is="align.icon" />
                 </button>
               </div>
-            </span>
-            <span class="flex">
-              <div class="dropdown modal-field-font-dropdown">
+
+              <div class="dropdown font-modal__valign-dropdown">
                 <label
                   tabindex="0"
-                  class="cursor-pointer flex bg-[#010e21] border border-white/10 input-bordered rounded-md h-8 items-center justify-center px-1 text-primary-content"
-                  style="-webkit-appearance: none; -moz-appearance: none;"
+                  class="font-modal__tool-btn font-modal__tool-btn--menu"
                 >
                   <component :is="valigns.find((v) => v.value === (preferences.valign || 'center'))?.icon" />
                 </label>
                 <div
                   tabindex="0"
-                  class="dropdown-content p-0 mt-1 block z-10 menu shadow bg-[#0d1c2f] border border-white/10 rounded-md text-primary-content"
+                  class="dropdown-content font-modal__dropdown-menu font-modal__dropdown-menu--compact menu z-10"
                 >
                   <div
                     v-for="(valign, index) in valigns"
                     :key="index"
                     :value="valign.value"
-                    :class="{ 'bg-base-300': preferences.valign == valign.value }"
-                    class="hover:bg-base-300 px-2 py-1.5 cursor-pointer"
+                    :class="{ 'font-modal__dropdown-item--active': preferences.valign == valign.value }"
+                    class="font-modal__dropdown-item font-modal__dropdown-item--icon"
                     @click="[valign.value ? preferences.valign = valign.value : delete preferences.valign, closeDropdown()]"
                   >
                     <component :is="valign.icon" />
                   </div>
                 </div>
               </div>
-            </span>
-            <span>
+
               <select
-                class="input input-bordered bg-[#010e21] border-white/10 text-primary-content input-sm text-lg rounded-md"
-                style="-webkit-appearance: none; -moz-appearance: none; text-indent: 0px; text-overflow: ''; padding: 0px 6px; height: 32px"
+                class="base-select font-modal__color-select"
                 @change="$event.target.value ? preferences.color = $event.target.value : delete preferences.color"
               >
                 <option
@@ -155,46 +163,50 @@
                   {{ color.label }}
                 </option>
               </select>
-            </span>
+            </div>
           </div>
-        </div>
-        <div class="mt-4">
+
           <div
-            class="flex border border-white/10 rounded-xl bg-[#010e21] px-4 h-16 modal-field-font-preview"
-            :style="{
-              color: preferences.color || 'black',
-              fontSize: (preferences.font_size || 11) + 'pt',
-            }"
-            :class="textClasses"
+            class="font-modal__preview"
+            :class="[{
+              'font-modal__preview--white-text': preferences.color === 'white'
+            }, textClasses]"
+            :style="previewStyle"
           >
             <span
               contenteditable="true"
-              class="outline-none whitespace-nowrap truncate"
+              class="font-modal__preview-text"
             >
               {{ field.default_value || field.name || buildDefaultName(field) }}
             </span>
           </div>
-        </div>
-        <div class="mt-4">
-          <button
-            class="base-button w-full modal-save-button"
-            @click.prevent="saveAndClose"
-          >
-            {{ t('save') }}
-          </button>
-        </div>
+
+          <div class="form-control mt-1">
+            <button class="base-button profile-settings-btn-primary tpl-new-submit-btn">
+              {{ t('save') }}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { IconChevronDown, IconBold, IconItalic, IconAlignLeft, IconAlignRight, IconAlignCenter, IconAlignBoxCenterTop, IconAlignBoxCenterBottom, IconAlignBoxCenterMiddle } from '@tabler/icons-vue'
+import { IconChevronDown, IconBold, IconItalic, IconAlignLeft, IconAlignRight, IconAlignCenter, IconAlignBoxCenterTop, IconAlignBoxCenterBottom, IconAlignBoxCenterMiddle, IconX } from '@tabler/icons-vue'
+
+const previewColorMap = {
+  black: '#111827',
+  white: '#ffffff',
+  blue: '#2563eb',
+  red: '#dc2626'
+}
 
 export default {
   name: 'FontModal',
   components: {
-    IconChevronDown
+    IconChevronDown,
+    IconX
   },
   inject: ['t', 'template'],
   props: {
@@ -262,6 +274,17 @@ export default {
         { label: '🟥', value: 'red' }
       ]
     },
+    previewStyle () {
+      const style = {
+        fontSize: `${this.preferences.font_size || 11}pt`
+      }
+
+      if (this.preferences.color && previewColorMap[this.preferences.color]) {
+        style.color = previewColorMap[this.preferences.color]
+      }
+
+      return style
+    },
     textClasses () {
       return {
         'font-courier': this.preferences.font === 'Courier',
@@ -272,7 +295,6 @@ export default {
         'items-center': !this.preferences.valign || this.preferences.valign === 'center',
         'items-start': this.preferences.valign === 'top',
         'items-end': this.preferences.valign === 'bottom',
-        'bg-black': this.preferences.color === 'white',
         'font-bold': ['bold_italic', 'bold'].includes(this.preferences.font_type),
         italic: ['bold_italic', 'italic'].includes(this.preferences.font_type)
       }
@@ -287,6 +309,12 @@ export default {
 
       return acc
     }, {})
+  },
+  mounted () {
+    document.body.classList.add('overflow-hidden')
+  },
+  unmounted () {
+    document.body.classList.remove('overflow-hidden')
   },
   methods: {
     closeDropdown () {

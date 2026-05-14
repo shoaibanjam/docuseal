@@ -992,6 +992,10 @@ body.docuseal-landing {
 
 .landing-skip-link:focus {
   z-index: 100;
+  background: var(--profile-accent);
+  color: var(--profile-accent-contrast);
+  border-radius: var(--ds-radius-8, 0.55rem);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 28%, transparent);
 }
 
 @keyframes landing-badge-pop {
@@ -1205,4 +1209,125 @@ body.docuseal-landing .aos-init[data-aos].aos-animate {
     0 1px 0 rgba(255, 255, 255, 0.96) inset,
     0 20px 36px rgba(15, 23, 42, 0.16),
     0 0 0 1px rgba(4, 190, 153, 0.14);
+}
+
+.profile-settings-page.landing-page-shell {
+  min-height: auto;
+}
+
+.profile-settings-page.landing-page-shell .landing-page {
+  background: var(--profile-bg);
+  color: var(--profile-text);
+}
+
+.profile-settings-page.landing-page-shell .landing-hero {
+  background: var(--profile-bg);
+}
+
+.landing-page--refined .landing-gradient-text {
+  background-image: linear-gradient(
+    105deg,
+    color-mix(in srgb, var(--profile-accent) 82%, white) 0%,
+    var(--profile-accent) 52%,
+    color-mix(in srgb, var(--profile-accent) 72%, white) 100%
+  );
+}
+
+.landing-page--refined .landing-cloud-badge {
+  border-color: color-mix(in srgb, var(--profile-accent) 35%, transparent);
+  background: color-mix(in srgb, var(--profile-accent) 10%, transparent);
+  color: color-mix(in srgb, var(--profile-accent) 65%, white);
+}
+
+.landing-page--refined .landing-card-icon {
+  background: color-mix(in srgb, var(--profile-accent) 18%, transparent);
+  color: color-mix(in srgb, var(--profile-accent) 78%, white);
+}
+
+.landing-page--refined .landing-products-link {
+  color: var(--profile-accent);
+}
+
+.landing-page--refined .landing-products-link:hover {
+  color: color-mix(in srgb, var(--profile-accent) 82%, white);
+}
+
+.landing-nav-cta.profile-settings-btn-primary.base-button {
+  background: var(--profile-accent);
+  background-image: none;
+  color: var(--profile-accent-contrast);
+}
+
+.landing-page--refined .landing-nav-cta--refined.profile-settings-btn-primary.base-button {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--profile-accent) 16%, transparent) inset,
+    0 10px 24px color-mix(in srgb, var(--profile-accent) 30%, transparent);
+}
+
+.landing-page--refined .landing-hero-cta.base-button.profile-settings-btn-primary,
+.landing-page--refined .landing-final-cta-primary.base-button.profile-settings-btn-primary {
+  min-height: 3.25rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.landing-page--refined .landing-hero-secondary-cta.tpl-show-action-btn,
+.landing-page--refined .landing-final-cta-secondary.tpl-show-action-btn {
+  min-height: 3.25rem;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.landing-hero-media-overlay {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--profile-bg) 55%, transparent),
+    transparent,
+    transparent
+  );
+}
+
+.landing-final-cta-panel.landing-refined-panel {
+  border-radius: 1.75rem;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-nav-login.tpl-show-action-btn--outline,
+[data-theme='docuseal'] .landing-page .landing-nav-login.tpl-show-action-btn--outline {
+  color: var(--profile-text) !important;
+  background: transparent !important;
+  border: 1px solid color-mix(in srgb, var(--profile-border) 90%, transparent) !important;
+  box-shadow: none !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-nav-login.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-dark'] .landing-page .landing-nav-login.tpl-show-action-btn--outline:focus-visible,
+[data-theme='docuseal'] .landing-page .landing-nav-login.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal'] .landing-page .landing-nav-login.tpl-show-action-btn--outline:focus-visible {
+  color: var(--profile-accent) !important;
+  background: color-mix(in srgb, var(--profile-accent) 6%, transparent) !important;
+  border-color: color-mix(in srgb, var(--profile-accent) 50%, var(--profile-border)) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta-secondary.tpl-show-action-btn--outline,
+[data-theme='docuseal'] .landing-page .landing-final-cta-secondary.tpl-show-action-btn--outline,
+[data-theme='docuseal-dark'] .landing-page .landing-hero-secondary-cta.tpl-show-action-btn--outline,
+[data-theme='docuseal'] .landing-page .landing-hero-secondary-cta.tpl-show-action-btn--outline {
+  border-color: color-mix(in srgb, var(--profile-border) 90%, transparent) !important;
+  color: var(--profile-text) !important;
+}
+
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta-secondary.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-dark'] .landing-page .landing-final-cta-secondary.tpl-show-action-btn--outline:focus-visible,
+[data-theme='docuseal'] .landing-page .landing-final-cta-secondary.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal'] .landing-page .landing-final-cta-secondary.tpl-show-action-btn--outline:focus-visible,
+[data-theme='docuseal-dark'] .landing-page .landing-hero-secondary-cta.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-dark'] .landing-page .landing-hero-secondary-cta.tpl-show-action-btn--outline:focus-visible,
+[data-theme='docuseal'] .landing-page .landing-hero-secondary-cta.tpl-show-action-btn--outline:hover,
+[data-theme='docuseal'] .landing-page .landing-hero-secondary-cta.tpl-show-action-btn--outline:focus-visible {
+  border-color: color-mix(in srgb, var(--profile-accent) 50%, var(--profile-border)) !important;
+  background: color-mix(in srgb, var(--profile-accent) 6%, transparent) !important;
+  color: var(--profile-accent) !important;
 }

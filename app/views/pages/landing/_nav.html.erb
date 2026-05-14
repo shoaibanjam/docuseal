@@ -1,4 +1,4 @@
-<header class="landing-nav landing-nav--refined sticky top-0 z-20 border-b border-white/5 supports-[backdrop-filter]:backdrop-blur-xl bg-[#051427]/80">
+<header class="landing-nav landing-nav--refined sticky top-0 z-20 supports-[backdrop-filter]:backdrop-blur-xl">
   <div class="relative z-[1] mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3.5 md:py-4 md:gap-8">
     <%= link_to root_path, class: 'landing-nav-brand-link flex shrink-0 items-center text-white transition-opacity hover:opacity-90', aria: { label: Docuseal.product_name } do %>
       <%= render 'shared/logo', class: 'h-9 w-auto object-contain shrink-0' %>
@@ -31,12 +31,12 @@
         </button>
       </theme-toggle>
       <% if request.path != new_user_session_path && request.path != setup_index_path %>
-        <%= link_to login_path, class: 'landing-nav-login inline-flex items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-medium text-white/90 transition hover:text-white md:px-3' do %>
+        <%= link_to login_path, class: 'landing-nav-login tpl-show-action-btn tpl-show-action-btn--outline hidden sm:inline-flex items-center gap-2' do %>
           <%= svg_icon('login', class: 'h-5 w-5 shrink-0') %>
           <span class="hidden sm:inline"><%= t('sign_in') %></span>
         <% end %>
       <% end %>
-      <%= link_to 'Get Started', get_started_path, class: 'landing-nav-cta landing-nav-cta--refined inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold shadow-lg transition duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] md:px-5' %>
+      <%= link_to 'Get Started', get_started_path, class: 'landing-nav-cta landing-nav-cta--refined base-button profile-settings-btn-primary' %>
     </div>
   </div>
 </header>

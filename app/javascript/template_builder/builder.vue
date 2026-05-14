@@ -211,7 +211,7 @@
               </label>
               <ul
                 tabindex="0"
-              class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box text-center builder-save-dropdown-menu"
+              class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box builder-save-dropdown-menu"
               >
                 <li>
                   <a
