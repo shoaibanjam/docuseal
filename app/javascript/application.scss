@@ -6608,6 +6608,227 @@ template-builder
   stroke: none !important;
 }
 
+.modal-box--signature-editor.modal-box.modal-box--font-field {
+  width: min(100%, 36rem);
+  max-width: calc(100vw - 2rem);
+}
+
+.font-modal {
+  --font-modal-control-height: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.font-modal__toolbar {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.font-modal__toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.font-modal .base-input.font-modal__font-select,
+.font-modal .base-select {
+  color: var(--profile-text);
+}
+
+.font-modal .base-input.font-modal__font-select,
+.font-modal .base-select.font-modal__size-select,
+.font-modal .base-select.font-modal__color-select {
+  height: var(--font-modal-control-height) !important;
+  min-height: var(--font-modal-control-height) !important;
+  max-height: var(--font-modal-control-height);
+  padding-top: 0;
+  padding-bottom: 0;
+  box-sizing: border-box;
+}
+
+.font-modal__font-select {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 7.5rem;
+  padding-right: 0.35rem;
+  cursor: pointer;
+}
+
+.font-modal__font-select-label {
+  margin-top: 0;
+}
+
+.font-modal__font-select-icon {
+  flex-shrink: 0;
+  margin-left: 0.35rem;
+  opacity: 0.75;
+}
+
+.font-modal__size-field {
+  position: relative;
+  display: inline-flex;
+  height: var(--font-modal-control-height);
+}
+
+.font-modal__size-select {
+  width: 6.25rem;
+  padding-left: 0.5rem;
+  padding-right: 3rem;
+  text-align: center;
+  text-align-last: center;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.45rem center;
+  background-size: 0.9rem;
+}
+
+.font-modal__size-suffix {
+  position: absolute;
+  right: 1.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 0.8125rem;
+  color: color-mix(in srgb, var(--ds-text) 68%, transparent);
+}
+
+.font-modal__tool-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  height: var(--font-modal-control-height);
+  min-height: var(--font-modal-control-height);
+  max-height: var(--font-modal-control-height);
+  padding: 0.125rem;
+  box-sizing: border-box;
+  border-radius: var(--ds-radius-8, 0.5rem);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  background: color-mix(in srgb, var(--ds-bg-base) 55%, transparent);
+}
+
+.font-modal__tool-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--font-modal-control-height) - 0.25rem);
+  height: calc(var(--font-modal-control-height) - 0.25rem);
+  min-width: calc(var(--font-modal-control-height) - 0.25rem);
+  min-height: calc(var(--font-modal-control-height) - 0.25rem);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: calc(var(--ds-radius-8, 0.5rem) - 0.125rem);
+  background: transparent;
+  color: color-mix(in srgb, var(--ds-text) 84%, transparent);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.font-modal__tool-btn:hover,
+.font-modal__tool-btn:focus-visible {
+  color: var(--profile-accent, var(--stitch-secondary));
+  background: color-mix(in srgb, var(--profile-accent, #10b981) 8%, transparent);
+}
+
+.font-modal__tool-btn--active {
+  color: var(--profile-accent-contrast, #022c22);
+  background: var(--profile-accent, #10b981);
+  border-color: color-mix(in srgb, var(--profile-accent, #10b981) 88%, black);
+}
+
+.font-modal__valign-dropdown {
+  height: var(--font-modal-control-height);
+}
+
+.font-modal__tool-btn--menu {
+  width: var(--font-modal-control-height);
+  height: var(--font-modal-control-height);
+  min-width: var(--font-modal-control-height);
+  min-height: var(--font-modal-control-height);
+}
+
+.font-modal__color-select {
+  width: 3.25rem;
+  padding: 0 0.35rem;
+  font-size: 1.05rem;
+  text-align: center;
+}
+
+.font-modal__dropdown-menu {
+  margin-top: 0.35rem;
+  padding: 0.25rem;
+  border-radius: var(--ds-radius-8, 0.5rem);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  background: var(--profile-surface, var(--stitch-surface-high));
+  box-shadow: var(--ds-shadow-lg, 0 12px 28px rgba(0, 0, 0, 0.24));
+}
+
+.font-modal__dropdown-menu--compact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: var(--font-modal-control-height);
+}
+
+.font-modal__dropdown-item {
+  display: flex;
+  align-items: center;
+  min-height: var(--font-modal-control-height);
+  padding: 0.45rem 0.65rem;
+  border-radius: calc(var(--ds-radius-8, 0.5rem) - 0.1rem);
+  cursor: pointer;
+  box-sizing: border-box;
+  color: color-mix(in srgb, var(--ds-text) 88%, transparent);
+}
+
+.font-modal__dropdown-item:hover,
+.font-modal__dropdown-item--active {
+  background: color-mix(in srgb, var(--profile-accent, #10b981) 10%, transparent);
+  color: var(--ds-text);
+}
+
+.font-modal__dropdown-item--icon {
+  justify-content: center;
+  width: var(--font-modal-control-height);
+  min-width: var(--font-modal-control-height);
+  height: var(--font-modal-control-height);
+  min-height: var(--font-modal-control-height);
+  padding: 0;
+}
+
+.font-modal__dropdown-item--icon svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
+
+.font-modal__preview {
+  display: flex;
+  min-height: 4rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--ds-radius-8, 0.875rem);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  background: #ffffff;
+  color: #111827;
+}
+
+.font-modal__preview--white-text {
+  background: #000000;
+}
+
+.font-modal__preview-text {
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: inherit;
+}
+
 /* Submission show + builder — split primary actions share save-style segments */
 .submission-show-page .submission-show-split-action-group,
 template-builder .builder-topbar .builder-save-group {
