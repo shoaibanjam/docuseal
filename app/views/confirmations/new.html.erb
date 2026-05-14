@@ -2,18 +2,21 @@
   <div class="auth-shell">
     <div class="auth-card">
       <div class="auth-header">
-        <h1 class="auth-title auth-title--sm"><%= t('forgot_your_password_') %></h1>
+        <h1 class="auth-title auth-title--sm"><%= t('confirm_email') %></h1>
       </div>
       <div class="tpl-new-form">
-        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, data: { turbo: params[:redir].blank? }) do |f| %>
-          <%= render 'devise/shared/error_messages', resource: %>
+        <%= render 'devise/shared/error_messages', resource: resource %>
+        <p class="auth-subtitle">
+          <%= t('devise.failure.unconfirmed', default: 'You have to confirm your email address before continuing.') %>
+        </p>
+        <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }, data: { turbo: params[:redir].blank? }) do |f| %>
           <%= render 'devise/sessions/hidden_fields' %>
           <div class="form-control" dir="auto">
             <%= f.label :email, t(:email), class: 'label' %>
             <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input w-full', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
           </div>
           <div class="form-control">
-            <%= f.button button_title(title: t('reset_password'), disabled_with: t('resetting_password')), class: 'base-button profile-settings-btn-primary tpl-new-submit-btn' %>
+            <%= f.button button_title(title: t('resend_confirmation_email', default: 'Resend confirmation email'), disabled_with: t('sending', default: 'Sending...')), class: 'base-button profile-settings-btn-primary tpl-new-submit-btn' %>
           </div>
         <% end %>
         <div class="auth-card__footer">

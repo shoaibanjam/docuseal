@@ -5,7 +5,7 @@
       aria-hidden="true"
       @click.prevent="$emit('close')"
     />
-    <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none relative z-10 w-full modal-box--signature-editor modal-box--decline">
+    <div class="modal-box pt-4 pb-6 px-6 mt-20 max-h-none relative z-10 w-full modal-box--signature-editor modal-box--conditions">
       <header class="signature-modal__header">
         <div class="signature-modal__title-row">
           <h2 class="signature-modal__title">
@@ -28,7 +28,7 @@
           aria-hidden="true"
         />
       </header>
-      <div class="signature-modal__body">
+      <div class="signature-modal__body conditions-modal__body">
         <div
           v-if="!withConditions"
           class="tpl-new-form"
