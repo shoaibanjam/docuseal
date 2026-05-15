@@ -1,0 +1,44 @@
+<% count = CompletedSubmitter.distinct.count(:submission_id) %>
+<% if count > 1 %>
+  <section
+    class="landing-section landing-live-activity"
+    aria-label="<%= t('landing.signed_stat.aria_label', default: 'Documents signed on the platform') %>"
+    data-aos="fade-up"
+    data-aos-duration="700"
+  >
+    <div class="landing-live-activity__inner mx-auto max-w-7xl px-6">
+      <div class="landing-live-activity__status" role="status">
+        <span class="landing-live-activity__status-dot" aria-hidden="true">
+          <span class="landing-live-activity__status-ping"></span>
+          <span class="landing-live-activity__status-core"></span>
+        </span>
+        <span class="landing-live-activity__status-label">
+          <%= t('landing.signed_stat.system_status', default: 'SYSTEM STATUS: OPERATIONAL') %>
+        </span>
+      </div>
+
+      <h2 class="landing-live-activity__title">
+        <%= t('landing.signed_stat.title', default: 'Live Platform Activity') %>
+      </h2>
+      <p class="landing-live-activity__lead">
+        <%= t('landing.signed_stat.lead', default: 'Real-time visual processing of high-assurance digital infrastructure. Experience the velocity of global trust at scale.') %>
+      </p>
+
+      <div
+        class="landing-live-activity__counter"
+        data-landing-signed-counter
+        data-count="<%= count %>"
+      >
+        <div
+          class="landing-live-activity__number"
+          data-landing-counter-value
+          aria-hidden="true"
+        >0</div>
+        <span class="sr-only"><%= count %></span>
+        <p class="landing-live-activity__counter-label">
+          <%= t('landing.signed_stat.counter_label', product: Docuseal.product_name.upcase, default: 'DOCUMENTS SIGNED WITH %{product}').upcase %>
+        </p>
+      </div>
+    </div>
+  </section>
+<% end %>

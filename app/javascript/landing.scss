@@ -143,6 +143,7 @@
 /* Same as :has() above, but reliable when :has is unsupported or cascade order differs. */
 body.docuseal-landing main.page-shell.page-stack {
   padding-top: 0 !important;
+  padding-bottom: 0 !important;
   background-color: var(--cy-neutral-bg);
 }
 
@@ -402,6 +403,27 @@ html[data-theme='docuseal-light'] body.docuseal-landing {
 [data-theme='docuseal'] .landing-page .landing-footer {
   background: #051427 !important;
   border-color: rgba(213, 227, 254, 0.12) !important;
+  padding-top: 4rem;
+  padding-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  [data-theme='docuseal-dark'] .landing-page .landing-footer,
+  [data-theme='docuseal'] .landing-page .landing-footer {
+    padding-bottom: 2rem;
+  }
+}
+
+.landing-page .landing-footer__copyright {
+  margin-bottom: 0;
+}
+
+body.docuseal-landing .profile-settings-page.landing-page-shell {
+  padding-bottom: 0;
+}
+
+body.docuseal-landing .landing-page .landing-footer {
+  margin-bottom: 0;
 }
 
 [data-theme='docuseal-dark'] .landing-page .landing-attribution,
@@ -448,7 +470,8 @@ html[data-theme='docuseal-light'] body.docuseal-landing {
 [data-theme='docuseal-light'] .landing-page .landing-workflow-automated,
 [data-theme='docuseal-light'] .landing-page .landing-multi-party,
 [data-theme='docuseal-light'] .landing-page .landing-enterprise-grade-security,
-[data-theme='docuseal-light'] .landing-page .landing-security {
+[data-theme='docuseal-light'] .landing-page .landing-security,
+[data-theme='docuseal-light'] .landing-page .landing-live-activity {
   background: #ffffff !important;
 }
 
@@ -1133,6 +1156,167 @@ body.docuseal-landing .aos-init[data-aos].aos-animate {
 /* --------------------------------------------------------------------------
    Landing visual refresh: align with new settings UI language
    -------------------------------------------------------------------------- */
+
+/* Live platform activity — documents signed + telemetry feed */
+.landing-live-activity {
+  background: #0a192c !important;
+  color: #d5e3fe;
+  padding-top: 4.5rem;
+  padding-bottom: 5rem;
+  overflow: hidden;
+}
+
+.landing-live-activity__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.landing-live-activity__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(84, 253, 201, 0.22);
+  background: rgba(84, 253, 201, 0.08);
+}
+
+.landing-live-activity__status-dot {
+  position: relative;
+  display: inline-flex;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.landing-live-activity__status-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: #54fdc9;
+  opacity: 0.75;
+  animation: landing-live-activity-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.landing-live-activity__status-core {
+  position: relative;
+  display: inline-flex;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #54fdc9;
+}
+
+@keyframes landing-live-activity-ping {
+  75%,
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+.landing-live-activity__status-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #27e0ae;
+}
+
+.landing-live-activity__title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.landing-live-activity__lead {
+  margin: 0 auto 2.5rem;
+  max-width: 42rem;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.6;
+  color: #77859c;
+}
+
+.landing-live-activity__counter {
+  margin-bottom: 0;
+}
+
+.landing-live-activity__number {
+  font-size: clamp(3rem, 9vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: #54fdc9;
+  text-shadow: 0 0 20px rgba(84, 253, 201, 0.4);
+}
+
+.landing-live-activity__counter-label {
+  margin: 0.65rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #77859c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-live-activity__status-ping {
+    animation: none;
+  }
+}
+
+/* Live platform activity — light theme (matches landing cloud / refined palette) */
+[data-theme='docuseal-light'] .landing-live-activity {
+  background: #ffffff !important;
+  color: #12233c;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+[data-theme='docuseal-light'] .landing-page.landing-page--cloud .landing-live-activity {
+  background: #ffffff !important;
+}
+
+[data-theme='docuseal-light'] .landing-live-activity__status {
+  border-color: rgba(4, 190, 153, 0.32);
+  background: rgba(4, 190, 153, 0.1);
+}
+
+[data-theme='docuseal-light'] .landing-live-activity__status-ping,
+[data-theme='docuseal-light'] .landing-live-activity__status-core {
+  background: #04be99;
+}
+
+[data-theme='docuseal-light'] .landing-live-activity__status-label {
+  color: #047857;
+}
+
+[data-theme='docuseal-light'] .landing-live-activity__title {
+  color: #0f172a;
+}
+
+[data-theme='docuseal-light'] .landing-live-activity__lead {
+  color: #64748b;
+}
+
+[data-theme='docuseal-light'] .landing-live-activity__number {
+  background-image: linear-gradient(105deg, #019a76 0%, #04be99 52%, #26cbb0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 12px rgba(4, 190, 153, 0.22));
+}
+
+[data-theme='docuseal-light'] .landing-live-activity__counter-label {
+  color: #64748b;
+}
 
 .landing-page--refined .landing-refined-panel {
   border: 1px solid rgba(148, 163, 184, 0.18);
