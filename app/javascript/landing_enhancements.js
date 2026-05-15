@@ -123,6 +123,56 @@ export function teardownLandingScroll () {
   })
 }
 
+function formatLandingCounter (value) {
+  return new Intl.NumberFormat(document.documentElement.lang || undefined).format(value)
+}
+
+function animateLandingSignedCounter (valueEl, target, duration = 2200) {
+  const start = performance.now()
+
+  const tick = (now) => {
+    const progress = Math.min((now - start) / duration, 1)
+    const eased = 1 - Math.pow(1 - progress, 3)
+    const current = Math.round(target * eased)
+
+    valueEl.textContent = formatLandingCounter(current)
+
+    if (progress < 1) requestAnimationFrame(tick)
+    else valueEl.textContent = formatLandingCounter(target)
+  }
+
+  requestAnimationFrame(tick)
+}
+
+function bootLandingSignedCounter (reduceMotion) {
+  const root = document.querySelector('[data-landing-signed-counter]')
+  if (!root) return
+
+  const valueEl = root.querySelector('[data-landing-counter-value]')
+  const target = Number.parseInt(root.dataset.count || '', 10)
+
+  if (!valueEl || !Number.isFinite(target) || target < 1) return
+
+  if (reduceMotion) {
+    valueEl.textContent = formatLandingCounter(target)
+    return
+  }
+
+  let started = false
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (started || !entries.some((entry) => entry.isIntersecting)) return
+
+      started = true
+      observer.disconnect()
+      animateLandingSignedCounter(valueEl, target)
+    },
+    { threshold: 0.35, rootMargin: '0px 0px -10% 0px' }
+  )
+
+  observer.observe(root)
+}
+
 function bootLandingLogosSplide (reduceMotion) {
   const root = document.querySelector('.landing-logos-splide')
   if (!root) return
@@ -241,5 +291,6 @@ export function bootLandingAos () {
   }
 
   bootLandingLogosSplide(reduceMotion)
+  bootLandingSignedCounter(reduceMotion)
   setupLandingNavSpy()
 }
