@@ -14,9 +14,9 @@
         <%= render 'submissions/email_stats' %>
         <%= content_for(:edit_button) || capture do %>
           <toggle-visible data-element-ids="<%= [message_field_id].to_json %>" class="flex">
-            <label>
+            <label class="add-recipients-inline-link-label">
               <%= f.check_box :is_custom_message, checked: false, class: 'hidden peer', data: { action: 'change:toggle-visible#trigger', type: 'checkbox' } %>
-              <span class="link add-recipients-edit-message-link peer-checked:hidden"><%= t('edit_message') %></span>
+              <span class="add-recipients-inline-link peer-checked:hidden"><%= t('edit_message') %></span>
             </label>
           </toggle-visible>
         <% end %>
@@ -48,7 +48,7 @@
         <div class="flex justify-between">
           <%= f.label :subject, t('subject'), class: 'label' %>
           <% if template_submitters.size > 1 && template_submitters.size < 5 && local_assigns[:message_per_submitter] != false %>
-            <label for="<%= toggle_uuid %>" class="label underline">
+            <label for="<%= toggle_uuid %>" class="label add-recipients-inline-link">
               <%= t('edit_per_party') %>
             </label>
           <% end %>
@@ -72,15 +72,13 @@
       <div class="hidden peer-checked:block form-control space-y-2">
         <% uuid = SecureRandom.uuid %>
         <% options = template_submitters.map { |e| [e['name'], "request_email_#{uuid}_#{e['uuid']}"] } %>
-        <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="flex relative px-1">
-          <ul class="tabs w-full flex flex-nowrap">
+        <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="add-recipients-modal__tabs-wrap block w-full">
+          <div class="add-recipients-modal__tabs add-recipients-modal__tabs--party flex w-full">
             <% options.each_with_index do |(label, val), index| %>
-              <div class="w-full">
-                <%= f.radio_button :selected, val, checked: index.zero?, id: "#{val}_radio", data: { action: 'click:toggle-visible#trigger' }, class: 'hidden peer' %>
-                <%= f.label :selected, label, value: val, for: "#{val}_radio", class: 'tab w-full tab-lifted peer-checked:tab-active !bg-transparent' %>
-              </div>
+              <%= f.radio_button :selected, val, checked: index.zero?, id: "#{val}_radio", data: { action: 'click:toggle-visible#trigger' }, class: 'peer sr-only' %>
+              <%= f.label :selected, label, value: val, for: "#{val}_radio", class: 'add-recipients-modal__tab add-recipients-modal__tab--party' %>
             <% end %>
-          </ul>
+          </div>
         </toggle-visible>
         <% template_submitters.each_with_index do |submitter, index| %>
           <%= fields_for :submitter_preferences, nil, index: submitter['uuid'] do |ff| %>

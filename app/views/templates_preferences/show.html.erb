@@ -18,7 +18,7 @@
       </div>
     </toggle-visible>
   <% end %>
-  <div id="general" class="preferences-modal__section px-5 mb-4">
+  <div id="general" class="preferences-modal__section mb-4">
     <%= render 'access' %>
     <%= form_for @template, url: template_preferences_path(@template), method: :post, html: { autocomplete: 'off', class: 'mt-2' }, data: { close_on_submit: false } do |f| %>
       <toggle-on-submit data-element-id="bcc_saved_alert"></toggle-on-submit>
@@ -81,11 +81,11 @@
               </div>
             <% end %>
             <%= render 'templates_preferences/form_fields', ff: %>
-            <div class="flex items-center justify-between py-2.5 px-1 mb-2">
-              <span>
+            <div class="preferences-toggle-row mb-2">
+              <span class="preferences-toggle-row__label">
                 <%= t('require_email_2fa_to_open') %>
               </span>
-              <submit-form data-on="change" class="flex">
+              <submit-form data-on="change" class="flex shrink-0">
                 <%= ff.check_box :require_email_2fa, { checked: ff.object.require_email_2fa == true, class: 'toggle' }, 'true', 'false' %>
               </submit-form>
             </div>
@@ -132,18 +132,16 @@
     <%= render 'templates_code_modal/preferences', class: 'pt-2' %>
   </div>
   <% if show_recipients %>
-    <div id="recipients" class="preferences-modal__section hidden mt-2 mb-4 px-5 pt-1 pb-2">
+    <div id="recipients" class="preferences-modal__section preferences-recipients-panel hidden mt-2 mb-4 pt-1 pb-2 tpl-new-form">
       <%= render 'recipients', template: @template %>
     </div>
   <% end %>
   <% if show_api %>
-    <div id="api" class="preferences-modal__section hidden mt-2 mb-4 px-5">
-      <div>
-        <label class="text-sm font-semibold" for="template_id">
-          <%= t('template_id') %>
-        </label>
-        <div class="flex gap-2 mb-4 mt-2">
-          <input id="template_id" type="text" value="<%= @template.id %>" class="base-input w-full" autocomplete="off" readonly>
+    <div id="api" class="preferences-modal__section preferences-api-panel hidden mt-2 mb-4 tpl-new-form">
+      <div class="form-control">
+        <label class="label" for="template_id"><%= t('template_id') %></label>
+        <div class="flex gap-2">
+          <input id="template_id" type="text" value="<%= @template.id %>" class="base-input w-full min-w-0" autocomplete="off" readonly>
           <%= render 'shared/clipboard_copy',
                 icon: 'copy',
                 text: @template.id,
@@ -154,50 +152,47 @@
                 copied_title: t('copied') %>
         </div>
       </div>
-      <div>
-        <label class="text-sm font-semibold" for="embedding_url">
-          <%= t('embedding_url') %>
-        </label>
-        <div class="flex gap-2 mb-4 mt-2">
-          <%= form_for @template, url: template_share_link_path(@template), method: :post, html: { id: 'shared_link_form', autocomplete: 'off', class: 'w-full mt-1' }, data: { close_on_submit: false } do |f| %>
-            <div class="flex gap-2">
-              <input id="embedding_url" type="text" value="<%= start_form_url(slug: @template.slug) %>" class="base-input w-full" autocomplete="off" readonly>
-              <check-on-click data-element-id="template_shared_link">
-                <%= render 'shared/clipboard_copy',
-                      icon: 'copy',
-                      text: start_form_url(slug: @template.slug),
-                      always_show_label: true,
-                      class: 'base-button profile-settings-btn-primary inline-flex cursor-pointer items-center justify-center gap-2 px-5 py-0 shrink-0 min-h-[2.75rem] self-stretch',
-                      icon_class: 'w-5 h-5 shrink-0',
-                      copy_title: t('copy'),
-                      copied_title: t('copied') %>
-              </check-on-click>
-            </div>
-            <div class="flex items-center justify-between gap-1 pt-3">
-              <span><%= t('enable_shared_link') %></span>
-              <submit-form data-on="change" class="flex">
-                <%= f.check_box :shared_link, { class: 'toggle' }, 'true', 'false' %>
-              </submit-form>
-            </div>
-          <% end %>
-        </div>
+      <div class="form-control">
+        <label class="label" for="embedding_url"><%= t('embedding_url') %></label>
+        <%= form_for @template, url: template_share_link_path(@template), method: :post, html: { id: 'shared_link_form', autocomplete: 'off', class: 'space-y-3' }, data: { close_on_submit: false } do |f| %>
+          <div class="flex gap-2">
+            <input id="embedding_url" type="text" value="<%= start_form_url(slug: @template.slug) %>" class="base-input w-full min-w-0" autocomplete="off" readonly>
+            <check-on-click data-element-id="template_shared_link">
+              <%= render 'shared/clipboard_copy',
+                    icon: 'copy',
+                    text: start_form_url(slug: @template.slug),
+                    always_show_label: true,
+                    class: 'base-button profile-settings-btn-primary inline-flex cursor-pointer items-center justify-center gap-2 px-5 py-0 shrink-0 min-h-[2.75rem] self-stretch',
+                    icon_class: 'w-5 h-5 shrink-0',
+                    copy_title: t('copy'),
+                    copied_title: t('copied') %>
+            </check-on-click>
+          </div>
+          <div class="preferences-toggle-row">
+            <span><%= t('enable_shared_link') %></span>
+            <submit-form data-on="change" class="flex shrink-0">
+              <%= f.check_box :shared_link, { class: 'toggle' }, 'true', 'false' %>
+            </submit-form>
+          </div>
+        <% end %>
       </div>
-      <%= render 'templates_code_modal/placeholder' %>
-      <%= render 'templates/embedding', template: @template %>
+      <div class="preferences-embedding-wrap">
+        <%= render 'templates_code_modal/placeholder' %>
+        <%= render 'templates/embedding',
+              template: @template,
+              code_block_wrapper_class: 'preferences-code-block',
+              code_pre_class: 'preferences-code-block__pre' %>
+      </div>
       <% if can?(:manage, TemplateSharing.new(template: @template)) %>
-        <%= form_for '', url: template_sharings_testing_index_path, method: :post, html: { class: 'mt-1' }, data: { close_on_submit: false } do |f| %>
+        <%= form_for '', url: template_sharings_testing_index_path, method: :post, html: { class: 'mt-4' }, data: { close_on_submit: false } do |f| %>
           <%= f.hidden_field :template_id, value: @template.id %>
-          <div class="flex items-center justify-between">
-            <span>
-              <%= t('share_template_with_test_mode') %>
-            </span>
-            <submit-form data-on="change" class="flex">
+          <div class="preferences-toggle-row">
+            <span><%= t('share_template_with_test_mode') %></span>
+            <submit-form data-on="change" class="flex shrink-0">
               <%= f.check_box :value, class: 'toggle', checked: @template.template_sharings.exists?(account_id: current_account.testing_accounts) %>
             </submit-form>
           </div>
         <% end %>
-        <div class="mb-4">
-        </div>
       <% end %>
     </div>
   <% end %>
