@@ -1003,6 +1003,33 @@ body.docuseal-landing {
   scroll-behavior: auto;
 }
 
+.landing-hero-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .landing-hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 35rem;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .landing-hero-copy-col {
+    min-width: 0;
+  }
+
+  .landing-hero-media-col {
+    width: 35rem;
+    max-width: 35rem;
+    flex-shrink: 0;
+    justify-self: end;
+  }
+}
+
 .landing-hero-headline-line--accent {
   min-height: 1.15em;
   white-space: nowrap;
