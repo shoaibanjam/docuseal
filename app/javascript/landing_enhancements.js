@@ -11,7 +11,10 @@ let lenisInstance = null
 let heroWordRotatorTimer = null
 let tiltBound = false
 let logosSplide = null
-let landingNavObserver = null
+let landingNavScrollHandler = null
+let landingNavClickHandlers = []
+
+const LANDING_NAV_OFFSET = 76
 
 function prefersReducedMotion () {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -72,9 +75,59 @@ function bootHeroWordRotator (reduceMotion) {
   schedule(holdMs, rotate)
 }
 
+function getActiveLandingSectionId (sections) {
+  const marker = LANDING_NAV_OFFSET + 12
+  let activeId = sections[0]?.id
+
+  for (const { id, el } of sections) {
+    if (el.getBoundingClientRect().top <= marker) activeId = id
+  }
+
+  return activeId
+}
+
+function scrollLandingNavToSection (id) {
+  const target = `#${id}`
+
+  if (lenisInstance) {
+    lenisInstance.scrollTo(target, {
+      offset: -LANDING_NAV_OFFSET,
+      duration: 1.15
+    })
+    return
+  }
+
+  const section = document.getElementById(id)
+  if (!section) return
+
+  const top =
+    section.getBoundingClientRect().top +
+    window.scrollY -
+    LANDING_NAV_OFFSET
+
+  window.scrollTo({
+    top,
+    behavior: prefersReducedMotion() ? 'auto' : 'smooth'
+  })
+}
+
+function closeLandingMobileNav (link) {
+  const dropdown = link.closest('.dropdown')
+  const trigger = dropdown?.querySelector('[tabindex="0"]')
+  trigger?.blur()
+}
+
 function teardownLandingNavSpy () {
-  landingNavObserver?.disconnect()
-  landingNavObserver = null
+  if (landingNavScrollHandler) {
+    window.removeEventListener('scroll', landingNavScrollHandler)
+    lenisInstance?.off('scroll', landingNavScrollHandler)
+    landingNavScrollHandler = null
+  }
+
+  for (const { link, handler } of landingNavClickHandlers) {
+    link.removeEventListener('click', handler)
+  }
+  landingNavClickHandlers = []
 
   document.querySelectorAll('.landing-nav-link--active').forEach((el) => {
     el.classList.remove('landing-nav-link--active')
@@ -88,9 +141,7 @@ function setupLandingNavSpy () {
   const nav = document.querySelector('.landing-nav')
   if (!nav) return
 
-  const links = [
-    ...nav.querySelectorAll('a.landing-nav-link[href^="#"]')
-  ]
+  const links = [...nav.querySelectorAll('a[href^="#"]')]
   if (!links.length) return
 
   const sectionById = new Map()
@@ -102,6 +153,10 @@ function setupLandingNavSpy () {
   }
   if (!sectionById.size) return
 
+  const sections = [...sectionById.entries()]
+    .map(([id, el]) => ({ id, el }))
+    .sort((a, b) => a.el.offsetTop - b.el.offsetTop)
+
   const setActiveById = (id) => {
     for (const link of links) {
       const hrefId = link.getAttribute('href')?.slice(1)
@@ -112,26 +167,40 @@ function setupLandingNavSpy () {
     }
   }
 
-  landingNavObserver = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((e) => e.isIntersecting && e.target.id)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-
-      if (visible[0]?.target?.id) {
-        setActiveById(visible[0].target.id)
-      }
-    },
-    {
-      root: null,
-      rootMargin: '-76px 0px -55% 0px',
-      threshold: [0, 0.08, 0.2, 0.35]
-    }
-  )
-
-  for (const section of sectionById.values()) {
-    landingNavObserver.observe(section)
+  let scrollTick = false
+  const updateActiveFromScroll = () => {
+    const activeId = getActiveLandingSectionId(sections)
+    if (activeId) setActiveById(activeId)
   }
+
+  landingNavScrollHandler = () => {
+    if (scrollTick) return
+    scrollTick = true
+    requestAnimationFrame(() => {
+      scrollTick = false
+      updateActiveFromScroll()
+    })
+  }
+
+  window.addEventListener('scroll', landingNavScrollHandler, { passive: true })
+  lenisInstance?.on('scroll', landingNavScrollHandler)
+
+  for (const link of links) {
+    const handler = (event) => {
+      const id = link.getAttribute('href')?.slice(1)
+      if (!id || !sectionById.has(id)) return
+
+      event.preventDefault()
+      setActiveById(id)
+      scrollLandingNavToSection(id)
+      closeLandingMobileNav(link)
+    }
+
+    link.addEventListener('click', handler)
+    landingNavClickHandlers.push({ link, handler })
+  }
+
+  updateActiveFromScroll()
 }
 
 export function resetLandingAos () {
@@ -276,7 +345,7 @@ export function bootLandingAos () {
       wheelMultiplier: 0.92,
       touchMultiplier: 1.05,
       anchors: {
-        offset: -76,
+        offset: -LANDING_NAV_OFFSET,
         duration: 1.15
       }
     })
