@@ -7,7 +7,7 @@
       </div>
       <div class="tpl-new-form">
         <%= form_for(resource, as: resource_name, data: { turbo: params[:redir].blank? }, url: registration_path(resource_name)) do |f| %>
-          <%= render 'devise/shared/error_messages', resource: resource %>
+          <%= render 'devise/shared/error_messages', resource: resource, inline_fields: %i[email password password_confirmation] %>
           <%= render 'devise/sessions/hidden_fields' %>
           <div class="auth-card__name-row" dir="auto">
             <div class="form-control">
@@ -19,17 +19,17 @@
               <%= f.text_field :last_name, autocomplete: 'family-name', class: 'base-input w-full', placeholder: t('profile_placeholder_last_name', default: 'Rivera') %>
             </div>
           </div>
-          <div class="form-control">
-            <%= f.label :email, t(:email), class: 'label' %>
-            <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input w-full', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
+          <div class="form-control<%= ' form-control--invalid' if resource.errors[:email].any? %>">
+            <%= render 'devise/shared/auth_label', form: f, resource: resource, attribute: :email, label_text: t(:email), required: true %>
+            <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: ['base-input w-full', ('base-input--invalid' if resource.errors[:email].any?)].compact.join(' '), placeholder: t('profile_placeholder_email', default: 'you@company.com'), aria: { describedby: (dom_id(resource, :email) + '_error' if resource.errors[:email].any?) } %>
           </div>
-          <div class="form-control">
-            <%= f.label :password, t(:password), class: 'label' %>
-            <%= f.password_field :password, autocomplete: 'new-password', class: 'base-input w-full', placeholder: t('profile_placeholder_new_password', default: '••••••••••••') %>
+          <div class="form-control<%= ' form-control--invalid' if resource.errors[:password].any? %>">
+            <%= render 'devise/shared/auth_label', form: f, resource: resource, attribute: :password, label_text: t(:password), required: true %>
+            <%= f.password_field :password, autocomplete: 'new-password', class: ['base-input w-full', ('base-input--invalid' if resource.errors[:password].any?)].compact.join(' '), placeholder: t('profile_placeholder_new_password'), aria: { describedby: (dom_id(resource, :password) + '_error' if resource.errors[:password].any?) } %>
           </div>
-          <div class="form-control">
-            <%= f.label :password_confirmation, t(:confirm_new_password), class: 'label' %>
-            <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'base-input w-full', placeholder: t('profile_placeholder_confirm_password', default: '••••••••••••') %>
+          <div class="form-control<%= ' form-control--invalid' if resource.errors[:password_confirmation].any? %>">
+            <%= render 'devise/shared/auth_label', form: f, resource: resource, attribute: :password_confirmation, label_text: t(:confirm_new_password), required: true %>
+            <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: ['base-input w-full', ('base-input--invalid' if resource.errors[:password_confirmation].any?)].compact.join(' '), placeholder: t('profile_placeholder_confirm_password'), aria: { describedby: (dom_id(resource, :password_confirmation) + '_error' if resource.errors[:password_confirmation].any?) } %>
           </div>
           <div class="form-control">
             <%= f.button button_title(title: t(:sign_up), disabled_with: t(:signing_up)), class: 'base-button profile-settings-btn-primary tpl-new-submit-btn' %>

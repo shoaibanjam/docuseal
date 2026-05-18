@@ -258,8 +258,13 @@ turbo-frame#modal {
 .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input:focus,
 .modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus {
   outline: none;
-  border-color: var(--profile-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 28%, transparent);
+  border-color: var(--form-focus-accent, var(--profile-accent));
+  box-shadow: var(
+    --form-focus-ring,
+    0 0 0 2px color-mix(in srgb, var(--profile-accent) 22%, transparent)
+  );
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
 }
 
 .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input {
@@ -306,9 +311,11 @@ turbo-frame#modal {
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) textarea.base-input:focus,
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus {
   background-color: #ffffff !important;
-  border-color: var(--profile-accent) !important;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--profile-accent) 35%, transparent),
-    0 0 0 3px color-mix(in srgb, var(--profile-accent) 24%, transparent) !important;
+  border-color: var(--form-focus-accent, var(--profile-accent)) !important;
+  box-shadow: var(
+    --form-focus-ring,
+    0 0 0 2px color-mix(in srgb, var(--profile-accent) 20%, transparent)
+  ) !important;
 }
 
 .modal-box--signature-editor .tpl-new-folder-picker folder-autocomplete.tpl-new-folder-autocomplete {

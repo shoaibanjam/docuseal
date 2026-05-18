@@ -9,6 +9,21 @@ RSpec.describe 'Sign Up' do
     visit new_user_registration_path
   end
 
+  it 'shows inline validation instead of a top error banner for required fields' do
+    expect do
+      within("form[action='#{user_registration_path}']") do
+        click_button 'Sign up'
+      end
+    end.not_to change(Account, :count)
+
+    expect(page).to have_content("Email can't be blank")
+    expect(page).to have_content("Password can't be blank")
+    expect(page).to have_css('.auth-field-error', minimum: 2)
+    expect(page).to have_css('.label-required', minimum: 3)
+    expect(page).not_to have_css('#error_explanation')
+    expect(page).not_to have_content('errors prohibited')
+  end
+
   it 'creates a new isolated account and requires email confirmation before sign in' do
     fill_in 'First name', with: 'Jane'
     fill_in 'Last name', with: 'Doe'
@@ -19,7 +34,8 @@ RSpec.describe 'Sign Up' do
       within("form[action='#{user_registration_path}']") do
         click_button 'Sign up'
       end
-    end.to change(ActionMailer::Base.deliveries, :size).by(1)
+    end.to change(Account, :count).by(1)
+      .and change(ActionMailer::Base.deliveries, :size).by(1)
 
     expect(page).to have_current_path(new_user_session_path)
     expect(page).to have_content('confirmation link')
@@ -28,7 +44,6 @@ RSpec.describe 'Sign Up' do
 
     expect(user).to be_present
     expect(user).not_to be_confirmed
-    expect(Account.count).to eq(2)
     expect(user.account_id).not_to eq(account.id)
     expect(user.account.name).to eq("Jane Doe's Workspace")
     expect(user.first_name).to eq('Jane')
@@ -45,7 +60,7 @@ RSpec.describe 'Sign Up' do
 
     fill_in 'Email', with: 'jane.doe@example.com'
     fill_in 'Password', with: 'strong_password'
-    click_button 'Sign In'
+    click_button 'Log in'
 
     expect(page).to have_content('Signed in successfully')
     expect(page).to have_content('Document Templates')
@@ -73,7 +88,7 @@ RSpec.describe 'Sign Up' do
     expect(user).to be_confirmed
     expect(user.provider).to eq('google_oauth2')
     expect(user.uid).to eq('google-user-2')
-    expect(Account.count).to eq(2)
+    expect(user.account_id).not_to eq(account.id)
     expect(user.account.name).to eq("Google User's Workspace")
   ensure
     OmniAuth.config.mock_auth[:google_oauth2] = nil

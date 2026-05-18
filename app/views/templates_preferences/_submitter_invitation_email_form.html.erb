@@ -15,11 +15,11 @@
           <div class="flex justify-between">
             <%= ff.label :request_email_subject, t('email_subject'), class: 'label' %>
             <% if is_custom_template_email %>
-              <label for="submitter_invitation_email_reset_link" class="label underline">
+              <label for="submitter_invitation_email_reset_link" class="label preferences-modal__text-link">
                 <%= t('reset_default') %>
               </label>
             <% elsif multiple_submitters %>
-              <label for="request_email_per_submitter" class="label underline">
+              <label for="request_email_per_submitter" class="label preferences-modal__text-link">
                 <%= t('edit_per_party') %>
               </label>
             <% end %>
@@ -35,15 +35,17 @@
     <% if multiple_submitters %>
       <div class="hidden peer-checked:block">
         <% options = @template.submitters.map { |e| [e['name'], "request_email_#{e['uuid']}"] } %>
-        <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="flex relative px-1">
-          <ul class="tabs w-full flex flex-nowrap mb-2">
+        <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="preferences-modal__tabs-wrap block w-full mb-3">
+          <div class="preferences-modal__tabs preferences-party-tabs" role="radiogroup" aria-label="<%= t('edit_per_party') %>">
             <% options.each_with_index do |(label, val), index| %>
-              <div class="w-full">
-                <%= f.radio_button :selected, val, checked: index.zero?, id: "#{val}_radio", data: { action: 'click:toggle-visible#trigger' }, class: 'hidden peer' %>
-                <%= f.label :selected, label, value: val, for: "#{val}_radio", class: 'tab w-full tab-lifted peer-checked:tab-active' %>
-              </div>
+              <span class="preferences-modal__segment-wrap">
+                <%= f.radio_button :selected, val, checked: index.zero?, id: "#{val}_radio", data: { action: 'click:toggle-visible#trigger' }, class: 'preferences-modal__segment-input' %>
+                <%= f.label :selected, for: "#{val}_radio", value: val, class: 'preferences-modal__segment' do %>
+                  <span class="preferences-modal__segment-text"><%= label %></span>
+                <% end %>
+              </span>
             <% end %>
-          </ul>
+          </div>
         </toggle-visible>
         <% @template.submitters.each_with_index do |submitter, index| %>
           <div id="request_email_<%= submitter['uuid'] %>" class="<%= 'hidden' if index != 0 %>">
@@ -55,7 +57,7 @@
               <div class="flex justify-between">
                 <label class="label"><%= t('email_subject') %></label>
                 <% if submitter_email_preferences_values.present? %>
-                  <label for="submitter_invitation_email_reset_link" class="label underline">
+                  <label for="submitter_invitation_email_reset_link" class="label preferences-modal__text-link">
                     <%= t('reset_default') %>
                   </label>
                 <% end %>
@@ -74,11 +76,11 @@
   <%= form_for @template, url: template_preferences_path(@template), method: :post, html: { autocomplete: 'off', class: 'mt-1' }, data: { close_on_submit: false } do |f| %>
     <toggle-on-submit data-element-id="email_saved_alert1"></toggle-on-submit>
     <%= f.fields_for :preferences, Struct.new(:request_email_enabled).new(@template.preferences['request_email_enabled']) do |ff| %>
-      <div class="flex items-center justify-between py-2.5 px-1 mb-2">
-        <span>
+      <div class="preferences-toggle-row mb-2">
+        <span class="preferences-toggle-row__label">
           <%= t('send_signature_request_email') %>
         </span>
-        <submit-form data-on="change" class="flex">
+        <submit-form data-on="change" class="flex shrink-0">
           <%= ff.check_box :request_email_enabled, { checked: ff.object.request_email_enabled != false, class: 'toggle' }, 'true', 'false' %>
         </submit-form>
       </div>

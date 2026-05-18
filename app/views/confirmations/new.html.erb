@@ -5,15 +5,15 @@
         <h1 class="auth-title auth-title--sm"><%= t('confirm_email') %></h1>
       </div>
       <div class="tpl-new-form">
-        <%= render 'devise/shared/error_messages', resource: resource %>
+        <%= render 'devise/shared/error_messages', resource: resource, inline_fields: %i[email] %>
         <p class="auth-subtitle">
           <%= t('devise.failure.unconfirmed', default: 'You have to confirm your email address before continuing.') %>
         </p>
         <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }, data: { turbo: params[:redir].blank? }) do |f| %>
           <%= render 'devise/sessions/hidden_fields' %>
-          <div class="form-control" dir="auto">
-            <%= f.label :email, t(:email), class: 'label' %>
-            <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input w-full', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
+          <div class="form-control<%= ' form-control--invalid' if resource.errors[:email].any? %>" dir="auto">
+            <%= render 'devise/shared/auth_label', form: f, resource: resource, attribute: :email, label_text: t(:email), required: true %>
+            <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: ['base-input w-full', ('base-input--invalid' if resource.errors[:email].any?)].compact.join(' '), placeholder: t('profile_placeholder_email', default: 'you@company.com'), aria: { describedby: (dom_id(resource, :email) + '_error' if resource.errors[:email].any?) } %>
           </div>
           <div class="form-control">
             <%= f.button button_title(title: t('resend_confirmation_email', default: 'Resend confirmation email'), disabled_with: t('sending', default: 'Sending...')), class: 'base-button profile-settings-btn-primary tpl-new-submit-btn' %>

@@ -4,21 +4,21 @@
   <% unless close_on_submit %>
     <toggle-on-submit data-element-id="form_saved_alert"></toggle-on-submit>
   <% end %>
-  <div class="space-y-3 divide-y">
+  <div class="preferences-recipients-list space-y-4">
     <% template.submitters.each_with_index do |submitter, index| %>
-      <div class="<%= 'pt-3' if index.positive? %>">
+      <div class="preferences-recipients-party">
         <%= f.fields_for :submitters, item = Struct.new(:name, :uuid, :is_requester, :email, :invite_by_uuid, :invite_via_field_uuid, :optional_invite_by_uuid, :linked_to_uuid, :order, :option).new(*submitter.values_at('name', 'uuid', 'is_requester', 'email', 'invite_by_uuid', 'invite_via_field_uuid', 'optional_invite_by_uuid', 'linked_to_uuid', 'order')), index: do |ff| %>
           <% item.option = item.is_requester.present? ? 'is_requester' : (item.email.present? ? 'email' : (item.linked_to_uuid.present? ? "linked_to_#{item.linked_to_uuid}" : (item.invite_by_uuid.present? ? "invite_by_#{item.invite_by_uuid}" : (item.optional_invite_by_uuid.present? ? "optional_invite_by_#{item.optional_invite_by_uuid}" : (item.invite_via_field_uuid.present? ? 'invite_via_field' : ''))))) %>
           <%= ff.hidden_field :uuid %>
           <% recipient_name_field_id = "template_recipient_name_#{submitter['uuid']}" %>
           <div class="form-control">
-            <%= ff.label :name, t('name'), class: 'label text-sm pb-0', for: recipient_name_field_id %>
-            <div class="flex justify-between">
-              <%= ff.text_field :name, id: recipient_name_field_id, class: 'template-recipient-name-input w-full outline-none border-transparent focus:border-transparent focus:ring-0 bg-base-100 px-1 peer mb-2', autocomplete: 'off', placeholder: "#{index + 1}#{(index + 1).ordinal} #{t('party')}", required: true %>
+            <%= ff.label :name, t('name'), class: 'label', for: recipient_name_field_id %>
+            <div class="flex justify-between gap-2 items-start">
+              <%= ff.text_field :name, id: recipient_name_field_id, class: 'base-input !h-10 w-full flex-1', autocomplete: 'off', placeholder: "#{index + 1}#{(index + 1).ordinal} #{t('party')}", required: true %>
               <% if template.submitters.size > 2 %>
                 <div id="order_<%= submitter['uuid'] %>" class="mr-0.5">
                   <% if is_order_set %>
-                    <%= ff.select :order, options_for_select(template.submitters.map.with_index { |_, i| [(i + 1).ordinalize, i] }, submitter['order'].presence || index), {}, class: 'select select-xs text-sm input-bordered bg-[#010e21] border-white/10 text-primary-content pl-3.5' %>
+                    <%= ff.select :order, options_for_select(template.submitters.map.with_index { |_, i| [(i + 1).ordinalize, i] }, submitter['order'].presence || index), {}, class: 'base-select !h-9 !min-h-9 text-sm shrink-0' %>
                   <% elsif index == 0 %>
                     <mount-on-click data-template-id="order_fields" class="link whitespace-nowrap text-sm mt-1 mr-1 block">
                       <%= t('edit_order') %>
@@ -29,7 +29,7 @@
             </div>
             <% if template.submitters.size == 2 %>
               <% email_field_uuid = SecureRandom.uuid %>
-              <%= label_tag email_field_uuid, t('email'), class: 'label text-sm' %>
+              <%= label_tag email_field_uuid, t('email'), class: 'label' %>
               <%= tag.input name: ff.field_name(:email), value: ff.object.email, type: :email, multiple: true, autocomplete: 'off', placeholder: t('default_email'), id: email_field_uuid, disabled: is_email_disabled = ff.object.is_requester || ff.object.invite_by_uuid.present? || ff.object.optional_invite_by_uuid.present? || ff.object.invite_via_field_uuid.present?, class: "base-input w-full #{'hidden' if ff.object.invite_by_uuid.present? || ff.object.optional_invite_by_uuid.present? || ff.object.invite_via_field_uuid.present?}" %>
               <% if index == 1 %>
                 <% invite_fields = template.fields.select { |field| field['name'].present? && field['submitter_uuid'] != submitter['uuid'] } %>
@@ -61,32 +61,28 @@
             <% end %>
           </div>
           <% if template.submitters.size == 2 %>
-            <checkbox-group class="mt-3 flex items-center space-x-4">
+            <checkbox-group class="preferences-recipients-checkboxes mt-3 flex flex-col gap-2.5">
               <% if index == 0 && local_assigns[:with_submission_requester] != false %>
-                <label class="flex items-center space-x-2 cursor-pointer">
+                <label class="add-recipients-checkbox-label">
                   <toggle-attribute data-target-id="<%= email_field_uuid %>" class="flex" data-attribute="disabled">
                     <%= ff.check_box :is_requester, class: 'base-checkbox' %>
                   </toggle-attribute>
-                  <span class="select-none">
-                    <%= t('submission_requester') %>
-                  </span>
+                  <span class="add-recipients-checkbox-caption"><%= t('submission_requester') %></span>
                 </label>
               <% elsif index == 1 %>
                 <% if local_assigns[:with_submission_requester] != false %>
                   <toggle-classes data-target-id="<%= invite_by_selector_id %>" class="flex" data-classes="hidden" data-action="add">
                     <toggle-classes data-target-id="<%= email_field_uuid %>" class="flex" data-classes="hidden" data-action="remove">
-                      <label class="flex items-center space-x-2 cursor-pointer">
+                      <label class="add-recipients-checkbox-label">
                         <toggle-attribute data-target-id="<%= email_field_uuid %>" class="flex" data-attribute="disabled">
                           <%= ff.check_box :is_requester, class: 'base-checkbox' %>
                         </toggle-attribute>
-                        <span class="select-none">
-                          <%= t('submission_requester') %>
-                        </span>
+                        <span class="add-recipients-checkbox-caption"><%= t('submission_requester') %></span>
                       </label>
                     </toggle-classes>
                   </toggle-classes>
                 <% end %>
-                <label class="flex items-center space-x-2 cursor-pointer">
+                <label class="add-recipients-checkbox-label">
                   <toggle-attribute data-target-id="<%= email_field_uuid %>" class="flex" data-class-name="hidden" data-value="false">
                     <toggle-attribute data-target-id="<%= invite_by_selector_id %>" class="flex" data-class-name="hidden">
                       <toggle-attribute data-target-id="<%= email_field_uuid %>" class="flex" data-attribute="disabled">
@@ -94,9 +90,7 @@
                       </toggle-attribute>
                     </toggle-attribute>
                   </toggle-attribute>
-                  <span class="select-none">
-                    <%= t('invite_by_name', name: template.submitters.first['name']) %>
-                  </span>
+                  <span class="add-recipients-checkbox-caption"><%= t('invite_by_name', name: template.submitters.first['name']) %></span>
                 </label>
               <% end %>
             </checkbox-group>
@@ -109,12 +103,12 @@
 <% if local_assigns[:with_toggles] != false %>
   <% unless current_account.account_configs.exists?(key: AccountConfig::ENFORCE_SIGNING_ORDER_KEY, value: true) %>
     <%= form_for template, url: template_preferences_path(template), method: :post, html: { autocomplete: 'off', class: 'mt-2' }, data: { close_on_submit: false } do |f| %>
-      <div class="flex items-center pt-4 mt-4 justify-between border-t w-full">
-        <span>
+      <div class="preferences-toggle-row">
+        <span class="preferences-toggle-row__label">
           <%= t('enforce_recipients_order') %>
         </span>
         <%= f.fields_for :preferences, Struct.new(:submitters_order).new(template.preferences['submitters_order']) do |ff| %>
-          <submit-form data-on="change" class="flex">
+          <submit-form data-on="change" class="flex shrink-0">
             <%= ff.check_box :submitters_order, { class: 'toggle' }, 'preserved', '' %>
           </submit-form>
         <% end %>
@@ -123,12 +117,12 @@
   <% end %>
   <% if can?(:manage, :personalization_advanced) %>
     <%= form_for template, url: template_preferences_path(template), method: :post, html: { autocomplete: 'off', class: 'mt-2' }, data: { close_on_submit: false } do |f| %>
-      <div class="flex items-center mt-4 justify-between w-full">
-        <span>
+      <div class="preferences-toggle-row">
+        <span class="preferences-toggle-row__label">
           <%= t('ensure_unique_recipients') %>
         </span>
         <%= f.fields_for :preferences, Struct.new(:validate_unique_submitters).new(template.preferences['validate_unique_submitters']) do |ff| %>
-          <submit-form data-on="change" class="flex">
+          <submit-form data-on="change" class="flex shrink-0">
             <%= ff.check_box :validate_unique_submitters, { class: 'toggle' }, 'true', '' %>
           </submit-form>
         <% end %>
@@ -150,7 +144,7 @@
       <turbo-stream action="replace" target="order_<%= submitter['uuid'] %>">
         <template>
           <div id="order_<%= submitter['uuid'] %>">
-            <%= select_tag "template[submitters][#{index}][order]", options_for_select(template.submitters.map.with_index { |_, i| [(i + 1).ordinalize, i] }, submitter['order'].presence || index), class: 'select select-xs text-sm input-bordered bg-[#010e21] border-white/10 text-primary-content pl-3.5' %>
+            <%= select_tag "template[submitters][#{index}][order]", options_for_select(template.submitters.map.with_index { |_, i| [(i + 1).ordinalize, i] }, submitter['order'].presence || index), class: 'base-select !h-9 !min-h-9 text-sm shrink-0' %>
           </div>
         </template>
       </turbo-stream>

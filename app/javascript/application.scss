@@ -69,7 +69,31 @@ button.base-button.signature-editor__save[disabled]:not(
   display: none !important;
 }
 
+/* Auth submit: keep primary label when disabled for empty fields; show loading only while submitting */
+enable-submit-on-fill button[disabled]:not(.auth-submit-btn--submitting) .enabled {
+  display: initial !important;
+}
+
+enable-submit-on-fill button[disabled]:not(.auth-submit-btn--submitting) .disabled {
+  display: none !important;
+}
+
 /* Form controls - enterprise-grade inputs */
+:root,
+[data-theme='docuseal'],
+[data-theme='docuseal-dark'],
+[data-theme='docuseal-light'] {
+  --form-focus-accent: var(--stitch-secondary, #04be99);
+  --form-focus-ring: 0 0 0 2px
+    color-mix(in srgb, var(--form-focus-accent) 22%, transparent);
+}
+
+.profile-settings-page {
+  --form-focus-accent: var(--profile-accent, var(--stitch-secondary, #04be99));
+  --form-focus-ring: 0 0 0 2px
+    color-mix(in srgb, var(--form-focus-accent) 22%, transparent);
+}
+
 .input-bordered,
 .select-bordered,
 .textarea-bordered {
@@ -78,8 +102,15 @@ button.base-button.signature-editor__save[disabled]:not(
 
 .input-bordered:focus,
 .select-bordered:focus,
-.textarea-bordered:focus {
-  @apply border-secondary outline-none ring-2 ring-secondary/20;
+.textarea-bordered:focus,
+.base-input:focus,
+.base-textarea:focus,
+.base-select:focus {
+  @apply outline-none ring-0;
+  border-color: var(--form-focus-accent);
+  box-shadow: var(--form-focus-ring);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
 }
 
 .input-bordered:hover:not(:focus):not(:disabled),
@@ -1452,8 +1483,13 @@ $saas-label: rgba(226, 232, 240, 0.45);
 }
 
 .settings-card .base-input:focus,
-.settings-card .base-select:focus {
-  @apply bg-[#010e21] border-secondary outline-none ring-1 ring-secondary/20;
+.settings-card .base-select:focus,
+.settings-card .base-textarea:focus {
+  @apply bg-[#010e21] outline-none ring-0;
+  border-color: var(--form-focus-accent);
+  box-shadow: var(--form-focus-ring);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
 }
 
 .settings-card--preferences .settings-card-header {
@@ -3211,6 +3247,15 @@ kbd {
   background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
 }
 
+.modal-box--add-recipients,
+.modal-box--edit-recipient {
+  --profile-accent: #10b981;
+  --profile-accent-contrast: #022c22;
+  --profile-text: color-mix(in srgb, var(--ds-text) 96%, transparent);
+  --profile-text-secondary: color-mix(in srgb, var(--ds-text) 70%, transparent);
+  --profile-border: color-mix(in srgb, var(--ds-border) 95%, transparent);
+}
+
 .modal-box--add-recipients {
   border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
   box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
@@ -3279,45 +3324,127 @@ kbd {
   color: color-mix(in srgb, var(--ds-text) 92%, transparent);
 }
 
+.add-recipients-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-top: 1rem;
+}
+
+.add-recipients-options .form-control {
+  margin-top: 0 !important;
+}
+
+.add-recipients-options .add-recipients-send-email-block {
+  gap: 1rem;
+}
+
 .add-recipients-send-email-block {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.modal-box--add-recipients .add-recipients-edit-message-link,
-.modal-box--edit-recipient .add-recipients-edit-message-link {
+.modal-box--add-recipients .add-recipients-inline-link-label,
+.modal-box--edit-recipient .add-recipients-inline-link-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  min-height: 0;
   cursor: pointer;
-  color: var(--profile-accent, var(--stitch-secondary));
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 0.15s ease, filter 0.15s ease;
+  background: transparent !important;
 }
 
-.modal-box--add-recipients label:hover .add-recipients-edit-message-link,
-.modal-box--add-recipients .add-recipients-edit-message-link:hover,
-.modal-box--add-recipients .add-recipients-edit-message-link:focus-visible,
-.modal-box--edit-recipient label:hover .add-recipients-edit-message-link,
-.modal-box--edit-recipient .add-recipients-edit-message-link:hover,
-.modal-box--edit-recipient .add-recipients-edit-message-link:focus-visible {
-  color: color-mix(in srgb, var(--profile-accent, var(--stitch-secondary)) 84%, white);
-  filter: brightness(1.08);
+.modal-box--add-recipients .add-recipients-inline-link,
+.modal-box--edit-recipient .add-recipients-inline-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  cursor: pointer;
+  color: #10b981 !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: transparent;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.modal-box--add-recipients:has(.tpl-new-form) .label.add-recipients-inline-link,
+.modal-box--edit-recipient:has(.tpl-new-form) .label.add-recipients-inline-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+  font-weight: 600;
+  color: #10b981 !important;
+  background: transparent;
+}
+
+.modal-box--add-recipients label:hover .add-recipients-inline-link,
+.modal-box--add-recipients .add-recipients-inline-link-label:hover .add-recipients-inline-link,
+.modal-box--add-recipients .add-recipients-inline-link-label:focus-within .add-recipients-inline-link,
+.modal-box--add-recipients .add-recipients-inline-link:hover,
+.modal-box--add-recipients .add-recipients-inline-link:focus-visible,
+.modal-box--add-recipients label.add-recipients-inline-link:hover,
+.modal-box--edit-recipient label:hover .add-recipients-inline-link,
+.modal-box--edit-recipient .add-recipients-inline-link-label:hover .add-recipients-inline-link,
+.modal-box--edit-recipient .add-recipients-inline-link-label:focus-within .add-recipients-inline-link,
+.modal-box--edit-recipient .add-recipients-inline-link:hover,
+.modal-box--edit-recipient .add-recipients-inline-link:focus-visible,
+.modal-box--edit-recipient label.add-recipients-inline-link:hover {
+  color: #6ee7b7 !important;
+  background: color-mix(in srgb, #10b981 14%, transparent);
   outline: none;
 }
 
-[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link,
-[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-edit-message-link {
-  color: #0f6f5a;
+[data-theme='docuseal-dark'] .modal-box--add-recipients label:hover .add-recipients-inline-link,
+[data-theme='docuseal-dark'] .modal-box--add-recipients .add-recipients-inline-link-label:hover .add-recipients-inline-link,
+[data-theme='docuseal-dark'] .modal-box--add-recipients .add-recipients-inline-link-label:focus-within .add-recipients-inline-link,
+[data-theme='docuseal-dark'] .modal-box--add-recipients .add-recipients-inline-link:hover,
+[data-theme='docuseal-dark'] .modal-box--add-recipients .add-recipients-inline-link:focus-visible,
+[data-theme='docuseal-dark'] .modal-box--add-recipients label.add-recipients-inline-link:hover,
+[data-theme='docuseal-dark'] .modal-box--edit-recipient label:hover .add-recipients-inline-link,
+[data-theme='docuseal-dark'] .modal-box--edit-recipient .add-recipients-inline-link-label:hover .add-recipients-inline-link,
+[data-theme='docuseal-dark'] .modal-box--edit-recipient .add-recipients-inline-link-label:focus-within .add-recipients-inline-link,
+[data-theme='docuseal-dark'] .modal-box--edit-recipient .add-recipients-inline-link:hover,
+[data-theme='docuseal-dark'] .modal-box--edit-recipient .add-recipients-inline-link:focus-visible,
+[data-theme='docuseal-dark'] .modal-box--edit-recipient label.add-recipients-inline-link:hover,
+[data-theme='docuseal'] .modal-box--add-recipients label:hover .add-recipients-inline-link,
+[data-theme='docuseal'] .modal-box--add-recipients .add-recipients-inline-link-label:hover .add-recipients-inline-link,
+[data-theme='docuseal'] .modal-box--add-recipients .add-recipients-inline-link-label:focus-within .add-recipients-inline-link,
+[data-theme='docuseal'] .modal-box--add-recipients .add-recipients-inline-link:hover,
+[data-theme='docuseal'] .modal-box--add-recipients .add-recipients-inline-link:focus-visible,
+[data-theme='docuseal'] .modal-box--add-recipients label.add-recipients-inline-link:hover,
+[data-theme='docuseal'] .modal-box--edit-recipient label:hover .add-recipients-inline-link,
+[data-theme='docuseal'] .modal-box--edit-recipient .add-recipients-inline-link-label:hover .add-recipients-inline-link,
+[data-theme='docuseal'] .modal-box--edit-recipient .add-recipients-inline-link-label:focus-within .add-recipients-inline-link,
+[data-theme='docuseal'] .modal-box--edit-recipient .add-recipients-inline-link:hover,
+[data-theme='docuseal'] .modal-box--edit-recipient .add-recipients-inline-link:focus-visible,
+[data-theme='docuseal'] .modal-box--edit-recipient label.add-recipients-inline-link:hover {
+  color: #a7f3d0 !important;
+  background: color-mix(in srgb, #10b981 18%, transparent);
 }
 
-[data-theme='docuseal-light'] .modal-box--add-recipients label:hover .add-recipients-edit-message-link,
-[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link:hover,
-[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-edit-message-link:focus-visible,
-[data-theme='docuseal-light'] .modal-box--edit-recipient label:hover .add-recipients-edit-message-link,
-[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-edit-message-link:hover,
-[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-edit-message-link:focus-visible {
-  color: #085746;
-  filter: none;
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-inline-link,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-inline-link {
+  color: #0f6f5a !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients label:hover .add-recipients-inline-link,
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-inline-link-label:hover .add-recipients-inline-link,
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-inline-link-label:focus-within .add-recipients-inline-link,
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-inline-link:hover,
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-inline-link:focus-visible,
+[data-theme='docuseal-light'] .modal-box--add-recipients label.add-recipients-inline-link:hover,
+[data-theme='docuseal-light'] .modal-box--edit-recipient label:hover .add-recipients-inline-link,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-inline-link-label:hover .add-recipients-inline-link,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-inline-link-label:focus-within .add-recipients-inline-link,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-inline-link:hover,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-inline-link:focus-visible,
+[data-theme='docuseal-light'] .modal-box--edit-recipient label.add-recipients-inline-link:hover {
+  color: #085746 !important;
+  background: color-mix(in srgb, #10b981 10%, #eef7f4);
 }
 
 .add-recipients-message-card .add-recipients-save-default-option {
@@ -3343,7 +3470,71 @@ kbd {
   background: transparent;
   color: color-mix(in srgb, var(--ds-text) 84%, transparent);
   border: 1px solid transparent;
-  transition: all 0.15s ease;
+  border-radius: 9999px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.add-recipients-modal__tab--party {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.add-recipients-modal__tabs--party {
+  width: 100%;
+}
+
+.modal-box--add-recipients .peer:checked + .add-recipients-modal__tab,
+.modal-box--edit-recipient .peer:checked + .add-recipients-modal__tab {
+  background: color-mix(in srgb, var(--ds-secondary-500) 18%, transparent) !important;
+  border-color: color-mix(in srgb, var(--ds-secondary-500) 48%, transparent) !important;
+  color: color-mix(in srgb, var(--ds-secondary-300) 92%, var(--ds-text)) !important;
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--ds-secondary-500) 82%, transparent);
+}
+
+.modal-box--add-recipients .add-recipients-modal__tab:hover,
+.modal-box--edit-recipient .add-recipients-modal__tab:hover {
+  background: color-mix(in srgb, var(--ds-secondary-500) 10%, transparent);
+  border-color: color-mix(in srgb, var(--ds-secondary-500) 28%, transparent);
+  color: var(--ds-text);
+}
+
+.modal-box--add-recipients .peer:checked + .add-recipients-modal__tab:hover,
+.modal-box--edit-recipient .peer:checked + .add-recipients-modal__tab:hover {
+  background: color-mix(in srgb, var(--ds-secondary-500) 22%, transparent) !important;
+  border-color: color-mix(in srgb, var(--ds-secondary-500) 52%, transparent) !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients .peer:checked + .add-recipients-modal__tab,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .peer:checked + .add-recipients-modal__tab {
+  background: rgba(4, 190, 153, 0.16) !important;
+  border-color: rgba(4, 190, 153, 0.45) !important;
+  color: #047857 !important;
+  box-shadow: inset 0 -2px 0 rgba(4, 190, 153, 0.78);
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients .add-recipients-modal__tab:hover,
+[data-theme='docuseal-light'] .modal-box--edit-recipient .add-recipients-modal__tab:hover {
+  background: rgba(4, 190, 153, 0.08);
+  border-color: rgba(4, 190, 153, 0.22);
+  color: #0f172a;
+}
+
+[data-theme='docuseal-light'] .modal-box--add-recipients,
+[data-theme='docuseal-light'] .modal-box--edit-recipient {
+  --profile-text: #12233c;
+  --profile-text-secondary: #435a76;
+  --profile-border: rgba(18, 35, 60, 0.16);
 }
 
 [data-theme='docuseal-light'] .modal-box--add-recipients {
@@ -3371,9 +3562,23 @@ kbd {
   background: color-mix(in srgb, var(--ds-bg-base) 58%, transparent);
 }
 
-.modal-box--share-link {
+.modal--share-link.modal {
+  @media (min-width: 768px) {
+    justify-content: center !important;
+  }
+}
+
+.modal--share-link [data-turbo-modal-content].modal-box--share-link {
   border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
   box-shadow: 0 20px 44px rgba(3, 14, 32, 0.36);
+
+  @media (min-width: 768px) {
+    width: min(620px, calc(100vw - 2rem));
+    max-width: min(620px, calc(100vw - 2rem));
+    min-height: fit-content !important;
+    max-height: calc(100vh - 2rem);
+    margin-inline: auto;
+  }
 }
 
 .modal-box--share-link .share-link-modal__header {
@@ -3383,7 +3588,8 @@ kbd {
 }
 
 .modal-box--share-link .share-link-modal__body {
-  width: min(100%, 620px);
+  width: 100% !important;
+  max-width: none;
 }
 
 [data-theme='docuseal-light'] .modal-box--share-link {
@@ -3417,14 +3623,14 @@ kbd {
 }
 
 .modal-box--preferences .preferences-modal__body {
-  width: 100%;
-  max-width: none;
+  width: 100% !important;
+  max-width: none !important;
 }
 
 .preferences-modal__tabs-wrap {
   display: block;
   margin-top: 0.75rem;
-  padding-inline: 1.25rem;
+  padding-inline: 1.5rem;
 }
 
 .preferences-modal__tabs {
@@ -3483,7 +3689,9 @@ kbd {
 .preferences-modal__segment-text {
   min-width: 0;
   text-align: center;
-  white-space: nowrap;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .preferences-modal__segment-input:checked + .preferences-modal__segment {
@@ -3507,6 +3715,10 @@ kbd {
 .modal-box--share-link {
   --profile-accent: #10b981;
   --profile-accent-contrast: #022c22;
+  --profile-text: color-mix(in srgb, var(--ds-text) 96%, transparent);
+  --profile-text-secondary: color-mix(in srgb, var(--ds-text) 70%, transparent);
+  --profile-border: color-mix(in srgb, var(--ds-border) 95%, transparent);
+  --profile-surface-inset: color-mix(in srgb, var(--ds-bg-base) 55%, transparent);
 }
 
 .modal-box--preferences .profile-settings-btn-primary.base-button,
@@ -3584,6 +3796,14 @@ kbd {
   outline: none;
 }
 
+[data-theme='docuseal-light'] .modal-box--preferences,
+[data-theme='docuseal-light'] .modal-box--profile-copy {
+  --profile-text: #12233c;
+  --profile-text-secondary: #435a76;
+  --profile-border: rgba(18, 35, 60, 0.16);
+  --profile-surface-inset: #f8fafc;
+}
+
 [data-theme='docuseal-light'] .modal-box--preferences {
   border-color: rgba(18, 35, 60, 0.16);
   box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
@@ -3609,6 +3829,407 @@ kbd {
 
 [data-theme='docuseal-light'] .preferences-modal__segment-input:checked + .preferences-modal__segment {
   color: var(--profile-accent-contrast);
+}
+
+.modal--preferences.modal {
+  @media (min-width: 768px) {
+    justify-content: center !important;
+  }
+}
+
+.modal--preferences [data-turbo-modal-content].modal-box--preferences {
+  @media (min-width: 768px) {
+    width: min(760px, calc(100vw - 2rem));
+    max-width: min(760px, calc(100vw - 2rem));
+    min-height: fit-content !important;
+    max-height: calc(100vh - 2rem);
+    margin-inline: auto;
+  }
+}
+
+.preferences-modal__tabs:has(.preferences-modal__segment-wrap:nth-child(3)) {
+  .preferences-modal__segment {
+    padding: 0.5rem 0.45rem;
+    min-height: 2.625rem;
+    font-size: 0.75rem;
+  }
+
+  .preferences-modal__segment-text {
+    line-height: 1.2;
+  }
+}
+
+.modal-box--preferences:has(.tpl-new-form) .label {
+  padding: 0 0 0.35rem;
+  margin-bottom: 0;
+  min-height: 0;
+  color: var(--profile-text-secondary, color-mix(in srgb, var(--ds-text) 70%, transparent));
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.modal-box--preferences:has(.tpl-new-form) .form-control .label {
+  margin-bottom: 0 !important;
+  min-height: 0;
+  padding: 0 0 0.35rem;
+}
+
+.modal-box--preferences:has(.tpl-new-form) .form-control {
+  gap: 0;
+}
+
+.modal-box--preferences:has(.tpl-new-form) .form-control > * + * {
+  margin-top: 0 !important;
+}
+
+.modal-box--preferences:has(.tpl-new-form) .form-control + .form-control:not(:has(.base-button)) {
+  margin-top: 1rem;
+}
+
+.preferences-api-panel > .form-control + .form-control,
+.preferences-api-panel > .form-control + .preferences-embedding-wrap,
+.preferences-api-panel > .preferences-embedding-wrap + form {
+  margin-top: 1rem;
+}
+
+.preferences-modal__section {
+  padding-inline: 1.5rem;
+}
+
+/* tpl-new-form zeros horizontal padding; restore inset for preferences panels */
+.modal-box--preferences .preferences-modal__section.tpl-new-form {
+  padding: 0.5rem 1.5rem 1.25rem;
+}
+
+.preferences-recipients-panel.tpl-new-form {
+  padding-top: 0.25rem;
+}
+
+.modal-box--preferences .collapse-content {
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
+}
+
+.preferences-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--ds-radius-8, 0.875rem);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  background: color-mix(in srgb, var(--ds-bg-base) 42%, transparent);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--ds-text) 92%, transparent);
+}
+
+.preferences-toggle-row__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-right: 0.5rem;
+}
+
+.preferences-toggle-row submit-form {
+  flex-shrink: 0;
+}
+
+.modal-box--preferences .preferences-party-tabs {
+  margin-bottom: 0;
+}
+
+.modal-box--preferences .collapse-content .preferences-modal__tabs-wrap {
+  padding-inline: 0;
+}
+
+.modal-box--preferences:has(.tpl-new-form) .label.preferences-modal__text-link,
+.modal-box--preferences .preferences-modal__text-link,
+.modal-box--profile-copy .preferences-modal__text-link {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #10b981 !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: transparent;
+  border: none;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.modal-box--preferences label.preferences-modal__text-link:hover,
+.modal-box--preferences .preferences-modal__text-link:hover,
+.modal-box--preferences label.preferences-modal__text-link:focus-visible,
+.modal-box--preferences .preferences-modal__text-link:focus-visible,
+.modal-box--profile-copy label.preferences-modal__text-link:hover,
+.modal-box--profile-copy .preferences-modal__text-link:hover,
+.modal-box--profile-copy label.preferences-modal__text-link:focus-visible,
+.modal-box--profile-copy .preferences-modal__text-link:focus-visible {
+  color: #6ee7b7 !important;
+  background: color-mix(in srgb, #10b981 14%, transparent);
+  outline: none;
+}
+
+[data-theme='docuseal-dark'] .modal-box--preferences label.preferences-modal__text-link:hover,
+[data-theme='docuseal-dark'] .modal-box--preferences .preferences-modal__text-link:hover,
+[data-theme='docuseal-dark'] .modal-box--preferences label.preferences-modal__text-link:focus-visible,
+[data-theme='docuseal-dark'] .modal-box--preferences .preferences-modal__text-link:focus-visible,
+[data-theme='docuseal-dark'] .modal-box--profile-copy label.preferences-modal__text-link:hover,
+[data-theme='docuseal-dark'] .modal-box--profile-copy .preferences-modal__text-link:hover,
+[data-theme='docuseal-dark'] .modal-box--profile-copy label.preferences-modal__text-link:focus-visible,
+[data-theme='docuseal-dark'] .modal-box--profile-copy .preferences-modal__text-link:focus-visible,
+[data-theme='docuseal'] .modal-box--preferences label.preferences-modal__text-link:hover,
+[data-theme='docuseal'] .modal-box--preferences .preferences-modal__text-link:hover,
+[data-theme='docuseal'] .modal-box--preferences label.preferences-modal__text-link:focus-visible,
+[data-theme='docuseal'] .modal-box--preferences .preferences-modal__text-link:focus-visible,
+[data-theme='docuseal'] .modal-box--profile-copy label.preferences-modal__text-link:hover,
+[data-theme='docuseal'] .modal-box--profile-copy .preferences-modal__text-link:hover,
+[data-theme='docuseal'] .modal-box--profile-copy label.preferences-modal__text-link:focus-visible,
+[data-theme='docuseal'] .modal-box--profile-copy .preferences-modal__text-link:focus-visible {
+  color: #a7f3d0 !important;
+  background: color-mix(in srgb, #10b981 18%, transparent);
+}
+
+[data-theme='docuseal-light'] .modal-box--preferences .preferences-modal__text-link,
+[data-theme='docuseal-light'] .modal-box--profile-copy .preferences-modal__text-link {
+  color: #0f6f5a !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--preferences label.preferences-modal__text-link:hover,
+[data-theme='docuseal-light'] .modal-box--preferences .preferences-modal__text-link:hover,
+[data-theme='docuseal-light'] .modal-box--preferences label.preferences-modal__text-link:focus-visible,
+[data-theme='docuseal-light'] .modal-box--preferences .preferences-modal__text-link:focus-visible,
+[data-theme='docuseal-light'] .modal-box--profile-copy label.preferences-modal__text-link:hover,
+[data-theme='docuseal-light'] .modal-box--profile-copy .preferences-modal__text-link:hover,
+[data-theme='docuseal-light'] .modal-box--profile-copy label.preferences-modal__text-link:focus-visible,
+[data-theme='docuseal-light'] .modal-box--profile-copy .preferences-modal__text-link:focus-visible {
+  color: #085746 !important;
+  background: color-mix(in srgb, #10b981 10%, #eef7f4);
+}
+
+.modal-box--preferences .embedding-snippet__actions .tpl-show-action-btn--outline,
+.modal-box--profile-copy .embedding-snippet__actions .tpl-show-action-btn--outline {
+  border: 1px solid color-mix(in srgb, var(--profile-border) 90%, transparent);
+  background: color-mix(in srgb, var(--profile-surface-inset) 88%, transparent);
+  color: var(--profile-text) !important;
+}
+
+.modal-box--preferences .embedding-snippet__actions .tpl-show-action-btn--outline:hover,
+.modal-box--preferences .embedding-snippet__actions .tpl-show-action-btn--outline:focus-visible,
+.modal-box--profile-copy .embedding-snippet__actions .tpl-show-action-btn--outline:hover,
+.modal-box--profile-copy .embedding-snippet__actions .tpl-show-action-btn--outline:focus-visible {
+  border-color: color-mix(in srgb, var(--profile-accent) 50%, var(--profile-border));
+  background: color-mix(in srgb, var(--profile-accent) 8%, transparent);
+  color: var(--profile-accent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 10%, transparent);
+}
+
+[data-theme='docuseal-light'] .modal-box--preferences .embedding-snippet__actions .tpl-show-action-btn--outline,
+[data-theme='docuseal-light'] .modal-box--profile-copy .embedding-snippet__actions .tpl-show-action-btn--outline {
+  background: #ffffff !important;
+  border-color: rgba(18, 35, 60, 0.18) !important;
+  color: #12233c !important;
+}
+
+[data-theme='docuseal-light'] .modal-box--preferences .embedding-snippet__actions .tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-light'] .modal-box--preferences .embedding-snippet__actions .tpl-show-action-btn--outline:focus-visible,
+[data-theme='docuseal-light'] .modal-box--profile-copy .embedding-snippet__actions .tpl-show-action-btn--outline:hover,
+[data-theme='docuseal-light'] .modal-box--profile-copy .embedding-snippet__actions .tpl-show-action-btn--outline:focus-visible {
+  background: #eef7f4 !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  color: #0f6f5a !important;
+}
+
+[data-theme='docuseal-light'] .preferences-toggle-row {
+  background: #f8fafc;
+  border-color: rgba(18, 35, 60, 0.14);
+}
+
+.preferences-recipients-panel .preferences-recipients-list {
+  margin-top: 0.25rem;
+}
+
+.preferences-recipients-party {
+  padding: 1rem 1.125rem;
+  border-radius: var(--ds-radius-8, 0.875rem);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 95%, transparent);
+  background: color-mix(in srgb, var(--ds-surface, var(--ds-bg-base)) 88%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ds-text) 5%, transparent);
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.preferences-recipients-party:hover {
+  border-color: color-mix(in srgb, var(--profile-accent) 28%, var(--ds-border));
+  background: color-mix(in srgb, var(--profile-accent) 5%, var(--ds-bg-base));
+}
+
+.preferences-recipients-party:focus-within {
+  border-color: color-mix(in srgb, var(--profile-accent) 45%, var(--ds-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--profile-accent) 10%, transparent);
+}
+
+.preferences-recipients-party + .preferences-recipients-party {
+  margin-top: 0;
+}
+
+.preferences-recipients-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.preferences-recipients-checkboxes .add-recipients-checkbox-label {
+  width: 100%;
+}
+
+.preferences-api-panel > * {
+  max-width: 100%;
+}
+
+.preferences-api-panel .form-control,
+.preferences-api-panel .preferences-embedding-wrap,
+.preferences-api-panel > form {
+  min-width: 0;
+}
+
+.preferences-embedding-wrap {
+  margin-top: 1rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.preferences-embedding-wrap .preferences-pro-banner,
+.preferences-embedding-wrap .alert {
+  margin-bottom: 1rem;
+}
+
+.preferences-api-panel .form-control .flex {
+  max-width: 100%;
+}
+
+.preferences-embedding-wrap > toggle-visible > ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.preferences-embedding-wrap > toggle-visible > ul > li {
+  width: 100%;
+  height: auto;
+  min-height: 2.5rem;
+  padding: 0;
+  position: relative;
+}
+
+.preferences-embedding-wrap > toggle-visible > ul > li label {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: calc(var(--ds-radius-8, 0.875rem) - 0.15rem);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  background: color-mix(in srgb, var(--ds-bg-base) 50%, transparent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--ds-text) 84%, transparent);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.preferences-embedding-wrap > toggle-visible > ul > li label:hover {
+  color: var(--ds-text);
+  background: color-mix(in srgb, var(--profile-accent) 8%, transparent);
+}
+
+.preferences-embedding-wrap > toggle-visible > ul > li input.peer:checked + label {
+  background: var(--profile-accent);
+  border-color: color-mix(in srgb, var(--profile-accent) 88%, black);
+  color: var(--profile-accent-contrast);
+}
+
+.preferences-embedding-wrap .embedding-snippet {
+  min-width: 0;
+  max-width: 100%;
+  margin-top: 0.75rem;
+}
+
+.preferences-embedding-wrap .preferences-code-block {
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--ds-radius-8, 0.875rem);
+  border: 1px solid color-mix(in srgb, var(--ds-border) 90%, transparent);
+  background: color-mix(in srgb, var(--ds-bg-base) 78%, #0b1220);
+}
+
+.preferences-embedding-wrap .preferences-code-block__pre {
+  max-width: 100%;
+  margin: 0;
+  padding: 1rem 1.125rem;
+  overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0;
+}
+
+.preferences-embedding-wrap .preferences-code-block__pre::before,
+.preferences-embedding-wrap .preferences-code-block__pre::after {
+  display: none !important;
+  content: none !important;
+}
+
+.preferences-embedding-wrap .preferences-code-block__pre code {
+  display: block;
+  min-width: min-content;
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+}
+
+.preferences-embedding-wrap .preferences-code-block__pre code span[style*='background-color'] {
+  background-color: transparent !important;
+}
+
+[data-theme='docuseal-light'] .preferences-embedding-wrap .preferences-code-block {
+  background: #0f1a2e;
+  border-color: rgba(18, 35, 60, 0.16);
+}
+
+[data-theme='docuseal-light'] .preferences-recipients-party {
+  background: #f8fafc;
+  border-color: rgba(18, 35, 60, 0.14);
+}
+
+[data-theme='docuseal-light'] .preferences-recipients-party:hover {
+  background: color-mix(in srgb, var(--profile-accent) 6%, #f8fafc);
+  border-color: color-mix(in srgb, var(--profile-accent) 24%, rgba(18, 35, 60, 0.14));
+}
+
+[data-theme='docuseal-light'] .preferences-embedding-wrap > toggle-visible > ul > li label {
+  background: #ffffff;
+  border-color: rgba(18, 35, 60, 0.14);
+  color: #435a76;
 }
 
 .modal-box--signature-editor.modal-box.modal-box--submissions-filter {
@@ -4145,8 +4766,14 @@ textarea:hover:not(:focus):not(:disabled) {
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: var(--stitch-secondary);
-  box-shadow: 0 0 0 3px rgba(4, 190, 153, 0.2);
+  outline: none;
+  border-color: var(--form-focus-accent, var(--stitch-secondary));
+  box-shadow: var(
+    --form-focus-ring,
+    0 0 0 2px color-mix(in srgb, var(--stitch-secondary) 22%, transparent)
+  );
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
 }
 
 .btn {
@@ -4443,17 +5070,34 @@ table tbody tr:hover {
   flex: 1;
 }
 
-.app-toast-close {
+.app-toast-close,
+remove-on-event.app-toast-close {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  box-sizing: border-box;
   border: 0;
   background: transparent;
   color: color-mix(in srgb, var(--stitch-on-surface) 70%, transparent);
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
   line-height: 1;
-  font-size: 1rem;
+  font-size: 1.125rem;
+  font-weight: 400;
   border-radius: 9999px;
   padding: 0;
+  cursor: pointer;
+}
+
+.app-toast-close__icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  display: block;
 }
 
 .app-toast-close:hover,
@@ -4461,6 +5105,12 @@ table tbody tr:hover {
   color: var(--stitch-secondary);
   background: rgba(4, 190, 153, 0.12);
   outline: none;
+}
+
+.app-toast--error .app-toast-close:hover,
+.app-toast--error .app-toast-close:focus-visible {
+  color: color-mix(in srgb, var(--stitch-on-surface) 92%, transparent);
+  background: color-mix(in srgb, var(--stitch-error) 18%, transparent);
 }
 
 .app-toast--confirm {
@@ -7375,6 +8025,11 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
   margin-top: 1.25rem;
 }
 
+.profile-settings-page.auth-page enable-submit-on-fill {
+  display: block;
+  width: 100%;
+}
+
 .profile-settings-page.auth-page .auth-card__divider {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
@@ -7425,6 +8080,55 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
   font-size: 0.75rem;
   line-height: 1.5;
   color: var(--profile-text-secondary);
+}
+
+.profile-settings-page.auth-page .auth-field-label {
+  justify-content: flex-start;
+}
+
+.profile-settings-page.auth-page .auth-field-label .label-text {
+  display: inline;
+}
+
+.profile-settings-page.auth-page .label-required {
+  color: var(--ds-error, #ef4444);
+  font-weight: 600;
+}
+
+.profile-settings-page.auth-page .auth-field-errors {
+  margin-top: 0.375rem;
+}
+
+.profile-settings-page.auth-page .auth-field-errors .auth-field-error + .auth-field-error {
+  margin-top: 0.125rem;
+}
+
+.profile-settings-page.auth-page .settings-card .auth-field-error,
+.profile-settings-page.auth-page .settings-card .label-text-alt.auth-field-error {
+  display: block;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--ds-error, #ef4444) !important;
+}
+
+[data-theme='docuseal-light'] .profile-settings-page.auth-page .settings-card .auth-field-error,
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .settings-card
+  .label-text-alt.auth-field-error {
+  color: #dc2626 !important;
+}
+
+.profile-settings-page.auth-page .base-input--invalid {
+  border-color: color-mix(in srgb, var(--stitch-error, #ef4444) 72%, transparent) !important;
+}
+
+.profile-settings-page.auth-page .auth-card.settings-card .profile-settings-btn-primary.base-button,
+.profile-settings-page.auth-page .auth-card.settings-card .profile-settings-btn-outline.white-button,
+.profile-settings-page.auth-page .auth-card.settings-card .tpl-new-submit-btn {
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 0.9375rem;
 }
 
 .profile-settings-page.auth-page .auth-card .alert {
@@ -7645,11 +8349,13 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
 }
 
 .profile-settings-page .settings-card .base-input:focus,
-.profile-settings-page .settings-card .base-select:focus {
+.profile-settings-page .settings-card .base-select:focus,
+.profile-settings-page .settings-card .base-textarea:focus {
   outline: none;
-  border-color: var(--profile-accent);
-  box-shadow: 0 0 0 3px
-    color-mix(in srgb, var(--profile-accent) 28%, transparent);
+  border-color: var(--form-focus-accent);
+  box-shadow: var(--form-focus-ring);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
 }
 
 .profile-settings-page .profile-settings-btn-primary.base-button {
@@ -7973,9 +8679,13 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
   transition: opacity 0.18s ease;
 }
 
-/* Narrow focus ring for WCAG-visible focus on profile inputs */
+/* WCAG-visible focus on profile buttons (inputs use --form-focus-ring via :focus) */
 .profile-settings-page .settings-card .base-input:focus-visible,
 .profile-settings-page .settings-card .base-select:focus-visible,
+.profile-settings-page .settings-card .base-textarea:focus-visible {
+  outline: none;
+}
+
 .profile-settings-page .base-button:focus-visible,
 .profile-settings-page .profile-settings-btn-secondary:focus-visible {
   outline: 2px solid var(--profile-accent);
@@ -8044,12 +8754,14 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
 [data-theme='docuseal-light']
   .profile-settings-page
   .settings-card
-  .base-select:focus {
+  .base-select:focus,
+[data-theme='docuseal-light']
+  .profile-settings-page
+  .settings-card
+  .base-textarea:focus {
   background-color: #ffffff !important;
-  border-color: var(--profile-accent) !important;
-  box-shadow: inset 0 0 0 1px
-      color-mix(in srgb, var(--profile-accent) 35%, transparent),
-    0 0 0 3px color-mix(in srgb, var(--profile-accent) 24%, transparent) !important;
+  border-color: var(--form-focus-accent) !important;
+  box-shadow: var(--form-focus-ring) !important;
 }
 
 [data-theme='docuseal-light']

@@ -39,8 +39,14 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 
 .input-bordered:focus,
 .select-bordered:focus,
-.textarea-bordered:focus {
-  @apply border-secondary outline-none ring-1 ring-secondary/20;
+.textarea-bordered:focus,
+.base-input:focus,
+.base-textarea:focus,
+.base-select:focus {
+  @apply border-secondary outline-none ring-0;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--stitch-secondary, #04be99) 22%, transparent);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
 }
 
 .base-input {
