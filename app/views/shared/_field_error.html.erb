@@ -1,3 +1,5 @@
-<span id="<%= field_id %>" class="label-text-alt auth-field-error" role="alert">
-  <%= message %>
-</span>
+<div id="<%= field_id %>" class="auth-field-errors" role="alert">
+  <% messages.each do |message| %>
+    <span class="label-text-alt auth-field-error"><%= message %></span>
+  <% end %>
+</div>
