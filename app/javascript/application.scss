@@ -69,6 +69,15 @@ button.base-button.signature-editor__save[disabled]:not(
   display: none !important;
 }
 
+/* Auth submit: keep primary label when disabled for empty fields; show loading only while submitting */
+enable-submit-on-fill button[disabled]:not(.auth-submit-btn--submitting) .enabled {
+  display: initial !important;
+}
+
+enable-submit-on-fill button[disabled]:not(.auth-submit-btn--submitting) .disabled {
+  display: none !important;
+}
+
 /* Form controls - enterprise-grade inputs */
 .input-bordered,
 .select-bordered,
@@ -5028,17 +5037,34 @@ table tbody tr:hover {
   flex: 1;
 }
 
-.app-toast-close {
+.app-toast-close,
+remove-on-event.app-toast-close {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  box-sizing: border-box;
   border: 0;
   background: transparent;
   color: color-mix(in srgb, var(--stitch-on-surface) 70%, transparent);
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
   line-height: 1;
-  font-size: 1rem;
+  font-size: 1.125rem;
+  font-weight: 400;
   border-radius: 9999px;
   padding: 0;
+  cursor: pointer;
+}
+
+.app-toast-close__icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  display: block;
 }
 
 .app-toast-close:hover,
@@ -5046,6 +5072,12 @@ table tbody tr:hover {
   color: var(--stitch-secondary);
   background: rgba(4, 190, 153, 0.12);
   outline: none;
+}
+
+.app-toast--error .app-toast-close:hover,
+.app-toast--error .app-toast-close:focus-visible {
+  color: color-mix(in srgb, var(--stitch-on-surface) 92%, transparent);
+  background: color-mix(in srgb, var(--stitch-error) 18%, transparent);
 }
 
 .app-toast--confirm {
@@ -7958,6 +7990,11 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
 
 .profile-settings-page.auth-page .auth-card.settings-card .form-control:has(.tpl-new-submit-btn) {
   margin-top: 1.25rem;
+}
+
+.profile-settings-page.auth-page enable-submit-on-fill {
+  display: block;
+  width: 100%;
 }
 
 .profile-settings-page.auth-page .auth-card__divider {

@@ -18,7 +18,9 @@
             <%= f.password_field :password, autocomplete: 'current-password', class: 'base-input w-full', placeholder: t('profile_placeholder_current_password', default: '••••••••••••') %>
           </div>
           <div class="form-control">
-            <%= f.button button_title(title: t(:sign_in), disabled_with: t(:signing_in)), class: 'base-button profile-settings-btn-primary tpl-new-submit-btn' %>
+            <enable-submit-on-fill>
+              <%= f.button button_title(title: t(:sign_in), disabled_with: t(:signing_in)), class: 'base-button profile-settings-btn-primary tpl-new-submit-btn' %>
+            </enable-submit-on-fill>
           </div>
         <% end %>
         <% if @show_confirmation_resend_option %>

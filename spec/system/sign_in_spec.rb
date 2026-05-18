@@ -10,6 +10,22 @@ RSpec.describe 'Sign In' do
   end
 
   context 'when only with email and password' do
+    it 'disables sign in until email and password are provided' do
+      submit_btn = find_button('Sign In')
+
+      expect(submit_btn).to be_disabled
+      expect(submit_btn).to have_content('Sign In')
+      expect(submit_btn).not_to have_content('Signing')
+
+      fill_in 'Email', with: 'john.dou@example.com'
+      expect(submit_btn).to be_disabled
+      expect(submit_btn).to have_content('Sign In')
+
+      fill_in 'Password', with: 'strong_password'
+      expect(submit_btn).not_to be_disabled
+      expect(submit_btn).to have_content('Sign In')
+    end
+
     it 'signs in successfully with valid email and password' do
       fill_in 'Email', with: 'john.dou@example.com'
       fill_in 'Password', with: 'strong_password'

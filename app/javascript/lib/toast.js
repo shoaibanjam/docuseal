@@ -1,6 +1,9 @@
 const CONTAINER_ID = 'app-toast-container'
 const DEFAULT_DURATION = 1500
 
+const CLOSE_ICON_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" class="app-toast-close__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg>'
+
 const getContainer = () => {
   let container = document.getElementById(CONTAINER_ID)
 
@@ -42,7 +45,7 @@ export const showToast = (message, { type = 'error', duration = DEFAULT_DURATION
   closeButton.type = 'button'
   closeButton.className = 'app-toast-close'
   closeButton.setAttribute('aria-label', 'Close notification')
-  closeButton.innerHTML = '&times;'
+  closeButton.innerHTML = CLOSE_ICON_SVG
 
   toast.append(messageEl, closeButton)
 
@@ -94,7 +97,7 @@ export const showConfirmToast = (message, { confirmText = 'OK', cancelText = 'Ca
     closeButton.type = 'button'
     closeButton.className = 'app-toast-close'
     closeButton.setAttribute('aria-label', 'Close notification')
-    closeButton.innerHTML = '&times;'
+    closeButton.innerHTML = CLOSE_ICON_SVG
 
     actionsEl.append(cancelButton, confirmButton)
     toast.append(messageEl, actionsEl, closeButton)

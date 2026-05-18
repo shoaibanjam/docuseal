@@ -3170,6 +3170,12 @@ template-builder .builder-draw-field-link {
   background: rgba(4, 190, 153, 0.12) !important;
 }
 
+[data-theme='docuseal-light'] .app-toast--error .app-toast-close:hover,
+[data-theme='docuseal-light'] .app-toast--error .app-toast-close:focus-visible {
+  color: #12233c !important;
+  background: rgba(220, 38, 38, 0.1) !important;
+}
+
 [data-theme='docuseal-light'] .app-toast-action {
   background: #ffffff !important;
   color: #12233c !important;

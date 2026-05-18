@@ -8,8 +8,8 @@
       <% end %>
       <span class="app-toast-message"><%= flash[:notice] || flash[:alert] %></span>
     </div>
-    <remove-on-event data-on="click" data-selector-id="flash" class="app-toast-close cursor-pointer" aria-label="<%= t('close', default: 'Close') %>">
-      &times;
+    <remove-on-event data-on="click" data-selector-id="flash" class="app-toast-close" aria-label="<%= t('close', default: 'Close') %>">
+      <%= svg_icon('x', class: 'app-toast-close__icon') %>
     </remove-on-event>
     <remove-on-event data-on="timeout" data-timeout-ms="3000" data-selector-id="flash" class="hidden" />
   </div>
