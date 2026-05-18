@@ -60,7 +60,7 @@ RSpec.describe 'Sign Up' do
 
     fill_in 'Email', with: 'jane.doe@example.com'
     fill_in 'Password', with: 'strong_password'
-    click_button 'Sign In'
+    click_button 'Log in'
 
     expect(page).to have_content('Signed in successfully')
     expect(page).to have_content('Document Templates')

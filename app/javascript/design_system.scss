@@ -594,10 +594,15 @@
 }
 .ds-input:focus-visible,
 .ds-textarea:focus-visible,
-.ds-select:focus-visible {
-  outline: 0;
+.ds-select:focus-visible,
+.ds-input:focus,
+.ds-textarea:focus,
+.ds-select:focus {
+  outline: none;
   border-color: var(--ds-secondary-500);
-  box-shadow: 0 0 0 3px var(--ds-ring);
+  box-shadow: 0 0 0 2px var(--ds-ring);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
 }
 .ds-input:disabled,
 .ds-textarea:disabled,
@@ -1227,7 +1232,13 @@
 [data-theme='docuseal-light'] .settings-card .base-select:focus,
 [data-theme='docuseal-light'] .settings-card .base-textarea:focus {
   background-color: #ffffff !important;
-  border-color: #04be99 !important;
+  border-color: var(--form-focus-accent, #04be99) !important;
+  box-shadow: var(
+    --form-focus-ring,
+    0 0 0 2px color-mix(in srgb, #04be99 20%, transparent)
+  ) !important;
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
 }
 
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input,
@@ -1251,7 +1262,11 @@
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input:focus,
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) select.base-select:focus {
   background-color: #ffffff !important;
-  border-color: #04be99 !important;
+  border-color: var(--form-focus-accent, #04be99) !important;
+  box-shadow: var(
+    --form-focus-ring,
+    0 0 0 2px color-mix(in srgb, #04be99 20%, transparent)
+  ) !important;
 }
 
 [data-theme='docuseal-light'] .modal-box--signature-editor:has(.tpl-new-form) .base-input::placeholder,

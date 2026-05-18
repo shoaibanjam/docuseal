@@ -15,7 +15,7 @@
           </div>
           <div class="form-control">
             <%= render 'devise/shared/auth_label', form: f, resource: resource, attribute: :password, label_text: t(:password), required: true %>
-            <%= f.password_field :password, autocomplete: 'current-password', class: 'base-input w-full', placeholder: t('profile_placeholder_current_password', default: '••••••••••••') %>
+            <%= f.password_field :password, autocomplete: 'current-password', class: 'base-input w-full', placeholder: t('profile_placeholder_current_password') %>
           </div>
           <div class="form-control">
             <enable-submit-on-fill>

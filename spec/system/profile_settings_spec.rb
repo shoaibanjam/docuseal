@@ -101,7 +101,7 @@ RSpec.describe 'Profile Settings' do
 
       fill_in 'Email', with: user.email
       fill_in 'Password', with: 'new_strong_password'
-      click_button 'Sign In'
+      click_button 'Log in'
 
       expect(page).to have_content('Signed in successfully')
     end

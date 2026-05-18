@@ -11,25 +11,25 @@ RSpec.describe 'Sign In' do
 
   context 'when only with email and password' do
     it 'disables sign in until email and password are provided' do
-      submit_btn = find_button('Sign In', disabled: true)
+      submit_btn = find_button('Log in', disabled: true)
 
       expect(submit_btn).to be_disabled
-      expect(submit_btn).to have_content(/sign in/i)
-      expect(submit_btn).not_to have_content(/signing in/i)
+      expect(submit_btn).to have_content(/log in/i)
+      expect(submit_btn).not_to have_content(/logging in/i)
 
       fill_in 'Email', with: 'john.dou@example.com'
       expect(submit_btn).to be_disabled
-      expect(submit_btn).to have_content(/sign in/i)
+      expect(submit_btn).to have_content(/log in/i)
 
       fill_in 'Password', with: 'strong_password'
       expect(submit_btn).not_to be_disabled
-      expect(submit_btn).to have_content(/sign in/i)
+      expect(submit_btn).to have_content(/log in/i)
     end
 
     it 'signs in successfully with valid email and password' do
       fill_in 'Email', with: 'john.dou@example.com'
       fill_in 'Password', with: 'strong_password'
-      click_button 'Sign In'
+      click_button 'Log in'
 
       expect(page).to have_content('Signed in successfully')
       expect(page).to have_content('Document Templates')
@@ -38,7 +38,7 @@ RSpec.describe 'Sign In' do
     it "doesn't sign in if the email or password are incorrect" do
       fill_in 'Email', with: 'john.dou@example.com'
       fill_in 'Password', with: 'wrong_password'
-      click_button 'Sign In'
+      click_button 'Log in'
 
       expect(page).to have_content('Invalid email or password')
       expect(page).not_to have_content('Document Templates')
@@ -106,9 +106,9 @@ RSpec.describe 'Sign In' do
     it 'signs in successfully with valid OTP code' do
       fill_in 'Email', with: 'john.dou@example.com'
       fill_in 'Password', with: 'strong_password'
-      click_button 'Sign In'
+      click_button 'Log in'
       fill_in 'Two-Factor Code from Authenticator App', with: user.current_otp
-      click_button 'Sign In'
+      click_button 'Log in'
 
       expect(page).to have_content('Signed in successfully')
       expect(page).to have_content('Document Templates')
@@ -117,9 +117,9 @@ RSpec.describe 'Sign In' do
     it 'fails to sign in with invalid OTP code' do
       fill_in 'Email', with: 'john.dou@example.com'
       fill_in 'Password', with: 'strong_password'
-      click_button 'Sign In'
+      click_button 'Log in'
       fill_in 'Two-Factor Code from Authenticator App', with: '123456'
-      click_button 'Sign In'
+      click_button 'Log in'
 
       expect(page).to have_content('Invalid email or password')
       expect(page).not_to have_content('Document Templates')

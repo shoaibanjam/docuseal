@@ -91,7 +91,7 @@
                   class: 'base-input peer w-full',
                   required: true,
                   id: 'profile_user_password',
-                  placeholder: t('profile_placeholder_new_password', default: '••••••••••••') %>
+                  placeholder: t('profile_placeholder_new_password') %>
                 <profile-password-strength
                   class="profile-password-strength mt-3 block"
                   data-i18n-empty="<%= t('profile_password_strength_hint', default: 'Password strength') %>"
@@ -123,7 +123,7 @@
                   <%= f.password_field :password_confirmation,
                     autocomplete: 'new-password',
                     class: 'base-input',
-                    placeholder: t('profile_placeholder_confirm_password', default: '••••••••••••') %>
+                    placeholder: t('profile_placeholder_confirm_password') %>
                 </div>
 
                 <div class="form-control profile-settings-current-password">
@@ -138,7 +138,7 @@
                   <%= f.password_field :current_password,
                     autocomplete: 'current-password',
                     class: 'base-input',
-                    placeholder: t('profile_placeholder_current_password', default: '••••••••••••') %>
+                    placeholder: t('profile_placeholder_current_password') %>
                 </div>
 
                 <div class="settings-card-actions profile-settings-card-actions">

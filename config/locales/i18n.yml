@@ -171,8 +171,8 @@ en: &en
   name_declined_by_submitter_with_the_following_reason: '"%{name}" has been declined by %{submitter} with the following reason:'
   completed_successfully: Completed Successfully
   password: Password
-  sign_in: Sign In
-  signing_in: Signing In
+  sign_in: Log in
+  signing_in: Logging in
   sign_in_with_microsoft: Sign in with Microsoft
   sign_in_with_google: Sign in with Google
   forgot_your_password_: Forgot your password?
@@ -336,6 +336,9 @@ en: &en
   profile_placeholder_folder_name: Folder name
   profile_placeholder_subfolder_name: Subfolder name
   profile_placeholder_email: you@company.com
+  profile_placeholder_new_password: Enter your password
+  profile_placeholder_confirm_password: Confirm your password
+  profile_placeholder_current_password: Enter your password
   preferences_placeholder_redirect_url: https://example.com/thank-you
   preferences_placeholder_completion_message: Thank you for completing the form. You will hear from us shortly.
   otp_code_placeholder: XXX-XXX
