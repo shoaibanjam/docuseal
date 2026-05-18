@@ -11,19 +11,19 @@ RSpec.describe 'Sign In' do
 
   context 'when only with email and password' do
     it 'disables sign in until email and password are provided' do
-      submit_btn = find_button('Sign In')
+      submit_btn = find_button('Sign In', disabled: true)
 
       expect(submit_btn).to be_disabled
-      expect(submit_btn).to have_content('Sign In')
-      expect(submit_btn).not_to have_content('Signing')
+      expect(submit_btn).to have_content(/sign in/i)
+      expect(submit_btn).not_to have_content(/signing in/i)
 
       fill_in 'Email', with: 'john.dou@example.com'
       expect(submit_btn).to be_disabled
-      expect(submit_btn).to have_content('Sign In')
+      expect(submit_btn).to have_content(/sign in/i)
 
       fill_in 'Password', with: 'strong_password'
       expect(submit_btn).not_to be_disabled
-      expect(submit_btn).to have_content('Sign In')
+      expect(submit_btn).to have_content(/sign in/i)
     end
 
     it 'signs in successfully with valid email and password' do
@@ -52,6 +52,8 @@ RSpec.describe 'Sign In' do
       click_forgot_password_submit
 
       expect(page).to have_content("Email can't be blank")
+      expect(page).to have_css('.auth-field-error')
+      expect(page).not_to have_css('#error_explanation')
       expect(page).to have_current_path(new_user_password_path)
       expect(ActionMailer::Base.deliveries).to be_empty
     end

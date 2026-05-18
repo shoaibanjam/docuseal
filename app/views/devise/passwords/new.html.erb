@@ -6,11 +6,11 @@
       </div>
       <div class="tpl-new-form">
         <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, data: { turbo: params[:redir].blank? }) do |f| %>
-          <%= render 'devise/shared/error_messages', resource: %>
+          <%= render 'devise/shared/error_messages', resource:, inline_fields: %i[email] %>
           <%= render 'devise/sessions/hidden_fields' %>
-          <div class="form-control" dir="auto">
-            <%= f.label :email, t(:email), class: 'label' %>
-            <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input w-full', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
+          <div class="form-control<%= ' form-control--invalid' if resource.errors[:email].any? %>" dir="auto">
+            <%= render 'devise/shared/auth_label', form: f, resource:, attribute: :email, label_text: t(:email), required: true %>
+            <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: ['base-input w-full', ('base-input--invalid' if resource.errors[:email].any?)].compact.join(' '), placeholder: t('profile_placeholder_email', default: 'you@company.com'), aria: { describedby: (dom_id(resource, :email) + '_error' if resource.errors[:email].any?) } %>
           </div>
           <div class="form-control">
             <%= f.button button_title(title: t('reset_password'), disabled_with: t('resetting_password')), class: 'base-button profile-settings-btn-primary tpl-new-submit-btn' %>

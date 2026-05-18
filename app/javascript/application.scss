@@ -8049,6 +8049,40 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
   color: var(--profile-text-secondary);
 }
 
+.profile-settings-page.auth-page .auth-field-label {
+  justify-content: flex-start;
+}
+
+.profile-settings-page.auth-page .auth-field-label .label-text {
+  display: inline;
+}
+
+.profile-settings-page.auth-page .label-required {
+  color: var(--ds-error, #ef4444);
+  font-weight: 600;
+}
+
+.profile-settings-page.auth-page .settings-card .auth-field-error,
+.profile-settings-page.auth-page .settings-card .label-text-alt.auth-field-error {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--ds-error, #ef4444) !important;
+}
+
+[data-theme='docuseal-light'] .profile-settings-page.auth-page .settings-card .auth-field-error,
+[data-theme='docuseal-light']
+  .profile-settings-page.auth-page
+  .settings-card
+  .label-text-alt.auth-field-error {
+  color: #dc2626 !important;
+}
+
+.profile-settings-page.auth-page .base-input--invalid {
+  border-color: color-mix(in srgb, var(--stitch-error, #ef4444) 72%, transparent) !important;
+}
+
 .profile-settings-page.auth-page .auth-card .alert {
   margin-bottom: 1rem;
   border-radius: var(--ds-radius-8, 0.5rem);

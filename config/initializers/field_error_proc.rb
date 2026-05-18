@@ -17,8 +17,14 @@ ActionView::Base.field_error_proc = proc do |html_tag, instance|
   result = html_tag
 
   if errors.present?
+    method_name = instance.instance_variable_get(:@method_name).to_s
+    field_id = "#{ActionView::RecordIdentifier.dom_id(instance.object, method_name)}_error"
+
     result +=
-      ApplicationController.render(partial: 'shared/field_error', locals: { message: "#{field_name} #{errors}" })
+      ApplicationController.render(
+        partial: 'shared/field_error',
+        locals: { message: "#{field_name} #{errors}", field_id: }
+      )
   end
 
   result

@@ -10,11 +10,11 @@
         <%= form_for(resource, as: resource_name, data: { turbo: params[:redir].blank? }, url: session_path(resource_name)) do |f| %>
           <%= render 'hidden_fields' %>
           <div class="form-control" dir="auto">
-            <%= f.label :email, t(:email), class: 'label' %>
+            <%= render 'devise/shared/auth_label', form: f, resource: resource, attribute: :email, label_text: t(:email), required: true %>
             <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input w-full', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
           </div>
           <div class="form-control">
-            <%= f.label :password, t(:password), class: 'label' %>
+            <%= render 'devise/shared/auth_label', form: f, resource: resource, attribute: :password, label_text: t(:password), required: true %>
             <%= f.password_field :password, autocomplete: 'current-password', class: 'base-input w-full', placeholder: t('profile_placeholder_current_password', default: '••••••••••••') %>
           </div>
           <div class="form-control">
@@ -30,7 +30,11 @@
                 <%= hidden_field_tag 'user[email]', @confirmation_resend_email %>
               <% else %>
                 <div class="form-control">
-                  <%= label_tag 'resend_confirmation_email_input', t(:email), class: 'label' %>
+                  <label for="resend_confirmation_email_input" class="label auth-field-label">
+                    <span class="label-text">
+                      <%= t(:email) %><span class="label-required" aria-hidden="true"> *</span>
+                    </span>
+                  </label>
                   <%= email_field_tag 'user[email]', nil, id: 'resend_confirmation_email_input', required: true, class: 'base-input w-full', placeholder: t('profile_placeholder_email', default: 'you@company.com') %>
                 </div>
               <% end %>

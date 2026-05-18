@@ -6,20 +6,20 @@
       </div>
       <div class="tpl-new-form">
         <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-          <%= render 'devise/shared/error_messages', resource: %>
+          <%= render 'devise/shared/error_messages', resource:, inline_fields: %i[password password_confirmation] %>
           <%= f.hidden_field :reset_password_token %>
-          <div class="form-control">
-            <%= f.label :password, t('new_password'), class: 'label' %>
-            <%= f.password_field :password, autofocus: true, autocomplete: 'new-password', class: 'base-input w-full', placeholder: t('profile_placeholder_new_password', default: '••••••••••••') %>
+          <div class="form-control<%= ' form-control--invalid' if resource.errors[:password].any? %>">
+            <%= render 'devise/shared/auth_label', form: f, resource:, attribute: :password, label_text: t('new_password'), required: true %>
+            <%= f.password_field :password, autofocus: true, autocomplete: 'new-password', class: ['base-input w-full', ('base-input--invalid' if resource.errors[:password].any?)].compact.join(' '), placeholder: t('profile_placeholder_new_password', default: '••••••••••••'), aria: { describedby: (dom_id(resource, :password) + '_error' if resource.errors[:password].any?) } %>
             <% if @minimum_password_length %>
               <label class="label">
                 <span class="label-text">(<%= t('minimum_password_length_characters_minimum', minimum_password_length: @minimum_password_length) %>)</span>
               </label>
             <% end %>
           </div>
-          <div class="form-control">
-            <%= f.label :password_confirmation, t('confirm_new_password'), class: 'label' %>
-            <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'base-input w-full', placeholder: t('profile_placeholder_confirm_password', default: '••••••••••••') %>
+          <div class="form-control<%= ' form-control--invalid' if resource.errors[:password_confirmation].any? %>">
+            <%= render 'devise/shared/auth_label', form: f, resource:, attribute: :password_confirmation, label_text: t('confirm_new_password'), required: true %>
+            <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: ['base-input w-full', ('base-input--invalid' if resource.errors[:password_confirmation].any?)].compact.join(' '), placeholder: t('profile_placeholder_confirm_password', default: '••••••••••••'), aria: { describedby: (dom_id(resource, :password_confirmation) + '_error' if resource.errors[:password_confirmation].any?) } %>
           </div>
           <div class="form-control">
             <%= f.button button_title(title: t('change_my_password'), disabled_with: t('changing_password')), class: 'base-button profile-settings-btn-primary tpl-new-submit-btn' %>
