@@ -2,14 +2,13 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
-import Typed from 'typed.js'
 import VanillaTilt from 'vanilla-tilt'
 import Splide from '@splidejs/splide'
 import '@splidejs/splide/css'
 
 let aosStarted = false
 let lenisInstance = null
-let typedInstance = null
+let heroWordRotatorTimer = null
 let tiltBound = false
 let logosSplide = null
 let landingNavObserver = null
@@ -22,7 +21,7 @@ function prefersFinePointer () {
   return window.matchMedia('(pointer: fine)').matches
 }
 
-function parseTypedStrings (raw) {
+function parseLandingWordList (raw) {
   if (!raw) return null
   try {
     const parsed = JSON.parse(raw)
@@ -30,6 +29,47 @@ function parseTypedStrings (raw) {
   } catch {
     return null
   }
+}
+
+function teardownHeroWordRotator () {
+  if (heroWordRotatorTimer) {
+    clearTimeout(heroWordRotatorTimer)
+    heroWordRotatorTimer = null
+  }
+  document.getElementById('landing-hero-rotating-word')?.classList.remove('landing-hero-rotating-word--fading')
+}
+
+function bootHeroWordRotator (reduceMotion) {
+  teardownHeroWordRotator()
+
+  const el = document.getElementById('landing-hero-rotating-word')
+  const words = parseLandingWordList(el?.dataset?.landingRotatingWords)
+  if (!el || !words?.length) return
+
+  el.textContent = words[0]
+
+  if (reduceMotion) return
+
+  const fadeMs = 600
+  const holdMs = 2800
+  let index = 0
+
+  const schedule = (delay, fn) => {
+    heroWordRotatorTimer = window.setTimeout(fn, delay)
+  }
+
+  const rotate = () => {
+    el.classList.add('landing-hero-rotating-word--fading')
+
+    schedule(fadeMs, () => {
+      index = (index + 1) % words.length
+      el.textContent = words[index]
+      el.classList.remove('landing-hero-rotating-word--fading')
+      schedule(holdMs, rotate)
+    })
+  }
+
+  schedule(holdMs, rotate)
 }
 
 function teardownLandingNavSpy () {
@@ -103,10 +143,7 @@ export function teardownLandingScroll () {
     lenisInstance.destroy()
     lenisInstance = null
   }
-  if (typedInstance) {
-    typedInstance.destroy()
-    typedInstance = null
-  }
+  teardownHeroWordRotator()
   if (logosSplide) {
     logosSplide.destroy()
     logosSplide = null
@@ -254,26 +291,7 @@ export function bootLandingAos () {
     })
   }
 
-  const typedEl = document.getElementById('landing-hero-typed')
-  const typedStrings = parseTypedStrings(typedEl?.dataset?.landingTypedStrings)
-  if (
-    !reduceMotion &&
-    typedEl &&
-    typedStrings &&
-    !typedInstance
-  ) {
-    typedInstance = new Typed(typedEl, {
-      strings: typedStrings,
-      typeSpeed: 52,
-      backSpeed: 38,
-      backDelay: 2200,
-      startDelay: 400,
-      loop: true,
-      smartBackspace: true,
-      showCursor: true,
-      cursorChar: '|'
-    })
-  }
+  bootHeroWordRotator(reduceMotion)
 
   if (!reduceMotion && prefersFinePointer() && !tiltBound) {
     const cards = document.querySelectorAll('.landing-tilt')
