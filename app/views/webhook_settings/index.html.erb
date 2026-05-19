@@ -39,7 +39,7 @@
           </div>
           <div class="flex flex-wrap gap-2 mt-4">
             <% webhook_url.events.each do |event| %>
-              <span class="badge badge-outline badge-sm"><%= event %></span>
+              <span class="badge badge-outline badge-sm"><%= t("webhook_event_names.#{event.tr('.', '_')}", default: event) %></span>
             <% end %>
           </div>
         <% end %>

@@ -3,7 +3,7 @@
   <%= ff.fields_for :configs, configs do |fff| %>
     <div class="grid gap-6 md:grid-cols-2">
       <div class="form-control">
-        <%= fff.label :access_key_id, 'Access key ID', class: 'label' %>
+        <%= fff.label :access_key_id, t('storage_label_access_key_id', default: 'Access key ID'), class: 'label' %>
         <%= fff.text_field :access_key_id,
           value: configs['access_key_id'],
           required: true,
@@ -12,7 +12,7 @@
           autocomplete: 'off' %>
       </div>
       <div class="form-control">
-        <%= fff.label :secret_access_key, class: 'label' %>
+        <%= fff.label :secret_access_key, t('storage_label_secret_access_key', default: 'Secret access key'), class: 'label' %>
         <%= fff.password_field :secret_access_key,
           required: true,
           class: 'base-input',
@@ -22,7 +22,7 @@
     </div>
     <div class="grid gap-6 md:grid-cols-2">
       <div class="form-control">
-        <%= fff.label :region, class: 'label' %>
+        <%= fff.label :region, t('storage_label_region', default: 'Region'), class: 'label' %>
         <%= fff.text_field :region,
           value: configs['region'],
           required: true,
@@ -30,7 +30,7 @@
           placeholder: t('storage_placeholder_aws_region', default: 'us-east-1') %>
       </div>
       <div class="form-control">
-        <%= fff.label :bucket, class: 'label' %>
+        <%= fff.label :bucket, t('storage_label_bucket', default: 'Bucket'), class: 'label' %>
         <%= fff.text_field :bucket,
           value: value['service'] == 'aws_s3' ? configs['bucket'] : '',
           required: true,
@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="form-control">
-      <%= fff.label :endpoint, "Endpoint (#{t('optional')})", class: 'label' %>
+      <%= fff.label :endpoint, t('storage_label_endpoint_optional', optional: t('optional'), default: "Endpoint (#{t('optional')})"), class: 'label' %>
       <%= fff.text_field :endpoint,
         value: configs['endpoint'],
         type: :url,

@@ -3,7 +3,7 @@
   <%= ff.fields_for :configs, configs do |fff| %>
     <div class="grid gap-6 md:grid-cols-2">
       <div class="form-control">
-        <%= fff.label :storage_account_name, 'Storage Account Name', class: 'label' %>
+        <%= fff.label :storage_account_name, t('storage_label_account_name', default: 'Storage Account Name'), class: 'label' %>
         <%= fff.text_field :storage_account_name,
           value: configs['storage_account_name'],
           required: true,
@@ -12,7 +12,7 @@
           autocomplete: 'off' %>
       </div>
       <div class="form-control">
-        <%= fff.label :container, class: 'label' %>
+        <%= fff.label :container, t('storage_label_container', default: 'Container'), class: 'label' %>
         <%= fff.text_field :container,
           value: configs['container'],
           required: true,
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="form-control">
-      <%= fff.label :storage_access_key, 'Storage Access Key', class: 'label' %>
+      <%= fff.label :storage_access_key, t('storage_label_access_key', default: 'Storage Access Key'), class: 'label' %>
       <%= fff.password_field :storage_access_key,
         required: true,
         class: 'base-input',

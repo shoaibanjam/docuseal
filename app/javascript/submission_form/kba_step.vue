@@ -7,17 +7,17 @@
       v-if="field.title"
       :string="field.title"
     />
-    <template v-else>{{ field.name || 'Knowledge Based Authentication' }}</template>
+    <template v-else>{{ field.name || t('knowledge_based_authentication') }}</template>
     <span
       v-if="questions"
       class="float-right font-normal text-neutral-500 mt-1 whitespace-nowrap text-right text-sm"
     >
-      <span>Question {{ currentQuestionIndex + 1 }} / {{ questions.length }}</span>
+      <span>{{ t('question_progress').replace('{current}', currentQuestionIndex + 1).replace('{total}', questions.length) }}</span>
       <span
         v-if="timeLeftSeconds !== null"
         class="block"
       >
-        Time left: {{ formattedTimeLeft }}
+        {{ t('time_left').replace('{time}', formattedTimeLeft) }}
       </span>
     </span>
   </label>
@@ -45,7 +45,7 @@
       class="base-button w-full flex justify-center submit-form-button"
       @click="restartKba"
     >
-      {{ questions ? 'Restart KBA' : 'Retry' }}
+      {{ questions ? t('restart_kba') : t('retry') }}
     </button>
   </div>
   <div
@@ -115,7 +115,7 @@
           <label
             for="kba_fn"
             class="label text-sm md:text-base"
-          >First Name</label>
+          >{{ t('first_name') }}</label>
           <input
             id="kba_fn"
             v-model="form.fn"
@@ -128,7 +128,7 @@
           <label
             for="kba_ln"
             class="label text-sm md:text-base"
-          >Last Name</label>
+          >{{ t('last_name') }}</label>
           <input
             id="kba_ln"
             v-model="form.ln"
@@ -141,7 +141,7 @@
           <label
             for="kba_addr"
             class="label text-sm md:text-base"
-          >Address</label>
+          >{{ t('address') }}</label>
           <input
             id="kba_addr"
             v-model="form.addr"
@@ -154,7 +154,7 @@
           <label
             for="kba_city"
             class="label text-sm md:text-base"
-          >City</label>
+          >{{ t('city') }}</label>
           <input
             id="kba_city"
             v-model="form.city"
@@ -167,7 +167,7 @@
           <label
             for="kba_state"
             class="label text-sm md:text-base"
-          >State</label>
+          >{{ t('state') }}</label>
           <select
             id="kba_state"
             v-model="form.state"
@@ -178,7 +178,7 @@
               value=""
               disabled
             >
-              Select State
+              {{ t('select_state') }}
             </option>
             <option
               v-for="state in states"
@@ -193,11 +193,12 @@
           <label
             for="kba_zip"
             class="label text-sm md:text-base"
-          >Zip</label>
+          >{{ t('zip') }}</label>
           <input
             id="kba_zip"
             v-model="form.zip"
             type="text"
+            dir="ltr"
             class="input input-bordered !h-10 w-full bg-white text-neutral-900 border-neutral-300 placeholder:text-neutral-900"
             required
           >
@@ -206,11 +207,12 @@
           <label
             for="kba_phone"
             class="label text-sm md:text-base"
-          >Phone</label>
+          >{{ t('phone') }}</label>
           <input
             id="kba_phone"
             v-model="form.phone"
             type="text"
+            dir="ltr"
             class="input input-bordered !h-10 w-full bg-white text-neutral-900 border-neutral-300 placeholder:text-neutral-900"
             required
           >
@@ -219,7 +221,7 @@
           <label
             for="kba_email"
             class="label text-sm md:text-base"
-          >Email</label>
+          >{{ t('email') }}</label>
           <input
             id="kba_email"
             v-model="form.email"
@@ -232,11 +234,12 @@
           <label
             for="kba_dob"
             class="label text-sm md:text-base"
-          >DOB</label>
+          >{{ t('dob') }}</label>
           <input
             id="kba_dob"
             v-model="form.dob"
             type="date"
+            dir="ltr"
             class="input input-bordered !h-10 md:w-full bg-white text-neutral-900 border-neutral-300 placeholder:text-neutral-900"
             required
           >
@@ -245,11 +248,12 @@
           <label
             for="kba_ssn"
             class="label text-sm md:text-base"
-          >SSN</label>
+          >{{ t('ssn') }}</label>
           <input
             id="kba_ssn"
             v-model="form.ssn"
             type="text"
+            dir="ltr"
             class="input input-bordered !h-10 w-full bg-white text-neutral-900 border-neutral-300 placeholder:text-neutral-900"
             required
           >
@@ -267,7 +271,7 @@
               class="mr-1 animate-spin"
             />
             <span>
-              {{ isLoading ? 'Loading...' : 'Start Verification' }}
+              {{ isLoading ? t('loading_') : t('start_verification') }}
             </span><span
               v-if="isLoading"
               class="w-6 flex justify-start mr-1"
@@ -452,7 +456,7 @@ export default {
       this.reference = null
       this.answers = {}
       this.currentQuestionIndex = 0
-      this.error = `Knowledge Based Authentication timed out. You only have ${this.kbaTimeLimitSeconds} seconds to complete the verification. Please retry.`
+      this.error = this.t('kba_timeout').replace('{seconds}', this.kbaTimeLimitSeconds)
     },
     nextQuestion () {
       if (this.isLastQuestion) {
@@ -499,14 +503,14 @@ export default {
 
         const data = await resp.json()
 
-        if (!resp.ok) throw new Error(data.error || 'Failed to start KBA')
+        if (!resp.ok) throw new Error(data.error || this.t('failed_to_start_kba'))
 
         if (data.result && data.result.action === 'FAIL') {
           if (data.result.detail === 'NO MATCH') {
-            throw new Error('Unfortunately, we were unable to start Knowledge Based Authentication with the details provided. Please review and confirm that all your personal details are correct.')
+            throw new Error(this.t('kba_no_match'))
           }
 
-          throw new Error(data.result.detail || 'KBA Start Failed')
+          throw new Error(data.result.detail || this.t('kba_start_failed'))
         }
 
         if (data.output && data.output.questions && data.output.questions.questions) {
@@ -520,7 +524,7 @@ export default {
 
           this.startCountdown()
         } else {
-          throw new Error('Invalid KBA response')
+          throw new Error(this.t('invalid_kba_response'))
         }
       } catch (e) {
         this.error = e.message
@@ -556,18 +560,18 @@ export default {
 
         if (data.result?.action !== 'PASS') {
           if (data.result?.issues?.length) {
-            this.error = `Knowledge Based Authentication Failed - make sure you provide correct details for the Knowledge Based authentication: ${data.result.issues.join(', ')}`
+            this.error = this.t('kba_failed_details').replace('{issues}', data.result.issues.join(', '))
           } else {
-            this.error = 'Knowledge Based Authentication Failed - make sure you provide correct answers for the Knowledge Based authentication.'
+            this.error = this.t('kba_failed_answers')
           }
 
-          throw new Error('Knowledge Based Authentication Failed')
+          throw new Error(this.t('kba_failed'))
         }
 
         if (!resp.ok) {
-          this.error = 'Failed to submit answers'
+          this.error = this.t('failed_to_submit_answers')
 
-          throw new Error('Failed to submit answers')
+          throw new Error(this.t('failed_to_submit_answers'))
         }
 
         return resp

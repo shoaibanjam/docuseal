@@ -25,8 +25,9 @@
             <%= render 'shared/navbar_buttons' %>
           </div>
         <% end %>
-        <theme-toggle class="inline-flex">
-          <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
+        <%= render 'shared/locale_switcher' %>
+        <theme-toggle class="inline-flex" data-label-light="<%= t('switch_to_light_mode', default: 'Switch to light mode') %>" data-label-dark="<%= t('switch_to_dark_mode', default: 'Switch to dark mode') %>">
+          <button type="button" class="theme-toggle-btn">
             <span data-theme-icon="sun">
               <%= svg_icon('sun', class: 'w-5 h-5') %>
             </span>
@@ -46,8 +47,9 @@
           </span>
         <% end %>
       <% end %>
-      <theme-toggle class="inline-flex items-center justify-center">
-        <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
+      <%= render 'shared/locale_switcher' %>
+      <theme-toggle class="inline-flex items-center justify-center" data-label-light="<%= t('switch_to_light_mode', default: 'Switch to light mode') %>" data-label-dark="<%= t('switch_to_dark_mode', default: 'Switch to dark mode') %>">
+        <button type="button" class="theme-toggle-btn">
           <span data-theme-icon="sun">
             <%= svg_icon('sun', class: 'w-5 h-5') %>
           </span>

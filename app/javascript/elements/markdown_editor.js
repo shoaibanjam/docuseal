@@ -102,8 +102,14 @@ class LinkTooltip {
 
     const coords = this.editor.view.coordsAtPos(pos);
     const containerRect = this.container.getBoundingClientRect();
+    const isRtl =
+      document.documentElement.dir === 'rtl' ||
+      getComputedStyle(this.container).direction === 'rtl';
+    const tooltipLeft = isRtl
+      ? coords.right - containerRect.left - this.tooltip.offsetWidth
+      : coords.left - containerRect.left;
 
-    this.tooltip.style.left = `${coords.left - containerRect.left}px`;
+    this.tooltip.style.left = `${tooltipLeft}px`;
     this.tooltip.style.top = `${coords.bottom - containerRect.top + 4}px`;
 
     if (focus) this.input.focus();

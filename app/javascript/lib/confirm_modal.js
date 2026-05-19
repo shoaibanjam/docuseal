@@ -37,6 +37,8 @@ export function showConfirmModal(message, options = {}) {
     panel.className = 'app-confirm-modal__panel';
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-modal', 'true');
+    panel.dir = document.documentElement.dir || 'ltr';
+    panel.lang = document.documentElement.lang || '';
 
     const labelFallback =
       String(message || '')

@@ -20,9 +20,43 @@ en: &en
   language_ar: العربية
   language_ko: 한국어
   language_ja: 日本語
+  switch_to_light_mode: Switch to light mode
+  switch_to_dark_mode: Switch to dark mode
+  failed_to_download_files: Failed to download files
+  clipboard_unavailable_copy_text: "Clipboard not available. Make sure you're using https:// Copy text: %{text}"
+  enter_pdf_password: Enter PDF password
+  signature_is_too_small_or_simple_please_redraw: Signature is too small or simple. Please redraw.
+  primary_navigation: Primary navigation
+  open_menu: Open menu
+  close_menu: Close menu
+  navigation: Navigation
+  landing:
+    hero:
+      badge: Next-gen document infrastructure
+      rotating_words:
+        - secure
+        - compliant
+        - scalable
+        - automated
+        - trusted
+      headline_sr: powers the future of secure, compliant, scalable, automated, and trusted business workflows
+      headline_powering: powering
+      headline_future_of: the future of
+      headline_suffix: business workflows
+      description: The flexible e-signature and document platform for teams that need airtight security, deep API control, and beautiful signing experiences.
+      cta_primary: Start building now
+      cta_secondary: View security
+      dashboard_alt: Enterprise dashboard interface
+      preview_alt: Landing page dashboard preview
+    nav:
+      products: Products
+      solutions: Solutions
+      company: Company
+      security: Security
   add_from_google_drive: Add from Google Drive
   or_add_from: Or add from
   upload_a_new_document: Upload a New Document
+  browse_files: Browse Files
   billing: Billing
   hi_there: Hi there
   templates_that_require_email_or_phone_2fa_cannot_be_used_via_a_shared_link: Templates that require email or phone 2FA cannot be used via a shared link.
@@ -68,6 +102,7 @@ en: &en
   invalid_code: Invalid code
   signed: Signed
   first_party: 'First Party'
+  filter: Filter
   remove_filter: Remove filter
   add: Add
   adding: Adding
@@ -95,6 +130,7 @@ en: &en
   awaiting_completion_by_the_other_party: "Awaiting completion by the other party"
   review_and_sign: Review and Sign
   review_and_submit: Review and Submit
+  fill_and_sign_documents_online: Review and complete all required fields to finish this document.
   please_contact_us_by_replying_to_this_email_if_you_have_any_questions: "Please contact us by replying to this email if you have any questions."
   submitter_invitation_sms_body_sign: '{account.name} has invited you to sign a document: {submitter.link}'
   verification_code_sms_body: 'Verification code: {code}'
@@ -238,6 +274,45 @@ en: &en
   sign_up_in_docuseal_console_to_upgrade_on_premises_app_is_completely_standalone_console_is_used_only_to_manage_your_license: Sign up in Trustseal Console to upgrade. On-premises app is completely standalone, Console is used only to manage your license.
   send_from_email: Send from Email
   optional: optional
+  smtp_settings_eyebrow: Outbound mail
+  email_smtp_configuration: Email SMTP Configuration
+  manage_outgoing_email_server_settings: Manage your outgoing email server settings for notifications and document delivery.
+  server_credentials: Server Credentials
+  smtp_server_credentials_hint: Host, port, and login used to connect to your outgoing mail server.
+  smtp_subgroup_connection: Connection
+  smtp_label_host: Host Address
+  smtp_label_port: Port
+  smtp_placeholder_host: smtp.example.com
+  smtp_placeholder_port: "587"
+  smtp_subgroup_mailbox: Mailbox authentication
+  smtp_label_username: Username (Email)
+  smtp_label_password: Password
+  smtp_placeholder_username: notifications@company.com
+  smtp_placeholder_password: "••••••••••••"
+  smtp_placeholder_password_saved: Leave blank to keep existing password
+  identity_routing: Identity & Routing
+  smtp_identity_routing_hint: How Trustseal authenticates and what address recipients see as the sender.
+  smtp_label_domain_optional: Domain (%{optional})
+  smtp_label_authentication: Authentication
+  smtp_auth_plain: Plain
+  smtp_auth_login: Login
+  smtp_auth_cram_md5: CRAM-MD5
+  smtp_prompt_authentication: Select authentication
+  smtp_placeholder_domain: mail.example.com
+  smtp_from_email_microcopy: Shown as the sender on notifications and completion emails. Use an address your domain is allowed to send from.
+  smtp_placeholder_from: no-reply@company.com
+  smtp_security: SMTP Security
+  smtp_security_hint: Choose how the connection to your mail server is encrypted.
+  smtp_security_starttls: STARTTLS
+  smtp_security_tls: TLS
+  smtp_security_ssl: SSL
+  smtp_security_noverify: No verification
+  opportunistic_encryption: Opportunistic encryption
+  transport_layer_security: Transport Layer Security
+  legacy_encryption: Legacy encryption
+  ignore_certificate_warnings: Ignore certificate warnings
+  smtp_save_hint: Saved settings apply to the next emails sent from this workspace.
+  save_configuration: Save configuration
   save: Save
   saving: Saving
   changes_have_been_saved: Changes have been saved.
@@ -247,6 +322,8 @@ en: &en
   upload_certificate: Upload Certificate
   name: Name
   file: File
+  choose_file: Choose file
+  no_file_chosen: No file chosen
   use_a_valid_der_p12_or_pfx_file: Use a valid .der, .p12 or .pfx file.
   submit: Submit
   submitting: Submitting
@@ -269,6 +346,8 @@ en: &en
   delete: Delete
   default: Default
   are_you_sure_: Are you sure?
+  confirm_ok: OK
+  cancel: Cancel
   timestamp_server: Timestamp Server
   timeserver_url: Timeserver URL
   url_of_the_trusted_rfc_3161_timeserver_to_be_used_to_generate_timestamp_signatures: URL of the trusted RFC 3161 timeserver to be used to generate timestamp signatures.
@@ -321,6 +400,15 @@ en: &en
   button_title: Button title
   button_url: Button URL
   upload_logo: Upload Logo
+  personalization_settings_eyebrow: Branding & messaging
+  personalization_settings_intro: Customize outbound emails, logo, submission flow, and embed styling for your workspace.
+  personalization_email_templates_hint: Subjects and bodies for messages sent to submitters and recipients.
+  personalization_submission_form_hint: Completion messaging, buttons, and policy links shown after submit.
+  personalization_logo_hint: Shown on signing pages and in emails when enabled.
+  current_logo: Current logo
+  remove_logo: Remove logo
+  form_customization: Form Customization
+  personalization_form_customization_hint: Fine-grained options for how forms behave and appear.
   personalization_placeholder_email_subject: 'e.g. Please sign {{template.name}} from {{account.name}}'
   personalization_placeholder_completed_email_subject: 'e.g. Completed — {{template.name}}'
   personalization_placeholder_reply_to: notifications@company.com
@@ -332,6 +420,11 @@ en: &en
   personalization_placeholder_logo_file_title: 'Choose PNG, JPG, or SVG (recommended max height ~64px)'
   personalization_placeholder_email_body_html: 'Paste full HTML email content…'
   personalization_placeholder_email_body_markdown: 'Write the email body in Markdown (bold, links, variables from the menu…)…'
+  profile_settings_intro: Manage how you appear in documents, signatures, notifications, and account security.
+  personal_details: Personal Details
+  profile_personal_details_hint: Your name and email are shown on documents and audit trails.
+  profile_placeholder_first_name: Alex
+  profile_placeholder_last_name: Rivera
   profile_placeholder_document_name: Document name
   profile_placeholder_folder_name: Folder name
   profile_placeholder_subfolder_name: Subfolder name
@@ -339,6 +432,29 @@ en: &en
   profile_placeholder_new_password: Enter your password
   profile_placeholder_confirm_password: Confirm your password
   profile_placeholder_current_password: Enter your password
+  profile_save_changes: Save Changes
+  profile_change_password_hint: Use a strong passphrase you don't reuse elsewhere.
+  profile_password_strength_hint: Password strength
+  profile_password_weak: Weak
+  profile_password_fair: Fair
+  profile_password_good: Good
+  profile_password_strong: Strong
+  profile_password_strength_meter: Password strength
+  profile_update_password: Update password
+  profile_identity_heading: Identity
+  profile_identity_hint: Signature and initials appear when you sign documents.
+  profile_remove_signature: Remove signature
+  profile_remove_signature_body: Your saved signature will be removed from your profile. You can add a new one anytime.
+  profile_remove_signature_title: Remove signature?
+  profile_no_signature_yet: No signature yet
+  profile_edit_signature: Edit signature
+  profile_remove_initials: Remove initials
+  profile_remove_initials_body: Your saved initials will be removed from your profile. You can add new ones anytime.
+  profile_remove_initials_title: Remove initials?
+  profile_no_initials_yet: No initials yet
+  profile_edit_initials: Edit initials
+  profile_2fa_hint: Protect your account even if your password is exposed.
+  profile_enable_2fa: Enable 2FA
   preferences_placeholder_redirect_url: https://example.com/thank-you
   preferences_placeholder_completion_message: Thank you for completing the form. You will hear from us shortly.
   otp_code_placeholder: XXX-XXX
@@ -390,8 +506,54 @@ en: &en
   powered_by: Powered by
   count_documents_signed_with_html: '<b>%{count}</b> documents signed with'
   storage: Storage
+  storage_settings_eyebrow: Infrastructure
+  storage_settings_intro: Choose where signed documents, uploads, and attachments are stored for your workspace.
+  storage_backend_panel_title: Backend
+  storage_backend_panel_hint: Select where files are stored. You can switch providers anytime.
+  storage_configuration_panel_title: Configuration
+  storage_configuration_panel_hint: Credentials and options for the backend selected on the left.
+  storage_provider_disk: Disk
+  storage_provider_aws: AWS
+  storage_provider_gcp: GCP
+  storage_provider_azure: Azure
+  storage_label_access_key_id: Access key ID
+  storage_label_secret_access_key: Secret access key
+  storage_label_region: Region
+  storage_label_bucket: Bucket
+  storage_label_endpoint_optional: Endpoint (%{optional})
+  storage_label_project: Project
+  storage_label_credentials_json: Credentials (JSON key content)
+  storage_label_account_name: Storage Account Name
+  storage_label_container: Container
+  storage_label_access_key: Storage Access Key
+  storage_placeholder_aws_access_key_id: AKIAIOSFODNN7EXAMPLE
+  storage_placeholder_secret_saved: Leave blank to keep existing secret
+  storage_placeholder_aws_secret: "••••••••••••"
+  storage_placeholder_aws_region: us-east-1
+  storage_placeholder_aws_bucket: my-app-uploads
+  storage_placeholder_aws_endpoint: https://s3.us-east-1.amazonaws.com
+  storage_placeholder_gcp_project: my-gcp-project-id
+  storage_placeholder_gcp_bucket: my-bucket-name
+  storage_placeholder_gcp_credentials_saved: "{ **REDACTED** }"
+  storage_placeholder_gcp_credentials: Paste the full JSON from your GCP service account key file.
+  storage_placeholder_azure_account: mystorageaccount
+  storage_placeholder_azure_container: documents
+  storage_placeholder_azure_key: "••••••••••••"
   notifications: Notifications
+  notifications_settings_eyebrow: Stay informed
+  notifications_settings_intro: Completion emails, optional BCC copies, and how often to remind signers.
+  notification_preferences: Notification Preferences
+  notifications_prefs_section_hint: When you are notified and who receives a blind copy.
+  notifications_reminders_section_hint: Up to three reminder sends before a request expires.
+  notifications_placeholder_bcc: legal@company.com, ops@company.com
   e_signature: E-Signature
+  esign_settings_eyebrow: Trust & signatures
+  esign_settings_intro: Verify PDFs, manage certificates, and adjust signing defaults.
+  esign_verify_section_hint: Upload one or more PDFs to check embedded signature validity.
+  esign_certificates_section_hint: Certificates used when applying PKCS signatures to PDFs.
+  esign_timestamp_section_hint: Optional RFC 3161 time stamping URL for long-term validation.
+  esign_prefs_section_hint: Defaults for how PDFs are signed and exported.
+  esign_placeholder_timestamp_url: https://freetsa.org/tsr
   personalization: Personalization
   users: Users
   plans: Plans
@@ -408,6 +570,7 @@ en: &en
   integrations: Integrations
   teams: Teams
   tenants: Tenants
+  webhooks: Webhooks
   send_signature_requests_via_sms: Send signature requests via SMS
   twilio_settings: Twilio Settings
   webhook_settings: Webhook Settings
@@ -544,20 +707,47 @@ en: &en
   superadmin: Superadmin
   edit_user: Edit User
   new_user: New User
-  users_placeholder_first_name: 'e.g. Alex'
-  users_placeholder_last_name: 'e.g. Rivera'
-  users_placeholder_email: colleague@company.com
+  users_settings_eyebrow: Workspace members
+  users_settings_intro: Invite teammates, assign roles, and review sign-in activity.
+  users_settings_intro_archived: Review archived accounts and restore them when someone should have access again.
+  users_settings_intro_integration: Embedding-only and API-related accounts separate from regular workspace members.
+  users_modal_intro_new: Add their name, email, and role. They can finish activation from their inbox.
+  users_modal_intro_edit: Update name, email, role, or security options for this user.
+  users_placeholder_first_name: Alex
+  users_placeholder_last_name: Rivera
+  users_placeholder_email: colleague@example.com
   users_placeholder_password: Set an initial password
   users_placeholder_role_select: Workspace role for this user
   users_placeholder_2fa_select: Whether two-factor authentication is required at login
   api_settings_eyebrow: REST API
   api_settings_intro: Authenticate requests with your secret token and explore common curl examples below.
   api_settings_token_hint: Use this value in the X-Auth-Token header. Rotate if it may have been exposed.
+  api_example_submitter_name: John Doe
+  api_example_form_text_field_name: Form Text Field Name
+  api_example_default_value: Default Value
+  api_example_second_submitter: Second Submitter
   webhook_settings_eyebrow: Automation
   webhook_settings_index_intro: Select an endpoint to edit delivery and events, or add a new webhook URL.
   webhook_settings_show_intro: Configure your receiver URL, optional signing secret, and which events to send.
   webhook_settings_new_intro: Paste the HTTPS endpoint that should receive POST payloads for each selected event.
   webhook_field_label_url: Webhook URL
+  webhook_placeholder_url: https://example.com/hook
+  events: Events
+  test_webhook: Test Webhook
+  webhook_events_range: "%{from}-%{to} events"
+  page_with_number: "Page %{number}"
+  webhook_event_names:
+    form_viewed: Form viewed
+    form_started: Form started
+    form_completed: Form completed
+    form_declined: Form declined
+    submission_created: Submission created
+    submission_completed: Submission completed
+    submission_expired: Submission expired
+    submission_archived: Submission archived
+    template_created: Template created
+    template_updated: Template updated
+    template_archived: Template archived
   there_are_no_webhooks_yet: No webhooks yet.
   webhook_secret_modal_intro: Set a custom header name and value. We send them with each webhook POST so your endpoint can verify requests.
   templates_dashboard_eyebrow: Document library
@@ -7659,6 +7849,209 @@ nl: &nl
       detailed: "%d %B %Y %H:%M:%S"
 
 ar:
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+    day_names:
+      - الأحد
+      - الاثنين
+      - الثلاثاء
+      - الأربعاء
+      - الخميس
+      - الجمعة
+      - السبت
+    abbr_day_names:
+      - أحد
+      - اثن
+      - ثلا
+      - أرب
+      - خمي
+      - جمع
+      - سبت
+    month_names:
+      -
+      - يناير
+      - فبراير
+      - مارس
+      - أبريل
+      - مايو
+      - يونيو
+      - يوليو
+      - أغسطس
+      - سبتمبر
+      - أكتوبر
+      - نوفمبر
+      - ديسمبر
+    abbr_month_names:
+      -
+      - يناير
+      - فبراير
+      - مارس
+      - أبريل
+      - مايو
+      - يونيو
+      - يوليو
+      - أغسطس
+      - سبتمبر
+      - أكتوبر
+      - نوفمبر
+      - ديسمبر
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d/%m/%Y %H:%M"
+      long: "%d %B %Y %H:%M"
+      detailed: "%d %B %Y %H:%M:%S"
+  number:
+    format:
+      separator: "."
+      delimiter: ","
+  language: اللغة
+  language_en-US: English (US)
+  language_ar: العربية
+  switch_to_light_mode: التبديل إلى الوضع الفاتح
+  switch_to_dark_mode: التبديل إلى الوضع الداكن
+  failed_to_download_files: فشل تحميل الملفات
+  clipboard_unavailable_copy_text: "الحافظة غير متاحة. تأكد من استخدام https:// النص المراد نسخه: %{text}"
+  enter_pdf_password: أدخل كلمة مرور PDF
+  signature_is_too_small_or_simple_please_redraw: التوقيع صغير جدًا أو بسيط جدًا. يرجى إعادة رسمه.
+  primary_navigation: التنقل الرئيسي
+  open_menu: فتح القائمة
+  close_menu: إغلاق القائمة
+  navigation: التنقل
+  close: إغلاق
+  get_started: ابدأ الآن
+  account: الحساب
+  preferences: التفضيلات
+  time_zone: المنطقة الزمنية
+  app_url: رابط التطبيق
+  update: تحديث
+  updating: جارٍ التحديث
+  update_settings: تحديث الإعدادات
+  manage_your_identity_and_dashboard_preferences: إدارة هوية الحساب وتفضيلات لوحة التحكم.
+  company_details: تفاصيل الشركة
+  account_company_details_hint: ينطبق الاسم القانوني واللغة والمنطقة الزمنية على الطلبات والإشعارات والطوابع الزمنية في مساحة العمل.
+  account_placeholder_company_name: شركة مثال
+  account_signed_in_as: تم تسجيل الدخول باسم
+  configure_global_application_behavior_and_security_rules: تكوين سلوك التطبيق العام وقواعد الأمان.
+  account_preferences_section_security: الأمان
+  account_preferences_section_security_hint: متطلبات المصادقة لجميع المستخدمين في هذا الحساب.
+  account_preferences_section_signing: التوقيع والتدقيق
+  account_preferences_section_signing_hint: كيفية التقاط التوقيعات وتتبعها وترتيبها.
+  account_preferences_section_recipients: المستلمون والطلبات
+  account_preferences_section_recipients_hint: ما يمكن للموقعين فعله بالطلبات والإرسالات.
+  account_preferences_section_downloads: التنزيلات والروابط
+  account_preferences_section_downloads_hint: أمان روابط الملفات المشتركة.
+  account_preferences_section_output: المستندات المكتملة
+  account_preferences_section_output_hint: كيفية تجميع ملفات PDF المكتملة.
+  account_danger_zone_hint: حذف حسابك إجراء دائم. قد تبقى البيانات المصدرة مع المتعاونين.
+  force_2fa_with_authenticator_app: فرض المصادقة الثنائية باستخدام تطبيق مصادقة
+  add_signature_id_to_the_documents: إضافة معرف التوقيع إلى المستندات
+  require_signing_reason: طلب سبب التوقيع
+  allow_typed_text_signatures: السماح بتوقيعات نصية مكتوبة
+  allow_to_resubmit_completed_forms: السماح بإعادة إرسال النماذج المكتملة
+  allow_to_decline_documents: السماح برفض المستندات
+  remember_and_pre_fill_signatures: تذكر التوقيعات وتعبئتها مسبقًا
+  require_authentication_for_file_download_links: طلب المصادقة لروابط تنزيل الملفات
+  combine_completed_documents_and_audit_log: دمج المستندات المكتملة وسجل التدقيق
+  always_enforce_signing_order: فرض ترتيب التوقيع دائمًا
+  use_direct_file_attachment_links_in_the_documents: استخدام روابط مرفقات الملفات المباشرة في المستندات
+  expirable_file_download_links: روابط تنزيل ملفات قابلة للانتهاء
+  danger_zone: منطقة الخطر
+  delete_my_account: حذف حسابي
+  you_are_scheduling_your_account_for_deletion_after_deletion_your_data_will_be_permanently_removed_and_cannot_be_recovered_click_ok_if_you_would_like_to_continue: "أنت تقوم بجدولة حذف حسابك. بعد الحذف، ستتم إزالة بياناتك نهائيًا ولا يمكن استعادتها.\n\nانقر موافق إذا كنت ترغب في المتابعة."
+  efficient_search_with_search_index: بحث فعال باستخدام فهرس البحث
+  reindex: إعادة الفهرسة
+  build_search_index: إنشاء فهرس البحث
+  workspace: مساحة العمل
+  overview: نظرة عامة
+  configurations: الإعدادات
+  templates: القوالب
+  submissions: الإرسالات
+  submissions_dashboard_intro: إدارة الطلبات وتصفيتها ومتابعتها عبر جميع القوالب.
+  submissions_dashboard_empty_search_hint: جرّب كلمة بحث أخرى أو امسح عوامل التصفية لعرض جميع الإرسالات.
+  submissions_dashboard_empty_hint: عندما ترسل قالبًا للتوقيع، ستظهر الإرسالات هنا.
+  submissions_not_found: لم يتم العثور على إرسالات
+  there_are_no_submissions: لا توجد إرسالات
+  total_active: الإجمالي النشط
+  avg_time: متوسط الوقت
+  awaiting: بانتظار الإجراء
+  pending: معلّق
+  completed: مكتمل
+  all: الكل
+  archived: مؤرشف
+  profile: الملف الشخصي
+  email: البريد الإلكتروني
+  storage: التخزين
+  notifications: الإشعارات
+  e_signature: التوقيع الإلكتروني
+  personalization: التخصيص
+  users: المستخدمون
+  webhooks: خطافات الويب
+  filter: تصفية
+  test_mode: وضع الاختبار
+  sign_out: تسجيل الخروج
+  create: إنشاء
+  upload: رفع
+  uploading: جارٍ الرفع
+  loading: جارٍ التحميل
+  search: بحث
+  clear: مسح
+  view_archived: عرض المؤرشف
+  shared: مشترك
+  move: نقل
+  restore: استعادة
+  edit: تحرير
+  clone: نسخ
+  archive: أرشفة
+  unarchive: إلغاء الأرشفة
+  delete: حذف
+  upload_a_new_document: رفع مستند جديد
+  browse_files: تصفح الملفات
+  click_to_upload_or_drag_and_drop_html: انقر للرفع أو اسحب الملفات وأفلتها
+  create_a_new_folder: إنشاء مجلد جديد
+  document_templates_html: قوالب <span class="hidden md:inline">المستندات</span>
+  document_library: مكتبة المستندات
+  fill_and_sign_documents_online: راجع هذا المستند وأكمل جميع الحقول المطلوبة لإنهائه.
+  review_and_sign: مراجعة وتوقيع
+  review_and_submit: مراجعة وإرسال
+  templates_dashboard_eyebrow: مكتبة المستندات
+  templates_dashboard_intro: نظّم المجلدات، وارفع الملفات، وافتح أي قالب لتحرير الحقول أو إرساله للتوقيع.
+  templates_dashboard_folders_heading: المجلدات
+  templates_dashboard_templates_heading: القوالب
+  templates_dashboard_recent_heading: الرفعات الحديثة
+  templates_not_found: لم يتم العثور على قوالب
+  templates_dashboard_empty_search_hint: جرّب كلمة بحث أخرى أو امسح البحث لعرض جميع القوالب.
+  folder: مجلد
+  home: الرئيسية
+  rename: إعادة تسمية
+  folder_show_intro: القوالب والمجلدات الفرعية في هذا الموقع. ارفع الملفات أو أنشئ قالب مستند جديدًا.
+  template_folders: مجلدات القوالب
+  landing:
+    hero:
+      badge: بنية مستندات من الجيل الجديد
+      rotating_words:
+        - آمنة
+        - متوافقة
+        - قابلة للتوسع
+        - مؤتمتة
+        - موثوقة
+      headline_sr: يقود مستقبل سير العمل التجاري الآمن والمتوافق والقابل للتوسع والمؤتمت والموثوق
+      headline_powering: يقود
+      headline_future_of: مستقبل
+      headline_suffix: سير العمل التجاري
+      description: منصة مرنة للتوقيع الإلكتروني والمستندات للفرق التي تحتاج إلى أمان محكم، وتحكم عميق عبر API، وتجارب توقيع جميلة.
+      cta_primary: ابدأ البناء الآن
+      cta_secondary: عرض الأمان
+      dashboard_alt: واجهة لوحة تحكم مؤسسية
+      preview_alt: معاينة لوحة تحكم الصفحة الرئيسية
+    nav:
+      products: المنتجات
+      solutions: الحلول
+      company: الشركة
+      security: الأمان
   require_phone_2fa_to_open: "تطلب فتح عبر تحقق الهاتف ذو العاملين"
   the_sender_has_requested_a_two_factor_authentication_via_one_time_password_sent_to_your_html: "المرسل طلب تحقق ذو عاملين عبر كلمة مرور لمرة واحدة مرسل إلى رقم هاتفك <b>%{phone}</b>."
   send_verification_code: "إرسال رمز التحقق"

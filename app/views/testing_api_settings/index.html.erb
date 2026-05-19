@@ -1,18 +1,45 @@
-<%= render 'shared/turbo_modal', title: t('test_mode') do %>
-  <div>
-    <label class="text-sm font-semibold" for="api_key">
-      X-Auth-Token
-    </label>
-    <div class="flex gap-2 mb-4 mt-2">
-      <input id="api_key" type="text" value="<%= current_user.access_token.token %>" class="base-input w-full" autocomplete="off" readonly>
-      <%= render 'shared/clipboard_copy', icon: 'copy', text: current_user.access_token.token, class: 'base-button', icon_class: 'w-6 h-6 text-white', copy_title: t('copy'), copied_title: t('copied') %>
+<%= render 'shared/turbo_modal',
+      title: t('test_mode'),
+      enhanced_modal: true,
+      content_class: 'modal-box--test-mode' do %>
+  <div class="users-modal-editor test-mode-modal">
+    <div class="users-modal-editor__fields test-mode-modal__fields">
+      <div class="form-control">
+        <label class="label" for="api_key">
+          X-Auth-Token
+        </label>
+        <div class="test-mode-modal__token-row">
+          <input id="api_key"
+                 type="text"
+                 value="<%= current_user.access_token.token %>"
+                 class="base-input w-full font-mono"
+                 autocomplete="off"
+                 readonly>
+          <%= render 'shared/clipboard_copy',
+                icon: 'copy',
+                text: current_user.access_token.token,
+                always_show_label: true,
+                class: 'base-button profile-settings-btn-primary test-mode-modal__copy inline-flex cursor-pointer items-center justify-center gap-2 px-5 py-0 shrink-0',
+                icon_class: 'w-5 h-5 shrink-0',
+                copy_title: t('copy'),
+                copied_title: t('copied') %>
+        </div>
+      </div>
+
+      <%= form_for @webhook_url,
+            url: settings_webhooks_path,
+            method: :post,
+            html: { class: 'test-mode-modal__form', autocomplete: 'off' },
+            data: { turbo_frame: :_top } do |f| %>
+        <div class="form-control">
+          <%= f.label :url, t('webhook_field_label_url'), class: 'label' %>
+          <%= f.url_field :url,
+                class: 'base-input w-full',
+                placeholder: t('webhook_placeholder_url') %>
+        </div>
+        <%= f.button button_title(title: t('save'), disabled_with: t('saving')),
+              class: 'base-button profile-settings-btn-primary test-mode-modal__save w-full justify-center' %>
+      <% end %>
     </div>
   </div>
-  <%= form_for @webhook_url, url: settings_webhooks_path, method: :post, html: { autocomplete: 'off' }, data: { turbo_frame: :_top } do |f| %>
-    <%= f.label :url, 'Webhook URL', class: 'text-sm font-semibold' %>
-    <div class="space-y-2 md:flex-nowrap mt-2">
-      <%= f.url_field :url, class: 'base-input w-full', placeholder: 'https://example.com/hook' %>
-      <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button w-full' %>
-    </div>
-  <% end %>
 <% end %>

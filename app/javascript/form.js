@@ -9,6 +9,7 @@ import PageContainer from './elements/page_container'
 import SubmitForm from './elements/submit_form'
 import ThemeToggle, { initTheme } from './lib/theme'
 import HtmlModal from './elements/html_modal'
+import LocaleSwitcher from './elements/locale_switcher'
 
 initTheme()
 
@@ -21,6 +22,7 @@ safeRegisterElement('scroll-buttons', ScrollButtons)
 safeRegisterElement('page-container', PageContainer)
 safeRegisterElement('submit-form', SubmitForm)
 safeRegisterElement('theme-toggle', ThemeToggle)
+safeRegisterElement('locale-switcher', LocaleSwitcher)
 safeRegisterElement('html-modal', HtmlModal)
 safeRegisterElement('submission-form', class extends HTMLElement {
   connectedCallback () {

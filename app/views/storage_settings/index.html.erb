@@ -22,7 +22,12 @@
     <% value = @encrypted_config.value || { 'service' => 'disk' } %>
     <% configs = value['configs'] || {} %>
     <%= form_for @encrypted_config, url: settings_storage_index_path, method: :post, html: { autocomplete: 'off', class: 'storage-settings-form' } do |f| %>
-      <% options = [%w[Disk disk], %w[AWS aws_s3], %w[GCP google], %w[Azure azure]] %>
+      <% options = [
+           [t('storage_provider_disk', default: 'Disk'), 'disk'],
+           [t('storage_provider_aws', default: 'AWS'), 'aws_s3'],
+           [t('storage_provider_gcp', default: 'GCP'), 'google'],
+           [t('storage_provider_azure', default: 'Azure'), 'azure']
+         ] %>
       <div class="settings-profile-columns profile-settings-grid storage-settings-two-column">
         <div class="settings-profile-main profile-settings-column profile-settings-column--storage-backend min-w-0">
           <section class="settings-card profile-settings-card profile-settings-card--storage-backend">

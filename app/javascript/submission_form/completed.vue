@@ -30,7 +30,7 @@
         class="white-button flex items-center w-full completed-form-completed-button"
       >
         <span>
-          {{ completedButton.title || 'Back to Website' }}
+          {{ completedButton.title || t('back_to_website') }}
         </span>
       </a>
       <button
@@ -71,7 +71,7 @@
       >
         <IconBrandGithub />
         <span>
-          Star on Github
+          {{ t('star_on_github') }}
         </span>
       </a>
       <a

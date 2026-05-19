@@ -17,7 +17,7 @@
           <%= f.label :url, t('webhook_field_label_url', default: 'Webhook URL'), class: 'label' %>
           <%= f.url_field :url,
                 class: 'base-input w-full font-mono',
-                placeholder: 'https://example.com/hook',
+                placeholder: t('webhook_placeholder_url', default: 'https://example.com/hook'),
                 required: true,
                 aria: { describedby: 'webhook-modal-description' } %>
         </div>
@@ -30,7 +30,7 @@
                   <label class="flex min-w-0 items-start gap-2">
                     <%= b.check_box class: 'base-checkbox', checked: @webhook_url.events.include?(b.value) %>
                     <span class="min-w-0 break-all leading-5">
-                      <%= b.label %>
+                      <%= t("webhook_event_names.#{b.value.tr('.', '_')}", default: b.value) %>
                     </span>
                   </label>
                 </div>

@@ -22,7 +22,6 @@
           <%= f.text_field :first_name,
                 required: true,
                 class: 'base-input w-full',
-                dir: 'auto',
                 placeholder: t('users_placeholder_first_name', default: 'Alex'),
                 aria: { describedby: 'users-modal-description' } %>
         </div>
@@ -31,7 +30,6 @@
           <%= f.text_field :last_name,
                 required: true,
                 class: 'base-input w-full',
-                dir: 'auto',
                 placeholder: t('users_placeholder_last_name', default: 'Rivera'),
                 aria: { describedby: 'users-modal-description' } %>
         </div>
@@ -88,7 +86,7 @@
       <button type="button" class="signature-editor__cancel btn btn-ghost" data-turbo-modal-close>
         <%= t('cancel', default: 'Cancel') %>
       </button>
-      <%= f.button button_title, class: 'base-button signature-editor__save' %>
+      <%= f.button button_title(title: user.new_record? ? t('invite', default: 'Invite') : t('update', default: 'Update'), disabled_with: t('submitting')), class: 'base-button signature-editor__save' %>
     </div>
   </div>
 <% end %>

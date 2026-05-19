@@ -78,7 +78,7 @@
     <li>
       <%= link_to settings_webhooks_path, class: nav_link_classes do %>
         <span class="settings-nav-icon-wrap"><%= svg_icon('link', class: 'settings-nav-icon') %></span>
-        <span>Webhooks</span>
+        <span><%= t('webhooks') %></span>
       <% end %>
     </li>
   <% end %>
@@ -97,7 +97,7 @@
     <%= form_for '', url: testing_account_path, method: current_account.testing? ? :delete : :get, html: { class: 'w-full' } do |f| %>
       <li class="settings-nav-footer">
         <label class="settings-nav-test-toggle" for="testing_toggle">
-          <span class="min-w-0 pr-3">
+          <span class="min-w-0 pe-3">
             <%= t('test_mode') %>
           </span>
           <submit-form data-on="change" class="flex shrink-0">

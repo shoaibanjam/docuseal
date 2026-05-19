@@ -35,10 +35,10 @@
       :id="field.uuid"
       v-model="text"
       :maxlength="cellsMaxLegth"
-      dir="auto"
+      :dir="inputDirection"
       class="base-input !text-2xl w-full"
-      :style="{ backgroundColor: '#F9FAFB', color: '#0f172a' }"
-      :class="{ '!pr-11 -mr-10': !field.validation?.pattern }"
+      :style="inputStyle"
+      :class="{ '!pe-11 -me-10': !field.validation?.pattern }"
       :required="field.required"
       :pattern="field.validation?.pattern"
       :placeholder="`${t('type_here_')}${field.required ? '' : ` (${t('optional')})`}`"
@@ -53,9 +53,9 @@
       :id="field.uuid"
       ref="textarea"
       v-model="text"
-      dir="auto"
+      :dir="inputDirection"
       class="base-textarea !text-2xl w-full"
-      :style="{ backgroundColor: '#F9FAFB', color: '#0f172a' }"
+      :style="inputStyle"
       :placeholder="`${t('type_here_')}${field.required ? '' : ` (${t('optional')})`}`"
       :required="field.required"
       :name="`values[${field.uuid}]`"
@@ -149,6 +149,19 @@ export default {
         return this.t('must_be_characters_length').replace('{number}', number)
       } else {
         return ''
+      }
+    },
+    isRtl () {
+      return typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
+    },
+    inputDirection () {
+      return this.isRtl ? 'rtl' : 'auto'
+    },
+    inputStyle () {
+      return {
+        backgroundColor: '#F9FAFB',
+        color: '#0f172a',
+        textAlign: this.isRtl ? 'right' : 'start'
       }
     },
     text: {

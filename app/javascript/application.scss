@@ -7,6 +7,131 @@
 @import "signature_modal_shell";
 @import "landing";
 
+html[dir='rtl'] {
+  direction: rtl;
+}
+
+html[lang='ar'],
+html[lang^='ar-'] {
+  font-family: 'Noto Sans Arabic', 'Tahoma', 'Arial', sans-serif;
+}
+
+html[lang='ar'] body,
+html[lang^='ar-'] body {
+  line-height: 1.6;
+}
+
+.locale-switcher__form {
+  margin: 0;
+}
+
+.locale-switcher__select {
+  min-height: 2.375rem;
+  height: 2.375rem;
+  min-width: 10.5rem;
+  width: auto;
+  max-width: min(16rem, calc(100vw - 2rem));
+  padding-inline-start: 0.875rem !important;
+  padding-inline-end: 3rem !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23d5e3fe' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.875rem center !important;
+  background-size: 1.125rem 1.125rem !important;
+  text-align: start;
+  text-overflow: ellipsis;
+}
+
+.locale-floating-actions {
+  inset-inline-end: 1rem;
+}
+
+[data-theme='docuseal-light'] .locale-switcher__select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2312233C' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+}
+
+html[dir='rtl'] .locale-switcher__select {
+  background-position: left 0.875rem center !important;
+}
+
+html[dir='rtl'] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[dir='rtl'] .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+html[dir='rtl'] .-ml-2 {
+  margin-left: 0;
+  margin-right: -0.5rem;
+}
+
+html[dir='rtl'] .space-x-1 > :not([hidden]) ~ :not([hidden]),
+html[dir='rtl'] .space-x-2 > :not([hidden]) ~ :not([hidden]),
+html[dir='rtl'] .space-x-3 > :not([hidden]) ~ :not([hidden]),
+html[dir='rtl'] .space-x-4 > :not([hidden]) ~ :not([hidden]),
+html[dir='rtl'] .space-x-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+html[dir='rtl'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']),
+html[dir='rtl'] textarea,
+html[dir='rtl'] select,
+html[dir='rtl'] .base-input,
+html[dir='rtl'] .base-textarea,
+html[dir='rtl'] .base-select {
+  text-align: right !important;
+}
+
+html[dir='rtl'] input::placeholder,
+html[dir='rtl'] textarea::placeholder,
+html[dir='rtl'] .base-input::placeholder,
+html[dir='rtl'] .base-textarea::placeholder {
+  text-align: right !important;
+}
+
+html[dir='rtl'] .collapse-plus > .collapse-title,
+html[dir='rtl'] .collapse-arrow > .collapse-title {
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 3rem !important;
+}
+
+html[dir='rtl'] .collapse-plus > .collapse-title::after,
+html[dir='rtl'] .collapse-arrow > .collapse-title::after,
+html[dir='rtl'] .collapse-plus > input[type='checkbox'] ~ .collapse-title::after,
+html[dir='rtl'] .collapse-arrow > input[type='checkbox'] ~ .collapse-title::after,
+html[dir='rtl'] .collapse-plus > input[type='radio'] ~ .collapse-title::after,
+html[dir='rtl'] .collapse-arrow > input[type='radio'] ~ .collapse-title::after {
+  left: 1rem !important;
+  right: auto !important;
+  justify-self: end !important;
+}
+
+html[dir='rtl'] .collapse-arrow > .collapse-title::after,
+html[dir='rtl'] .collapse-arrow > input[type='checkbox'] ~ .collapse-title::after,
+html[dir='rtl'] .collapse-arrow > input[type='radio'] ~ .collapse-title::after {
+  --tw-rotate: 45deg !important;
+}
+
+html[dir='rtl'] .collapse[open].collapse-arrow > .collapse-title::after,
+html[dir='rtl'] .collapse-open.collapse-arrow > .collapse-title::after,
+html[dir='rtl'] .collapse-arrow:focus:not(.collapse-close) > .collapse-title::after,
+html[dir='rtl'] .collapse-arrow:not(.collapse-close) > input[type='checkbox']:checked ~ .collapse-title::after,
+html[dir='rtl'] .collapse-arrow:not(.collapse-close) > input[type='radio']:checked ~ .collapse-title::after {
+  --tw-translate-y: -50% !important;
+  --tw-rotate: 225deg !important;
+}
+
+html[dir='rtl'] .rtl-mirror,
+html[dir='rtl'] [data-rtl-mirror='true'] {
+  transform: scaleX(-1);
+}
+
 body {
   @apply antialiased text-base-content bg-base-100;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
@@ -468,7 +593,7 @@ template-builder .builder-tools-panel .tooltip-bottom-start:after {
 }
 
 .main-navbar__end {
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 /* Ensure dropdown menus have readable text on light surfaces */
@@ -890,7 +1015,7 @@ $saas-label: rgba(226, 232, 240, 0.45);
   font-weight: 500;
   letter-spacing: -0.01em;
   color: $saas-text-dim;
-  text-align: left;
+  text-align: start;
   text-decoration: none;
   cursor: pointer;
   transition: background 150ms ease, color 150ms ease, transform 150ms ease,
@@ -918,7 +1043,7 @@ $saas-label: rgba(226, 232, 240, 0.45);
 .saas-nav__item--active::before {
   content: '';
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   top: 50%;
   width: 3px;
   height: 60%;
@@ -1042,7 +1167,7 @@ $saas-label: rgba(226, 232, 240, 0.45);
   #account_settings_menu
   > li
   > a.settings-nav-link--active::before {
-  left: 2px;
+  inset-inline-start: 2px;
   width: 3px;
   height: 55%;
   border-radius: 99px;
@@ -1347,6 +1472,42 @@ $saas-label: rgba(226, 232, 240, 0.45);
 
 .settings-page-subtitle {
   @apply mt-1.5 max-w-2xl text-[15px] leading-relaxed text-primary-content/60 md:text-base;
+}
+
+html[dir='rtl'] .settings-layout .profile-settings-header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  gap: 1.55rem;
+  text-align: right;
+}
+
+html[dir='rtl'] .settings-layout .profile-settings-header-text > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+html[dir='rtl'] .settings-layout .profile-settings-header-text .profile-settings-title {
+  display: block;
+  line-height: 1.35;
+}
+
+html[dir='rtl'] .settings-layout .profile-settings-header-text .settings-page-subtitle {
+  line-height: 1.75;
+}
+
+html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow'] {
+  display: block;
+  line-height: 1.8 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow'] + .profile-settings-title {
+  margin-top: 0.25rem !important;
 }
 
 .settings-card-actions {
@@ -2502,7 +2663,8 @@ $saas-label: rgba(226, 232, 240, 0.45);
 .profile-settings-page.esign-settings-page
   .esign-settings-pref-field
   .esign-settings-label-text {
-  margin-bottom: 0;
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .profile-settings-page.esign-settings-page .profile-settings-card-icon {
@@ -2991,6 +3153,30 @@ $saas-label: rgba(226, 232, 240, 0.45);
   color: var(--profile-text);
 }
 
+.api-settings-page .api-settings-docs-collapse .collapse-title {
+  padding-inline-end: 3rem;
+}
+
+html[dir='rtl'] .api-settings-page .api-settings-docs-collapse .collapse-title {
+  padding-inline-start: 1rem;
+  padding-inline-end: 3rem;
+}
+
+html[dir='rtl']
+  .api-settings-page
+  .api-settings-docs-collapse.collapse-plus
+  > .collapse-title::after {
+  left: 1rem;
+  right: auto;
+}
+
+.api-settings-page .api-docs-code,
+.api-settings-page .api-docs-pre,
+.api-settings-page .api-docs-code-content {
+  direction: ltr;
+  text-align: left;
+}
+
 [data-theme='docuseal-light'] .api-settings-page .api-settings-eyebrow {
   color: color-mix(
     in srgb,
@@ -3044,7 +3230,7 @@ $saas-label: rgba(226, 232, 240, 0.45);
 
 .form-container .base-input::placeholder,
 .form-container .base-textarea::placeholder {
-  color: #171717;
+  color: #64748b;
   opacity: 1;
 }
 
@@ -3712,7 +3898,8 @@ kbd {
 
 .modal-box--preferences,
 .modal-box--profile-copy,
-.modal-box--share-link {
+.modal-box--share-link,
+.modal-box--test-mode {
   --profile-accent: #10b981;
   --profile-accent-contrast: #022c22;
   --profile-text: color-mix(in srgb, var(--ds-text) 96%, transparent);
@@ -3726,7 +3913,9 @@ kbd {
 .modal-box--profile-copy .profile-settings-btn-primary.base-button,
 .modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary,
 .modal-box--share-link .profile-settings-btn-primary.base-button,
-.modal-box--share-link clipboard-copy label.profile-settings-btn-primary {
+.modal-box--share-link clipboard-copy label.profile-settings-btn-primary,
+.modal-box--test-mode .profile-settings-btn-primary.base-button,
+.modal-box--test-mode clipboard-copy label.profile-settings-btn-primary {
   background: var(--profile-accent);
   border: 1px solid color-mix(in srgb, var(--profile-accent) 88%, black);
   color: var(--profile-accent-contrast);
@@ -3746,7 +3935,9 @@ kbd {
 .modal-box--profile-copy .profile-settings-btn-primary.base-button:hover,
 .modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary:hover,
 .modal-box--share-link .profile-settings-btn-primary.base-button:hover,
-.modal-box--share-link clipboard-copy label.profile-settings-btn-primary:hover {
+.modal-box--share-link clipboard-copy label.profile-settings-btn-primary:hover,
+.modal-box--test-mode .profile-settings-btn-primary.base-button:hover,
+.modal-box--test-mode clipboard-copy label.profile-settings-btn-primary:hover {
   filter: brightness(1.06);
 }
 
@@ -3755,7 +3946,9 @@ kbd {
 .modal-box--profile-copy .profile-settings-btn-primary.base-button:active,
 .modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary:active,
 .modal-box--share-link .profile-settings-btn-primary.base-button:active,
-.modal-box--share-link clipboard-copy label.profile-settings-btn-primary:active {
+.modal-box--share-link clipboard-copy label.profile-settings-btn-primary:active,
+.modal-box--test-mode .profile-settings-btn-primary.base-button:active,
+.modal-box--test-mode clipboard-copy label.profile-settings-btn-primary:active {
   transform: scale(0.98);
 }
 
@@ -3764,7 +3957,9 @@ kbd {
 .modal-box--profile-copy .profile-settings-btn-primary.base-button svg,
 .modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary svg,
 .modal-box--share-link .profile-settings-btn-primary.base-button svg,
-.modal-box--share-link clipboard-copy label.profile-settings-btn-primary svg {
+.modal-box--share-link clipboard-copy label.profile-settings-btn-primary svg,
+.modal-box--test-mode .profile-settings-btn-primary.base-button svg,
+.modal-box--test-mode clipboard-copy label.profile-settings-btn-primary svg {
   color: currentColor;
   stroke: currentColor;
 }
@@ -3774,7 +3969,9 @@ kbd {
 [data-theme='docuseal-light'] .modal-box--profile-copy .profile-settings-btn-primary.base-button,
 [data-theme='docuseal-light'] .modal-box--profile-copy clipboard-copy label.profile-settings-btn-primary,
 [data-theme='docuseal-light'] .modal-box--share-link .profile-settings-btn-primary.base-button,
-[data-theme='docuseal-light'] .modal-box--share-link clipboard-copy label.profile-settings-btn-primary {
+[data-theme='docuseal-light'] .modal-box--share-link clipboard-copy label.profile-settings-btn-primary,
+[data-theme='docuseal-light'] .modal-box--test-mode .profile-settings-btn-primary.base-button,
+[data-theme='docuseal-light'] .modal-box--test-mode clipboard-copy label.profile-settings-btn-primary {
   background: var(--profile-accent) !important;
   border-color: color-mix(in srgb, var(--profile-accent) 88%, black) !important;
   color: var(--profile-accent-contrast) !important;
@@ -3797,11 +3994,79 @@ kbd {
 }
 
 [data-theme='docuseal-light'] .modal-box--preferences,
-[data-theme='docuseal-light'] .modal-box--profile-copy {
+[data-theme='docuseal-light'] .modal-box--profile-copy,
+[data-theme='docuseal-light'] .modal-box--test-mode {
   --profile-text: #12233c;
   --profile-text-secondary: #435a76;
   --profile-border: rgba(18, 35, 60, 0.16);
   --profile-surface-inset: #f8fafc;
+}
+
+.modal-box--signature-editor.modal-box.modal-box--test-mode {
+  width: min(100%, 31rem) !important;
+  padding: 0.9rem 1rem 1rem !important;
+}
+
+.modal-box--test-mode .signature-modal__header {
+  margin-bottom: 0.65rem;
+}
+
+.modal-box--test-mode .signature-modal__head-divider {
+  margin-top: 0.55rem;
+}
+
+.modal-box--test-mode .test-mode-modal__fields {
+  gap: 0.85rem;
+}
+
+.modal-box--test-mode .form-control .label {
+  padding: 0 0 0.25rem;
+  min-height: 0;
+  color: var(--profile-text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.modal-box--test-mode .base-input {
+  border-color: var(--profile-border);
+  background: var(--profile-surface-inset);
+  color: var(--profile-text);
+}
+
+.modal-box--test-mode .base-input::placeholder {
+  color: color-mix(in srgb, var(--profile-text-secondary) 72%, transparent);
+}
+
+.test-mode-modal__token-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.6rem;
+}
+
+.test-mode-modal__copy {
+  min-width: 6.25rem;
+}
+
+.test-mode-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.test-mode-modal__save {
+  min-height: 2.75rem;
+}
+
+[data-theme='docuseal-light'] .modal-box--test-mode {
+  border-color: rgba(18, 35, 60, 0.16);
+  box-shadow: 0 18px 38px rgba(10, 25, 44, 0.2);
+}
+
+[data-theme='docuseal-light'] .modal-box--test-mode .base-input {
+  background: #ffffff;
+  border-color: rgba(18, 35, 60, 0.16);
+  color: #12233c;
 }
 
 [data-theme='docuseal-light'] .modal-box--preferences {
@@ -6974,6 +7239,30 @@ template-builder .field-remove-button:focus-visible {
   color: #ffb4ab !important;
 }
 
+html[dir='rtl'] template-builder .field-settings-dropdown > .dropdown-content,
+html[dir='rtl'] template-builder .field-area-settings-dropdown > .dropdown-content {
+  left: 100% !important;
+  right: auto !important;
+  top: 0 !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin-top: 0 !important;
+  margin-left: 0.375rem !important;
+  margin-right: 0 !important;
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir='rtl'] .ds-markdown-link-tooltip {
+  direction: rtl;
+  flex-direction: row-reverse;
+}
+
+html[dir='rtl'] .ds-markdown-link-tooltip .ds-markdown-link-input {
+  direction: ltr;
+  text-align: left;
+}
+
 /* PDF preview + document controls (condition / close / arrows) */
 template-builder .document-control-button.btn,
 template-builder .document-control-button.btn.btn-xs {
@@ -7200,6 +7489,16 @@ template-builder .builder-save-dropdown-menu .builder-save-menu-item {
   color: #d6e6ff !important;
   font-weight: 500;
   text-align: left;
+}
+
+html[dir='rtl'] template-builder .builder-save-dropdown-menu {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir='rtl'] template-builder .builder-save-dropdown-menu .builder-save-menu-item {
+  direction: rtl;
+  text-align: right;
 }
 
 template-builder .builder-save-dropdown-menu .builder-save-menu-item svg {
@@ -7507,8 +7806,27 @@ template-builder
 template-builder .builder-topbar .builder-save-group {
   display: inline-flex;
   align-items: stretch;
+  flex-direction: row;
   gap: 0;
   border-radius: var(--ds-radius-8);
+}
+
+html[dir='rtl'] template-builder .builder-topbar .builder-save-group {
+  direction: ltr;
+}
+
+html[dir='rtl'] template-builder .builder-topbar .builder-save-group .builder-copy-link-button {
+  order: 1;
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+html[dir='rtl'] template-builder .builder-topbar .builder-save-group .builder-save-button {
+  order: 2;
+}
+
+html[dir='rtl'] template-builder .builder-topbar .builder-save-group .builder-save-dropdown-wrap {
+  order: 3;
 }
 
 .submission-show-page .submission-show-send-email-group {

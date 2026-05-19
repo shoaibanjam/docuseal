@@ -111,17 +111,17 @@
          "template_id": <%= current_account.templates.last&.id || 1 %>,
          "submitters": [
            {
-             "name": "John Doe",
-             "role": "<%= current_account.templates.last ? current_account.templates.last.submitters.first['name'] : 'First Party' %>",
+             "name": "<%= t('api_example_submitter_name', default: 'John Doe') %>",
+             "role": "<%= current_account.templates.last ? current_account.templates.last.submitters.first['name'] : t('first_party') %>",
              "email": "<%= current_user.email.sub('@', '+test@') %>",
              "values": {
-               "Form Text Field Name": "Default Value"
+               "<%= t('api_example_form_text_field_name', default: 'Form Text Field Name') %>": "<%= t('api_example_default_value', default: 'Default Value') %>"
              }
            },
-           { "role": "Second Submitter", "email": "<%= current_user.email.sub('@', '+test2@') %>" }
+           { "role": "<%= t('api_example_second_submitter', default: 'Second Submitter') %>", "email": "<%= current_user.email.sub('@', '+test2@') %>" }
          ]
        }'<% end.to_str %>
-              <span class="absolute right-0 top-0">
+              <span class="absolute end-0 top-0">
                 <%= render 'shared/clipboard_copy', icon: 'copy', text:, class: 'btn btn-ghost api-docs-copy-btn', icon_class: 'w-6 h-6', copy_title: t('copy'), copied_title: t('copied') %>
               </span>
               <pre data-prefix="$" class="api-docs-pre api-docs-pre--dark overflow-x-auto"><code class="api-docs-code-content api-docs-code-content--dark block min-w-max"><%== HighlightCode.call(text, 'Shell', theme: 'base16.dark') %></code></pre>
@@ -148,7 +148,7 @@
            "template_id": <%= current_account.templates.last&.id || 1 %>,
            "emails":  "<%= current_user.email.sub('@', '+test@') %>, <%= current_user.email.sub('@', '+test2@') %>"
        }'<% end.to_str %>
-              <span class="absolute right-0 top-0">
+              <span class="absolute end-0 top-0">
                 <%= render 'shared/clipboard_copy', icon: 'copy', text:, class: 'btn btn-ghost api-docs-copy-btn', icon_class: 'w-6 h-6', copy_title: t('copy'), copied_title: t('copied') %>
               </span>
               <pre data-prefix="$" class="api-docs-pre api-docs-pre--dark overflow-x-auto"><code class="api-docs-code-content api-docs-code-content--dark block min-w-max"><%== HighlightCode.call(text, 'Shell', theme: 'base16.dark') %></code></pre>
@@ -171,7 +171,7 @@
             <div class="mockup-code overflow-hidden api-docs-code">
               <% text = capture do %>curl '<%= api_template_url(current_account.templates&.last || 1) %>' \
        --header 'X-Auth-Token: API_TOKEN'<% end.to_str %>
-              <span class="absolute right-0 top-0">
+              <span class="absolute end-0 top-0">
                 <%= render 'shared/clipboard_copy', icon: 'copy', text:, class: 'btn btn-ghost api-docs-copy-btn', icon_class: 'w-6 h-6', copy_title: t('copy'), copied_title: t('copied') %>
               </span>
               <pre data-prefix="$" class="api-docs-pre api-docs-pre--dark overflow-x-auto"><code class="api-docs-code-content api-docs-code-content--dark block min-w-max"><%== HighlightCode.call(text, 'Shell', theme: 'base16.dark') %></code></pre>

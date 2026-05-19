@@ -11,14 +11,14 @@
     <label for="<%= search_input_id %>" class="sr-only"><%= search_label %></label>
     <div class="relative w-full">
       <% if params[:q].present? %>
-        <div class="search-input-clear-slot absolute inset-y-1 left-2 z-10 flex w-11 items-center justify-center">
+        <div class="search-input-clear-slot absolute inset-y-1 start-2 z-10 flex w-11 items-center justify-center">
           <a href="<%= url_for(params: request.query_parameters.except('q')) %>" title="<%= t('clear') %>" class="search-input-clear-btn flex h-7 w-7 items-center justify-center rounded-full text-xl leading-none font-normal">
             &times;
           </a>
         </div>
       <% end %>
-      <input id="<%= search_input_id %>" name="q" value="<%= params[:q] %>" class="base-input search-input-field text-sm md:text-base pl-4 pr-12 w-full <%= 'search-input-field--with-clear' if params[:q].present? %>" placeholder="<%= search_placeholder %>">
-      <button type="submit" title="<%= t('search') %>" class="btn btn-ghost btn-circle absolute inset-y-0 right-1 my-1">
+      <input id="<%= search_input_id %>" name="q" value="<%= params[:q] %>" class="base-input search-input-field text-sm md:text-base ps-4 pe-12 w-full <%= 'search-input-field--with-clear' if params[:q].present? %>" placeholder="<%= search_placeholder %>">
+      <button type="submit" title="<%= t('search') %>" class="btn btn-ghost btn-circle absolute inset-y-0 end-1 my-1">
         <span class="enabled">
           <%= svg_icon('search', class: 'w-6 h-6 stroke-2') %>
         </span>

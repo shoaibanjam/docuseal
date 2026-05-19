@@ -2,11 +2,16 @@ import SignaturePad from 'signature_pad'
 import { cropCanvasAndExportToPNG } from './submission_form/crop_canvas'
 import { isValidSignatureCanvas } from './submission_form/validate_signature'
 import ThemeToggle, { initTheme } from './lib/theme'
+import LocaleSwitcher from './elements/locale_switcher'
 
 initTheme()
 
 if (!window.customElements.get('theme-toggle')) {
   window.customElements.define('theme-toggle', ThemeToggle)
+}
+
+if (!window.customElements.get('locale-switcher')) {
+  window.customElements.define('locale-switcher', LocaleSwitcher)
 }
 
 window.customElements.define('draw-signature', class extends HTMLElement {
@@ -121,7 +126,7 @@ window.customElements.define('draw-signature', class extends HTMLElement {
 
   async submitImage () {
     if (!isValidSignatureCanvas(this.pad.toData())) {
-      window.showToast('Signature is too small or simple. Please redraw.')
+      window.showToast(document.documentElement.dataset.i18nSignatureTooSmall || 'Signature is too small or simple. Please redraw.')
 
       return Promise.reject(new Error('Image too small or simple'))
     }
@@ -148,7 +153,7 @@ window.customElements.define('draw-signature', class extends HTMLElement {
   }
 
   get clearButton () {
-    return this.querySelector('button[aria-label="Clear"]')
+    return this.querySelector('button[aria-label]')
   }
 
   get placeholderButton () {

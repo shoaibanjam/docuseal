@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>" dir="<%= TextUtils.rtl?(yield) || I18n.locale.to_s.split('-').first.in?(%w[ar he]) ? 'rtl' : 'ltr' %>">
   <head>
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

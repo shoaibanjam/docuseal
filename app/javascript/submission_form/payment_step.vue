@@ -228,7 +228,7 @@ export default {
           if (resp.status === 422 || resp.status === 500) {
             const data = await resp.json()
 
-            window.showToast(data.error || 'Unexpected error')
+            window.showToast(data.error || this.t('unexpected_error'))
 
             return Promise.reject(new Error(data.error))
           }
@@ -262,7 +262,7 @@ export default {
         if (resp.status === 422 || resp.status === 500) {
           const data = await resp.json()
 
-          window.showToast(data.message || 'Unexpected error')
+          window.showToast(data.message || this.t('unexpected_error'))
 
           return Promise.reject(new Error(data.message))
         }

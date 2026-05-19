@@ -80,12 +80,14 @@
           name="buttons"
         />
         <template v-else>
-          <theme-toggle class="hidden md:inline-flex items-center justify-center">
+          <theme-toggle
+            class="hidden md:inline-flex items-center justify-center"
+            :data-label-light="t('switch_to_light_mode')"
+            :data-label-dark="t('switch_to_dark_mode')"
+          >
             <button
               type="button"
               class="theme-toggle-btn"
-              aria-label="Toggle color theme"
-              title="Toggle color theme"
             >
               <span
                 data-theme-icon="sun"
@@ -219,7 +221,7 @@
               </label>
               <ul
                 tabindex="0"
-              class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box builder-save-dropdown-menu"
+                class="dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box builder-save-dropdown-menu"
               >
                 <li>
                   <a
@@ -516,7 +518,10 @@
             <p v-if="(drawField?.type || drawFieldType || drawCustomField?.type) === 'strikethrough'">
               {{ t('draw_strikethrough_the_document') }}
             </p>
-            <p v-else class="builder-draw-field-title">
+            <p
+              v-else
+              class="builder-draw-field-title"
+            >
               {{ t('draw_field_on_the_document') }}
             </p>
             <div>
@@ -1121,12 +1126,6 @@ export default {
     }
   },
   created () {
-    if (!this.template.fields?.length && this.template.submitters?.length === 1) {
-      if (this.template.submitters[0]?.name === 'First Party') {
-        this.template.submitters[0].name = this.t('first_party')
-      }
-    }
-
     const existingSubmittersUuids = this.defaultSubmitters.map((name) => {
       return this.template.submitters.find(e => e.name === name)?.uuid
     })
@@ -1218,9 +1217,9 @@ export default {
         }
 
         const copiedText = this.t('copied')
-        window.showToast?.(copiedText && copiedText !== 'copied' ? copiedText : 'Copied', { type: 'success' })
+        window.showToast?.(copiedText && copiedText !== 'copied' ? copiedText : this.t('copied'), { type: 'success' })
       } catch (e) {
-        window.showToast?.('Failed to copy link')
+        window.showToast?.(this.t('failed_to_copy_link'))
       }
     },
     addCustomField (field) {
@@ -2711,10 +2710,10 @@ export default {
     async onDocumentRemove (item) {
       const isConfirmed = window.showConfirmModal
         ? await window.showConfirmModal(this.t('are_you_sure_'), {
-            confirmText: this.t('remove'),
-            cancelText: this.t('cancel'),
-            variant: 'danger',
-          })
+          confirmText: this.t('remove'),
+          cancelText: this.t('cancel'),
+          variant: 'danger'
+        })
         : window.confirm(this.t('are_you_sure_'))
 
       if (isConfirmed) {
