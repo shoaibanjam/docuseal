@@ -1,0 +1,11 @@
+<% locale_switcher_id = "global_locale_switcher_#{SecureRandom.hex(4)}" %>
+<locale-switcher class="locale-switcher">
+  <%= form_with url: locale_path, method: :patch, data: { turbo: false }, class: 'locale-switcher__form' do %>
+    <label for="<%= locale_switcher_id %>" class="sr-only"><%= t('language') %></label>
+    <%= select_tag :locale,
+                   options_for_select(locale_switcher_options, I18n.locale.to_s == 'ar' ? 'ar' : 'en-US'),
+                   id: locale_switcher_id,
+                   class: 'base-select locale-switcher__select',
+                   aria: { label: t('language') } %>
+  <% end %>
+</locale-switcher>

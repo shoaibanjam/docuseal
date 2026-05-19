@@ -9,7 +9,9 @@ export default class extends HTMLElement {
         navigator.clipboard.writeText(text)
       } else {
         if (e.target.tagName !== 'INPUT') {
-          window.showToast(`Clipboard not available. Make sure you're using https:// Copy text: ${text}`)
+          const message = this.dataset.unavailableMessage || document.documentElement.dataset.i18nClipboardUnavailable || "Clipboard not available. Make sure you're using https:// Copy text: {text}"
+
+          window.showToast(message.replace('%{text}', text).replace('{text}', text))
         }
       }
     })

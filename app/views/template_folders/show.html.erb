@@ -28,15 +28,15 @@
               <div class="profile-settings-header-text min-w-0">
                 <div class="mb-2">
                   <%= link_to(@template_folder.parent_folder ? folder_path(@template_folder.parent_folder) : root_path, class: 'inline-flex items-center gap-1.5 text-sm font-medium link link-hover') do %>
-                    <%= svg_icon('chevron_left', class: 'w-4 h-4 shrink-0') %>
+                    <%= svg_icon('chevron_left', class: 'w-4 h-4 shrink-0 rtl-mirror') %>
                     <span><%= @template_folder.parent_folder&.name || t('home') %></span>
                   <% end %>
                 </div>
-                <p class="templates-dashboard-eyebrow">
+                <p class="templates-dashboard-eyebrow" dir="auto">
                   <%= t('folder') %>
                 </p>
                 <div class="flex items-start gap-2 min-w-0 <%= 'hidden' if params[:q].present? %>">
-                  <h1 class="ds-heading-2 profile-settings-title min-w-0 truncate md:whitespace-normal">
+                  <h1 class="ds-heading-2 profile-settings-title min-w-0 truncate md:whitespace-normal" dir="auto">
                     <%= @template_folder.name %>
                   </h1>
                   <% if can?(:update, @template_folder) && @template_folder.full_name != TemplateFolder::DEFAULT_NAME %>
@@ -45,7 +45,7 @@
                     </a>
                   <% end %>
                 </div>
-                <p class="settings-page-subtitle profile-settings-intro templates-dashboard-intro <%= 'hidden' if params[:q].present? %>">
+                <p class="settings-page-subtitle profile-settings-intro templates-dashboard-intro <%= 'hidden' if params[:q].present? %>" dir="auto">
                   <%= t('folder_show_intro', default: 'Templates and subfolders in this location. Upload files or create a new document template.') %>
                 </p>
               </div>

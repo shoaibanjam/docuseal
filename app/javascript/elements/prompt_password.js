@@ -4,7 +4,7 @@ export default class extends HTMLElement {
 
     input.type = 'hidden'
     input.name = 'password'
-    input.value = prompt('Enter PDF password')
+    input.value = prompt(document.documentElement.dataset.i18nEnterPdfPassword || 'Enter PDF password')
 
     this.form.append(input)
 

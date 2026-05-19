@@ -43,11 +43,11 @@
                 </p>
                 <div class="grid gap-6 md:grid-cols-2">
                   <div class="form-control">
-                    <%= ff.label :host, 'Host Address', class: 'label' %>
+                    <%= ff.label :host, t('smtp_label_host', default: 'Host Address'), class: 'label' %>
                     <%= ff.text_field :host, value: value['host'], required: true, class: 'base-input', placeholder: t('smtp_placeholder_host', default: 'smtp.example.com') %>
                   </div>
                   <div class="form-control">
-                    <%= ff.label :port, 'Port', class: 'label' %>
+                    <%= ff.label :port, t('smtp_label_port', default: 'Port'), class: 'label' %>
                     <%= ff.text_field :port, value: value['port'], required: true, class: 'base-input', placeholder: t('smtp_placeholder_port', default: '587') %>
                   </div>
                 </div>
@@ -61,11 +61,11 @@
                 </p>
                 <div class="grid gap-6 md:grid-cols-2">
                   <div class="form-control">
-                    <%= ff.label :username, 'Username (Email)', class: 'label' %>
+                    <%= ff.label :username, t('smtp_label_username', default: 'Username (Email)'), class: 'label' %>
                     <%= ff.text_field :username, value: value['username'], class: 'base-input', placeholder: t('smtp_placeholder_username', default: 'notifications@company.com') %>
                   </div>
                   <div class="form-control">
-                    <%= ff.label :password, 'Password', class: 'label' %>
+                    <%= ff.label :password, t('smtp_label_password', default: 'Password'), class: 'label' %>
                     <%= ff.password_field :password,
                       class: 'base-input',
                       required: value['password'].present?,
@@ -90,16 +90,16 @@
               </div>
               <div class="grid gap-6 md:grid-cols-2">
                 <div class="form-control">
-                  <%= ff.label :domain, "Domain (#{t('optional')})", class: 'label' %>
+                  <%= ff.label :domain, t('smtp_label_domain_optional', optional: t('optional'), default: "Domain (#{t('optional')})"), class: 'label' %>
                   <%= ff.text_field :domain,
                     value: value['domain'],
                     class: 'base-input',
                     placeholder: t('smtp_placeholder_domain', default: 'mail.example.com') %>
                 </div>
                 <div class="form-control">
-                  <%= ff.label :authentication, 'Authentication', class: 'label' %>
+                  <%= ff.label :authentication, t('smtp_label_authentication', default: 'Authentication'), class: 'label' %>
                   <%= ff.select :authentication,
-                    options_for_select([%w[Plain plain], %w[Login login], %w[CRAM-MD5 cram_md5]], value.fetch('authentication', 'plain')),
+                    options_for_select([[t('smtp_auth_plain', default: 'Plain'), 'plain'], [t('smtp_auth_login', default: 'Login'), 'login'], [t('smtp_auth_cram_md5', default: 'CRAM-MD5'), 'cram_md5']], value.fetch('authentication', 'plain')),
                     { prompt: t('smtp_prompt_authentication', default: 'Select authentication') },
                     { required: true, class: 'base-select' } %>
                 </div>
@@ -140,10 +140,10 @@
                   aria-labelledby="smtp-security-heading"
                 >
                   <% [
-                    ['none', 'STARTTLS', t('opportunistic_encryption', default: 'Opportunistic encryption')],
-                    ['tls', 'TLS', t('transport_layer_security', default: 'Transport Layer Security')],
-                    ['ssl', 'SSL', t('legacy_encryption', default: 'Legacy encryption')],
-                    ['noverify', 'Noverify', t('ignore_certificate_warnings', default: 'Ignore certificate warnings')]
+                    ['none', t('smtp_security_starttls', default: 'STARTTLS'), t('opportunistic_encryption', default: 'Opportunistic encryption')],
+                    ['tls', t('smtp_security_tls', default: 'TLS'), t('transport_layer_security', default: 'Transport Layer Security')],
+                    ['ssl', t('smtp_security_ssl', default: 'SSL'), t('legacy_encryption', default: 'Legacy encryption')],
+                    ['noverify', t('smtp_security_noverify', default: 'No verification'), t('ignore_certificate_warnings', default: 'Ignore certificate warnings')]
                   ].each do |(val, label, description)| %>
                     <div class="smtp-security-option">
                       <%= ff.radio_button :security, val, checked: (value['security'].blank? && val == 'none') || value['security'] == val, id: "#{val}_radio", class: 'smtp-security-radio' %>

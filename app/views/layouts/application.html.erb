@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <% initial_theme = cookies['cybros-theme'] == 'docuseal-light' ? 'docuseal-light' : 'docuseal-dark' %>
-<html data-theme="<%= initial_theme %>" lang="<%= I18n.locale %>">
+<html data-theme="<%= initial_theme %>" lang="<%= I18n.locale %>" dir="<%= locale_direction %>" data-i18n-failed-to-download-files="<%= t('failed_to_download_files', default: 'Failed to download files') %>" data-i18n-clipboard-unavailable="<%= t('clipboard_unavailable_copy_text', default: "Clipboard not available. Make sure you're using https:// Copy text: %{text}") %>" data-i18n-enter-pdf-password="<%= t('enter_pdf_password', default: 'Enter PDF password') %>" data-i18n-signature-too-small="<%= t('signature_is_too_small_or_simple_please_redraw', default: 'Signature is too small or simple. Please redraw.') %>" data-i18n-confirm-ok="<%= t('confirm_ok', default: 'OK') %>" data-i18n-confirm-cancel="<%= t('cancel', default: 'Cancel') %>">
   <head>
     <%= render 'layouts/head_tags' %>
     <% if Docuseal.enable_pwa? %>

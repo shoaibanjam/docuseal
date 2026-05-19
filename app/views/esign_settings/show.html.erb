@@ -271,7 +271,7 @@
               <%= form_for account_config, url: account_configs_path, method: :post, html: { class: 'esign-settings-pref-form esign-settings-filename-form' } do |f| %>
                 <%= f.hidden_field :key %>
                 <div class="esign-settings-pref-field">
-                  <span class="esign-settings-label-text block mb-2.5">
+                  <span class="esign-settings-label-text block mb-6">
                     <%= t('document_download_filename_format') %>
                   </span>
                   <submit-form data-on="change" class="block w-full max-w-2xl">

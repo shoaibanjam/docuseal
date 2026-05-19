@@ -20,8 +20,8 @@
     <div class="space-x-3 flex items-center">
       <% last_submitter = @submission.submitters.to_a.select(&:completed_at?).max_by(&:completed_at) %>
       <% is_all_completed = @submission.submitters.to_a.all?(&:completed_at?) %>
-      <theme-toggle class="inline-flex">
-        <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
+      <theme-toggle class="inline-flex" data-label-light="<%= t('switch_to_light_mode', default: 'Switch to light mode') %>" data-label-dark="<%= t('switch_to_dark_mode', default: 'Switch to dark mode') %>">
+        <button type="button" class="theme-toggle-btn">
           <span data-theme-icon="sun">
             <%= svg_icon('sun', class: 'w-5 h-5') %>
           </span>

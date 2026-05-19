@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="docuseal-dark" lang="en">
+<html data-theme="docuseal-dark" lang="<%= I18n.locale %>" dir="<%= locale_direction %>" data-i18n-failed-to-download-files="<%= t('failed_to_download_files', default: 'Failed to download files') %>" data-i18n-clipboard-unavailable="<%= t('clipboard_unavailable_copy_text', default: "Clipboard not available. Make sure you're using https:// Copy text: %{text}") %>" data-i18n-enter-pdf-password="<%= t('enter_pdf_password', default: 'Enter PDF password') %>" data-i18n-signature-too-small="<%= t('signature_is_too_small_or_simple_please_redraw', default: 'Signature is too small or simple. Please redraw.') %>" data-i18n-confirm-ok="<%= t('confirm_ok', default: 'OK') %>" data-i18n-confirm-cancel="<%= t('cancel', default: 'Cancel') %>">
   <head>
     <%= render 'layouts/head_tags' %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,9 +13,10 @@
     <%= stylesheet_pack_tag 'form', media: 'all' %>
   </head>
   <body>
-    <div class="fixed top-4 right-4 z-[80]">
-      <theme-toggle class="inline-flex">
-        <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
+    <div class="locale-floating-actions fixed top-4 z-[80] flex items-center gap-2">
+      <%= render 'shared/locale_switcher' %>
+      <theme-toggle class="inline-flex" data-label-light="<%= t('switch_to_light_mode', default: 'Switch to light mode') %>" data-label-dark="<%= t('switch_to_dark_mode', default: 'Switch to dark mode') %>">
+        <button type="button" class="theme-toggle-btn">
           <span data-theme-icon="sun">
             <%= svg_icon('sun', class: 'w-5 h-5') %>
           </span>
@@ -34,7 +35,7 @@
         </div>
         <div class="w-full bg-white rounded-2xl border border-neutral-300 relative" style="height: 300px">
           <canvas class="w-full"></canvas>
-          <button aria-label="Clear" class="btn btn-ghost btn-sm font-medium top-0 right-0 absolute mt-1 mr-1">
+          <button aria-label="<%= t('clear') %>" class="btn btn-ghost btn-sm font-medium top-0 end-0 absolute mt-1 me-1">
             <%= svg_icon('reload', class: 'w-5 h-5') %>
             <span class="inline"><%= t('clear') %></span>
           </button>

@@ -4,6 +4,94 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+html[dir='rtl'] {
+  direction: rtl;
+}
+
+html[lang='ar'],
+html[lang^='ar-'] {
+  font-family: 'Noto Sans Arabic', 'Tahoma', 'Arial', sans-serif;
+}
+
+html[lang='ar'] body,
+html[lang^='ar-'] body {
+  line-height: 1.6;
+}
+
+.locale-switcher__form {
+  margin: 0;
+}
+
+.locale-switcher__select {
+  min-height: 2.375rem;
+  height: 2.375rem;
+  min-width: 10.5rem;
+  width: auto;
+  max-width: min(16rem, calc(100vw - 2rem));
+  padding-inline-start: 0.875rem !important;
+  padding-inline-end: 3rem !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23d5e3fe' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.875rem center !important;
+  background-size: 1.125rem 1.125rem !important;
+  text-align: start;
+  text-overflow: ellipsis;
+}
+
+.locale-floating-actions {
+  inset-inline-end: 1rem;
+}
+
+[data-theme='docuseal-light'] .locale-switcher__select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2312233C' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+}
+
+html[dir='rtl'] .locale-switcher__select {
+  background-position: left 0.875rem center !important;
+}
+
+html[dir='rtl'] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[dir='rtl'] .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+html[dir='rtl'] .space-x-1 > :not([hidden]) ~ :not([hidden]),
+html[dir='rtl'] .space-x-2 > :not([hidden]) ~ :not([hidden]),
+html[dir='rtl'] .space-x-3 > :not([hidden]) ~ :not([hidden]),
+html[dir='rtl'] .space-x-4 > :not([hidden]) ~ :not([hidden]),
+html[dir='rtl'] .space-x-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+html[dir='rtl'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']),
+html[dir='rtl'] textarea,
+html[dir='rtl'] select,
+html[dir='rtl'] .base-input,
+html[dir='rtl'] .base-textarea,
+html[dir='rtl'] .base-select {
+  text-align: right !important;
+}
+
+html[dir='rtl'] input::placeholder,
+html[dir='rtl'] textarea::placeholder,
+html[dir='rtl'] .base-input::placeholder,
+html[dir='rtl'] .base-textarea::placeholder {
+  text-align: right !important;
+}
+
+html[dir='rtl'] .rtl-mirror,
+html[dir='rtl'] [data-rtl-mirror='true'] {
+  transform: scaleX(-1);
+}
+
 a[href],
 input[type='checkbox'],
 input[type='submit'],
@@ -129,7 +217,7 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 
 .form-container .base-input::placeholder,
 .form-container .base-textarea::placeholder {
-  color: #171717;
+  color: #64748b;
   opacity: 1;
 }
 

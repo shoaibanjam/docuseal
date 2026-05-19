@@ -56,6 +56,8 @@ import GoogleDriveFilePicker from './elements/google_drive_file_picker';
 import OpenModal from './elements/open_modal';
 import BarChart from './elements/bar_chart';
 import FieldCondition from './elements/field_condition';
+import LocaleSwitcher from './elements/locale_switcher';
+import LocalizedFileInput from './elements/localized_file_input';
 import { showToast, showConfirmToast } from './lib/toast';
 import { showConfirmModal } from './lib/confirm_modal';
 import ThemeToggle, { initTheme, getCurrentTheme } from './lib/theme';
@@ -79,11 +81,13 @@ window.Turbo?.setConfirmMethod((message, formElement, submitter) => {
     submitter?.getAttribute?.('data-turbo-confirm-accept') ||
     submitter?.getAttribute?.('data-turbo-confirm-yes') ||
     formElement?.getAttribute?.('data-turbo-confirm-accept') ||
+    document.documentElement.dataset.i18nConfirmOk ||
     'OK';
 
   const cancelText =
     submitter?.getAttribute?.('data-turbo-confirm-cancel') ||
     formElement?.getAttribute?.('data-turbo-confirm-cancel') ||
+    document.documentElement.dataset.i18nConfirmCancel ||
     'Cancel';
 
   const variantRaw =
@@ -216,6 +220,8 @@ safeRegisterElement('open-modal', OpenModal);
 safeRegisterElement('bar-chart', BarChart);
 safeRegisterElement('field-condition', FieldCondition);
 safeRegisterElement('theme-toggle', ThemeToggle);
+safeRegisterElement('locale-switcher', LocaleSwitcher);
+safeRegisterElement('localized-file-input', LocalizedFileInput);
 safeRegisterElement('profile-password-strength', ProfilePasswordStrength);
 
 safeRegisterElement(

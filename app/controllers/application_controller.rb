@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   BROWSER_LOCALE_REGEXP = /\A\w{2}(?:-\w{2})?/
+  RTL_LOCALES = %w[ar he].freeze
 
   include ActiveStorage::SetCurrent
   include Pagy::Method
@@ -21,6 +22,9 @@ class ApplicationController < ActionController::Base
                 :current_account,
                 :true_ability,
                 :form_link_host,
+                :locale_direction,
+                :locale_switcher_options,
+                :rtl_locale?,
                 :svg_icon
 
   impersonates :user, with: ->(uuid) { User.find_by(uuid:) }
@@ -74,13 +78,12 @@ class ApplicationController < ActionController::Base
   end
 
   def with_locale(&)
-    return yield unless current_account
+    locale   = params[:lang].presence
+    locale ||= current_account&.locale
+    locale ||= cookies[:locale]
+    locale ||= request.env['HTTP_ACCEPT_LANGUAGE'].to_s[BROWSER_LOCALE_REGEXP].to_s
 
-    locale   = params[:lang].presence if Rails.env.development?
-    locale ||= current_account.locale
-
-    locale = locale.to_s.presence
-    locale = 'en-US' unless locale && I18n.locale_available?(locale)
+    locale = normalize_locale(locale, fallback: 'en-US')
 
     I18n.with_locale(locale, &)
   end
@@ -89,18 +92,25 @@ class ApplicationController < ActionController::Base
     return yield if I18n.locale != :'en-US' && I18n.locale != :en
 
     locale   = params[:lang].presence
+    locale ||= cookies[:locale]
     locale ||= request.env['HTTP_ACCEPT_LANGUAGE'].to_s[BROWSER_LOCALE_REGEXP].to_s
 
-    locale =
-      if locale.starts_with?('en-') && locale != 'en-US'
-        'en-GB'
-      else
-        locale.split('-').first.presence || 'en-GB'
-      end
-
-    locale = 'en-GB' unless I18n.locale_available?(locale)
+    locale = normalize_locale(locale, fallback: 'en-GB', prefer_non_us_english: true)
 
     I18n.with_locale(locale, &)
+  end
+
+  def normalize_locale(locale, fallback:, prefer_non_us_english: false)
+    locale = locale.to_s.presence
+
+    return fallback unless locale
+    return locale if I18n.locale_available?(locale)
+
+    language = locale.split('-').first.presence
+    return 'en-GB' if prefer_non_us_english && language == 'en' && locale != 'en-US'
+    return language if language && I18n.locale_available?(language)
+
+    fallback
   end
 
   def sign_in_for_demo
@@ -109,6 +119,21 @@ class ApplicationController < ActionController::Base
 
   def current_account
     current_user&.account
+  end
+
+  def rtl_locale?(locale = I18n.locale)
+    RTL_LOCALES.include?(locale.to_s.split('-').first)
+  end
+
+  def locale_direction(locale = I18n.locale)
+    rtl_locale?(locale) ? 'rtl' : 'ltr'
+  end
+
+  def locale_switcher_options
+    [
+      [I18n.t('language_en-US'), 'en-US'],
+      [I18n.t('language_ar'), 'ar']
+    ]
   end
 
   def true_ability

@@ -12,13 +12,13 @@
             :class="colors[submitters.indexOf(selectedSubmitter) % colors.length]"
           />
           <Contenteditable
-            v-model="selectedSubmitter.name"
+            :model-value="displaySubmitterName(selectedSubmitter)"
             class="cursor-text"
             :icon-inline="true"
             :editable="editable"
             :select-on-edit-click="true"
             :icon-width="18"
-            @update:model-value="$emit('name-change', selectedSubmitter)"
+            @update:model-value="onSubmitterNameChange(selectedSubmitter, $event)"
           />
         </div>
       </div>
@@ -56,7 +56,7 @@
                   :class="colors[index % colors.length]"
                 />
                 <span>
-                  {{ submitter.name }}
+                  {{ displaySubmitterName(submitter) }}
                 </span>
               </span>
               <button
@@ -96,7 +96,7 @@
     <label
       v-if="compact"
       tabindex="0"
-      :title="selectedSubmitter?.name"
+      :title="displaySubmitterName(selectedSubmitter)"
       class="cursor-pointer text-base-100 flex h-full items-center justify-center"
     >
       <button
@@ -116,13 +116,13 @@
           :class="colors[submitters.indexOf(selectedSubmitter) % colors.length]"
         />
         <Contenteditable
-          v-model="selectedSubmitter.name"
+          :model-value="displaySubmitterName(selectedSubmitter)"
           class="cursor-text"
           :icon-inline="true"
           :editable="editable"
           :select-on-edit-click="true"
           :icon-width="18"
-          @update:model-value="$emit('name-change', selectedSubmitter)"
+          @update:model-value="onSubmitterNameChange(selectedSubmitter, $event)"
         />
       </div>
       <span class="flex items-center transition-all duration-75 group-hover:border border-base-content/20 border-dashed w-6 h-6 justify-center rounded flex-shrink-0">
@@ -157,7 +157,7 @@
               :class="colors[index % colors.length]"
             />
             <span>
-              {{ submitter.name }}
+              {{ displaySubmitterName(submitter) }}
             </span>
           </span>
           <div
@@ -332,8 +332,46 @@ export default {
         ...generatedNames
       ]
     },
+    englishDefaultNames () {
+      const generatedNames = []
+
+      for (let i = 21; i < 101; i++) {
+        const suffix = getOrdinalSuffix(i)
+
+        generatedNames.push(`${i}${suffix} Party`)
+      }
+
+      return [
+        'First Party',
+        'Second Party',
+        'Third Party',
+        'Fourth Party',
+        'Fifth Party',
+        'Sixth Party',
+        'Seventh Party',
+        'Eighth Party',
+        'Ninth Party',
+        'Tenth Party',
+        'Eleventh Party',
+        'Twelfth Party',
+        'Thirteenth Party',
+        'Fourteenth Party',
+        'Fifteenth Party',
+        'Sixteenth Party',
+        'Seventeenth Party',
+        'Eighteenth Party',
+        'Nineteenth Party',
+        'Twentieth Party',
+        ...generatedNames
+      ]
+    },
+    localizedDefaultNameMap () {
+      return Object.fromEntries(this.englishDefaultNames.map((name, index) => [name, this.names[index]]))
+    },
     lastPartyIndex () {
-      const index = Math.max(...this.submitters.map((s) => this.names.indexOf(s.name)))
+      const index = Math.max(...this.submitters.map((s) => {
+        return Math.max(this.names.indexOf(s.name), this.englishDefaultNames.indexOf(s.name))
+      }))
 
       if (index !== -1) {
         return index + 1
@@ -346,16 +384,31 @@ export default {
     }
   },
   methods: {
+    displaySubmitterName (submitter) {
+      if (!submitter?.name) return ''
+
+      return this.localizedDefaultNameMap[submitter.name] || submitter.name
+    },
+    onSubmitterNameChange (submitter, value) {
+      if (!submitter) return
+
+      const rawDefaultName = Object.entries(this.localizedDefaultNameMap).find(([rawName, localizedName]) => {
+        return submitter.name === rawName && value === localizedName
+      })?.[0]
+
+      submitter.name = rawDefaultName || value
+      this.$emit('name-change', submitter)
+    },
     selectSubmitter (submitter) {
       this.$emit('update:model-value', submitter.uuid)
     },
     async remove (submitter) {
       const isConfirmed = window.showConfirmModal
         ? await window.showConfirmModal(this.t('are_you_sure_'), {
-            confirmText: this.t('remove'),
-            cancelText: this.t('cancel'),
-            variant: 'danger',
-          })
+          confirmText: this.t('remove'),
+          cancelText: this.t('cancel'),
+          variant: 'danger'
+        })
         : window.confirm(this.t('are_you_sure_'))
 
       if (isConfirmed) {
@@ -381,7 +434,7 @@ export default {
     },
     addSubmitter () {
       const newSubmitter = {
-        name: this.names[this.lastPartyIndex],
+        name: this.englishDefaultNames[this.lastPartyIndex] || this.names[this.lastPartyIndex],
         uuid: v4()
       }
 

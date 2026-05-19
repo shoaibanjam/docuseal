@@ -78,8 +78,8 @@ export default actionable(class extends HTMLElement {
 
     return showConfirmModal(message, {
       title: this.dataset.unsavedCloseTitle || '',
-      confirmText: this.dataset.unsavedCloseConfirm || 'OK',
-      cancelText: this.dataset.unsavedCloseCancel || 'Cancel',
+      confirmText: this.dataset.unsavedCloseConfirm || document.documentElement.dataset.i18nConfirmOk || 'OK',
+      cancelText: this.dataset.unsavedCloseCancel || document.documentElement.dataset.i18nConfirmCancel || 'Cancel',
       variant: 'neutral'
     })
   }

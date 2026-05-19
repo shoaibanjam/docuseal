@@ -21,14 +21,14 @@
             <div class="tpl-dropzone-browse-btn">
               <span class="tpl-dropzone-browse-btn-inner">
                 <%= svg_icon('upload', class: 'w-4 h-4') %>
-                Browse Files
+                <%= t('browse_files') %>
               </span>
             </div>
             <% if Docuseal.multitenant? %>
               <a class="tpl-dropzone-gdrive-link pointer-events-auto" href="<%= new_template_path(modal_tab: 'google_drive') %>" data-turbo-frame="modal">
                 <span><%= t('or_add_from') %></span>
-                <%= svg_icon('brand_gdrive', class: 'w-4 h-4 ml-1') %>
-                <span class="ml-1 font-medium hover:underline">Google Drive</span>
+                <%= svg_icon('brand_gdrive', class: 'w-4 h-4 ms-1') %>
+                <span class="ms-1 font-medium hover:underline">Google Drive</span>
               </a>
             <% end %>
           </span>

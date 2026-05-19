@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   get 'up' => 'rails/health#show'
   get 'manifest' => 'pwa#manifest'
+  resource :locale, only: :update
 
   devise_modules = %i[sessions passwords confirmations omniauth_callbacks]
   devise_controllers = {

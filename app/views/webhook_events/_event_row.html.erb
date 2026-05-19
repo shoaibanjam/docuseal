@@ -1,5 +1,5 @@
 <div id="<%= dom_id(webhook_event) %>" class="group relative hover:cursor-pointer hover:bg-base-200">
-  <a href="<%= settings_webhook_event_path(webhook_url.id, webhook_event.uuid) %>" data-turbo-frame="drawer" class="top-0 bottom-0 left-0 right-0 absolute"></a>
+  <a href="<%= settings_webhook_event_path(webhook_url.id, webhook_event.uuid) %>" data-turbo-frame="drawer" class="absolute inset-0"></a>
   <div class="min-h-12 flex flex-col md:flex-row md:items-center md:justify-between gap-2 px-3 py-2">
     <div class="flex items-center gap-4">
       <% if webhook_event.status == 'success' %>
@@ -18,7 +18,7 @@
           <%= webhook_event.webhook_attempts.max_by(&:id)&.response_status_code if local_assigns[:with_status] %>
         </div>
       <% end %>
-      <div><%= webhook_event.event_type %></div>
+      <div><%= t("webhook_event_names.#{webhook_event.event_type.tr('.', '_')}", default: webhook_event.event_type) %></div>
     </div>
     <div class="flex items-center gap-3">
       <toggle-classes data-classes="btn-disabled hidden">

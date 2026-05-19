@@ -19,13 +19,32 @@
                 aria: { describedby: 'esign-upload-modal-description' } %>
         </div>
         <div class="form-control">
-          <%= f.label :file, t('file'), class: 'label' %>
-          <%= f.file_field :file,
-                required: true,
-                class: 'file-input file-input-bordered w-full max-w-full',
-                accept: '.der,.p12,.pfx,application/x-pkcs12',
-                title: t('esign_upload_file_hint_title'),
-                aria: { describedby: 'esign-upload-modal-description' } %>
+          <% file_input_id = f.field_id(:file) %>
+          <%= f.label :file, t('file'), class: 'label', for: file_input_id %>
+          <localized-file-input class="block">
+            <%= f.file_field :file,
+                  required: true,
+                  id: file_input_id,
+                  class: 'sr-only',
+                  accept: '.der,.p12,.pfx,application/x-pkcs12',
+                  title: t('esign_upload_file_hint_title'),
+                  aria: { describedby: 'esign-upload-modal-description' } %>
+            <div class="flex min-h-11 w-full items-center overflow-hidden rounded-md border border-base-content/15 bg-base-100 text-sm">
+              <span
+                class="min-w-0 flex-1 truncate px-4 py-2.5 text-base-content/70"
+                data-localized-file-name
+                data-empty-text="<%= t('no_file_chosen', default: 'No file chosen') %>"
+              >
+                <%= t('no_file_chosen', default: 'No file chosen') %>
+              </span>
+              <label
+                for="<%= file_input_id %>"
+                class="inline-flex min-h-11 shrink-0 cursor-pointer items-center justify-center border-s border-base-content/15 bg-base-200 px-4 text-xs font-semibold uppercase tracking-wide text-base-content hover:bg-base-300"
+              >
+                <%= t('choose_file', default: 'Choose file') %>
+              </label>
+            </div>
+          </localized-file-input>
         </div>
         <div class="form-control">
           <%= f.label :password, "#{t('password')} (#{t('optional')})", class: 'label' %>

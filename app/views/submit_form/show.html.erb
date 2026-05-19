@@ -34,8 +34,8 @@
               </div>
             </div>
             <div class="signing-form-actions flex items-center space-x-2" style="flex-shrink: 0">
-            <theme-toggle class="inline-flex">
-              <button type="button" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle color theme">
+            <theme-toggle class="inline-flex" data-label-light="<%= t('switch_to_light_mode', default: 'Switch to light mode') %>" data-label-dark="<%= t('switch_to_dark_mode', default: 'Switch to dark mode') %>">
+              <button type="button" class="theme-toggle-btn">
                 <span data-theme-icon="sun">
                   <%= svg_icon('sun', class: 'w-5 h-5') %>
                 </span>
@@ -62,7 +62,7 @@
             </div>
           </div>
         </div>
-        <scroll-buttons class="fixed right-5 top-2 hidden md:flex gap-1 z-50 ease-in-out opacity-0 -translate-y-10">
+        <scroll-buttons class="fixed end-5 top-2 hidden md:flex gap-1 z-50 ease-in-out opacity-0 -translate-y-10">
           <% if @form_configs[:with_decline] %>
             <label id="decline_button" for="<%= decline_modal_checkbox_uuid %>" class="white-button signing-form-action !h-9 !min-h-0 !px-0">
               <span class="min-[1366px]:inline hidden px-3">
@@ -116,8 +116,8 @@
       <% end %>
       <%= render 'shared/attribution', link_path: '/start', account: @submitter.account, with_style: false %>
       <% if @form_configs[:policy_links].present? %>
-        <div class="text-center md:text-neutral-500 md:pr-3 md:pb-3 md:text-sm md:text-left mt-2 md:mt-0 md:fixed md:bottom-0 md:right-0">
-          <div class="md:max-w-[8rem] flex flex-wrap md:flex-col justify-center md:justify-start md:items-start space-x-2 md:space-x-0">
+        <div class="text-center md:text-neutral-500 md:pe-3 md:pb-3 md:text-sm md:text-start mt-2 md:mt-0 md:fixed md:bottom-0 md:end-0">
+          <div class="md:max-w-[8rem] flex flex-wrap md:flex-col justify-center md:justify-start md:items-start gap-x-2 md:gap-x-0">
             <%= MarkdownToHtml.call(@form_configs[:policy_links]) %>
           </div>
         </div>

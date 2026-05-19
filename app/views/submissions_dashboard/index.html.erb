@@ -11,13 +11,13 @@
               <%= svg_icon('files', class: 'w-7 h-7 shrink-0') %>
             </div>
             <div class="profile-settings-header-text min-w-0">
-              <p class="templates-dashboard-eyebrow flex items-center gap-2">
+              <p class="templates-dashboard-eyebrow flex items-center gap-2" dir="auto">
                 <%= t('overview', default: 'Overview') %>
               </p>
-              <h1 class="ds-heading-2 profile-settings-title <%= 'hidden' if params[:q].present? %>">
+              <h1 class="ds-heading-2 profile-settings-title <%= 'hidden' if params[:q].present? %>" dir="auto">
                 <%= t('submissions') %>
               </h1>
-              <p class="settings-page-subtitle profile-settings-intro templates-dashboard-intro <%= 'hidden' if params[:q].present? %>">
+              <p class="settings-page-subtitle profile-settings-intro templates-dashboard-intro <%= 'hidden' if params[:q].present? %>" dir="auto">
                 <%= t('submissions_dashboard_intro', default: 'Manage, filter, and monitor requests across all templates.') %>
               </p>
             </div>

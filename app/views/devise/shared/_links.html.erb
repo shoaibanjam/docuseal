@@ -10,12 +10,5 @@
   <% end %>
 </div>
 <div class="text-center">
-  <%= form_with url: url_for, method: :get do %>
-    <% if params[:redir].present? %>
-      <%= hidden_field_tag :redir, params[:redir] %>
-    <% end %>
-    <submit-form data-on="change">
-      <%= select_tag :lang, options_for_select((I18n.available_locales - %i[en pt-PT de-DE fr-FR it-IT es-ES nl-NL]).map { |code| [t("language_#{code}"), code] }, I18n.locale), class: 'base-select auth-card__language' %>
-    </submit-form>
-  <% end %>
+  <%= render 'shared/locale_switcher' %>
 </div>
