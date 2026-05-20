@@ -7880,6 +7880,25 @@ html[dir='rtl'] template-builder .builder-topbar .builder-save-group {
   direction: ltr;
 }
 
+html[dir='rtl'] .submission-show-page .submission-show-split-action-group {
+  direction: ltr;
+}
+
+html[dir='rtl'] .submission-show-page .submission-show-download-button [data-target='download-button.defaultButton'],
+html[dir='rtl'] .submission-show-page .submission-show-download-button [data-target='download-button.loadingButton'],
+html[dir='rtl']
+  .submission-show-page
+  .submission-show-download-dropdown-menu
+  .submission-show-download-menu-item
+  [data-target='download-button.defaultButton'],
+html[dir='rtl']
+  .submission-show-page
+  .submission-show-download-dropdown-menu
+  .submission-show-download-menu-item
+  [data-target='download-button.loadingButton'] {
+  flex-direction: row-reverse;
+}
+
 html[dir='rtl'] template-builder .builder-topbar .builder-save-group .builder-copy-link-button {
   order: 1;
   margin-left: 0;

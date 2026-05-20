@@ -308,6 +308,25 @@ en: &en
   invalid_code: Invalid code
   signed: Signed
   first_party: 'First Party'
+  second_party: 'Second Party'
+  third_party: 'Third Party'
+  fourth_party: 'Fourth Party'
+  fifth_party: 'Fifth Party'
+  sixth_party: 'Sixth Party'
+  seventh_party: 'Seventh Party'
+  eighth_party: 'Eighth Party'
+  ninth_party: 'Ninth Party'
+  tenth_party: 'Tenth Party'
+  eleventh_party: 'Eleventh Party'
+  twelfth_party: 'Twelfth Party'
+  thirteenth_party: 'Thirteenth Party'
+  fourteenth_party: 'Fourteenth Party'
+  fifteenth_party: 'Fifteenth Party'
+  sixteenth_party: 'Sixteenth Party'
+  seventeenth_party: 'Seventeenth Party'
+  eighteenth_party: 'Eighteenth Party'
+  nineteenth_party: 'Nineteenth Party'
+  twentieth_party: 'Twentieth Party'
   filter: Filter
   remove_filter: Remove filter
   add: Add
@@ -1118,6 +1137,8 @@ en: &en
   email_verification: Email verification
   phone_verification: Phone verification
   session_id: Session ID
+  ip: IP
+  user_agent: User agent
   option: Option
   text_field: Text Field
   redact_field: Redact Field

@@ -828,7 +828,7 @@ ar:
   esign_placeholder_certificate_name: 'مثال: Production PKCS #12'
   esign_placeholder_certificate_password: اتركه فارغًا إذا لم يكن ملف الشهادة يتضمن كلمة مرور
   esign_upload_file_hint_title: اختر ملف .p12 أو .pfx أو .der
-  event_log: سجل الحدث
+  event_log: سجل الأحداث
   events_log: سجل الأحداث
   everyone: الجميع
   exit: خروج
@@ -847,6 +847,25 @@ ar:
   file_is_missing: الملف مفقود
   find_suitable_zapier_templates_to_automate_your_workflow: ابحث عن قوالب Zapier المناسبة لأتمتة سير عملك.
   first_party: الطرف الأول
+  second_party: الطرف الثاني
+  third_party: الطرف الثالث
+  fourth_party: الطرف الرابع
+  fifth_party: الطرف الخامس
+  sixth_party: الطرف السادس
+  seventh_party: الطرف السابع
+  eighth_party: الطرف الثامن
+  ninth_party: الطرف التاسع
+  tenth_party: الطرف العاشر
+  eleventh_party: الطرف الحادي عشر
+  twelfth_party: الطرف الثاني عشر
+  thirteenth_party: الطرف الثالث عشر
+  fourteenth_party: الطرف الرابع عشر
+  fifteenth_party: الطرف الخامس عشر
+  sixteenth_party: الطرف السادس عشر
+  seventeenth_party: الطرف السابع عشر
+  eighteenth_party: الطرف الثامن عشر
+  nineteenth_party: الطرف التاسع عشر
+  twentieth_party: الطرف العشرون
   first_reminder_in: التذكير الأول بعد
   five_days: 5 أيام
   folder_name: الاسم
@@ -1203,6 +1222,8 @@ ar:
   sent_using_product_name_in_testing_mode_html: تم الإرسال باستخدام <a href="%{product_url}">%{product_name}</a> في وضع الاختبار
   sent_with_docuseal_pro_html: تم الإرسال باستخدام <a href="%{product_url}">Trustseal Pro</a>
   session_id: معرّف الجلسة
+  ip: عنوان IP
+  user_agent: وكيل المستخدم
   set_password: تعيين كلمة المرور
   set_up_2fa: إعداد 2FA
   settings: الإعدادات
@@ -1560,7 +1581,7 @@ ar:
   verification_code_sms: رسالة SMS لرمز التحقق
   verification_code_sms_body: 'رمز التحقق: {code}'
   verification_field: التحقق من الهوية
-  verified: موثق
+  verified: تم التحقق
   verify: تحقق
   verify_new_sign_in: تحقق من تسجيل الدخول الجديد
   verify_pdf: تحقق من PDF
