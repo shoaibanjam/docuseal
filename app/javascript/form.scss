@@ -356,6 +356,12 @@ button[disabled] .enabled, button.btn-disabled .enabled {
 .signing-form-actions {
   flex-wrap: wrap;
   justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* Party select + exit preview: explicit inline gap (RTL flex gap can look flush). */
+.signing-form-actions > form + a.base-button {
+  margin-inline-start: 0.75rem;
 }
 
 .signing-form-header a.base-button {
