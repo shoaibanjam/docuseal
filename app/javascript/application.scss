@@ -2304,10 +2304,6 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
 }
 
 /* Notifications settings — simple, editorial rhythm */
-.profile-settings-page.notifications-settings-page
-  .notifications-settings-intro {
-  max-width: 34rem;
-}
 
 .notifications-settings-page .notifications-settings-eyebrow {
   margin: 0 0 0.5rem;
@@ -2770,7 +2766,6 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
 /* Personalization settings — profile shell + Daisy collapses aligned to tokens */
 .profile-settings-page.personalization-settings-page
   .personalization-settings-intro {
-  max-width: 38rem;
   line-height: 1.55;
 }
 
@@ -3168,7 +3163,6 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
 
 /* API settings — profile shell + docs collapses */
 .profile-settings-page.api-settings-page .api-settings-intro {
-  max-width: 38rem;
   line-height: 1.55;
 }
 
@@ -8694,6 +8688,20 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
 .profile-settings-page .settings-page-header {
   border-bottom-color: var(--profile-border);
   max-width: none;
+}
+
+.profile-settings-page .profile-settings-header-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.profile-settings-page .settings-page-subtitle,
+.profile-settings-page .profile-settings-intro,
+.profile-settings-page .api-settings-intro,
+.profile-settings-page .notifications-settings-intro,
+.profile-settings-page .personalization-settings-intro {
+  max-width: none !important;
+  white-space: nowrap;
 }
 
 .profile-settings-page .settings-page-avatar,
