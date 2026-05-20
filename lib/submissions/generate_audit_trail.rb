@@ -27,6 +27,8 @@ module Submissions
 
     US_TIMEZONES = TimeUtils::US_TIMEZONES
 
+    RTL_LOCALES = %w[ar he].freeze
+
     module_function
 
     # rubocop:disable Metrics
@@ -161,7 +163,7 @@ module Submissions
               end
 
             text = HexaPDF::Layout::TextFragment.create(
-              text, font:, font_size: FONT_SIZE, underlays: [
+              audit_text(text), font:, font_size: FONT_SIZE, underlays: [
                 lambda do |canv, box|
                   canv.fill_color('white').rectangle(-1, 0, box.width + 2, box.height).fill
                 end
@@ -185,19 +187,23 @@ module Submissions
       composer.column(columns: 1) do |column|
         add_logo(column, submission)
 
-        column.text(account.testing? ? I18n.t('testing_log_not_for_production_use') : I18n.t('audit_log'),
-                    font_size: 16,
-                    padding: [10, 0, 0, 0],
-                    position: :float, text_align: :right)
+        column.text(
+          audit_text(account.testing? ? I18n.t('testing_log_not_for_production_use') : I18n.t('audit_log')),
+          font_size: 16,
+          padding: [10, 0, 0, 0],
+          position: :float,
+          text_align: :right
+        )
       end
 
       composer.column(columns: 1) do |column|
-        column.text("#{I18n.t('envelope_id')}: #{submission.id}", font_size: 12,
-                                                                  padding: [15, 0, 8, 0],
-                                                                  position: :float)
+        column.text(audit_text("#{I18n.t('envelope_id')}: #{submission.id}"), font_size: 12,
+                                                                            padding: [15, 0, 8, 0],
+                                                                            position: :float,
+                                                                            text_align: audit_locale_rtl? ? :right : :left)
 
         if show_verify?(submission)
-          column.formatted_text([{ link: verify_url, text: I18n.t('verify'), style: :link }],
+          column.formatted_text([{ link: verify_url, text: audit_text(I18n.t('verify')), style: :link }],
                                 font_size: 9, padding: [15, 0, 10, 0], position: :float, text_align: :right)
         end
       end
@@ -221,15 +227,17 @@ module Submissions
           ),
           composer.document.layout.formatted_text_box(
             [
-              { text: "#{I18n.t('original_sha256')}:\n", font: [FONT_NAME, { variant: :bold }] },
+              { text: audit_text("#{I18n.t('original_sha256')}:\n"), font: [FONT_NAME, { variant: :bold }] },
               original_documents.map { |d| d.metadata['sha256'] || d.checksum }.first(CHECKSUM_LIMIT).join("\n"),
               "\n",
-              { text: "#{I18n.t('result_sha256')}:\n", font: [FONT_NAME, { variant: :bold }] },
+              { text: audit_text("#{I18n.t('result_sha256')}:\n"), font: [FONT_NAME, { variant: :bold }] },
               document.metadata['sha256'] || document.checksum,
               "\n",
-              { text: "#{I18n.t('generated_at')}: ", font: [FONT_NAME, { variant: :bold }] },
-              "#{I18n.l(document.created_at.in_time_zone(timezone), format: :long, locale: account.locale)} " \
-              "#{TimeUtils.timezone_abbr(timezone, document.created_at)}"
+              { text: audit_text("#{I18n.t('generated_at')}: "), font: [FONT_NAME, { variant: :bold }] },
+              audit_text(
+                "#{I18n.l(document.created_at.in_time_zone(timezone), format: :long)} " \
+                "#{TimeUtils.timezone_abbr(timezone, document.created_at)}"
+              )
             ], line_spacing: 1.3
           )
         ]
@@ -278,7 +286,9 @@ module Submissions
           [
             composer.document.layout.formatted_text_box(
               [
-                submission.template_submitters.size > 1 && { text: "#{item['name']}\n" },
+                submission.template_submitters.size > 1 && {
+                  text: "#{audit_text(Submissions::LocalizePartyName.call(item['name']))}\n"
+                },
                 submitter.email && { text: "#{submitter.email}\n", font: [FONT_NAME, { variant: :bold }] },
                 submitter.name && { text: "#{TextUtils.maybe_rtl_reverse(submitter.name)}\n" },
                 submitter.phone && { text: "#{submitter.phone}\n" }
@@ -289,21 +299,31 @@ module Submissions
             composer.document.layout.formatted_text_box(
               [
                 submitter.email && (click_email_event || verify_email_event) && {
-                  text: "#{I18n.t('email_verification')}: #{I18n.t('verified')}\n"
+                  text: audit_text("#{I18n.t('email_verification')}: #{I18n.t('verified')}\n")
                 },
                 submitter.phone && (is_phone_verified || verify_phone_event) && {
-                  text: "#{I18n.t('phone_verification')}: #{I18n.t('verified')}\n"
+                  text: audit_text("#{I18n.t('phone_verification')}: #{I18n.t('verified')}\n")
                 },
                 is_id_verified && {
-                  text: "#{I18n.t('identity_verification')}: #{I18n.t('verified')}\n"
+                  text: audit_text("#{I18n.t('identity_verification')}: #{I18n.t('verified')}\n")
                 },
                 is_kba_passed && {
-                  text: "#{I18n.t('knowledge_based_authentication')}: #{I18n.t('passed')}\n"
+                  text: audit_text("#{I18n.t('knowledge_based_authentication')}: #{I18n.t('passed')}\n")
                 },
-                completed_event.data['ip'] && { text: "IP: #{completed_event.data['ip']}\n" },
-                completed_event.data['sid'] && { text: "#{I18n.t('session_id')}: #{completed_event.data['sid']}\n" },
-                completed_event.data['ua'] && { text: "User agent: #{completed_event.data['ua']}\n" },
-                submitter.timezone && { text: "Time zone: #{submitter.timezone.to_s.sub('Kiev', 'Kyiv')}\n" },
+                completed_event.data['ip'] && {
+                  text: audit_text("#{I18n.t('ip')}: #{completed_event.data['ip']}\n")
+                },
+                completed_event.data['sid'] && {
+                  text: audit_text("#{I18n.t('session_id')}: #{completed_event.data['sid']}\n")
+                },
+                completed_event.data['ua'] && {
+                  text: audit_text("#{I18n.t('user_agent')}: #{completed_event.data['ua']}\n")
+                },
+                submitter.timezone && {
+                  text: audit_text(
+                    "#{I18n.t('time_zone')}: #{submitter.timezone.to_s.sub('Kiev', 'Kyiv')}\n"
+                  )
+                },
                 "\n"
               ].compact_blank, line_spacing: 1.3, padding: [10, 20, 20, 0]
             )
@@ -357,8 +377,10 @@ module Submissions
             composer.formatted_text_box(
               [
                 {
-                  text: TextUtils.maybe_rtl_reverse(field_name).upcase.presence ||
-                        "#{I18n.t("#{field['type']}_field")} #{submitter_field_counters[field['type']]}".upcase,
+                  text: audit_field_label(
+                    field_name.presence ||
+                    "#{I18n.t("#{field['type']}_field")} #{submitter_field_counters[field['type']]}"
+                  ),
                   font_size: 6
                 }
               ].compact_blank,
@@ -400,7 +422,7 @@ module Submissions
 
                 price = ApplicationController.helpers.number_to_currency(field['preferences']['price'], unit:)
 
-                composer.formatted_text_box([{ text: "#{I18n.t('paid_price', price:)}\n" }],
+                composer.formatted_text_box([{ text: audit_text("#{I18n.t('paid_price', price:)}\n") }],
                                             padding: [0, 0, 10, 0])
               end
 
@@ -444,7 +466,8 @@ module Submissions
 
       composer.draw_box(divider)
 
-      composer.text(I18n.t('event_log'), font_size: 12, padding: [10, 0, 20, 0])
+      composer.text(audit_text(I18n.t('event_log')), font_size: 12, padding: [10, 0, 20, 0],
+                                                         text_align: audit_locale_rtl? ? :right : :left)
 
       events_data = submission.submission_events.sort_by(&:event_timestamp).filter_map do |event|
         next if event.event_type.in?(%w[bounce_email complaint_email])
@@ -464,8 +487,10 @@ module Submissions
           elsif event.event_type == 'invite_party' &&
                 (invited_submitter = submission.submitters.find { |e| e.uuid == event.data['uuid'] }) &&
                 (name = submission.template_submitters.find { |e| e['uuid'] == event.data['uuid'] }&.dig('name'))
-            invited_submitter_name = [invited_submitter.name || invited_submitter.email || invited_submitter.phone,
-                                      name].join(' ')
+            invited_submitter_name = [
+              invited_submitter.name || invited_submitter.email || invited_submitter.phone,
+              Submissions::LocalizePartyName.call(name)
+            ].join(' ')
             I18n.t('submission_event_names.invite_party_by_html', invited_submitter_name:,
                                                                   submitter_name:)
           elsif with_audit_sender && (event.event_type == 'send_email' || event.event_type == 'send_sms')
@@ -481,21 +506,26 @@ module Submissions
 
         bold_text, normal_text = text.match(%r{<b>(.*?)</b>(.*)}).captures
 
-        text_box = [{ text: bold_text, font: [FONT_NAME, { variant: :bold }] }, normal_text]
+        text_box = audit_event_text_box([
+          { text: bold_text, font: [FONT_NAME, { variant: :bold }] },
+          normal_text
+        ])
 
         if text.include?("\n")
           text_box = text.split("\n")[1..].reduce(text_box) do |acc, row|
             bold_text, normal_text = row.match(%r{<b>(.*?)</b>(.*)}).captures
 
-            [*acc, "\n", { text: bold_text, font: [FONT_NAME, { variant: :bold }] }, normal_text]
+            audit_event_text_box([*acc, "\n", { text: bold_text, font: [FONT_NAME, { variant: :bold }] }, normal_text])
           end
         end
 
         time_format = with_timestamp_seconds ? :detailed : :long
 
         [
-          "#{I18n.l(event.event_timestamp.in_time_zone(timezone), format: time_format, locale: account.locale)} " \
-          "#{TimeUtils.timezone_abbr(timezone, event.event_timestamp)}",
+          audit_text(
+            "#{I18n.l(event.event_timestamp.in_time_zone(timezone), format: time_format)} " \
+            "#{TimeUtils.timezone_abbr(timezone, event.event_timestamp)}"
+          ),
           composer.document.layout.formatted_text_box(text_box)
         ]
       end
@@ -503,6 +533,33 @@ module Submissions
       composer.table(events_data, cell_style: { padding: [0, 0, 12, 0], border: { width: 0 } }) if events_data.present?
 
       composer.document
+    end
+
+    def audit_locale_rtl?
+      I18n.locale.to_s.in?(RTL_LOCALES)
+    end
+
+    def audit_text(text)
+      TextUtils.maybe_rtl_reverse(text.to_s)
+    end
+
+    def audit_field_label(text)
+      str = text.to_s
+      str = str.upcase unless str.match?(RTL_REGEXP)
+
+      audit_text(str)
+    end
+
+    def audit_event_text_box(text_box)
+      text_box.map do |fragment|
+        if fragment.is_a?(Hash) && fragment[:text]
+          fragment.merge(text: audit_text(fragment[:text]))
+        elsif fragment.is_a?(String) && fragment.match?(RTL_REGEXP)
+          audit_text(fragment)
+        else
+          fragment
+        end
+      end
     end
 
     def sign_reason

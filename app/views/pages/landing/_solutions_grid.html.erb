@@ -1,23 +1,23 @@
 <section id="landing-solutions" class="landing-section landing-solutions-grid py-24 md:py-32">
   <div class="mx-auto max-w-7xl px-6">
     <div class="mx-auto max-w-3xl text-center" data-aos="fade-up">
-      <span class="landing-cloud-badge mx-auto mb-4 inline-block">Why teams choose it</span>
+      <span class="landing-cloud-badge mx-auto mb-4 inline-block"><%= t('landing.solutions.eyebrow') %></span>
       <h2 class="text-3xl font-bold tracking-tight text-white md:text-4xl">
-        One platform. Practical workflows. <span class="landing-gradient-text">No lock-in.</span>
+        <%= t('landing.solutions.title_html') %>
       </h2>
       <p class="mt-4 text-lg text-slate-400">
-        From template design to signed output, <%= Docuseal.product_name %> covers the complete signing flow in a single app.
+        <%= t('landing.solutions.description', product: Docuseal.product_name) %>
       </p>
     </div>
 
     <div class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       <% solutions = [
-        { icon: 'bolt', title: 'Self-host or cloud', copy: 'Deploy with Docker and keep your documents under your own operational control.' },
-        { icon: 'hub', title: 'API-first platform', copy: 'Use REST endpoints and webhooks to connect document flows to your product.' },
-        { icon: 'devices', title: 'Mobile-friendly signing', copy: 'Signers can complete documents from desktop and mobile browsers.' },
-        { icon: 'shield', title: 'Auditability built in', copy: 'Track signer and submission events with downloadable signed documents.' },
-        { icon: 'group', title: 'Team management', copy: 'Manage users, roles, templates, and submissions from a shared workspace.' },
-        { icon: 'extension', title: 'Integrations', copy: 'Use webhooks, SMTP, and storage integrations to fit existing infrastructure.' }
+        { icon: 'bolt', title: t('landing.solutions.cards.self_host.title'), copy: t('landing.solutions.cards.self_host.copy') },
+        { icon: 'hub', title: t('landing.solutions.cards.api_first.title'), copy: t('landing.solutions.cards.api_first.copy') },
+        { icon: 'devices', title: t('landing.solutions.cards.mobile_signing.title'), copy: t('landing.solutions.cards.mobile_signing.copy') },
+        { icon: 'shield', title: t('landing.solutions.cards.auditability.title'), copy: t('landing.solutions.cards.auditability.copy') },
+        { icon: 'group', title: t('landing.solutions.cards.team_management.title'), copy: t('landing.solutions.cards.team_management.copy') },
+        { icon: 'extension', title: t('landing.solutions.cards.integrations.title'), copy: t('landing.solutions.cards.integrations.copy') }
       ] %>
       <% solutions.each_with_index do |item, idx| %>
         <div class="landing-solutions-card landing-refined-card landing-surface-interactive landing-tilt rounded-2xl p-6 transition duration-300" data-aos="zoom-in" data-aos-delay="<%= [idx * 60, 300].min %>" data-aos-duration="600">

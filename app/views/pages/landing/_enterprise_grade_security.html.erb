@@ -1,25 +1,25 @@
 <section class="landing-section landing-enterprise-grade-security bg-[#f8f3f0] py-20">
   <div class="mx-auto max-w-7xl px-6">
     <div class="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-14">
-      <div class="landing-enterprise-security-media order-2 md:order-1" data-aos="fade-right">
+      <div class="landing-enterprise-security-media order-2 md:order-1 rtl:md:order-2" data-aos="fade-right">
         <img
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfCVv_86G2gse7fWWpQed3cL17JCx_Brsc2ix7CEcD6R1ktum4yrTLp9ZgAzb0YlY53GdILrivenBd-gDTAjmEBfZ-5_DBs-hIYSxtePfqzuOH2jEwPBS0u_ZvvQh6mFtb9NAoBjEsDCtOPQWVwf_z-jpnaIX_EvWCjN0DCx-g8g1hP1aZtphpV1TltpAaiCTOarVSEDxbDSFzKHBMh7_8oHu-zFEfXHjUYXL98oiNPPUAMqBh0hg_y9nP94vnfB_8yiAo3Zx8s2S3"
-          alt="Advanced security infrastructure"
+          alt="<%= t('landing.enterprise_security.dark_alt') %>"
           class="landing-enterprise-security-image landing-enterprise-security-image--dark h-full w-full rounded-xl border border-slate-200 object-cover shadow-2xl"
           loading="lazy"
         >
         <img
           src="/landing/enterprise-security-light.png"
-          alt="Enterprise security infrastructure light view"
+          alt="<%= t('landing.enterprise_security.light_alt') %>"
           class="landing-enterprise-security-image landing-enterprise-security-image--light h-full w-full rounded-xl border border-slate-200 object-cover shadow-2xl"
           loading="lazy"
         >
       </div>
 
-      <div class="order-1 space-y-5 md:order-2" data-aos="fade-left" data-aos-delay="80">
-        <h2 class="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">Operational Security Controls</h2>
+      <div class="order-1 space-y-5 md:order-2 rtl:md:order-1" data-aos="fade-left" data-aos-delay="80">
+        <h2 class="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl"><%= t('landing.enterprise_security.title') %></h2>
         <p class="text-lg text-slate-600">
-          <%= Docuseal.product_name %> includes practical controls for teams that need secure signing with clear operational ownership.
+          <%= t('landing.enterprise_security.description', product: Docuseal.product_name) %>
         </p>
 
         <div class="space-y-4">
@@ -30,8 +30,8 @@
               </svg>
             </span>
             <div>
-              <p class="font-semibold text-slate-900">Self-hosted Deployment</p>
-              <p class="text-sm text-slate-500">Run the platform in your own environment using Docker-based deployment.</p>
+              <p class="font-semibold text-slate-900"><%= t('landing.enterprise_security.self_hosted_title') %></p>
+              <p class="text-sm text-slate-500"><%= t('landing.enterprise_security.self_hosted_copy') %></p>
             </div>
           </div>
 
@@ -42,8 +42,8 @@
               </svg>
             </span>
             <div>
-              <p class="font-semibold text-slate-900">Signature Verification</p>
-              <p class="text-sm text-slate-500">Verify digitally signed PDFs and keep document integrity checks within your workflow.</p>
+              <p class="font-semibold text-slate-900"><%= t('landing.enterprise_security.verification_title') %></p>
+              <p class="text-sm text-slate-500"><%= t('landing.enterprise_security.verification_copy') %></p>
             </div>
           </div>
         </div>

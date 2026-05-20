@@ -41,21 +41,14 @@ class ConfirmationsController < Devise::ConfirmationsController
     resend_result = user.resend_confirmation_with_limit!
 
     if resend_result[:status] == :sent_expired
-      flash[:notice] = I18n.t(
-        'confirmation_link_expired_resend_automatically',
-        default: 'Your previous confirmation link expired. We sent a new confirmation email.'
-      )
+      flash[:notice] = I18n.t('confirmation_link_expired_resend_automatically')
     elsif resend_result[:status] == :sent
       flash[:notice] = I18n.t(
         'confirmation_link_resent_with_limit',
-        default: "Confirmation email sent. You can resend %{remaining_count} more time(s) in this 10-minute window.",
         remaining_count: resend_result[:remaining_count]
       )
     else
-      flash[:alert] = I18n.t(
-        'confirmation_resend_limit_reached',
-        default: 'You can resend confirmation at most 2 times every 10 minutes. Please wait a bit and try again.'
-      )
+      flash[:alert] = I18n.t('confirmation_resend_limit_reached')
     end
 
     redirect_to new_user_session_path(user: { email: email }, redir: params[:redir], lang: params[:lang])

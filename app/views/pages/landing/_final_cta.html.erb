@@ -3,14 +3,14 @@
   <div class="relative mx-auto max-w-7xl px-6 text-center">
     <div class="landing-final-cta-panel landing-refined-panel mx-auto max-w-4xl rounded-[28px] p-10 md:p-16" data-aos="zoom-in" data-aos-duration="750">
       <h2 class="text-3xl font-bold tracking-tight text-white md:text-5xl">
-        Ready to <span class="landing-gradient-text">streamline</span> document signing?
+        <%= t('landing.final_cta.title_html') %>
       </h2>
       <p class="landing-final-cta-copy mx-auto mt-4 max-w-2xl text-lg text-slate-400">
-        Start creating templates, sending signature requests, and integrating signing into your product.
+        <%= t('landing.final_cta.copy') %>
       </p>
       <div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row sm:flex-wrap">
-        <%= link_to 'Get started for free', get_started_path, class: 'base-button profile-settings-btn-primary landing-final-cta-primary' %>
-        <%= link_to 'Sign in', login_path, class: 'tpl-show-action-btn tpl-show-action-btn--outline landing-final-cta-secondary' %>
+        <%= link_to t('landing.final_cta.primary'), get_started_path, class: 'base-button profile-settings-btn-primary landing-final-cta-primary' %>
+        <%= link_to t('landing.final_cta.secondary'), login_path, class: 'tpl-show-action-btn tpl-show-action-btn--outline landing-final-cta-secondary' %>
       </div>
     </div>
   </div>

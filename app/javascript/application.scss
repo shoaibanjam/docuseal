@@ -25,7 +25,8 @@ html[lang^='ar-'] body {
   margin: 0;
 }
 
-.locale-switcher__select {
+.locale-switcher__select,
+.locale-switcher__trigger {
   min-height: 2.375rem;
   height: 2.375rem;
   min-width: 10.5rem;
@@ -44,16 +45,54 @@ html[lang^='ar-'] body {
   text-overflow: ellipsis;
 }
 
+.locale-switcher__trigger {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  cursor: pointer;
+  line-height: 1.25;
+}
+
+.locale-switcher__trigger-label {
+  min-width: 0;
+  flex: 1 1 auto;
+  text-align: inherit;
+}
+
 .locale-floating-actions {
   inset-inline-end: 1rem;
 }
 
-[data-theme='docuseal-light'] .locale-switcher__select {
+[data-theme='docuseal-light'] .locale-switcher__select,
+[data-theme='docuseal-light'] .locale-switcher__trigger {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2312233C' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
 }
 
-html[dir='rtl'] .locale-switcher__select {
+html[dir='rtl'] .locale-switcher__select,
+html[dir='rtl'] .locale-switcher__trigger {
   background-position: left 0.875rem center !important;
+}
+
+/* Keep the custom switcher panel opening below the trigger; align panel to the inline end in RTL. */
+html[dir='rtl'] .locale-switcher.dropdown.dropdown-end .dropdown-content {
+  right: auto;
+  left: 0;
+}
+
+/* Submissions filter menu: `dropdown-end` pins the panel to the trigger’s physical right edge, so in RTL it expands left into the viewport rim. Anchor to inline-start so it opens into the main content. */
+html[dir='rtl'] .submissions-filter-dropdown.dropdown.dropdown-end > .dropdown-content {
+  right: auto;
+  left: 0;
+}
+
+.locale-switcher__menu-item--current {
+  background-color: color-mix(in srgb, #04be99 16%, transparent) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #04be99 45%, transparent);
+}
+
+[data-theme='docuseal-light'] .locale-switcher__menu-item--current {
+  background-color: color-mix(in srgb, #04be99 12%, transparent) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #04be99 35%, transparent);
 }
 
 html[dir='rtl'] .ml-auto {
@@ -84,7 +123,8 @@ html[dir='rtl'] textarea,
 html[dir='rtl'] select,
 html[dir='rtl'] .base-input,
 html[dir='rtl'] .base-textarea,
-html[dir='rtl'] .base-select {
+html[dir='rtl'] .base-select,
+html[dir='rtl'] .locale-switcher__trigger {
   text-align: right !important;
 }
 
@@ -767,6 +807,23 @@ dynamic-variable {
   .drawer .drawer-toggle:checked ~ .drawer-side > .app-sidebar-drawer-overlay {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
+  }
+}
+
+/*
+ * DaisyUI drawer + RTL: default `[dir=rtl] .drawer-side > *:not(.drawer-overlay)` still uses
+ * `translateX(-100%)` (same as LTR). With `justify-items: start`, RTL anchors the panel on the
+ * inline-start edge (physical right); a negative X shift pulls it *into* the viewport — looks
+ * “centered” when closed (worse under browser zoom). Slide off the physical end instead.
+ * Scoped to our sidebar root; skips `.drawer-end` (different transform contract).
+ */
+@media (max-width: 1023px) {
+  html[dir='rtl'] .drawer:not(.drawer-end) .drawer-toggle:not(:checked) ~ .drawer-side > aside.app-sidebar {
+    transform: translateX(100%);
+  }
+
+  html[dir='rtl'] .drawer:not(.drawer-end) .drawer-toggle:checked ~ .drawer-side > aside.app-sidebar {
+    transform: translateX(0);
   }
 }
 
@@ -2247,10 +2304,6 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
 }
 
 /* Notifications settings — simple, editorial rhythm */
-.profile-settings-page.notifications-settings-page
-  .notifications-settings-intro {
-  max-width: 34rem;
-}
 
 .notifications-settings-page .notifications-settings-eyebrow {
   margin: 0 0 0.5rem;
@@ -2513,7 +2566,8 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
 .profile-settings-page.esign-settings-page .esign-settings-table-shell {
   border-radius: calc(var(--profile-radius) - 4px);
   border: 1px solid color-mix(in srgb, var(--profile-border) 94%, transparent);
-  overflow: hidden;
+  /* Allow DaisyUI tooltip pseudo-elements to escape the table shell. */
+  overflow: visible;
   background: color-mix(
     in srgb,
     var(--profile-surface-inset) 100%,
@@ -2623,6 +2677,13 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
   vertical-align: middle;
 }
 
+.profile-settings-page.esign-settings-page .esign-trusted-signature-tooltip:before {
+  max-width: min(18rem, calc(100vw - 2rem));
+  white-space: normal;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
 .profile-settings-page.esign-settings-page .esign-helper-text {
   color: var(--profile-text-secondary) !important;
 }
@@ -2705,7 +2766,6 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
 /* Personalization settings — profile shell + Daisy collapses aligned to tokens */
 .profile-settings-page.personalization-settings-page
   .personalization-settings-intro {
-  max-width: 38rem;
   line-height: 1.55;
 }
 
@@ -3103,7 +3163,6 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
 
 /* API settings — profile shell + docs collapses */
 .profile-settings-page.api-settings-page .api-settings-intro {
-  max-width: 38rem;
   line-height: 1.55;
 }
 
@@ -7815,6 +7874,25 @@ html[dir='rtl'] template-builder .builder-topbar .builder-save-group {
   direction: ltr;
 }
 
+html[dir='rtl'] .submission-show-page .submission-show-split-action-group {
+  direction: ltr;
+}
+
+html[dir='rtl'] .submission-show-page .submission-show-download-button [data-target='download-button.defaultButton'],
+html[dir='rtl'] .submission-show-page .submission-show-download-button [data-target='download-button.loadingButton'],
+html[dir='rtl']
+  .submission-show-page
+  .submission-show-download-dropdown-menu
+  .submission-show-download-menu-item
+  [data-target='download-button.defaultButton'],
+html[dir='rtl']
+  .submission-show-page
+  .submission-show-download-dropdown-menu
+  .submission-show-download-menu-item
+  [data-target='download-button.loadingButton'] {
+  flex-direction: row-reverse;
+}
+
 html[dir='rtl'] template-builder .builder-topbar .builder-save-group .builder-copy-link-button {
   order: 1;
   margin-left: 0;
@@ -8610,6 +8688,20 @@ body:has(main.page-shell > .profile-settings-page.auth-page) .main-navbar {
 .profile-settings-page .settings-page-header {
   border-bottom-color: var(--profile-border);
   max-width: none;
+}
+
+.profile-settings-page .profile-settings-header-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.profile-settings-page .settings-page-subtitle,
+.profile-settings-page .profile-settings-intro,
+.profile-settings-page .api-settings-intro,
+.profile-settings-page .notifications-settings-intro,
+.profile-settings-page .personalization-settings-intro {
+  max-width: none !important;
+  white-space: nowrap;
 }
 
 .profile-settings-page .settings-page-avatar,

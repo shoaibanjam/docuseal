@@ -22,7 +22,8 @@ html[lang^='ar-'] body {
   margin: 0;
 }
 
-.locale-switcher__select {
+.locale-switcher__select,
+.locale-switcher__trigger {
   min-height: 2.375rem;
   height: 2.375rem;
   min-width: 10.5rem;
@@ -41,16 +42,47 @@ html[lang^='ar-'] body {
   text-overflow: ellipsis;
 }
 
+.locale-switcher__trigger {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  cursor: pointer;
+  line-height: 1.25;
+}
+
+.locale-switcher__trigger-label {
+  min-width: 0;
+  flex: 1 1 auto;
+  text-align: inherit;
+}
+
 .locale-floating-actions {
   inset-inline-end: 1rem;
 }
 
-[data-theme='docuseal-light'] .locale-switcher__select {
+[data-theme='docuseal-light'] .locale-switcher__select,
+[data-theme='docuseal-light'] .locale-switcher__trigger {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2312233C' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
 }
 
-html[dir='rtl'] .locale-switcher__select {
+html[dir='rtl'] .locale-switcher__select,
+html[dir='rtl'] .locale-switcher__trigger {
   background-position: left 0.875rem center !important;
+}
+
+html[dir='rtl'] .locale-switcher.dropdown.dropdown-end .dropdown-content {
+  right: auto;
+  left: 0;
+}
+
+.locale-switcher__menu-item--current {
+  background-color: color-mix(in srgb, #04be99 16%, transparent) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #04be99 45%, transparent);
+}
+
+[data-theme='docuseal-light'] .locale-switcher__menu-item--current {
+  background-color: color-mix(in srgb, #04be99 12%, transparent) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #04be99 35%, transparent);
 }
 
 html[dir='rtl'] .ml-auto {
@@ -76,7 +108,8 @@ html[dir='rtl'] textarea,
 html[dir='rtl'] select,
 html[dir='rtl'] .base-input,
 html[dir='rtl'] .base-textarea,
-html[dir='rtl'] .base-select {
+html[dir='rtl'] .base-select,
+html[dir='rtl'] .locale-switcher__trigger {
   text-align: right !important;
 }
 

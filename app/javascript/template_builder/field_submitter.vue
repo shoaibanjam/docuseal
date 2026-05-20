@@ -218,6 +218,32 @@
 import { IconUserPlus, IconTrashX, IconPlus, IconChevronUp, IconChevronDown } from '@tabler/icons-vue'
 import Contenteditable from './contenteditable'
 import { v4 } from 'uuid'
+import { en, es, it, pt, fr, de, nl, ar } from './i18n'
+
+const DEFAULT_PARTY_KEYS = [
+  'first_party',
+  'second_party',
+  'third_party',
+  'fourth_party',
+  'fifth_party',
+  'sixth_party',
+  'seventh_party',
+  'eighth_party',
+  'ninth_party',
+  'tenth_party',
+  'eleventh_party',
+  'twelfth_party',
+  'thirteenth_party',
+  'fourteenth_party',
+  'fifteenth_party',
+  'sixteenth_party',
+  'seventeenth_party',
+  'eighteenth_party',
+  'nineteenth_party',
+  'twentieth_party'
+]
+
+const BUILDER_LOCALE_MESSAGES = [en, es, it, pt, fr, de, nl, ar]
 
 function getOrdinalSuffix (num) {
   if (num % 10 === 1 && num % 100 !== 11) return 'st'
@@ -226,6 +252,37 @@ function getOrdinalSuffix (num) {
 
   return 'th'
 }
+
+function buildCanonicalDefaultNameByLocalized () {
+  const map = {}
+
+  DEFAULT_PARTY_KEYS.forEach((key) => {
+    const canonical = en[key]
+
+    map[canonical] = canonical
+
+    BUILDER_LOCALE_MESSAGES.forEach((messages) => {
+      const localized = messages[key]
+
+      if (localized) map[localized] = canonical
+    })
+  })
+
+  for (let i = 21; i < 101; i++) {
+    const suffix = getOrdinalSuffix(i)
+    const canonical = `${i}${suffix} Party`
+
+    map[canonical] = canonical
+
+    BUILDER_LOCALE_MESSAGES.forEach((messages) => {
+      if (messages.party) map[`${i}${suffix} ${messages.party}`] = canonical
+    })
+  }
+
+  return map
+}
+
+const CANONICAL_DEFAULT_NAME_BY_LOCALIZED = buildCanonicalDefaultNameByLocalized()
 
 export default {
   name: 'FieldSubmitter',
@@ -370,7 +427,9 @@ export default {
     },
     lastPartyIndex () {
       const index = Math.max(...this.submitters.map((s) => {
-        return Math.max(this.names.indexOf(s.name), this.englishDefaultNames.indexOf(s.name))
+        const name = CANONICAL_DEFAULT_NAME_BY_LOCALIZED[s.name] || s.name
+
+        return this.englishDefaultNames.indexOf(name)
       }))
 
       if (index !== -1) {
@@ -387,16 +446,19 @@ export default {
     displaySubmitterName (submitter) {
       if (!submitter?.name) return ''
 
-      return this.localizedDefaultNameMap[submitter.name] || submitter.name
+      const canonical = CANONICAL_DEFAULT_NAME_BY_LOCALIZED[submitter.name] || submitter.name
+
+      return this.localizedDefaultNameMap[canonical] || canonical
     },
     onSubmitterNameChange (submitter, value) {
       if (!submitter) return
 
-      const rawDefaultName = Object.entries(this.localizedDefaultNameMap).find(([rawName, localizedName]) => {
-        return submitter.name === rawName && value === localizedName
-      })?.[0]
+      const canonical =
+        CANONICAL_DEFAULT_NAME_BY_LOCALIZED[value] ||
+        Object.entries(this.localizedDefaultNameMap).find(([, localizedName]) => value === localizedName)?.[0] ||
+        value
 
-      submitter.name = rawDefaultName || value
+      submitter.name = canonical
       this.$emit('name-change', submitter)
     },
     selectSubmitter (submitter) {

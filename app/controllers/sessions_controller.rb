@@ -83,20 +83,14 @@ class SessionsController < Devise::SessionsController
         redir: params[:redir],
         lang: params[:lang]
       ),
-                  notice: I18n.t(
-                    'confirmation_link_expired_resend_automatically',
-                    default: 'Your previous confirmation link expired. We sent a new confirmation email.'
-                  )
+                  notice: I18n.t('confirmation_link_expired_resend_automatically')
     else
       @show_confirmation_resend_option = true
       @confirmation_resend_email = email
       self.resource = resource_class.new(email:)
       clean_up_passwords(resource)
 
-      flash.now[:alert] = I18n.t(
-        'account_not_confirmed_resend_available',
-        default: 'Your account is not confirmed yet. Check your email or request a new confirmation link.'
-      )
+      flash.now[:alert] = I18n.t('account_not_confirmed_resend_available')
       render :new, status: :unprocessable_content
     end
 

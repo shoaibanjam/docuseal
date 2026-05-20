@@ -1035,6 +1035,17 @@ body.docuseal-landing {
   white-space: nowrap;
 }
 
+/* Arabic / RTL headlines need more line-box room so strokes and descenders do not collide */
+html[dir='rtl'] .landing-page .landing-hero-title {
+  letter-spacing: normal;
+}
+
+html[dir='rtl'] .landing-page .landing-hero-headline-line--accent {
+  min-height: 1.45em;
+  white-space: normal;
+  line-height: 1.35;
+}
+
 .landing-hero-rotating-word {
   display: inline;
   transition:
