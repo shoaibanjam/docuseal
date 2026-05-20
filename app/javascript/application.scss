@@ -79,6 +79,12 @@ html[dir='rtl'] .locale-switcher.dropdown.dropdown-end .dropdown-content {
   left: 0;
 }
 
+/* Submissions filter menu: `dropdown-end` pins the panel to the trigger’s physical right edge, so in RTL it expands left into the viewport rim. Anchor to inline-start so it opens into the main content. */
+html[dir='rtl'] .submissions-filter-dropdown.dropdown.dropdown-end > .dropdown-content {
+  right: auto;
+  left: 0;
+}
+
 .locale-switcher__menu-item--current {
   background-color: color-mix(in srgb, #04be99 16%, transparent) !important;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, #04be99 45%, transparent);

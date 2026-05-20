@@ -824,6 +824,11 @@ en: &en
   templates: Templates
   document_templates_html: <span class="hidden md:inline">Document</span> Templates
   archived: Archived
+  templates_archived_intro: Browse archived templates and reopen active work anytime.
+  submissions_archived_intro: Review archived submissions and restore your active queue faster.
+  archived_submissions_empty_hint: Try adjusting filters or your search terms.
+  no_archived_submissions: No archived submissions
+  no_archived_submissions_hint: Archived invitations will appear here when you archive them from the active list.
   search: Search
   submissions_not_found: Submissions not Found
   create: Create

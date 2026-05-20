@@ -627,6 +627,11 @@ ar:
   automatic_esignature: توقيع إلكتروني تلقائي
   back: رجوع
   back_to_active: العودة إلى النشط
+  templates_archived_intro: استعرض القوالب المؤرشفة وأعد تفعيل العمل عليها في أي وقت.
+  submissions_archived_intro: راجع عمليات الإرسال المؤرشفة واستعد قائمة العمل النشطة بسرعة أكبر.
+  archived_submissions_empty_hint: جرّب تعديل عوامل التصفية أو كلمات البحث.
+  no_archived_submissions: لا توجد عمليات إرسال مؤرشفة
+  no_archived_submissions_hint: ستظهر الدعوات المؤرشفة هنا عند أرشفتها من القائمة النشطة.
   background_jobs: المهام الخلفية
   bcc_recipients: مستلمو BCC
   billing: الفوترة
