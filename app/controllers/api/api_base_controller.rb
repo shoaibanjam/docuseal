@@ -22,7 +22,7 @@ module Api
     rescue_from RateLimit::LimitApproached do |e|
       Rollbar.error(e) if defined?(Rollbar)
 
-      render json: { error: 'Too many requests' }, status: :too_many_requests
+      render json: { error: I18n.t('too_many_requests_try_again_later') }, status: :too_many_requests
     end
 
     unless Rails.env.development?

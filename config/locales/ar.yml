@@ -725,12 +725,26 @@ ar:
   detailed: مفصل
   developer_newsletters: نشرات المطورين الإخبارية
   developer_sandbox: بيئة اختبار المطورين
+  account_not_confirmed_resend_available: لم يتم تأكيد حسابك بعد. تحقق من بريدك الإلكتروني أو اطلب رابط تأكيد جديدًا.
+  confirmation_link_expired_resend_automatically: انتهت صلاحية رابط التأكيد السابق. أرسلنا رسالة تأكيد جديدة إلى بريدك الإلكتروني.
+  confirmation_link_resent_with_limit: تم إرسال رسالة التأكيد. يمكنك إعادة الإرسال %{remaining_count} مرة/مرات أخرى خلال نافذة الـ 10 دقائق الحالية.
+  confirmation_resend_limit_reached: يمكنك إعادة إرسال رسالة التأكيد مرتين كحد أقصى كل 10 دقائق. يرجى الانتظار قليلًا ثم المحاولة مرة أخرى.
+  search_index_build_started: بدأ بناء فهرس البحث. تفضل بزيارة %{jobs_url} لمتابعة التقدّم.
   devise:
     confirmations:
       already_confirmed: تم تأكيد عنوان بريدك الإلكتروني بالفعل. يمكنك تسجيل الدخول.
       confirmed: تم تأكيد عنوان بريدك الإلكتروني بنجاح.
       send_instructions: إذا كان عنوان البريد الإلكتروني هذا مسجلًا، فستتلقى التعليمات قريبًا. بخلاف ذلك، تحقق من العنوان وحاول مرة أخرى.
+      send_paranoid_instructions: إذا كان عنوان بريدك الإلكتروني موجودًا في قاعدة بياناتنا، فستتلقى رسالة بريد إلكتروني تتضمن تعليمات التأكيد خلال دقائق.
     failure:
+      already_authenticated: أنت مسجل الدخول بالفعل.
+      inactive: لم يتم تفعيل حسابك بعد.
+      invalid: '%{authentication_keys} أو كلمة المرور غير صحيحة.'
+      locked: حسابك مقفل.
+      last_attempt: لديك محاولة واحدة أخرى قبل قفل حسابك.
+      not_found_in_database: '%{authentication_keys} أو كلمة المرور غير صحيحة.'
+      timeout: انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى للمتابعة.
+      unauthenticated: يجب تسجيل الدخول أو إنشاء حساب قبل المتابعة.
       unconfirmed: يجب تأكيد عنوان بريدك الإلكتروني قبل المتابعة.
     mailer:
       confirmation_instructions:
@@ -738,6 +752,24 @@ ar:
     registrations:
       signed_up: مرحبًا! تم تسجيل حسابك بنجاح.
       signed_up_but_unconfirmed: تم إرسال رسالة تحتوي على رابط تأكيد إلى %{email}. يرجى اتباع الرابط لتفعيل حسابك.
+      destroyed: تم إلغاء حسابك بنجاح. نأمل أن نراك مرة أخرى قريبًا.
+      updated: تم تحديث حسابك بنجاح.
+    sessions:
+      signed_in: تم تسجيل الدخول بنجاح.
+      signed_out: تم تسجيل الخروج بنجاح.
+      already_signed_out: تم تسجيل الخروج بنجاح.
+    passwords:
+      send_instructions: ستتلقى رسالة بريد إلكتروني تتضمن تعليمات إعادة تعيين كلمة المرور خلال دقائق.
+      send_paranoid_instructions: إذا كان عنوان بريدك الإلكتروني موجودًا في قاعدة بياناتنا، فستتلقى رابط استعادة كلمة المرور خلال دقائق.
+      updated: تم تغيير كلمة المرور بنجاح. أنت مسجل الدخول الآن.
+      updated_not_active: تم تغيير كلمة المرور بنجاح.
+      no_token: لا يمكنك الوصول إلى هذه الصفحة دون فتحها من رسالة إعادة تعيين كلمة المرور. إذا فتحتها من تلك الرسالة، فتأكد من استخدام الرابط الكامل المقدّم.
+    omniauth_callbacks:
+      failure: تعذّرت المصادقة عبر %{kind} لأن "%{reason}".
+      success: تمت المصادقة بنجاح عبر حساب %{kind}.
+    unlocks:
+      send_instructions: ستتلقى رسالة بريد إلكتروني تتضمن تعليمات فتح حسابك خلال دقائق.
+      unlocked: تم فتح حسابك بنجاح. يرجى تسجيل الدخول للمتابعة.
   didnt_receive_an_email: لم تستلم بريدًا إلكترونيًا؟
   disabled: معطّل
   discord_community: مجتمع Discord
