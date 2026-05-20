@@ -100,6 +100,13 @@ module Submissions
       name
     end
 
+    def display_name(template_submitter, index:, locale: I18n.locale)
+      name = template_submitter.is_a?(Hash) ? template_submitter['name'] : template_submitter&.dig('name')
+      canonical = name.presence || ENGLISH_PARTY_NAMES[index] || "#{(index + 1).ordinalize} Party"
+
+      call(canonical, locale:)
+    end
+
     def canonical_name_by_variant
       @canonical_name_by_variant ||= build_canonical_name_by_variant
     end
