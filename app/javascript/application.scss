@@ -2564,7 +2564,8 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
 .profile-settings-page.esign-settings-page .esign-settings-table-shell {
   border-radius: calc(var(--profile-radius) - 4px);
   border: 1px solid color-mix(in srgb, var(--profile-border) 94%, transparent);
-  overflow: hidden;
+  /* Allow DaisyUI tooltip pseudo-elements to escape the table shell. */
+  overflow: visible;
   background: color-mix(
     in srgb,
     var(--profile-surface-inset) 100%,
@@ -2672,6 +2673,13 @@ html[dir='rtl'] .settings-layout .profile-settings-header-text [class*='-eyebrow
 
 .profile-settings-page.esign-settings-page .esign-settings-table tbody td {
   vertical-align: middle;
+}
+
+.profile-settings-page.esign-settings-page .esign-trusted-signature-tooltip:before {
+  max-width: min(18rem, calc(100vw - 2rem));
+  white-space: normal;
+  line-height: 1.35;
+  word-break: break-word;
 }
 
 .profile-settings-page.esign-settings-page .esign-helper-text {
