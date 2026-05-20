@@ -1,20 +1,25 @@
 <section id="landing-security" class="landing-section landing-security bg-[#fdf8f5] py-20">
   <div class="mx-auto max-w-7xl px-6">
     <div class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-10 shadow-sm md:p-14 landing-surface-interactive" data-aos="zoom-in" data-aos-duration="700">
-      <div class="pointer-events-none absolute right-6 top-5">
+      <div class="pointer-events-none absolute end-6 top-5">
         <img src="/landing/security-watermark.png" alt="" class="landing-security-watermark h-28 w-28 object-contain" loading="lazy">
       </div>
 
       <div class="relative z-10 max-w-4xl">
-        <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-emerald-600">Trust & Control</span>
-        <h2 class="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">Security Features You Can Use Today</h2>
+        <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-emerald-600"><%= t('landing.security.eyebrow') %></span>
+        <h2 class="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl"><%= t('landing.security.title') %></h2>
         <p class="mt-4 text-lg text-slate-500">
-          Keep documents protected with encrypted transport, detailed audit events, and deployment options that fit your security model.
+          <%= t('landing.security.description') %>
         </p>
 
         <div class="mt-8 grid grid-cols-2 items-center gap-4 opacity-75 md:grid-cols-4">
-          <% ['Self-hosting', 'Audit events', 'PDF verification', 'Role-based access'].each do |item| %>
-            <div class="border-r border-slate-200 py-2 text-center text-xl font-bold text-slate-700 last:border-r-0 md:text-2xl"><%= item %></div>
+          <% [
+            t('landing.security.stats.self_hosting'),
+            t('landing.security.stats.audit_events'),
+            t('landing.security.stats.pdf_verification'),
+            t('landing.security.stats.role_access')
+          ].each do |item| %>
+            <div class="border-e border-slate-200 py-2 text-center text-xl font-bold text-slate-700 last:border-e-0 md:text-2xl"><%= item %></div>
           <% end %>
         </div>
 
@@ -26,8 +31,8 @@
               </svg>
             </span>
             <div>
-              <h3 class="text-base font-semibold text-slate-900">Encrypted Data Transport</h3>
-              <p class="mt-1 text-sm text-slate-500">Use HTTPS and secure storage backends to protect document data in transit and at rest.</p>
+              <h3 class="text-base font-semibold text-slate-900"><%= t('landing.security.encrypted_title') %></h3>
+              <p class="mt-1 text-sm text-slate-500"><%= t('landing.security.encrypted_copy') %></p>
             </div>
           </div>
           <div class="flex gap-3">
@@ -37,8 +42,8 @@
               </svg>
             </span>
             <div>
-              <h3 class="text-base font-semibold text-slate-900">Full Audit Trails</h3>
-              <p class="mt-1 text-sm text-slate-500">Every action is recorded with time, IP, and event metadata for complete traceability.</p>
+              <h3 class="text-base font-semibold text-slate-900"><%= t('landing.security.audit_title') %></h3>
+              <p class="mt-1 text-sm text-slate-500"><%= t('landing.security.audit_copy') %></p>
             </div>
           </div>
         </div>

@@ -18,15 +18,15 @@
     </div>
 
     <nav class="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-      <a href="<%= login_path %>" class="transition hover:text-slate-300">Privacy</a>
-      <a href="<%= login_path %>" class="transition hover:text-slate-300">Terms</a>
-      <a href="<%= login_path %>" class="transition hover:text-slate-300">Cookies</a>
-      <a href="<%= login_path %>" class="transition hover:text-slate-300">Support</a>
-      <a href="<%= login_path %>" class="transition hover:text-slate-300">Security</a>
+      <a href="<%= login_path %>" class="transition hover:text-slate-300"><%= t('landing.footer.privacy') %></a>
+      <a href="<%= login_path %>" class="transition hover:text-slate-300"><%= t('landing.footer.terms') %></a>
+      <a href="<%= login_path %>" class="transition hover:text-slate-300"><%= t('landing.footer.cookies') %></a>
+      <a href="<%= login_path %>" class="transition hover:text-slate-300"><%= t('landing.footer.support') %></a>
+      <a href="<%= login_path %>" class="transition hover:text-slate-300"><%= t('landing.footer.security') %></a>
     </nav>
 
     <p class="landing-footer__copyright mt-10 text-sm text-slate-500">
-      © <%= Time.current.year %> <%= Docuseal.product_name %>. All rights reserved.
+      <%= t('landing.footer.copyright', year: Time.current.year, product: Docuseal.product_name) %>
     </p>
   </div>
 </footer>

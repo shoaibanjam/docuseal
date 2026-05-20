@@ -1,19 +1,19 @@
 <section id="landing-faq" class="landing-section landing-faq py-24 md:py-32">
   <div class="mx-auto max-w-3xl px-6">
     <div class="text-center" data-aos="fade-up">
-      <span class="landing-cloud-badge mx-auto mb-4 inline-block">FAQ</span>
+      <span class="landing-cloud-badge mx-auto mb-4 inline-block"><%= t('landing.faq.eyebrow') %></span>
       <h2 class="text-3xl font-bold tracking-tight text-white md:text-4xl">
-        Frequently Asked <span class="landing-gradient-text">Questions</span>
+        <%= t('landing.faq.title_html') %>
       </h2>
     </div>
 
     <div class="landing-faq-list mt-12 divide-y divide-white/10 border-y border-white/10" data-aos="fade-up" data-aos-delay="80">
       <% faqs = [
-        ['Can I self-host this project?', 'Yes. This project is open source and can be self-hosted using the provided Docker deployment path.'],
-        ['What can I automate with the API?', 'You can manage templates, submissions, documents, and recipients through REST API endpoints.'],
-        ['Does it support webhook events?', 'Yes. Webhook endpoints are available so your backend can receive submission and form event updates.'],
-        ['What template formats are supported?', 'PDF and DOCX templates are supported for creating fillable signing workflows.'],
-        ['Can signed PDFs be verified?', 'Yes. The project includes PDF signature verification capabilities for signed documents.']
+        [t('landing.faq.self_host_question'), t('landing.faq.self_host_answer')],
+        [t('landing.faq.api_question'), t('landing.faq.api_answer')],
+        [t('landing.faq.webhooks_question'), t('landing.faq.webhooks_answer')],
+        [t('landing.faq.formats_question'), t('landing.faq.formats_answer')],
+        [t('landing.faq.verification_question'), t('landing.faq.verification_answer')]
       ] %>
       <% faqs.each do |question, answer| %>
         <details class="landing-faq-item group py-5 transition-colors">

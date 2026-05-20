@@ -1,7 +1,7 @@
 <section class="landing-section landing-social-proof landing-refined-panel py-12 md:py-16" data-aos="fade-up" aria-labelledby="landing-social-proof-heading">
   <div class="mx-auto max-w-7xl px-6 text-center">
     <p id="landing-social-proof-heading" class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-      Trusted by industry leaders in fintech and legal
+      <%= t('landing.social_proof.heading') %>
     </p>
 
     <% trust_logos = [
@@ -15,7 +15,7 @@
     <div
       class="landing-logos-splide splide mt-10 text-slate-300 opacity-90 grayscale transition duration-500 hover:grayscale-0 motion-reduce:grayscale-0"
       role="region"
-      aria-label="<%= t('landing.social_proof.carousel_label', default: 'Partner and customer logos') %>"
+      aria-label="<%= t('landing.social_proof.carousel_label') %>"
     >
       <div class="splide__track">
         <ul class="splide__list">

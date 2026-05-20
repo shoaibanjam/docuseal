@@ -71,6 +71,7 @@ ar:
   open_menu: فتح القائمة
   close_menu: إغلاق القائمة
   navigation: التنقل
+  skip_to_main_content: الانتقال إلى المحتوى الرئيسي
   close: إغلاق
   get_started: ابدأ الآن
   account: الحساب
@@ -206,6 +207,211 @@ ar:
       solutions: الحلول
       company: الشركة
       security: الأمان
+    social_proof:
+      heading: موثوق به لدى رواد القطاعات المالية والقانونية
+      carousel_label: شعارات الشركاء والعملاء
+    advanced_template_builder:
+      eyebrow: إعداد القوالب
+      title: منشئ قوالب متقدم
+      supported_title: ملفات القوالب المدعومة
+      supported_copy: ارفع قوالب PDF أو DOCX، وأضف الحقول، وجهّز المستندات لسير عمل توقيع متكرر.
+      bullet_upload: رفع قوالب PDF وDOCX
+      bullet_fields: إضافة حقول الموقّعين مع تحديد موضعها بصريًا
+      bullet_reuse: إعادة استخدام القوالب عبر الإرسالات
+      dark_alt: واجهة محرر منشئ القوالب في الوضع الداكن
+      light_alt: واجهة محرر منشئ القوالب
+      field_detection_title: اكتشاف الحقول
+      field_detection_copy: اكتشف الحقول الموجودة في القوالب لتسريع الإعداد قبل التعديلات اليدوية.
+      variables_title: متغيرات القالب
+      variables_copy: املأ قيم القالب مسبقًا عبر API حتى تكون المستندات الناتجة جاهزة للمستلمين.
+    features:
+      eyebrow: الميزات الأساسية
+      title_html: مصمم للفرق التي تحتاج إلى <span class="landing-gradient-text">توقيع سريع الإنجاز</span>
+      description: كل ما تحتاجه في مكان واحد لإعداد القوالب وجمع التوقيعات والتكامل مع أنظمتك الحالية.
+      learn_more: معرفة المزيد
+      cards:
+        template_builder:
+          title: منشئ القوالب
+          copy: أنشئ قوالب قابلة للتعبئة من ملفات PDF أو DOCX وضع الحقول في الأماكن التي يحتاج الموقّعون إلى إكمالها.
+        online_signing:
+          title: التوقيع عبر الإنترنت
+          copy: اجمع توقيعات إلكترونية معترفًا بها قانونيًا عبر تدفقات توقيع تعمل على سطح المكتب والجوال.
+        api_webhooks:
+          title: API وWebhooks
+          copy: أنشئ القوالب والإرسالات برمجيًا، ثم تفاعل مع الأحداث في خادمك الخلفي.
+        multi_recipient:
+          title: تدفقات متعددة المستلمين
+          copy: أرسل إلى مستلم واحد أو عدة مستلمين مع إكمال قائم على الأدوار وتتبع مشترك للتقدم.
+        email_delivery:
+          title: تسليم البريد الإلكتروني
+          copy: أرسل طلبات التوقيع والتذكيرات من خلال إشعارات بريد إلكتروني قائمة على SMTP.
+        pdf_verification:
+          title: التحقق من PDF
+          copy: تحقق من التوقيعات الرقمية والمستندات الموقعة المصدّرة مباشرة من المنصة.
+    solutions:
+      eyebrow: لماذا تختاره الفرق
+      title_html: منصة واحدة. تدفقات عملية. <span class="landing-gradient-text">بدون تقييد.</span>
+      description: من تصميم القالب إلى الناتج الموقّع، يغطي %{product} تدفق التوقيع الكامل في تطبيق واحد.
+      cards:
+        self_host:
+          title: استضافة ذاتية أو سحابية
+          copy: انشر باستخدام Docker واحتفظ بمستنداتك تحت تحكمك التشغيلي.
+        api_first:
+          title: منصة مبنية حول API
+          copy: استخدم نقاط REST وWebhooks لربط تدفقات المستندات بمنتجك.
+        mobile_signing:
+          title: توقيع مناسب للجوال
+          copy: يمكن للموقّعين إكمال المستندات من متصفحات سطح المكتب والجوال.
+        auditability:
+          title: قابلية التدقيق مدمجة
+          copy: تتبع أحداث الموقّعين والإرسالات مع مستندات موقعة قابلة للتنزيل.
+        team_management:
+          title: إدارة الفريق
+          copy: أدر المستخدمين والأدوار والقوالب والإرسالات من مساحة عمل مشتركة.
+        integrations:
+          title: التكاملات
+          copy: استخدم Webhooks وSMTP وتكاملات التخزين لتناسب بنيتك الحالية.
+    workflow:
+      title: سير عملك، مؤتمت.
+      prepare_title: إعداد القالب
+      prepare_copy: اسحب الحقول وأفلتها على المستند، ثم عيّن الأدوار وقواعد التحقق خلال دقائق.
+      send_title: إرسال وتوقيع
+      send_copy: شارك عبر البريد الإلكتروني أو رابط مباشر ودع الموقّعين يكملون كل شيء بأمان على أي جهاز.
+      complete_title: إكمال وأتمتة
+      complete_copy: تتم أرشفة المستندات الموقعة، بينما تشغّل Webhooks وأحداث API تدفقاتك اللاحقة.
+      draft: مسودة
+      signed: موقّع
+      secured: سير العمل مؤمّن
+    modern_workflows:
+      title: مصمم لتدفقات التكامل
+      description: اربط عمليات التوقيع بمنتجك باستخدام نقاط API موثقة وWebhooks وتدفقات قابلة للتضمين.
+      webhook_title: أحداث Webhook
+      webhook_copy: استقبل إشعارات فورية لأحداث إنشاء الإرسال وتوقيعه وإنهائه مباشرة في خادمك الخلفي.
+      webhook_bullets:
+        lifecycle: أحداث دورة حياة الإرسال
+        endpoints: نقاط Webhook حسب نوع الحدث
+        deliver: تسليم الأحداث إلى خادمك الخلفي
+      embedded_title: التوقيع المضمن
+      embedded_copy: أبقِ المستخدمين داخل منتجك باستخدام روابط توقيع مدمجة وصفحات موقّعين تحمل علامتك التجارية.
+      embedded_bullets:
+        app: تضمين التوقيع في تطبيقك
+        branding: استخدام هوية حسابك
+        devices: دعم الموقّعين على سطح المكتب والجوال
+      api_title: REST API
+      api_copy: أتمت إجراءات دورة حياة القوالب والإرسالات باستخدام REST API قائمة على JSON.
+      api_bullets:
+        templates: إنشاء القوالب وإدارتها
+        submissions: إنشاء الإرسالات وتتبعها
+        recipients: إدارة المستندات والمستلمين
+    fields:
+      badge: منشئ حقول القوالب
+      title: أنواع حقول مرنة
+      description: أنشئ مستندات قابلة للتعبئة بأنواع حقول للتوقيعات والنصوص والتواريخ والاختيارات والملفات والمدخلات المنظمة.
+      core_title: حقول التوقيع الأساسية
+      core_copy: التقط التوقيعات والأحرف الأولى والقيم النصية المطلوبة لإكمال تدفقات المستندات.
+      image_alt: مساحة عمل هوية المستند
+      reusable_title: مجموعة حقول قابلة لإعادة الاستخدام
+      reusable_copy: استخدم مجموعات حقول مشتركة عبر القوالب للحفاظ على تجربة توقيع متسقة.
+      chip_input: إدخال
+      chip_signing: توقيع
+      field_labels:
+        identity: الهوية
+        initials: الأحرف الأولى
+        text: النص
+        date: التاريخ
+        number: الرقم
+        select: اختيار
+        checkbox: خانة اختيار
+        radio: زر اختيار
+        multiple: متعدد
+        file: ملف
+        image: صورة
+        table: جدول
+      field_values:
+        signature: توقيع
+        initials: أحرف أولى
+        text: نص
+        date: تاريخ
+        number: رقم
+        select: اختيار
+        checkbox: خانة اختيار
+        radio: زر اختيار
+        multiple: متعدد
+        file: ملف
+        image: صورة
+        cells: خلايا
+      real_work_title: مصمم للعمل الحقيقي على المستندات
+      real_work_copy: أنشئ القوالب مرة واحدة وأعد استخدامها عبر تدفقات توقيع متكررة مع جمع بيانات متسق.
+      reuse_title: إعادة استخدام القوالب
+      reuse_copy: استخدم قالبًا واحدًا للعديد من الإرسالات والمستلمين.
+      tracking_title: تتبع الإرسالات
+      tracking_copy: راقب حالة كل موقّع وإكمال المستند من لوحة التحكم.
+      enterprise_alt: تصور للتعقيد المؤسسي
+    multi_party:
+      eyebrow: عدة مستلمين
+      title: تعاون متعدد الأطراف بسهولة
+      description: وجّه المستندات عبر مستلم واحد أو عدة مستلمين واجعل خطوة كل موقّع واضحة.
+      ordered_title: خطوات توقيع مرتبة
+      ordered_copy: اضبط ترتيب الموقّعين بحيث يكمل كل مشارك الجزء الخاص به بالتسلسل.
+      parallel_title: تدفق مستلمين متوازٍ
+      parallel_copy: ادعُ المستلمين لإكمال المستندات دون الحاجة إلى تسلسل صارم.
+      roles_title: أدوار المستلمين
+      roles_copy: خصص لكل مستلم حقوله ومسؤوليات الإكمال الخاصة به.
+      dark_alt: لوحة رسم تدفق عمل متعدد الأطراف
+      light_alt: لوحة تدفق عمل متعدد الأطراف في الوضع الفاتح
+    security:
+      eyebrow: الثقة والتحكم
+      title: ميزات أمان يمكنك استخدامها اليوم
+      description: حافظ على حماية المستندات من خلال نقل مشفر وأحداث تدقيق مفصلة وخيارات نشر تناسب نموذج الأمان لديك.
+      stats:
+        self_hosting: استضافة ذاتية
+        audit_events: أحداث التدقيق
+        pdf_verification: التحقق من PDF
+        role_access: وصول قائم على الأدوار
+      encrypted_title: نقل بيانات مشفر
+      encrypted_copy: استخدم HTTPS وواجهات تخزين آمنة لحماية بيانات المستندات أثناء النقل وفي حالة السكون.
+      audit_title: سجلات تدقيق كاملة
+      audit_copy: يتم تسجيل كل إجراء مع الوقت وIP وبيانات الحدث لتتبّع كامل.
+    enterprise_security:
+      dark_alt: بنية أمان متقدمة
+      light_alt: عرض فاتح لبنية أمان مؤسسية
+      title: ضوابط أمان تشغيلية
+      description: يتضمن %{product} ضوابط عملية للفرق التي تحتاج إلى توقيع آمن مع ملكية تشغيلية واضحة.
+      self_hosted_title: نشر مستضاف ذاتيًا
+      self_hosted_copy: شغّل المنصة في بيئتك الخاصة باستخدام نشر قائم على Docker.
+      verification_title: التحقق من التوقيع
+      verification_copy: تحقق من ملفات PDF الموقعة رقميًا واحتفظ بفحوصات سلامة المستند داخل سير عملك.
+    faq:
+      eyebrow: الأسئلة الشائعة
+      title_html: <span class="landing-gradient-text">الأسئلة</span> الشائعة
+      self_host_question: هل يمكنني استضافة هذا المشروع ذاتيًا؟
+      self_host_answer: نعم. هذا المشروع مفتوح المصدر ويمكن استضافته ذاتيًا باستخدام مسار نشر Docker المتوفر.
+      api_question: ماذا يمكنني أتمتته باستخدام API؟
+      api_answer: يمكنك إدارة القوالب والإرسالات والمستندات والمستلمين عبر نقاط REST API.
+      webhooks_question: هل يدعم أحداث Webhook؟
+      webhooks_answer: نعم. تتوفر نقاط Webhook حتى يتمكن خادمك الخلفي من استقبال تحديثات أحداث الإرسال والنماذج.
+      formats_question: ما تنسيقات القوالب المدعومة؟
+      formats_answer: يتم دعم قوالب PDF وDOCX لإنشاء تدفقات توقيع قابلة للتعبئة.
+      verification_question: هل يمكن التحقق من ملفات PDF الموقعة؟
+      verification_answer: نعم. يتضمن المشروع إمكانات للتحقق من توقيعات PDF للمستندات الموقعة.
+    final_cta:
+      title_html: هل أنت جاهز <span class="landing-gradient-text">لتبسيط</span> توقيع المستندات؟
+      copy: ابدأ بإنشاء القوالب وإرسال طلبات التوقيع ودمج التوقيع في منتجك.
+      primary: ابدأ مجانًا
+      secondary: تسجيل الدخول
+    signed_stat:
+      aria_label: المستندات الموقعة على المنصة
+      system_status: 'حالة النظام: يعمل'
+      title: نشاط المنصة المباشر
+      lead: معالجة مرئية فورية لبنية رقمية عالية الثقة. اختبر سرعة الثقة العالمية على نطاق واسع.
+      counter_label: مستندات موقعة باستخدام %{product}
+    footer:
+      privacy: الخصوصية
+      terms: الشروط
+      cookies: ملفات تعريف الارتباط
+      support: الدعم
+      security: الأمان
+      copyright: "© %{year} %{product}. جميع الحقوق محفوظة."
   require_phone_2fa_to_open: تطلب فتح عبر تحقق الهاتف ذو العاملين
   the_sender_has_requested_a_two_factor_authentication_via_one_time_password_sent_to_your_html: المرسل طلب تحقق ذو عاملين عبر كلمة مرور لمرة واحدة مرسل إلى رقم هاتفك <b>%{phone}</b>.
   send_verification_code: إرسال رمز التحقق

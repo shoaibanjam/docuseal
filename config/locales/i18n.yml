@@ -30,6 +30,7 @@ en: &en
   open_menu: Open menu
   close_menu: Close menu
   navigation: Navigation
+  skip_to_main_content: Skip to main content
   landing:
     hero:
       badge: Next-gen document infrastructure
@@ -53,6 +54,211 @@ en: &en
       solutions: Solutions
       company: Company
       security: Security
+    social_proof:
+      heading: Trusted by industry leaders in fintech and legal
+      carousel_label: Partner and customer logos
+    advanced_template_builder:
+      eyebrow: Template setup
+      title: Advanced Template Builder
+      supported_title: Supported Template Files
+      supported_copy: Upload PDF or DOCX templates, add fields, and prepare documents for repeatable signing workflows.
+      bullet_upload: Upload PDF and DOCX templates
+      bullet_fields: Add signer fields with visual placement
+      bullet_reuse: Reuse templates across submissions
+      dark_alt: Template builder dark editor interface
+      light_alt: Template builder editor interface
+      field_detection_title: Field Detection
+      field_detection_copy: Detect existing fields in templates to speed up setup before manual adjustments.
+      variables_title: Template Variables
+      variables_copy: Prefill template values through the API so generated documents are ready for recipients.
+    features:
+      eyebrow: Core features
+      title_html: Built for teams that need <span class="landing-gradient-text">signing that ships fast</span>
+      description: Everything in one place to prepare templates, collect signatures, and integrate with your existing systems.
+      learn_more: Learn more
+      cards:
+        template_builder:
+          title: Template builder
+          copy: Create fillable templates from PDF or DOCX and place fields where signers need to complete them.
+        online_signing:
+          title: Online signing
+          copy: Collect legally recognized e-signatures with signer flows that work across desktop and mobile.
+        api_webhooks:
+          title: API and webhooks
+          copy: Create templates and submissions programmatically, then react to events in your backend.
+        multi_recipient:
+          title: Multi-recipient flows
+          copy: Send to one or many recipients with role-based completion and shared progress tracking.
+        email_delivery:
+          title: Email delivery
+          copy: Send signing requests and reminders through SMTP-based email notifications.
+        pdf_verification:
+          title: PDF verification
+          copy: Verify digital signatures and exported signed documents directly from the platform.
+    solutions:
+      eyebrow: Why teams choose it
+      title_html: One platform. Practical workflows. <span class="landing-gradient-text">No lock-in.</span>
+      description: From template design to signed output, %{product} covers the complete signing flow in a single app.
+      cards:
+        self_host:
+          title: Self-host or cloud
+          copy: Deploy with Docker and keep your documents under your own operational control.
+        api_first:
+          title: API-first platform
+          copy: Use REST endpoints and webhooks to connect document flows to your product.
+        mobile_signing:
+          title: Mobile-friendly signing
+          copy: Signers can complete documents from desktop and mobile browsers.
+        auditability:
+          title: Auditability built in
+          copy: Track signer and submission events with downloadable signed documents.
+        team_management:
+          title: Team management
+          copy: Manage users, roles, templates, and submissions from a shared workspace.
+        integrations:
+          title: Integrations
+          copy: Use webhooks, SMTP, and storage integrations to fit existing infrastructure.
+    workflow:
+      title: Your Workflow, Automated.
+      prepare_title: Prepare Template
+      prepare_copy: Drag and drop fields onto your document, then assign roles and validation rules in minutes.
+      send_title: Send & Sign
+      send_copy: Share via email or direct link and let signers complete everything securely on any device.
+      complete_title: Complete & Automate
+      complete_copy: Signed documents are archived, while webhooks and API events trigger your downstream workflows.
+      draft: Draft
+      signed: Signed
+      secured: Workflow Secured
+    modern_workflows:
+      title: Built for Integration Workflows
+      description: Connect signing operations to your product using documented API endpoints, webhooks, and embeddable flows.
+      webhook_title: Webhook Events
+      webhook_copy: Receive real-time notifications for submission created, signed, and finalized events directly in your backend.
+      webhook_bullets:
+        lifecycle: Submission lifecycle events
+        endpoints: Webhook endpoints by event type
+        deliver: Deliver events to your backend
+      embedded_title: Embedded Signing
+      embedded_copy: Keep users in your product with embedded signing links and branded signer pages.
+      embedded_bullets:
+        app: Embed signing in your app
+        branding: Use your own account branding
+        devices: Support desktop and mobile signers
+      api_title: REST API
+      api_copy: Automate template and submission lifecycle actions using a JSON-based REST API.
+      api_bullets:
+        templates: Create and manage templates
+        submissions: Create and track submissions
+        recipients: Manage documents and recipients
+    fields:
+      badge: Template Field Builder
+      title: Flexible Field Types
+      description: Build fillable documents with field types for signatures, text, dates, selections, files, and structured inputs.
+      core_title: Core Signing Fields
+      core_copy: Capture signatures, initials, and text values required to complete document workflows.
+      image_alt: Document identity workspace
+      reusable_title: Reusable Field Set
+      reusable_copy: Use common field groups across templates to keep signing experiences consistent.
+      chip_input: input
+      chip_signing: signing
+      field_labels:
+        identity: Identity
+        initials: Initials
+        text: Text
+        date: Date
+        number: Number
+        select: Select
+        checkbox: Checkbox
+        radio: Radio
+        multiple: Multiple
+        file: File
+        image: Image
+        table: Table
+      field_values:
+        signature: signature
+        initials: initials
+        text: text
+        date: date
+        number: number
+        select: select
+        checkbox: checkbox
+        radio: radio
+        multiple: multiple
+        file: file
+        image: image
+        cells: cells
+      real_work_title: Designed for Real Document Work
+      real_work_copy: Create templates once and reuse them across repeated signing workflows with consistent data collection.
+      reuse_title: Template Reuse
+      reuse_copy: Use one template for many submissions and recipients.
+      tracking_title: Submission Tracking
+      tracking_copy: Monitor each signer and document completion status from the dashboard.
+      enterprise_alt: Enterprise complexity visual
+    multi_party:
+      eyebrow: Multiple recipients
+      title: Multi-Party Collaboration Made Simple
+      description: Route documents through one or many recipients and keep each signer step clear.
+      ordered_title: Ordered Signing Steps
+      ordered_copy: Configure signer order so each participant completes their part in sequence.
+      parallel_title: Parallel Recipient Flow
+      parallel_copy: Invite recipients to complete documents without requiring a strict sequence.
+      roles_title: Recipient Roles
+      roles_copy: Assign each recipient their own fields and completion responsibilities.
+      dark_alt: Multi-party workflow graph dashboard
+      light_alt: Multi-party workflow light dashboard
+    security:
+      eyebrow: Trust & Control
+      title: Security Features You Can Use Today
+      description: Keep documents protected with encrypted transport, detailed audit events, and deployment options that fit your security model.
+      stats:
+        self_hosting: Self-hosting
+        audit_events: Audit events
+        pdf_verification: PDF verification
+        role_access: Role-based access
+      encrypted_title: Encrypted Data Transport
+      encrypted_copy: Use HTTPS and secure storage backends to protect document data in transit and at rest.
+      audit_title: Full Audit Trails
+      audit_copy: Every action is recorded with time, IP, and event metadata for complete traceability.
+    enterprise_security:
+      dark_alt: Advanced security infrastructure
+      light_alt: Enterprise security infrastructure light view
+      title: Operational Security Controls
+      description: "%{product} includes practical controls for teams that need secure signing with clear operational ownership."
+      self_hosted_title: Self-hosted Deployment
+      self_hosted_copy: Run the platform in your own environment using Docker-based deployment.
+      verification_title: Signature Verification
+      verification_copy: Verify digitally signed PDFs and keep document integrity checks within your workflow.
+    faq:
+      eyebrow: FAQ
+      title_html: Frequently Asked <span class="landing-gradient-text">Questions</span>
+      self_host_question: Can I self-host this project?
+      self_host_answer: Yes. This project is open source and can be self-hosted using the provided Docker deployment path.
+      api_question: What can I automate with the API?
+      api_answer: You can manage templates, submissions, documents, and recipients through REST API endpoints.
+      webhooks_question: Does it support webhook events?
+      webhooks_answer: Yes. Webhook endpoints are available so your backend can receive submission and form event updates.
+      formats_question: What template formats are supported?
+      formats_answer: PDF and DOCX templates are supported for creating fillable signing workflows.
+      verification_question: Can signed PDFs be verified?
+      verification_answer: Yes. The project includes PDF signature verification capabilities for signed documents.
+    final_cta:
+      title_html: Ready to <span class="landing-gradient-text">streamline</span> document signing?
+      copy: Start creating templates, sending signature requests, and integrating signing into your product.
+      primary: Get started for free
+      secondary: Sign in
+    signed_stat:
+      aria_label: Documents signed on the platform
+      system_status: "SYSTEM STATUS: OPERATIONAL"
+      title: Live Platform Activity
+      lead: Real-time visual processing of high-assurance digital infrastructure. Experience the velocity of global trust at scale.
+      counter_label: DOCUMENTS SIGNED WITH %{product}
+    footer:
+      privacy: Privacy
+      terms: Terms
+      cookies: Cookies
+      support: Support
+      security: Security
+      copyright: "© %{year} %{product}. All rights reserved."
   add_from_google_drive: Add from Google Drive
   or_add_from: Or add from
   upload_a_new_document: Upload a New Document

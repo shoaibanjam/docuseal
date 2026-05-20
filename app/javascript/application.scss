@@ -770,6 +770,23 @@ dynamic-variable {
   }
 }
 
+/*
+ * DaisyUI drawer + RTL: default `[dir=rtl] .drawer-side > *:not(.drawer-overlay)` still uses
+ * `translateX(-100%)` (same as LTR). With `justify-items: start`, RTL anchors the panel on the
+ * inline-start edge (physical right); a negative X shift pulls it *into* the viewport — looks
+ * “centered” when closed (worse under browser zoom). Slide off the physical end instead.
+ * Scoped to our sidebar root; skips `.drawer-end` (different transform contract).
+ */
+@media (max-width: 1023px) {
+  html[dir='rtl'] .drawer:not(.drawer-end) .drawer-toggle:not(:checked) ~ .drawer-side > aside.app-sidebar {
+    transform: translateX(100%);
+  }
+
+  html[dir='rtl'] .drawer:not(.drawer-end) .drawer-toggle:checked ~ .drawer-side > aside.app-sidebar {
+    transform: translateX(0);
+  }
+}
+
 /* ----- SaaS sidebar (Linear / Stripe-inspired; keeps .app-sidebar for DS hooks) ----- */
 $saas-bg-deep: #0b1220;
 $saas-panel: rgba(15, 23, 42, 0.75);

@@ -9,12 +9,12 @@
     <div class="landing-hero-copy-col w-full min-w-0 text-center lg:text-start" data-aos="<%= rtl_locale? ? 'fade-left' : 'fade-right' %>" data-aos-duration="750">
       <span class="landing-cloud-badge mb-6 inline-flex motion-safe:animate-[landing-badge-pop_0.6s_ease-out_both]"><%= t('landing.hero.badge') %></span>
       <% landing_hero_rotating_words = t('landing.hero.rotating_words') %>
-      <h1 class="landing-hero-title text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl">
+      <h1 class="landing-hero-title text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl <%= rtl_locale? ? 'leading-[1.42] md:leading-[1.38] lg:leading-[1.34]' : 'leading-[1.1]' %>">
         <span class="sr-only">
           <%= Docuseal.product_name %>
           <%= t('landing.hero.headline_sr') %>
         </span>
-        <span aria-hidden="true" class="landing-hero-headline">
+        <span aria-hidden="true" class="landing-hero-headline <%= 'flex flex-col gap-2 md:gap-2.5' if rtl_locale? %>">
           <span class="landing-hero-headline-line block">
             <span class="landing-gradient-text"><%= Docuseal.product_name %></span>
             <%= t('landing.hero.headline_powering') %>

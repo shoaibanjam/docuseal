@@ -1,10 +1,10 @@
 <section class="landing-section landing-multi-party overflow-hidden bg-[#0d1c2f] py-20 text-white">
   <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 md:grid-cols-2 md:gap-16">
     <div data-aos="fade-right">
-      <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-emerald-300">Multiple recipients</span>
-      <h2 class="text-3xl font-semibold tracking-tight md:text-4xl">Multi-Party Collaboration Made Simple</h2>
+      <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-emerald-300"><%= t('landing.multi_party.eyebrow') %></span>
+      <h2 class="text-3xl font-semibold tracking-tight md:text-4xl"><%= t('landing.multi_party.title') %></h2>
       <p class="mt-4 text-lg text-slate-300">
-        Route documents through one or many recipients and keep each signer step clear.
+        <%= t('landing.multi_party.description') %>
       </p>
 
       <div class="mt-8 space-y-6">
@@ -13,8 +13,8 @@
             <span class="material-symbols-outlined text-[20px] leading-none">low_priority</span>
           </div>
           <div>
-            <h3 class="text-xl font-semibold">Ordered Signing Steps</h3>
-            <p class="mt-1 text-slate-300">Configure signer order so each participant completes their part in sequence.</p>
+            <h3 class="text-xl font-semibold"><%= t('landing.multi_party.ordered_title') %></h3>
+            <p class="mt-1 text-slate-300"><%= t('landing.multi_party.ordered_copy') %></p>
           </div>
         </div>
 
@@ -23,8 +23,8 @@
             <span class="material-symbols-outlined text-[20px] leading-none">groups</span>
           </div>
           <div>
-            <h3 class="text-xl font-semibold">Parallel Recipient Flow</h3>
-            <p class="mt-1 text-slate-300">Invite recipients to complete documents without requiring a strict sequence.</p>
+            <h3 class="text-xl font-semibold"><%= t('landing.multi_party.parallel_title') %></h3>
+            <p class="mt-1 text-slate-300"><%= t('landing.multi_party.parallel_copy') %></p>
           </div>
         </div>
 
@@ -33,8 +33,8 @@
             <span class="material-symbols-outlined text-[20px] leading-none">assignment_ind</span>
           </div>
           <div>
-            <h3 class="text-xl font-semibold">Recipient Roles</h3>
-            <p class="mt-1 text-slate-300">Assign each recipient their own fields and completion responsibilities.</p>
+            <h3 class="text-xl font-semibold"><%= t('landing.multi_party.roles_title') %></h3>
+            <p class="mt-1 text-slate-300"><%= t('landing.multi_party.roles_copy') %></p>
           </div>
         </div>
       </div>
@@ -44,13 +44,13 @@
       <div class="multi-party-media-card landing-surface-interactive rounded-xl border border-white/10 bg-[#1d2d44] p-4 shadow-2xl">
         <img
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo7xyTsITYiQp4iUTp3YZ7N9FSNHh6adwIJQqWAPHMiyzWptpN_yaOvz1LCXMU02bQhCGk05ieVLX1_hsbNXFzcCAct4soOwKeOW92GN4jV3ClNGOBT-1woMJHuOwiyLTiBEob2--KClzrZY8oTQqazXalfHpKbazPp3ajHOlFQYdDTpxmozq8qLbDpAJHs9YfYGSfZy-n_sztWgQr_fjWavFaSItzDbjRLkRkty4DIrj1uBFLT3d5aSm7W6VAmxb72H4vCSTMwAwT"
-          alt="Multi-party workflow graph dashboard"
+          alt="<%= t('landing.multi_party.dark_alt') %>"
           class="multi-party-media-image multi-party-media-image--dark w-full rounded-lg"
           loading="lazy"
         >
         <img
           src="/landing/multi-party-light.png"
-          alt="Multi-party workflow light dashboard"
+          alt="<%= t('landing.multi_party.light_alt') %>"
           class="multi-party-media-image multi-party-media-image--light w-full rounded-lg"
           loading="lazy"
         >
