@@ -1,6 +1,6 @@
 <footer class="landing-section landing-footer landing-refined-panel" data-aos="fade-up">
   <div class="mx-auto flex max-w-7xl flex-col items-center px-6 text-center">
-    <span class="text-xl font-bold tracking-tight text-white"><%= Docuseal.product_name %></span>
+    <span class="text-xl font-bold tracking-tight text-white"><%= localized_product_name %></span>
 
     <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
       <a href="https://twitter.com/docusealco" class="landing-footer-social flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-slate-400 transition hover:border-emerald-400/50 hover:text-emerald-300" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
@@ -26,7 +26,7 @@
     </nav>
 
     <p class="landing-footer__copyright mt-10 text-sm text-slate-500">
-      <%= t('landing.footer.copyright', year: Time.current.year, product: Docuseal.product_name) %>
+      <%= t('landing.footer.copyright', year: Time.current.year, product: localized_product_name) %>
     </p>
   </div>
 </footer>

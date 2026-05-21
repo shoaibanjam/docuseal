@@ -1,5 +1,5 @@
 <title>
-  <%= content_for(:html_title) || (signed_in? ? Docuseal.product_name : "#{Docuseal.product_name} ") %>
+  <%= content_for(:html_title) || (signed_in? ? Docuseal.product_name : localized_product_name) %>
 </title>
 <%= render 'shared/meta' %>
 <script>

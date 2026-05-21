@@ -36,7 +36,8 @@
         >0</div>
         <span class="sr-only"><%= count %></span>
         <p class="landing-live-activity__counter-label">
-          <%= t('landing.signed_stat.counter_label', product: Docuseal.product_name.upcase).upcase %>
+          <% product_label = rtl_locale? ? localized_product_name : localized_product_name.upcase %>
+          <%= rtl_locale? ? t('landing.signed_stat.counter_label', product: product_label) : t('landing.signed_stat.counter_label', product: product_label).upcase %>
         </p>
       </div>
     </div>

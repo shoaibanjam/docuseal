@@ -1,4 +1,5 @@
 ar:
+  product_name: تراستسيل
   date:
     formats:
       default: "%d/%m/%Y"

@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
                 :form_link_host,
                 :locale_direction,
                 :locale_switcher_options,
+                :localized_product_name,
                 :rtl_locale?,
                 :svg_icon
 
@@ -119,6 +120,10 @@ class ApplicationController < ActionController::Base
 
   def current_account
     current_user&.account
+  end
+
+  def localized_product_name
+    I18n.t(:product_name, default: Docuseal.product_name)
   end
 
   def rtl_locale?(locale = I18n.locale)
