@@ -3,7 +3,6 @@
 class SubmitFormDrawSignatureController < ApplicationController
   layout false
 
-  around_action :with_browser_locale, only: %i[show]
   skip_before_action :authenticate_user!
   skip_authorization_check
 

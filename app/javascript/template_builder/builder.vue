@@ -1029,7 +1029,9 @@ export default {
     customDragFieldRef: () => ref(),
     selectedAreasRef: () => ref([]),
     language () {
-      return this.locale.split('-')[0].toLowerCase()
+      const locale = this.locale || document.documentElement.lang || 'en-US'
+
+      return locale.split('-')[0].toLowerCase()
     },
     undefinedSubmitters () {
       return this.template.submitters.filter((submitter) => {

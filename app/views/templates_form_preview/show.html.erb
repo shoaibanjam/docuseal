@@ -12,15 +12,15 @@
           </div>
         </div>
       </div>
-      <div class="signing-form-actions flex items-center gap-2 flex-shrink-0">
+      <div class="signing-form-actions flex items-center flex-shrink-0">
         <% if @template.submitters.size > 1 %>
           <form action="<%= template_form_path(@template) %>" method="get" class="min-w-0">
             <submit-form data-on="change">
               <label for="preview_party_uuid" class="sr-only"><%= t('party') %></label>
               <select id="preview_party_uuid" name="uuid" class="base-input signing-form-action !h-9 !min-h-0 !w-[11.25rem] !max-w-full !px-3 !text-xs md:!text-sm text-center font-normal">
-                <% @template.submitters.each do |submitter| %>
+                <% @template.submitters.each_with_index do |submitter, index| %>
                   <%= tag.option(value: submitter['uuid'], selected: submitter['uuid'] == @submitter.uuid) do %>
-                    <%= submitter['name'] %>
+                    <%= Submissions::LocalizePartyName.display_name(submitter, index:, locale: I18n.locale) %>
                   <% end %>
                 <% end %>
               </select>

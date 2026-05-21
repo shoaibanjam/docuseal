@@ -7,7 +7,7 @@
           <%= svg_icon('list', class: 'app-navbar-menu-trigger__icon') %>
         </label>
       <% end %>
-      <a href="<%= root_path %>" class="navbar-brand-link text-2xl font-bold items-center flex space-x-2 text-primary-content truncate">
+      <a href="<%= root_path %>" class="navbar-brand-link text-2xl font-bold items-center flex gap-2 text-primary-content truncate" aria-label="<%= localized_product_name %>">
         <%= render 'shared/title' %>
       </a>
     </div>

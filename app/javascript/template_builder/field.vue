@@ -24,7 +24,7 @@
           />
           <Contenteditable
             ref="name"
-            :model-value="(defaultField ? (defaultField.title || field.title || field.name) : field.name) || defaultName"
+            :model-value="listFieldName"
             :editable="editable && !defaultField && field.type != 'heading'"
             :icon-inline="true"
             :icon-width="18"
@@ -326,6 +326,7 @@ import ConditionsModal from './conditions_modal'
 import DescriptionModal from './description_modal'
 import { IconRouteAltLeft, IconMathFunction, IconNewSection, IconTrashX, IconSettings, IconChevronDown } from '@tabler/icons-vue'
 import { v4 } from 'uuid'
+import { localizeFieldName } from './localize_field_name'
 
 export default {
   name: 'TemplateField',
@@ -418,6 +419,15 @@ export default {
     },
     defaultName () {
       return this.buildDefaultName(this.field)
+    },
+    listFieldName () {
+      const raw = this.defaultField
+        ? (this.defaultField.title || this.field.title || this.field.name)
+        : this.field.name
+
+      if (!raw) return this.defaultName
+
+      return localizeFieldName(raw, this.field.type, this.t) || raw
     },
     areas () {
       return this.field.areas || []

@@ -89,11 +89,22 @@ module ReplaceEmailVariables
   # rubocop:enable Metrics
 
   def build_documents_links_text(submitter, sig = nil)
-    url_options = build_url_options_for(submitter)
+    url_options = build_url_options_for(submitter).merge(lang: email_link_locale(submitter.account.locale))
 
     Rails.application.routes.url_helpers.submissions_preview_url(
       submitter.submission.slug, { sig:, **url_options }.compact
     )
+  end
+
+  def email_link_locale(locale)
+    locale = locale.to_s.presence || 'en-US'
+    return locale if I18n.locale_available?(locale)
+
+    language = locale.split('-').first.presence
+    return 'en-US' if language == 'en'
+    return language if language && I18n.locale_available?(language)
+
+    'en-US'
   end
 
   def build_submitters_n_field(submission, index, field_name, value_name = nil)
@@ -142,6 +153,7 @@ module ReplaceEmailVariables
 
   def build_submitter_link(submitter, tracking_event_type)
     url_options = build_url_options_for(submitter, is_email: tracking_event_type == 'click_email')
+    url_options = url_options.merge(lang: email_link_locale(submitter.account.locale))
 
     if tracking_event_type == 'click_email'
       Rails.application.routes.url_helpers.submit_form_url(

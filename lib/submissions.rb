@@ -253,6 +253,18 @@ module Submissions
     end.exclude?(false)
   end
 
+  def localized_fields_for_form(submitter, locale: I18n.locale)
+    filtered_conditions_fields(submitter).map do |field|
+      localized_name = LocalizeFieldName.call(field['name'], locale:)
+
+      localized_name != field['name'] ? field.merge('name' => localized_name) : field
+    end
+  end
+
+  def localized_template_submitter(submitter_hash, index:, locale: I18n.locale)
+    submitter_hash.merge('name' => LocalizePartyName.display_name(submitter_hash, index:, locale:))
+  end
+
   def regenerate_documents(submission)
     submitters = submission.submitters.where.not(completed_at: nil).preload(:documents_attachments)
 

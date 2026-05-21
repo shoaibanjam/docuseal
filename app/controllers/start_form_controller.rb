@@ -6,7 +6,6 @@ class StartFormController < ApplicationController
   skip_before_action :authenticate_user!
   skip_authorization_check
 
-  around_action :with_browser_locale, only: %i[show update completed]
   before_action :maybe_redirect_com, only: %i[show completed]
   before_action :load_resubmit_submitter, only: :update
   before_action :load_template

@@ -11,11 +11,8 @@ class LocalesController < ApplicationController
     locale = params[:locale].to_s
     locale = 'en-US' unless SUPPORTED_SWITCHER_LOCALES.include?(locale) && I18n.locale_available?(locale)
 
-    if current_account
-      current_account.update!(locale:)
-    else
-      cookies.permanent[:locale] = { value: locale, same_site: :lax }
-    end
+    cookies.permanent[:locale] = { value: locale, same_site: :lax, path: '/' }
+    current_account&.update!(locale:)
 
     redirect_back fallback_location: root_path, status: :see_other
   end

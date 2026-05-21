@@ -1035,15 +1035,104 @@ body.docuseal-landing {
   white-space: nowrap;
 }
 
+.landing-hero-headline--rtl {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: inherit;
+}
+
+@media (min-width: 768px) {
+  .landing-hero-headline--rtl {
+    gap: 1.25rem;
+  }
+}
+
+/* Arabic / RTL: background-clip:text clips Arabic ascenders/descenders — use solid accent color */
+html[dir='rtl'] .landing-page .landing-gradient-text,
+html[lang='ar'] .landing-page .landing-gradient-text {
+  background-image: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: #26cbb0 !important;
+  -webkit-text-fill-color: #26cbb0 !important;
+  padding-block: 0.1em;
+  line-height: inherit;
+}
+
+html[dir='rtl'] .landing-page--refined .landing-gradient-text,
+html[lang='ar'] .landing-page--refined .landing-gradient-text {
+  color: var(--profile-accent) !important;
+  -webkit-text-fill-color: var(--profile-accent) !important;
+}
+
 /* Arabic / RTL headlines need more line-box room so strokes and descenders do not collide */
+html[dir='rtl'] .landing-page .landing-hero-copy-col,
+html[dir='rtl'] .landing-page .landing-hero-copy-col[data-aos] {
+  overflow: visible !important;
+}
+
 html[dir='rtl'] .landing-page .landing-hero-title {
+  display: block;
   letter-spacing: normal;
+  line-height: normal !important;
+  padding-block: 0.35em 0.5em;
+  overflow: visible;
+}
+
+html[dir='rtl'] .landing-page .landing-hero-headline {
+  display: flex !important;
+  flex-direction: column;
+  gap: 1rem !important;
+  align-items: inherit;
+}
+
+@media (min-width: 768px) {
+  html[dir='rtl'] .landing-page .landing-hero-headline {
+    gap: 1.25rem !important;
+  }
+}
+
+html[dir='rtl'] .landing-page .landing-hero-headline-line {
+  display: block;
+  line-height: 1.75 !important;
+  min-height: 1.75em;
+  padding-block: 0.2em;
+  overflow: visible;
 }
 
 html[dir='rtl'] .landing-page .landing-hero-headline-line--accent {
-  min-height: 1.45em;
+  min-height: 2em;
   white-space: normal;
-  line-height: 1.35;
+  line-height: 1.7 !important;
+  padding-block: 0.22em;
+}
+
+html[dir='rtl'] .landing-page .landing-hero-copy-col .landing-cloud-badge {
+  margin-bottom: 2rem !important;
+}
+
+html[dir='rtl'] .landing-page .landing-hero-copy {
+  line-height: 1.9 !important;
+  padding-block: 0.35em 0.5em;
+  margin-top: 1.75rem !important;
+  overflow: visible;
+}
+
+html[dir='rtl'] .landing-page .landing-section-title {
+  line-height: 1.75 !important;
+  padding-block: 0.35em 0.55em;
+  overflow: visible;
+}
+
+html[dir='rtl'] .landing-page .landing-features-grid .landing-section-title,
+html[dir='rtl'] .landing-page .landing-solutions-grid .landing-section-title {
+  margin-top: 0.25em;
+}
+
+html[dir='rtl'] .landing-page .landing-features-grid .landing-cloud-badge,
+html[dir='rtl'] .landing-page .landing-solutions-grid .landing-cloud-badge {
+  margin-bottom: 1.5rem !important;
 }
 
 .landing-hero-rotating-word {

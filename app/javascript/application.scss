@@ -59,8 +59,48 @@ html[lang^='ar-'] body {
   text-align: inherit;
 }
 
+.locale-switcher {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Navbar + app pages: same open/close behavior as form layout. */
+.locale-switcher.locale-switcher--dropdown {
+  position: relative;
+}
+
+.locale-switcher.locale-switcher--dropdown > .locale-switcher__menu,
+.locale-switcher.locale-switcher--dropdown > .dropdown-content {
+  position: absolute;
+  top: calc(100% + 0.375rem);
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  margin-top: 0;
+  display: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s ease;
+}
+
+.locale-switcher.locale-switcher--dropdown.is-open > .locale-switcher__menu,
+.locale-switcher.locale-switcher--dropdown.is-open > .dropdown-content {
+  display: block !important;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
 .locale-floating-actions {
   inset-inline-end: 1rem;
+  inset-inline-start: auto;
+  align-items: center;
 }
 
 [data-theme='docuseal-light'] .locale-switcher__select,

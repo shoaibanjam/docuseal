@@ -1,6 +1,6 @@
 <header class="landing-nav landing-nav--refined sticky top-0 z-20 supports-[backdrop-filter]:backdrop-blur-xl">
   <div class="relative z-[1] mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3.5 md:py-4 md:gap-8">
-    <%= link_to root_path, class: 'landing-nav-brand-link flex shrink-0 items-center text-white transition-opacity hover:opacity-90', aria: { label: Docuseal.product_name } do %>
+    <%= link_to root_path, class: 'landing-nav-brand-link flex shrink-0 items-center text-white transition-opacity hover:opacity-90', aria: { label: localized_product_name } do %>
       <%= render 'shared/logo', class: 'h-9 w-auto object-contain shrink-0' %>
     <% end %>
     <nav class="hidden flex-1 items-center justify-center gap-8 md:flex" aria-label="<%= t('primary_navigation') %>">

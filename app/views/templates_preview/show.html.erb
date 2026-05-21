@@ -2,7 +2,7 @@
 <div class="settings-layout profile-settings-page templates-dashboard-page template-edit-page">
   <div class="settings-main profile-settings-main templates-dashboard-main template-edit-main">
     <div class="tpl-builder-wrap">
-      <template-builder class="grid" data-editable="false" data-with-sign-yourself-button="<%= !@template.archived_at? %>" data-with-send-button="<%= !@template.archived_at? && can?(:create, @template.submissions.new(account: current_account)) %>" data-template="<%= @template_data %>"></template-builder>
+      <template-builder class="grid" data-editable="false" data-with-sign-yourself-button="<%= !@template.archived_at? %>" data-with-send-button="<%= !@template.archived_at? && can?(:create, @template.submissions.new(account: current_account)) %>" data-locale="<%= I18n.locale %>" data-template="<%= @template_data %>"></template-builder>
     </div>
   </div>
 </div>

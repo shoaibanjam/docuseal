@@ -389,7 +389,7 @@
                         v-else
                         class="text-xl"
                       >
-                        {{ field.name || field.type + ' ' + (index + 1) }}
+                        {{ field.name || `${t(field.type === 'verification' ? 'verify_id' : field.type)} ${index + 1}` }}
                       </span>
                     </label>
                   </div>
