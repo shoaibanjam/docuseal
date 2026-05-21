@@ -3,7 +3,6 @@
 class SubmitFormController < ApplicationController
   layout 'form'
 
-  around_action :with_browser_locale, only: %i[show completed success]
   skip_before_action :authenticate_user!
   skip_authorization_check
 

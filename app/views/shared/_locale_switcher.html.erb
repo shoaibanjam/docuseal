@@ -2,21 +2,21 @@
 <% current_locale_code = I18n.locale.to_s == 'ar' ? 'ar' : 'en-US' %>
 <% current_locale_pair = locale_switcher_options.find { |(_, code)| code == current_locale_code } %>
 <% current_locale_label = current_locale_pair&.first || locale_switcher_options.first.first %>
-<%# Native <select> popups flip up/down based on viewport; use DaisyUI dropdown-bottom so the menu always opens below. %>
-<locale-switcher class="locale-switcher dropdown dropdown-bottom dropdown-end">
+<locale-switcher class="locale-switcher locale-switcher--dropdown dropdown dropdown-bottom dropdown-end">
   <button
     type="button"
     id="<%= locale_switcher_id %>"
     class="base-select locale-switcher__select locale-switcher__trigger"
-    tabindex="0"
     aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls="<%= locale_switcher_id %>_menu"
     aria-label="<%= t('language') %>"
   >
     <span class="locale-switcher__trigger-label truncate"><%= current_locale_label %></span>
   </button>
   <ul
-    tabindex="0"
-    class="dropdown-content locale-switcher__menu menu z-[50] mt-1.5 max-h-[70vh] min-w-[10.5rem] w-max max-w-[min(16rem,calc(100vw-2rem))] overflow-y-auto rounded-xl border border-base-content/15 bg-base-200 p-2 shadow-xl backdrop-blur-sm"
+    id="<%= locale_switcher_id %>_menu"
+    class="locale-switcher__menu dropdown-content menu z-[50] mt-1.5 max-h-[70vh] min-w-[10.5rem] w-max max-w-[min(16rem,calc(100vw-2rem))] overflow-y-auto rounded-xl border border-base-content/15 bg-base-200 p-2 shadow-xl backdrop-blur-sm"
     role="listbox"
     aria-labelledby="<%= locale_switcher_id %>"
   >

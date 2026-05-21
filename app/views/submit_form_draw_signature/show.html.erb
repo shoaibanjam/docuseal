@@ -13,9 +13,9 @@
     <%= stylesheet_pack_tag 'form', media: 'all' %>
   </head>
   <body>
-    <div class="locale-floating-actions fixed top-4 z-[80] flex items-center gap-2">
+    <div class="locale-floating-actions fixed top-4 z-[80] flex flex-row flex-nowrap items-center gap-2">
       <%= render 'shared/locale_switcher' %>
-      <theme-toggle class="inline-flex" data-label-light="<%= t('switch_to_light_mode', default: 'Switch to light mode') %>" data-label-dark="<%= t('switch_to_dark_mode', default: 'Switch to dark mode') %>">
+      <theme-toggle class="inline-flex shrink-0 items-center justify-center" data-label-light="<%= t('switch_to_light_mode', default: 'Switch to light mode') %>" data-label-dark="<%= t('switch_to_dark_mode', default: 'Switch to dark mode') %>">
         <button type="button" class="theme-toggle-btn">
           <span data-theme-icon="sun">
             <%= svg_icon('sun', class: 'w-5 h-5') %>

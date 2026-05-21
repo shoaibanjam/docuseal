@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SubmissionsPreviewController < ApplicationController
-  around_action :with_browser_locale
   skip_before_action :authenticate_user!
   skip_authorization_check
 

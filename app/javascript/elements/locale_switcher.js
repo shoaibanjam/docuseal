@@ -5,6 +5,8 @@ const directionForLocale = (locale) =>
 
 export default class extends HTMLElement {
   connectedCallback () {
+    this.trigger = this.querySelector('.locale-switcher__trigger')
+    this.menu = this.querySelector('.locale-switcher__menu')
     this.select = this.querySelector('select[name="locale"]')
     this.form = this.querySelector('form.locale-switcher__form')
 
@@ -16,11 +18,28 @@ export default class extends HTMLElement {
       this.select.addEventListener('change', this.onChange)
     }
 
+    if (this.trigger) {
+      this.onTriggerClick = (event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        this.toggleMenu()
+      }
+      this.trigger.addEventListener('click', this.onTriggerClick)
+    }
+
+    this.onDocumentClick = (event) => {
+      if (!this.contains(event.target)) this.closeMenu()
+    }
+    document.addEventListener('click', this.onDocumentClick)
+
+    this.onKeydown = (event) => {
+      if (event.key === 'Escape') this.closeMenu()
+    }
+    this.addEventListener('keydown', this.onKeydown)
+
     /*
-     * Custom dropdown: do NOT mutate `dir` / `lang` on pointerdown (capture). That reflows the
-     * whole UI mid–mouse-click; the locale button shifts under RTL/LTR swaps and the implicit
-     * click + form submit often never completes (looks like “needs two clicks”).
-     * Apply hints on `submit`, after the click sequence is finished, still before navigation.
+     * Menu option buttons: apply dir/lang on submit (after click), not on pointerdown,
+     * so the trigger does not shift under RTL/LTR mid-click.
      */
     this.onContainedFormSubmit = (event) => {
       const form = event.target
@@ -31,13 +50,35 @@ export default class extends HTMLElement {
       if (!localeAttr) return
 
       this.applyLocale(localeAttr)
+      this.closeMenu()
     }
     this.addEventListener('submit', this.onContainedFormSubmit, true)
   }
 
   disconnectedCallback () {
     this.select?.removeEventListener('change', this.onChange)
+    this.trigger?.removeEventListener('click', this.onTriggerClick)
+    document.removeEventListener('click', this.onDocumentClick)
+    this.removeEventListener('keydown', this.onKeydown)
     this.removeEventListener('submit', this.onContainedFormSubmit, true)
+  }
+
+  toggleMenu () {
+    if (this.classList.contains('is-open')) {
+      this.closeMenu()
+    } else {
+      this.openMenu()
+    }
+  }
+
+  openMenu () {
+    this.classList.add('is-open')
+    this.trigger?.setAttribute('aria-expanded', 'true')
+  }
+
+  closeMenu () {
+    this.classList.remove('is-open')
+    this.trigger?.setAttribute('aria-expanded', 'false')
   }
 
   applyLocale (locale) {

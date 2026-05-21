@@ -3,6 +3,16 @@
 class ApplicationController < ActionController::Base
   BROWSER_LOCALE_REGEXP = /\A\w{2}(?:-\w{2})?/
   RTL_LOCALES = %w[ar he].freeze
+  # Signing, download preview, and locale switcher pages for external submitters.
+  PUBLIC_FORM_CONTROLLER_PATHS = %w[
+    submit_form
+    submit_form_draw_signature
+    submit_form_email_2fas
+    start_form
+    start_form_email_2fa_send
+    submissions_preview
+    locales
+  ].freeze
 
   include ActiveStorage::SetCurrent
   include Pagy::Method
@@ -79,6 +89,11 @@ class ApplicationController < ActionController::Base
   end
 
   def with_locale(&)
+    if public_form_request?
+      locale = resolve_public_form_locale
+      return I18n.with_locale(locale, &)
+    end
+
     locale   = params[:lang].presence
     locale ||= current_account&.locale
     locale ||= cookies[:locale]
@@ -90,15 +105,43 @@ class ApplicationController < ActionController::Base
   end
 
   def with_browser_locale(&)
-    return yield if I18n.locale != :'en-US' && I18n.locale != :en
-
     locale   = params[:lang].presence
     locale ||= cookies[:locale]
-    locale ||= request.env['HTTP_ACCEPT_LANGUAGE'].to_s[BROWSER_LOCALE_REGEXP].to_s
 
+    if locale.present?
+      locale = normalize_locale(locale, fallback: 'en-GB', prefer_non_us_english: true)
+      return I18n.with_locale(locale, &)
+    end
+
+    return yield if I18n.locale != :'en-US' && I18n.locale != :en
+
+    locale = request.env['HTTP_ACCEPT_LANGUAGE'].to_s[BROWSER_LOCALE_REGEXP].to_s
     locale = normalize_locale(locale, fallback: 'en-GB', prefer_non_us_english: true)
 
     I18n.with_locale(locale, &)
+  end
+
+  def public_form_request?
+    PUBLIC_FORM_CONTROLLER_PATHS.include?(controller_path)
+  end
+
+  def resolve_public_form_locale
+    locale   = params[:lang].presence
+    locale ||= cookies[:locale]
+    locale ||= submitter_saved_locale(public_form_submitter_slug)
+    locale ||= request.env['HTTP_ACCEPT_LANGUAGE'].to_s[BROWSER_LOCALE_REGEXP].to_s
+
+    normalize_locale(locale, fallback: 'en-US')
+  end
+
+  def public_form_submitter_slug
+    params[:slug].presence || params[:submitter_slug].presence
+  end
+
+  def submitter_saved_locale(slug)
+    return if slug.blank?
+
+    Submitter.where(slug: slug).pick(Arel.sql("metadata->>'lang'"))
   end
 
   def normalize_locale(locale, fallback:, prefer_non_us_english: false)
