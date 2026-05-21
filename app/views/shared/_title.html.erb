@@ -1,1 +1,5 @@
-<%= render 'shared/logo', width: 105, height: 105 %>
+<% if rtl_locale? %>
+  <span class="navbar-brand-text shrink-0"><%= localized_product_name %></span>
+<% else %>
+  <%= render 'shared/logo', width: 105, height: 105 %>
+<% end %>
