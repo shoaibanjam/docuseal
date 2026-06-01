@@ -4845,6 +4845,24 @@ kbd {
   color: color-mix(in srgb, var(--stitch-on-surface-variant) 88%, transparent);
 }
 
+html[dir='rtl'] .signature-editor__canvas-label {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+html[dir='rtl'] .signature-editor__lead,
+html[dir='rtl'] .mfa-setup-editor__qr-caption,
+html[dir='rtl'] .app-confirm-modal__body {
+  text-align: right;
+}
+
+html[dir='rtl'] .app-confirm-modal__actions {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
 .signature-editor__canvas-label-ico {
   width: 0.9375rem;
   height: 0.9375rem;

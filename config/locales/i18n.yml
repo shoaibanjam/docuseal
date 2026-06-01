@@ -437,9 +437,9 @@ en: &en
   signing_in: Logging in
   sign_in_with_microsoft: Sign in with Microsoft
   sign_in_with_google: Sign in with Google
-  forgot_your_password_: Forgot your password?
+  forgot_your_password_: Forgot your password ?
   create_free_account: Create free account
-  already_have_an_account: Already have an account?
+  already_have_an_account: Already have an account ?
   first_name: First name
   last_name: Last name
   sign_up: Sign up
