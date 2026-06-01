@@ -921,6 +921,14 @@ ar:
   initials_field: حقل الأحرف الأولى
   initials_has_been_removed: تمت إزالة الأحرف الأولى.
   initials_has_been_saved: تم حفظ الأحرف الأولى.
+  initials_editor_canvas_label: منطقة رسم الأحرف الأولى
+  initials_editor_draw_below: ارسم أحرفك الأولى أدناه
+  initials_editor_draw_section: رسم الأحرف الأولى
+  initials_editor_formats_hint: PNG أو JPG · يُنصح بأقصى جودة
+  initials_editor_intro: ارسم أحرفك الأولى باستخدام المؤشر أو القلم، أو ارفع صورة بصيغة PNG أو JPG.
+  initials_editor_mode_label: كيفية إضافة أحرفك الأولى
+  initials_editor_upload_section: رفع الأحرف الأولى
+  initials_modal_unsaved_close: لديك أحرف أولى غير محفوظة. هل تريد الإغلاق دون حفظ؟
   instructions: التعليمات
   integration: التكامل
   integrations: التكاملات
@@ -1229,6 +1237,10 @@ ar:
   set_up_2fa: إعداد 2FA
   settings: الإعدادات
   settings_have_been_saved: تم حفظ الإعدادات.
+  mfa_back_to_profile: العودة إلى الملف الشخصي
+  mfa_code_placeholder: 000-000
+  mfa_setup_enter_code_hint: أدخل الرمز المتغير من تطبيق المصادقة أدناه للتحقق وإكمال الإعداد.
+  mfa_setup_show_intro: امسح الرمز بتطبيق المصادقة وأكد باستخدام رمز لمرة واحدة.
   setup_2fa: إعداد 2FA
   esign_certificates_section_hint: الشهادات المستخدمة عند تطبيق توقيعات PKCS على ملفات PDF.
   esign_placeholder_timestamp_url: https://freetsa.org/tsr
@@ -1522,6 +1534,15 @@ ar:
   unverified: غير موثق
   update_initials: تحديث الأحرف الأولى
   update_recipient: تحديث المستلم
+  signature_editor_canvas_label: منطقة رسم التوقيع
+  signature_editor_draw_below: ارسم توقيعك أدناه
+  signature_editor_draw_section: رسم التوقيع
+  signature_editor_formats_hint: PNG أو JPG · يُنصح بأقصى جودة
+  signature_editor_intro: ارسم توقيعك باستخدام المؤشر أو القلم، أو ارفع صورة بصيغة PNG أو JPG لتوقيعك.
+  signature_editor_mode_label: كيفية إضافة توقيعك
+  signature_editor_upload_section: رفع التوقيع
+  signature_modal_unsaved_close: لديك توقيع غير محفوظ. هل تريد الإغلاق دون حفظ؟
+  two_factor_code: رمز المصادقة
   update_signature: تحديث التوقيع
   upgade_now: الترقية الآن
   upgrade: ترقية

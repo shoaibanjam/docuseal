@@ -1,4 +1,5 @@
 <% file_ext = template.documents.first&.filename.to_s.split('.').last&.upcase.presence || 'PDF' %>
+<% action_tooltip_class = rtl_locale? ? 'tooltip-right' : 'tooltip-left' %>
 <div class="tpl-card-wrap group relative">
   <a href="<%= template_path(template) %>" class="template-dashboard-card tpl-card flex h-full flex-col w-full transition-all duration-200" data-targets="dashboard-dropzone.templateCards" tabindex="0">
     <div class="tpl-card-preview-area">
@@ -42,35 +43,35 @@
   <div class="tpl-card-actions hidden md:flex" data-targets="dashboard-dropzone.hiddenOnDrag">
     <div class="tpl-card-actions-menu">
       <% if can?(:update, template) && !template.archived_at? && template.account_id == current_account.id %>
-        <span class="tooltip tooltip-left" data-tip="<%= t('move') %>">
+        <span class="tooltip <%= action_tooltip_class %>" data-tip="<%= t('move') %>">
           <a href="<%= edit_template_folder_path(template.id) %>" data-turbo-frame="modal" class="btn btn-xs btn-circle template-action-btn" aria-label="<%= t('move') %>">
             <%= svg_icon('folder_share', class: 'w-4 h-4 template-action-icon') %>
           </a>
         </span>
       <% end %>
       <% if template.archived_at? && can?(:update, template) %>
-        <span class="tooltip tooltip-left" data-tip="<%= t('restore') %>">
+        <span class="tooltip <%= action_tooltip_class %>" data-tip="<%= t('restore') %>">
           <%= button_to template_restore_index_path(template), class: 'btn btn-xs btn-circle template-action-btn', aria_label: t('restore') do %>
             <%= svg_icon('rotate', class: 'w-4 h-4 template-action-icon enabled') %>
             <%= svg_icon('loader', class: 'w-4 h-4 template-action-icon animate-spin disabled') %>
           <% end %>
         </span>
       <% elsif can?(:update, template) %>
-        <span class="tooltip tooltip-left" data-tip="<%= t('edit') %>">
+        <span class="tooltip <%= action_tooltip_class %>" data-tip="<%= t('edit') %>">
           <a href="<%= edit_template_path(template) %>" class="btn btn-xs btn-circle template-action-btn" aria-label="<%= t('edit') %>">
             <%= svg_icon('pencil', class: 'w-4 h-4 template-action-icon') %>
           </a>
         </span>
       <% end %>
       <% if can?(:create, template) %>
-        <span class="tooltip tooltip-left" data-tip="<%= t('clone') %>">
+        <span class="tooltip <%= action_tooltip_class %>" data-tip="<%= t('clone') %>">
           <a href="<%= new_template_clone_path(template) %>" data-turbo-frame="modal" class="btn btn-xs btn-circle template-action-btn" aria-label="<%= t('clone') %>">
             <%= svg_icon('copy', class: 'w-4 h-4 template-action-icon') %>
           </a>
         </span>
       <% end %>
       <% if can?(:destroy, template) %>
-        <span class="tooltip tooltip-left" data-tip="<%= template.archived_at? ? t('delete') : t('archive') %>">
+        <span class="tooltip <%= action_tooltip_class %>" data-tip="<%= template.archived_at? ? t('delete') : t('archive') %>">
           <%= button_to template_path(template), data: template.archived_at? ? { turbo_confirm: t('template_deletion_is_irreversible_and_will_permanently_remove_all_associated_signed_documents_with_it_are_you_sure_') } : {}, params: { permanently: template.archived_at? }.compact_blank, method: :delete, class: 'btn btn-xs btn-circle template-action-btn', aria_label: (template.archived_at? ? t('delete') : t('archive')) do %>
             <%= svg_icon(template.archived_at? ? 'trash' : 'archive', class: 'w-4 h-4 template-action-icon enabled') %>
             <%= svg_icon('loader', class: 'w-4 h-4 template-action-icon animate-spin disabled') %>

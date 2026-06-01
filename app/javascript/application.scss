@@ -4845,6 +4845,24 @@ kbd {
   color: color-mix(in srgb, var(--stitch-on-surface-variant) 88%, transparent);
 }
 
+html[dir='rtl'] .signature-editor__canvas-label {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+html[dir='rtl'] .signature-editor__lead,
+html[dir='rtl'] .mfa-setup-editor__qr-caption,
+html[dir='rtl'] .app-confirm-modal__body {
+  text-align: right;
+}
+
+html[dir='rtl'] .app-confirm-modal__actions {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
 .signature-editor__canvas-label-ico {
   width: 0.9375rem;
   height: 0.9375rem;
@@ -6134,11 +6152,11 @@ remove-on-event.app-toast-close {
   opacity: 1;
 }
 
-/* File type badge (PDF, PNG, etc.) */
+/* File type badge (PDF, PNG, etc.) — inline-start (LTR: left, RTL: right) */
 .tpl-card-badge {
   position: absolute;
   top: 0.75rem;
-  left: 0.75rem;
+  inset-inline-start: 0.75rem;
   font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -6151,11 +6169,11 @@ remove-on-event.app-toast-close {
   line-height: 1.4;
 }
 
-/* Lock indicator */
+/* Lock indicator — opposite corner from file badge */
 .tpl-card-lock-indicator {
   position: absolute;
   top: 0.75rem;
-  right: 0.75rem;
+  inset-inline-end: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6236,11 +6254,11 @@ remove-on-event.app-toast-close {
   line-height: 1.4;
 }
 
-/* Hover action buttons (top-right overlay) */
+/* Hover action buttons — inline-end (LTR: top-right, RTL: top-left) */
 .tpl-card-actions {
   position: absolute;
   top: 0.5rem;
-  right: 0.5rem;
+  inset-inline-end: 0.5rem;
   z-index: 10;
   opacity: 0;
   transform: translateY(-4px);
@@ -6265,6 +6283,18 @@ remove-on-event.app-toast-close {
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid color-mix(in srgb, var(--profile-border) 70%, transparent);
   box-shadow: var(--ds-shadow-md);
+}
+
+html[dir='rtl'] .tpl-card-actions-menu {
+  flex-direction: row-reverse;
+}
+
+html[dir='rtl'] .tpl-card-meta-row {
+  text-align: right;
+}
+
+html[dir='rtl'] .tpl-card-name {
+  text-align: right;
 }
 
 /* --- Folder Cards --- */
